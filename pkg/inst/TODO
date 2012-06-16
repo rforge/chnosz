@@ -1,0 +1,104 @@
+********
+features
+********
+
+- let diagram() map NA's - as in kyanite/sillimanite/andalusite example
+
+- implement alpha=TRUE for 2D diagram()
+
+- check docs and function: does affinity return A/RT or A/2.303RT?
+
+- make is.near.equil() a function of ep (element.potentials), not w (wjd)?
+
+
+***********
+performance
+***********
+
+- refactor species() ... some simple speed-ups, avoid data frames!
+
+- recheck skarn example against Johnson et al., 1992
+
+- does affinity(iprotein=...) add H2O_RESIDUE to thermo$obigt?
+  ... if so stop it from doing so?
+
+
+*****
+style
+*****
+
+- coding style: space after comma; break up long lines
+
+- Rd style: where to use \samp{...} (paths, filenames ??)
+
+- Rd style: what markup to use for TRUE, NULL, etc ??
+
+- Rd style: Use "x" (or z?) in names of objects being plotted to 
+  indicate unpublished examples (docs, vignettes, longex())
+
+- grepl()! Can use this instead of if(length(grep(...) > 0))
+
+- replace 1:length(x) with seq_along(x)?
+
+- get == and != out of tests (use identical instead)
+
+- get away from determining species indices with rownames(thermo$obigt)
+
+
+*************
+documentation
+*************
+
+- better documentation on how makeup() handles charge
+
+- does mod.obigt() use order-of-magnitude scaling factors or not?
+
+- under what circumstances does basis() delete the thermo$species?
+
+- find bibstyle for vignettes that still shows doi links
+
+- dd simple example in util.blast.Rd, before the long Bison Pool example
+
+- point to more examples in read.fasta (i.e. the sequence of commands in revisit)
+
+- check Ernst, 1976 example (SiO2 T-P diagram): correct T/P boundaries?
+
+- finish update of source files of vignettes to use LyX's Sweave module;
+  R code is contained in the Chunk environment provided by the module. 
+
+- add title, author information to vignettes with hyperref
+
+- add PNG files with the first and last frames of animations produced
+  by anim.()* functions to 'extdata/anim'
+
+- if formation.Rnw is reinstated, use updated properties of [Met] and
+  revise diagrams for EF-Tu proteins
+
+- add a lograt example to revisit.Rd
+
+
+********
+database
+********
+
+- track down missing sources of data (pers. comm.)
+
+- Add S3- from Pokrovski and Dubrovinsky, 2011 and logfO2-pH diagram.
+
+- add new data(?) from Akinfiev and Zotov, 2010 (doi:10.1134/S0016702910070074)
+  Matschei and Glasser, 2010 (doi:10.1016/j.cemconres.2009.11.010)
+  Zuccolini et al., 2011 (doi:10.1016/j.cageo.2010.03.024)
+
+- get up-to-date with SLOP07 data set?
+
+
+***********
+longer term
+***********
+
+- Allow more than one "balanced" component for diagram (see e.g. Richard and Gaona, 2011 for diagrams)
+
+- write a 'buffer' vignette
+
+- reimplement diagram() as an S3 plot() method for the object returned by affinity()
+

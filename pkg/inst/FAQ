@@ -1,0 +1,24 @@
+*************************
+start of a FAQ for CHNOSZ
+*************************
+
+- How do I load my own updated data files?
+  
+  Put the file in your working directory (use getwd() to find it).
+  Then use add.obigt("mydatafile.csv").
+  The file has to be in the same format as OBIGT.csv that comes with the package.
+  Use system.file("data/OBIGT.csv", package="CHNOSZ") to find where that file is installed.
+  But do not modify that file itself... it gets overwritten with package updates!
+
+- can I make a plot with log(aNa+/aH+) on an axis?
+
+  Short answer: no, but plotting log(aNa+) would be numerically equivalent if you 
+    set aH+=1 (pH=0) (if your problem permits).
+  Long answer: not easily; only logarithms of chemical activities of basis species 
+    (and temperature or pressure) can be the variables on the axes on plots made
+    by diagram(). You could theoretically add a species with the composition
+    of Na+ minus H+ to the database (it would have the formula "NaH-1+0" and the same
+    properties as Na+) and use that as a basis species instead of Na+.
+  Also, if you wanted an axis label like 'log(aNa+/aH+)' you'd have to add it
+    manually, or modify the axis.label() function used by diagram().
+

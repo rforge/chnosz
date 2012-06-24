@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 0.9-7.98 (2012-06-16)
+CHANGES IN CHNOSZ 0.9-7.98 (2012-06-25)
 ---------------------------------------
 
 SIGNIFICANT USER-VISIBLE CHANGES:
@@ -123,7 +123,7 @@ OTHER CHANGES TO FUNCTIONS:
   function (related to the solvation parameter omega) to a new function 
   gfun(); incorporate some fixes and a series of test_that() tests.
 
-- Rename equil.react() to equil.reaction(), and give it multicore 
+- Rename equil.react() to equil.reaction(), and give it parallel
   potential (via palply) and a more efficient algorithm for determining
   limits of the uniroot search. Also remove a redundant argument; 
   arguments are now identical to those of equil.boltzmann() (and that

@@ -21,15 +21,16 @@ palply <- function(X, FUN, ...) {
   # a wrapper function to run parLapply if length(X) > 100 
   # and package 'parallel' is available, otherwise run lapply
   if(length(X) > 100 & "parallel" %in% (.packages())) {
-    # tell the user the number of iterations and the name of the calling function
-    cn <- caller.name()
+    #### tell the user the number of iterations and the name of the calling function
+    ###cn <- caller.name()
     ###if(length(cn)==0) ntext <- "" else ntext <- paste("(called by ", cn, ")", sep="")
     ###cat("palply: ", ntext, " ", length(X), " parLapply calculations ...", sep="")
     # the actual calculations - modified from ?parLapply
     ## Use option mc.cores to choose an appropriate cluster size.
-    # or detectCores if that is NULL
+    # or detectCores if that is NULL, and set max at 2 for now
+    nCores <- max(getOption("mc.cores", detectCores()), 2)
     # don't load methods package
-    cl <- makeCluster(getOption("mc.cores", detectCores()), methods=FALSE)
+    cl <- makeCluster(nCores, methods=FALSE)
     out <- parLapply(cl, X, FUN, ...)
     stopCluster(cl)
     ###cat(" done!\n")

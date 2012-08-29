@@ -480,7 +480,8 @@ RH2obigt <- function(compound=NULL, state="cr", file=system.file("extdata/thermo
     if(!identical(formula, thisdat$formula)) 
       stop(paste("formula", formula, "of", comate.dat[i], "(from groups) is not identical to", thisdat$formula, "(listed in file)" ))
     # build the front part of obigt data frame
-    thishead <- data.frame(name=thisdat$compound, abbrv=NA, formula=formula, state=thisdat$state, ref1=NA, ref2=NA, date=today())
+    thishead <- data.frame(name=thisdat$compound, abbrv=NA, formula=formula, state=thisdat$state, 
+      ref1=NA, ref2=NA, date=today(), stringsAsFactors=FALSE)
     # insert the result into the output
     out <- rbind(out, cbind(thishead, thiseos))
   }

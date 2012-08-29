@@ -218,9 +218,8 @@ add.protein <- function(aa) {
   thermo$protein <<- rbind(thermo$protein, aa[!ipdup, ])
   rownames(thermo$protein) <<- NULL
   # return the new rownumbers
-  ntotal <- nrow(thermo$protein)
-  iprotein <- (ntotal-nrow(aa)+1):ntotal
+  ip <- iprotein(po)
   # make some noise
   msgout("add.protein: added ", nrow(aa)-sum(ipdup), " of ", nrow(aa), " proteins\n")
-  return(iprotein)
+  return(ip)
 }

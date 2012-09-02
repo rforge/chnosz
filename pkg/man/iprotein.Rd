@@ -20,7 +20,7 @@
   dl.aa(protein)
   aasum(aa, abundance = 1, average = FALSE, protein = NULL, organism = NULL)
   read.aa(file = "protein.csv")
-  add.protein(aa)
+  add.protein(aa, print.existing=FALSE)
 }
 
 \arguments{
@@ -33,6 +33,7 @@
   \item{abundance}{numeric, abundances of proteins}
   \item{average}{logical, return the weighted average of amino acid counts?}
   \item{file}{character, path to file with amino acid compositions}
+  \item{print.existing}{logical, print a message identifying existing proteins that were not added?}
 }
 
 \details{

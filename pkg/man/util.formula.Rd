@@ -64,21 +64,21 @@
 
 \examples{
 \dontshow{data(thermo)}
-## mass and entropy of elements in chemical formulas
-# the "-1" is a single negative charge, the electron
-testform <- c("CH4", "H2O", "-1")
-testmass <- mass(testform)
-testent <- entropy(testform)
-stopifnot(all.equal(testmass, c(16.04276, 18.01528, 0)))
-stopifnot(all.equal(testent, c(63.83843212237, 
-  55.74952198853, 15.61663479924)))
-# another way to calculate the entropy of the elements in H2O
-(testGHS <- GHS("H2O", G=0, H=0))
-stopifnot(all.equal(as.numeric(testGHS[1, 3]), testent[2]))
+## mass and entropy from chemical formulas
+mass("H2O")
+entropy("H2O")
+mass("-1")  # electron
+entropy("-1")
+
+## three ways to get the formula of alanine
+iA <- info("alanine")
+info(iA)$formula
+as.chemical.formula(makeup(iA))
+get.formula(iA)
 
 ## converting among Gibbs energy, enthalpy, entropy
 # calculate the value of G from H and S
-GHS("H2O", H=water("H"), S=water("S"))
+GHS("H2O", H=water("H"), S=water("S"))[1, ]
 # that not quite equal to the value from water("G");
 # probably using different entropies of the elements
 

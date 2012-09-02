@@ -205,7 +205,7 @@ read.aa <- function(file="protein.csv") {
   return(aa)
 }
 
-add.protein <- function(aa) {
+add.protein <- function(aa, print.existing=FALSE) {
   # add a properly constructed data frame of 
   # amino acid counts to thermo$protein
   if(!identical(colnames(aa), colnames(thermo$protein))) 
@@ -221,5 +221,9 @@ add.protein <- function(aa) {
   ip <- iprotein(po)
   # make some noise
   msgout("add.protein: added ", nrow(aa)-sum(ipdup), " of ", nrow(aa), " proteins\n")
+  if(!all(is.na(ipdup)) & print.existing) {
+    potext <- paste(aa$protein[ipdup], aa$organism[ipdup], sep="_", collapse=" ")
+    msgout("add.protein: skipped existing ", potext, "\n")
+  }
   return(ip)
 }

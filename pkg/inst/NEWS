@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 0.9-7.98 (2012-06-26)
+CHANGES IN CHNOSZ 0.9-7.98 (2012-09-02)
 ---------------------------------------
 
 SIGNIFICANT USER-VISIBLE CHANGES:
@@ -144,6 +144,9 @@ OTHER CHANGES TO FUNCTIONS:
   (par(no.readonly=TRUE)) to thermo$opar the first time the function is 
   called, allowing the parameters to be restored after running examples
   that change them.
+
+- Add protein.equil() for step-by-step calculation of chemical
+  activities of proteins in metastable equilibrium.
 
 DATA UPDATES:
 

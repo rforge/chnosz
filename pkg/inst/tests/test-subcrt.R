@@ -3,8 +3,17 @@ context("subcrt")
 # delete the basis definition in case there is one
 basis(delete=TRUE)
 
-test_that("unbalanced reactions give an error", {
+test_that("unbalanced reactions give a warning", {
   expect_warning(subcrt(c("glucose", "ethanol"), c(-1, 3)), "reaction was unbalanced, missing H-6O3")
+})
+
+test_that("unbalanced reactions are balanced given sufficient basis species", {
+  basis("CHNOS")
+  # since it doesn't alter the species indices of the basis species, this can come second ...
+  add.obigt()
+  s <- subcrt(c("malic acid", "citric acid"), c(-1, 1))
+  expect_equal(s$reaction$coeff, c(-1, 1, -2, -1, 1.5))
+  expect_equal(s$reaction$name, c("malic acid", "citric acid", "CO2", "water", "oxygen"))
 })
 
 test_that("phase transitions of minerals give expected messages and results", {

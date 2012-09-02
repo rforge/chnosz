@@ -34,6 +34,20 @@ test_that("RH2obigt() gives group additivity results consistent with database va
   expect_true(max(abs(obigt.calc$a3.c - obigt.ref$a3.c)) < 1e-14)
 })
 
+test_that("add.obigt() replaces existing entries without changing species index", {
+  # store the original species index of citric acid
+  icitric <- info("citric acid", "aq")
+  # add supplemental database - includes citric acid
+  file <- system.file("extdata/thermo/OBIGT-2.csv", package="CHNOSZ")
+  isp <- add.obigt(file, force=TRUE)
+  # species index of citric acid should not have changed
+  expect_equal(info("citric acid", "aq"), icitric)
+  # check that names of species modified are same as in file
+  newdat <- read.csv(file, stringsAsFactors=FALSE)
+  # the order isn't guaranteed ... just make sure they're all there
+  expect_true(all(newdat$name %in% thermo$obigt$name[isp]))
+})
+
 # reference
 
 # Richard, L. and Helgeson, H. C. (1998) Calculation of the thermodynamic properties at elevated 

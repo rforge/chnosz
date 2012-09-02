@@ -22,6 +22,16 @@ test_that("GHS() and obigt2eos() produce expected values", {
   # done through obigt2eos
   coe <- obigt2eos(thermo$obigt[ic,], "aq", fixGHS=TRUE)
   expect_equal(coe$S, GHS[[3]])
+  ## mass and entropy of elements in chemical formulas
+  # the "-1" is a single negative charge, the electron
+  testform <- c("CH4", "H2O", "-1")
+  testmass <- mass(testform)
+  testent <- entropy(testform)
+  expect_equal(testmass, c(16.04276, 18.01528, 0))
+  expect_equal(testent, c(63.83843212237, 55.74952198853, 15.61663479924))
+  # another way to calculate the entropy of the elements in H2O
+  testGHS <- GHS("H2O", G=0, H=0)
+  expect_equal(as.numeric(testGHS[1, 3]), testent[2])
 })
   
 

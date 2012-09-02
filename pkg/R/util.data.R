@@ -100,12 +100,10 @@ add.obigt <- function(file=system.file("extdata/thermo/OBIGT-2.csv",package="CHN
   # check if the file is compatible with thermo$obigt
   tr <- try(rbind(to1,to2),silent=TRUE)
   if(identical(class(tr),'try-error')) stop(paste(file,"is not compatible with thermo$obigt data table."))
-  # identify duplicated
-  idup1 <- which(id1 %in% id2)
-  idup2 <- which(id2 %in% id1)
-  ndup <- length(idup2)
-  nnew <- nrow(to2) - ndup
-  iadd <- 1:nrow(to2)
+  # match the new species to existing ones
+  does.exist <- id2 %in% id1
+  ispecies.exist <- na.omit(match(id2, id1))
+  nexist <- sum(does.exist)
   # convert from J if necessary
   if(tolower(E.units)=="j") {
     # loop over each row
@@ -120,22 +118,31 @@ add.obigt <- function(file=system.file("extdata/thermo/OBIGT-2.csv",package="CHN
       to2[i,icol] <- convert(to2[i,icol],"cal")
     }
   }
-  if(force) {
-    # drop entries from original
-    if(length(idup1) > 0) to1 <- to1[-idup1,]
-  } else {
-    if(length(idup2) > 0) iadd <- iadd[-idup2]
-    ndup <- 0
-  }
+  # keep track of the species we've added
   inew <- numeric()
-  if(length(iadd) > 0) {
-    inew <- nrow(to1) + 1:length(iadd)
-    to1 <- rbind(to1,to2[iadd,])
+  if(force) {
+    # replace existing entries
+    if(nexist > 0) {
+      to1[ispecies.exist, ] <- to2[does.exist, ]
+      to2 <- to2[!does.exist, ]
+      inew <- c(inew, ispecies.exist)
+    }
+  } else {
+    # ignore any new entries that already exist
+    to2 <- to2[!does.exist, ]
+    nexist <- 0
   }
+  # add new entries
+  if(nrow(to2) > 0) {
+    to1 <- rbind(to1, to2)
+    inew <- c(inew, (length(id1)+1):nrow(to1))
+  }
+  # commit the change
   thermo$obigt <<- to1
   rownames(thermo$obigt) <<- 1:nrow(thermo$obigt)
-  msgout("add.obigt: added ", length(iadd), " of ", nrow(to2), " species", 
-    " (", ndup, " replacements, ", nnew, " new, units = ", E.units, ") from ", file, "\n")
+  msgout("add.obigt: file has ", length(does.exist), " rows; made ", 
+    nexist, " replacements, ", nrow(to2), " additions, units = ", E.units, "\n")
+  msgout("add.obigt: file was ", file, "\n")
   msgout("add.obigt: use data(thermo) to restore default database\n")
   return(invisible(inew))
 }

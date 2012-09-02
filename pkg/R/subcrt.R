@@ -235,9 +235,11 @@ subcrt <- function(species, coeff=1, state=NULL, property=c('logK','G','H','S','
           if(identical(species,b.species) & identical(state,b.state))
             msgout("subcrt: balanced reaction, but it is a non-reaction; restarting...\n")
           else msgout('subcrt: adding missing composition from basis definition and restarting...\n')
-          return(subcrt(species=c(species,tb$ispecies[match(colnames(bc),rownames(tb))]),
-            coeff=c(coeff,as.numeric(bc[1,])),state=c(state,b.state),property=property,
-            T=outvert(T,"K"),P=P,grid=grid,convert=convert,logact=logact,exceed.Ttr=FALSE))
+          newspecies <- c(species, tb$ispecies[match(colnames(bc), rownames(tb))])
+          newcoeff <- c(coeff, as.numeric(bc[1, ]))
+          newstate <- c(state, b.state)
+          return(subcrt(species=newspecies, coeff=newcoeff, state=newstate,
+            property=property, T=outvert(T, "K"), P=P, grid=grid, convert=convert, logact=logact, exceed.Ttr=FALSE))
         } else if(identical(action.unbalanced,'warn')) 
             warning(paste('reaction was unbalanced, missing', as.chemical.formula(miss)),call.=FALSE)
       } else {

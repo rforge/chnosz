@@ -1,5 +1,7 @@
 context("findit")
 
+# skip test if we're on R CMD check --as-cran
+if(!any(grepl("R_CHECK_TIMINGS", names(Sys.getenv())))) {
 
 test_that("findit() returns known values encoded in a species distribution", {
   # test the findit function in three dimensions
@@ -34,3 +36,5 @@ test_that("findit() returns known values encoded in a species distribution", {
   expect_equal(tail(f$value[[3]],1), -sqrt(2), tol=1e-1)
   # we could decrease the tolerance by increasing the resolution and/or iterations in findit()
 })
+
+}

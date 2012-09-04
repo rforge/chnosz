@@ -95,6 +95,7 @@ ip6 <- add.protein(aa)
 subcrt("ALAT1_HUMAN", c("cr", "aq"), c(-1, 1))$out[[1]]$H
 } 
 
+\donttest{
 # read a fasta file, calculate H/C and O/C for all proteins
 # and averages by polypeptide chain, residue and mass
 ffile <- system.file("extdata/fasta/HTCC1062.faa.xz", package="CHNOSZ")
@@ -121,6 +122,7 @@ legend("topright", pch=c(20, 15, 16, 17), col=c("grey", rep("red", 3)),
   legend=c("protein", "chain average", "residue average", "mass average"))
 title(main=paste("O/C vs H/C for HTCC1062 proteins\n",
   "n =", nrow(aa)))
+}
 }
 
 \seealso{

@@ -128,7 +128,7 @@ About
 
 \begin_layout Standard
 \begin_inset Branch load
-status open
+status collapsed
 
 \begin_layout Standard
 This document will orient you to the basic functionality of CHNOSZ, a package
@@ -195,7 +195,7 @@ Outline of workflow
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status open
+status collapsed
 
 \begin_layout Standard
 CHNOSZ is made up of a set of functions and supporting datasets.
@@ -304,7 +304,7 @@ Installing and loading CHNOSZ
 
 \begin_layout Standard
 \begin_inset Branch load
-status open
+status collapsed
 
 \begin_layout Standard
 If you have just installed R, and you are online, installing the CHNOSZ
@@ -372,7 +372,7 @@ Thermodynamic database
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status open
+status collapsed
 
 \begin_layout Subsection
 
@@ -500,7 +500,7 @@ print(aadata)
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status open
+status collapsed
 
 \begin_layout Subsection
 
@@ -596,7 +596,7 @@ key "SH90"
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status open
+status collapsed
 
 \begin_layout Subsection
 
@@ -724,7 +724,7 @@ Proteins
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status open
+status collapsed
 
 \begin_layout Subsection
 
@@ -815,7 +815,7 @@ as.chemical.formula(pf)
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status open
+status collapsed
 
 \begin_layout Subsection
 
@@ -897,7 +897,7 @@ Reaction properties
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status open
+status collapsed
 
 \begin_layout Subsection
 A single species
@@ -1200,7 +1200,7 @@ Basis species
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status open
+status collapsed
 
 \begin_layout Subsection
 What are basis species?
@@ -2008,7 +2008,7 @@ basis(c("NH3", "H2S"), c(-1, -10))
 
 \begin_layout Chunk
 
-a <- affinity(O2=c(-90, -70), H2O=c(-10, 0))
+a <- affinity(O2=c(-85, -70), H2O=c(-5, 0))
 \end_layout
 
 \begin_layout Chunk
@@ -2272,7 +2272,7 @@ Where to go from here
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status open
+status collapsed
 
 \begin_layout Standard
 You can explore the package documentation through R's help system; just
@@ -2397,7 +2397,7 @@ More activity diagrams
 
 \begin_layout Standard
 \begin_inset Branch more
-status open
+status collapsed
 
 \begin_layout Standard
 The following pages contain activity diagrams created with more complex
@@ -2438,7 +2438,7 @@ clearpage
 
 \begin_layout Standard
 \begin_inset Branch more
-status open
+status collapsed
 
 \begin_layout Subsection
 Protein Eh-pH
@@ -2697,7 +2697,7 @@ clearpage
 
 \begin_layout Standard
 \begin_inset Branch more
-status open
+status collapsed
 
 \begin_layout Subsection
 Subcellular proteins
@@ -2879,7 +2879,7 @@ clearpage
 
 \begin_layout Standard
 \begin_inset Branch more
-status open
+status collapsed
 
 \begin_layout Subsection
 Buffers
@@ -3132,7 +3132,7 @@ clearpage
 
 \begin_layout Standard
 \begin_inset Branch more
-status open
+status collapsed
 
 \begin_layout Subsection
 Revisit
@@ -3358,7 +3358,7 @@ clearpage
 
 \begin_layout Standard
 \begin_inset Branch more
-status open
+status collapsed
 
 \begin_layout Subsection
 Findit
@@ -3576,7 +3576,7 @@ Document information
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status open
+status collapsed
 
 \begin_layout Standard
 Revision history:

@@ -1,4 +1,4 @@
-%% LyX 2.0.3 created this file.  For more info, see http://www.lyx.org/.
+%% LyX 2.0.4 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
 \documentclass[english,noae,round]{article}
 \usepackage{mathpazo}
@@ -699,7 +699,7 @@ of the archaeal cell-surface glycoproteins.
 <<PredominanceDiagram,fig=T,width=4,height=4>>=
 species(c("SLAP_ACEKI", "SLAP_GEOSE", "SLAP_BACLI", "SLAP_AERSA"))
 basis(c("NH3", "H2S"), c(-1, -10))
-a <- affinity(O2=c(-90, -70), H2O=c(-10, 0))
+a <- affinity(O2=c(-85, -70), H2O=c(-5, 0))
 diagram(a)
 @
 \setkeys{Gin}{width=1.0\textwidth}

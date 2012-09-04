@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 0.9-7.98 (2012-09-02)
+CHANGES IN CHNOSZ 0.9-7.98 (2012-09-05)
 ---------------------------------------
 
 SIGNIFICANT USER-VISIBLE CHANGES:
@@ -234,8 +234,8 @@ DOCUMENTATION AND VIGNETTES:
 
 - Move vignette sources to 'vignettes' directory.
 
-- Remove vignettes formation.Rnw and xadditivity.Rnw (and, for the
-  latter, the package Suggests dependency on xtable).
+- Remove vignettes formation.Rnw, protactiv.Rnw and xadditivity.Rnw 
+  (and, for the latter, the package Suggests dependency on xtable).
 
 - Add vignette wjd.Rnw to accompany the new function wjd().
 

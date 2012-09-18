@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 0.9-7.98 (2012-09-05)
+CHANGES IN CHNOSZ 0.9-7.98 (2012-09-18)
 ---------------------------------------
 
 SIGNIFICANT USER-VISIBLE CHANGES:
@@ -147,6 +147,10 @@ OTHER CHANGES TO FUNCTIONS:
 
 - Add protein.equil() for step-by-step calculation of chemical
   activities of proteins in metastable equilibrium.
+
+- Add a function DGT() and a corresponding target in revisit() for 
+  calculating the Gibbs energy of transformation of a system at constant
+  temperature, pressure and chemical activities of basis species.
 
 DATA UPDATES:
 

@@ -24,10 +24,9 @@ diagram <- function(affinity,what="logact",ispecies=NULL,balance=NULL,
   if(is.null(ispecies)) {
     ispecies <- 1:nspecies
     # take out species that have NA affinities
-    if(nd > 0) {
-      for(i in 1:nspecies) if(all(is.na(aval[[i]]))) ispecies[i] <- NA
-      ispecies <- ispecies[!is.na(ispecies)]
-    }
+    for(i in 1:nspecies) if(all(is.na(aval[[i]]))) ispecies[i] <- NA
+    ispecies <- ispecies[!is.na(ispecies)]
+    if(length(ispecies)==0) stop("all species have NA affinities")
   }
   if(!identical(ispecies,1:nspecies)) {
     if(length(ispecies)==0) {
@@ -239,26 +238,30 @@ diagram <- function(affinity,what="logact",ispecies=NULL,balance=NULL,
     vline <- function(out,ix) {
       ny <- nrow(out)
       xs <- rep(ix,ny*2+1)
-      if(0 %in% (ix%%dotted)) 
-        return(list(xs=xs,ys=rep(NA,length(xs))))
       ys <- c(rep(ny:1,each=2),0)
       y1 <- out[,ix]
       y2 <- out[,ix+1]
+      # no line segment inside a stability field
       iy <- which(y1==y2)
       ys[iy*2] <- NA
+      # no line segment at a dotted position
+      iyd <- which(ys%%dotted==0)
+      ys[iyd] <- NA
       return(list(xs=xs,ys=ys))
     }
     hline <- function(out,iy) {
       nx <- nrow(out)
       ny <- ncol(out)
       ys <- rep(ny-iy,nx*2+1)
-      if(0 %in% (iy%%dotted)) 
-        return(list(xs=rep(NA,length(ys)),ys=ys))
       xs <- c(0,rep(1:nx,each=2))
       x1 <- out[iy,]
       x2 <- out[iy+1,]
+      # no line segment inside a stability field
       ix <- which(x1==x2)
       xs[ix*2] <- NA
+      # no line segment at a dotted position
+      ixd <- which(xs%%dotted==0)
+      xs[ixd] <- NA
       return(list(xs=xs,ys=ys))
     }
     clipfun <- function(z,zlim) {
@@ -441,10 +444,12 @@ diagram <- function(affinity,what="logact",ispecies=NULL,balance=NULL,
         else title(main=as.expression(axis.title(what,balance.title(balance))))
       }
     }
-    if(what=="logact" | do.loga.equil) return(invisible(list(basis=affinity$basis,species=affinity$species,
+    out <- list(basis=affinity$basis,species=affinity$species,
       T=affinity$T,P=affinity$P,xname=affinity$xname,xlim=affinity$xlim,yname=affinity$yname,
-      ylim=affinity$ylim,logact=A)))
-    else return(invisible(list(aval)))
+      ylim=affinity$ylim,aval=aval)
+    if(what=="logact" | do.loga.equil) out <- c(out, list(logact=A))
+    if(what=="logact") out <- c(out, list(Astar=Astar))
+    return(invisible(out))
   }
   ### 1-D (property or speciation) diagram
   if(nd==1) {
@@ -525,11 +530,11 @@ diagram <- function(affinity,what="logact",ispecies=NULL,balance=NULL,
     }
     if(alpha) for(i in 1:length(A)) A[[i]] <- 10^A[[i]]
     # 20090324 return list with single element 'logact'
-    out <- list(basis=affinity$basis,species=affinity$species,
+    out <- list(basis=affinity$basis,species=affinity$species,aval=aval,
       T=affinity$T,P=affinity$P,xname=affinity$xname,xlim=affinity$xlim,yname=affinity$yname,
-      ylim=affinity$ylim)
+      ylim=affinity$ylim,aval=aval)
     if(what=="logact" | do.loga.equil) out <- c(out,list(logact=A))
-    else out <- c(out,list(aval=aval))
+    if(what=="logact") out <- c(out, list(Astar=Astar))
     return(invisible(out))
   }
 
@@ -596,13 +601,13 @@ diagram <- function(affinity,what="logact",ispecies=NULL,balance=NULL,
       if(mam) return(invisible(list(basis=affinity$basis,species=species,T=affinity$T,P=affinity$P,
         xname=affinity$xname,xlim=affinity$xlim,yname=affinity$yname,ylim=affinity$ylim,out=out,aval=aval)))
       else return(invisible(list(basis=affinity$basis,species=species,T=affinity$T,P=affinity$P,xname=affinity$xname,
-        xlim=affinity$xlim,yname=affinity$yname,ylim=affinity$ylim,out=out,aval=aval,logact=A)))
+        xlim=affinity$xlim,yname=affinity$yname,ylim=affinity$ylim,out=out,aval=aval,Astar=Astar,logact=A)))
     } else {
       #msgout(paste('diagram: 2-D plot of',property,'not available\n'))
       if(mam) return(invisible(list(basis=affinity$basis,species=species,T=affinity$T,P=affinity$P,
         xname=affinity$xname,xlim=affinity$xlim,yname=affinity$yname,ylim=affinity$ylim,aval=aval)))
       else return(invisible(list(basis=affinity$basis,species=species,T=affinity$T,P=affinity$P,xname=affinity$xname,
-        xlim=affinity$xlim,yname=affinity$yname,ylim=affinity$ylim,aval=aval,logact=A)))
+        xlim=affinity$xlim,yname=affinity$yname,ylim=affinity$ylim,aval=aval,Astar=Astar,logact=A)))
     }
   } else {
     # if we're not calculating predominances we can only make a contour plot for properties

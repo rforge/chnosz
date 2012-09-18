@@ -141,3 +141,22 @@ unitize <- function(logact=NULL,length=NULL,logact.tot=0) {
   # done!
 }
 
+DGT <- function(loga1, loga2, Astar) {
+  # calculate the Gibbs energy/2.303RT of transformation
+  # from an initial to a final assemblage at constant T, P and 
+  # chemical potentials of basis species 20120917
+  # loga1 - logarithms of activity of species in the initial assemblage
+  # loga2 - logarithms of activity of species in the final assemblage
+  # Astar - starved (of activity of the species of interest) values of chemical affinity/2.303RT
+  # first remove the logarithms
+  a1 <- 10^loga1
+  a2 <- 10^loga2
+  # the molal Gibbs energy in the initial and final states
+  # (derived from integrating A = Astar - RTln(a) from a1 to a2)
+  G1 <- -a1*Astar + a1*loga1 - a1/log(10)
+  G2 <- -a2*Astar + a2*loga2 - a2/log(10)
+  # calculate the change in molal Gibbs energy for each species
+  GT <- G2 - G1
+  # return the sum
+  return(sum(GT))
+}

@@ -5,7 +5,7 @@
 where.extreme <- function(z, target, do.sat=FALSE) {
   if(missing(target)) stop("no target specified")
   # are we interested in a maximum or minimum?
-  if(tolower(target) %in% c("sd", "sd.log", "cv", "cv.log", "rmsd", "cvrmsd"))
+  if(tolower(target) %in% c("sd", "sd.log", "cv", "cv.log", "rmsd", "cvrmsd", "dgt"))
     myext <- "minimum" else myext <- "maximum"
   # do we care about the sign of the index?
   if(tolower(target) %in% c("sd", "sd.log", "cv", "cv.log", "rmsd", "cvrmsd")) 
@@ -40,7 +40,7 @@ where.extreme <- function(z, target, do.sat=FALSE) {
 extremes <- function(z, target) {
   if(missing(target)) stop("no target specified")
   # are we interested in a maximum or minimum?
-  if(tolower(target) %in% c("sd", "sd.log", "cv", "cv.log", "rmsd", "cvrmsd")) 
+  if(tolower(target) %in% c("sd", "sd.log", "cv", "cv.log", "rmsd", "cvrmsd", "dgt")) 
     myext <- "minimum" else myext <- "maximum"
   # do we care about the sign of the index?
   if(tolower(target) %in% c("sd", "sd.log", "cv", "cv.log", "rmsd", "cvrmsd")) 
@@ -64,7 +64,7 @@ extremes <- function(z, target) {
 revisit <- function(d, target="cv", loga.ref=NULL,
   plot.it=NULL, col=par("fg"), yline=2, ylim=NULL, ispecies=NULL, add=FALSE,
   cex=par("cex"), lwd=par("lwd"), mar=NULL, side=1:4, xlim=NULL, labcex=0.6,
-  pch=1, legend="", legend.x=NULL, lpch=NULL, main=NULL, lograt.ref=NULL, plot.ext=TRUE) {
+  pch=1, legend="", legend.x=NULL, lpch=NULL, main=NULL, lograt.ref=NULL, plot.ext=TRUE, DGT.swap12=FALSE) {
   # calculate and plot diversity indices of relative abundances
   # 20090316 jmd
   # d can be the output from diagram (enables plotting)
@@ -87,8 +87,9 @@ revisit <- function(d, target="cv", loga.ref=NULL,
     logact <- d$logact
   }
   # check that all needed arguments are present
-  if(target %in% c("richness", "cvrmsd", "spearman", "pearson", "logact") & is.null(loga.ref))
-    stop(paste("for '",target,"' target, loga.ref must be supplied", sep=""))
+  target.lower <- tolower(target)
+  if(target.lower %in% c("richness", "cvrmsd", "spearman", "pearson", "logact", "dgt") & is.null(loga.ref))
+    stop(paste("for '", target, "' target, loga.ref must be supplied", sep=""))
   # take a subset (or all) of the species
   if(is.null(ispecies)) ispecies <- 1:length(logact)
   logact <- logact[ispecies]
@@ -104,18 +105,19 @@ revisit <- function(d, target="cv", loga.ref=NULL,
   # given a list of logarithms of activities of species
   # (as vectors or matrices or higher dimensional arrays) 
   # calculate a diversity index of the same dimensions
-  # available targets:
+  # these targets only depend on the logarithms of activities from diagram() (logact):
   # "shannon" shannon entropy
   # "sd" standard deviation
   # "cv" coefficient of variation
   # "sd.log", "cv.log" SD/CV for the logarithms of activity
   # "qqr" correlation coefficient on q-q plot (i.e., normality test)
-
-  # "richness" species richness (loga.ref)
-  # "cvrmsd" coefficient of variation of rmsd (loga.ref)
-  # "spearman" spearman correlation coefficient (loga.ref)
-  # "pearson" pearson correlation coefficient (log.ref)
-  # "logact" maximize the activity of a species (loga.ref)
+  # these targets also depend on reference logarithms of activities (loga.ref):
+  # "richness" species richness
+  # "cvrmsd" coefficient of variation of rmsd
+  # "spearman" spearman correlation coefficient
+  # "pearson" pearson correlation coefficient
+  # "logact" maximize the activity of a species
+  # "DGT" minimize the Gibbs energy of transformation
   
   # vectorize the entries in the logact list
   for(i in 1:ns) {
@@ -128,7 +130,7 @@ revisit <- function(d, target="cv", loga.ref=NULL,
   H[] <- 0
   # ratio-specific calculations
   if(!is.null(lograt.ref)) {
-    if(!target %in% c("rmsd", "cvrmsd", "spearman", "pearson"))
+    if(!target.lower %in% c("rmsd", "cvrmsd", "spearman", "pearson"))
       stop(paste("target",target,"not available when comparing activity ratios"))
     else(msgout("revisit: calculating activity ratios\n"))
     # instead of logact we use calculated log activity ratio
@@ -136,7 +138,6 @@ revisit <- function(d, target="cv", loga.ref=NULL,
     loga.ref <- lograt.ref
   }
   # target-specific calculations
-  target.lower <- tolower(target)
 
   if(target.lower %in% c("sd", "cv")) {
     # build a matrix; rows are species
@@ -239,6 +240,22 @@ revisit <- function(d, target="cv", loga.ref=NULL,
   } else if(target.lower=="logact") {
     # where the activity of a species is maximal
     H <- logact[[loga.ref]]
+
+  } else if(target.lower=="dgt") {
+    # Gibbs energy of transformation to the observed assemblage 
+    actarr <- list2array(logact)
+    Astararr <- list2array(d$Astar)
+    Gfun <- function(i, actarr, Astararr) {
+      loga.equil <- actarr[i, ]
+      Astar <- Astararr[i, ]
+      # direction of transformation:
+      # swap12=FALSE: loga.equil(Astar) --> loga.ref
+      # swap12=TRUE:  loga.ref(Astar) --> loga.equil
+      if(DGT.swap12) out <- -DGT(loga.ref, loga.equil, Astar)
+      else out <- DGT(loga.equil, loga.ref, Astar)
+      return(out)
+    }
+    H <- as.numeric(palply(1:length(H), Gfun, actarr, Astararr))
   
   } else stop(paste("specified target '", target, "' not available", sep=""))
   # replace dims

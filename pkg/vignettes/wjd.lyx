@@ -12,6 +12,7 @@
 % for monospaced fonts
 \usepackage{inconsolata}
 \end_preamble
+\options round
 \use_default_options true
 \begin_modules
 sweave
@@ -39,7 +40,7 @@ sweave
 \paperfontsize default
 \spacing single
 \use_hyperref true
-\pdf_title "Winding Journey Down (in Gibbs energy)"
+\pdf_title "Winding journey down (in Gibbs energy)"
 \pdf_author "Jeffrey M. Dick"
 \pdf_bookmarks true
 \pdf_bookmarksnumbered false
@@ -47,9 +48,10 @@ sweave
 \pdf_bookmarksopenlevel 1
 \pdf_breaklinks false
 \pdf_pdfborder false
-\pdf_colorlinks false
+\pdf_colorlinks true
 \pdf_backref false
 \pdf_pdfusetitle true
+\pdf_quoted_options "citecolor=blue"
 \papersize letterpaper
 \use_geometry true
 \use_amsmath 1
@@ -71,6 +73,11 @@ sweave
 \selected 1
 \filename_suffix 0
 \color #101010
+\end_branch
+\branch stuff
+\selected 1
+\filename_suffix 0
+\color #000000
 \end_branch
 \index Index
 \shortcut idx
@@ -98,7 +105,7 @@ sweave
 \begin_body
 
 \begin_layout Title
-Winding Journey Down (in Gibbs energy)
+Winding journey down (in Gibbs energy)
 \end_layout
 
 \begin_layout Author
@@ -109,6 +116,10 @@ Jeffrey M.
 \begin_layout Section
 Introduction
 \end_layout
+
+\begin_layout Standard
+\begin_inset Branch stuff
+status open
 
 \begin_layout Standard
 
@@ -126,6 +137,23 @@ key "WJD58"
 
 .
  This vignette shows some examples of its usage.
+ The help page for 
+\family typewriter
+wjd()
+\family default
+ in the CHNOSZ documentation has details of the implementation that are
+ not covered in this vignette.
+ The functions demonstrated here are not intended for aqueous solutions
+ or heterogeneous phase equilibria, which have been the subject of other
+ reviews 
+\begin_inset CommandInset citation
+LatexCommand citep
+before "e.g."
+key "NPW+79"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -160,19 +188,19 @@ K and a pressure of 750 psi (
 \end_inset
 
  There are ten species included in this example.
- The value of temperature is not explicitly considered by the algorithm,
- or in the arguments to 
+ The value of temperature does not appear explicitly in the algorithm, or
+ in the arguments to 
 \family typewriter
 wjd()
 \family default
 .
  Instead, the standard Gibbs energies of the species, at the given temperature,
- are provided (in dimensionless form, i.e.
+ are provided in dimensionless form, i.e.
  
 \begin_inset Formula $\Delta G^{\circ}/RT$
 \end_inset
 
-).
+.
  Note that White et al., 1958 use the terminology 
 \begin_inset Quotes eld
 \end_inset
@@ -198,26 +226,8 @@ Gibbs energy
 \end_layout
 
 \begin_layout Standard
-The user is encouraged to read the help page for 
-\family typewriter
-wjd()
-\family default
- in the CHNOSZ documentation for details of the implementation that are
- not covered in this vignette.
- See also 
-\begin_inset CommandInset citation
-LatexCommand citet
-key "NPW+79"
-
-\end_inset
-
- for a review of alternative algorithms, especially for aqueous systems,
- which are not the focus of the functions described here.
-\end_layout
-
-\begin_layout Standard
 \begin_inset Branch short
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -239,9 +249,18 @@ library(CHNOSZ)
 
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Is it winding?
 \end_layout
+
+\begin_layout Standard
+\begin_inset Branch stuff
+status open
 
 \begin_layout Standard
 The 
@@ -254,7 +273,7 @@ winding
 
  in the title refers to the observation that the abundances of species during
  a Gibbs energy minimization often do not all change in a monotonic fashion.
- This is becuase at each iteration a new direction of steepest descent is
+ This is because at each iteration a new direction of steepest descent is
  calculated; this direction is a vector of changes of mole numbers of all
  species in the system and is subject to mass balance constraints as well
  as the steepest-descent criterion.
@@ -504,14 +523,14 @@ status open
 
 
 \backslash
-setkeys{Gin}{width=0.6
+setkeys{Gin}{width=1.0
 \backslash
 textwidth}
 \end_layout
 
 \begin_layout Chunk
 
-<<iterplot, fig=TRUE>>=
+<<iterplot, fig=TRUE, height=3>>=
 \end_layout
 
 \begin_layout Chunk
@@ -521,7 +540,17 @@ sa <- sapply(0:niter, iterfun)
 
 \begin_layout Chunk
 
-plot(t(sa), pch=as.character(0:niter), xlab=paste("x",f1), ylab=paste("x",f2))
+par(mfrow=c(1, 2))
+\end_layout
+
+\begin_layout Chunk
+
+plot(0:niter, sa[1, ], xlab="iteration", ylab=paste("x", f1))
+\end_layout
+
+\begin_layout Chunk
+
+plot(0:niter, sa[2, ], xlab="iteration", ylab=paste("x", f2))
 \end_layout
 
 \begin_layout Chunk
@@ -544,9 +573,34 @@ textwidth}
 \end_layout
 
 \begin_layout Standard
-A bit of winding: the mole fractions of these two species increase up to
- the third iteration, but at the fourth (and less so for the fifth and sixth),
- their mole fractions decrease.
+A bit of winding: the mole fractions of 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+Sexpr{f1}
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+Sexpr{f2}
+\end_layout
+
+\end_inset
+
+ increase up to the third iteration, but at the fourth (and less so for
+ the fifth and sixth), their mole fractions decrease.
  This behavior is consistent with a decrease in Gibbs energy at 
 \emph on
 every
@@ -592,9 +646,18 @@ The decrease in Gibbs energy becomes smaller with every iteration, as an
  equilibrium distribution of species is approached.
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Is it near the bottom? Testing for equilibrium
 \end_layout
+
+\begin_layout Standard
+\begin_inset Branch stuff
+status open
 
 \begin_layout Subsection
 Change in Gibbs energy of the system becomes small
@@ -654,7 +717,7 @@ wjd()
 \end_layout
 
 \begin_layout Subsection
-Chemical potentials of the elements (from different species represnting
+Chemical potentials of the elements (from different species representing
  them) become more uniform
 \end_layout
 
@@ -668,11 +731,11 @@ Equilibrium is also synonymous with uniformity of chemical potentials (
 \family typewriter
 wjd()
 \family default
-, and perhaps other systems of interest, the elements themselves are an
- allowable definition of the components.
+, and perhaps other systems of interest, the elements themselves are a conceivab
+le set of the components.
  Often, the number and compositions of the species are such that multiple
- combinations of species satisfying certain stoichiometric conditions (i.e.,
- eligible to be a basis set) can be used to compute the chemical potentials
+ combinations of species satisfy the stoichiometric conditions necessary
+ to be a basis set, and therefore can be used to compute the chemical potentials
  of the elements.
  At equilibrium, these different combinations of species would all yield
  the same chemical potentials of the elements.
@@ -687,9 +750,7 @@ element.potentials()
 , that computes the chemical potentials of the elements using different
  eligible combinations of species.
  It has an option to plot the results.
- Let's first look at a plot showing the results after 3 iterations instead
- of 6.
- 
+ Let's first look at a plot showing the results after 3 iterations.
 \end_layout
 
 \begin_layout Standard
@@ -744,7 +805,7 @@ Here's the plot for the default settings of
 \family typewriter
 wjd()
 \family default
-:
+ which takes 6 iterations:
 \end_layout
 
 \begin_layout Standard
@@ -799,21 +860,21 @@ is.near.equil()
 \family default
 , that provides a logical type result based on the range of chemical potentials
  of the elements calculated from the different eligible species combinations.
- It says 
-\begin_inset Quotes eld
-\end_inset
-
-TRUE
-\begin_inset Quotes erd
-\end_inset
-
- if the maximum difference for any element is below 
+ It returns TRUE if the maximum difference for any element is below 
 \begin_inset Formula $\mu/RT=0.01$
 \end_inset
 
-, but this limit can be changed through the tol argument to the function.
- With the default setting, is.near.equil() does give a different answer for
- the 3- and 6-iteration results:
+, but this limit can be changed through the 
+\family typewriter
+tol
+\family default
+ argument to the function.
+ With the default setting, 
+\family typewriter
+is.near.equil()
+\family default
+ does pass only 6-iteration result, but by reducing the tolerance, the tests
+ can be made to fail:
 \end_layout
 
 \begin_layout Standard
@@ -837,6 +898,11 @@ is.near.equil(w)
 
 \begin_layout Chunk
 
+is.near.equil(w, tol=0.0001)
+\end_layout
+
+\begin_layout Chunk
+
 @
 \end_layout
 
@@ -847,6 +913,10 @@ is.near.equil(w)
 
 \begin_layout Subsection
 Different initial solutions yield similar results
+\end_layout
+
+\begin_layout Paragraph
+Different guesses for an underdetermined system
 \end_layout
 
 \begin_layout Standard
@@ -868,26 +938,49 @@ wjd()
 \family default
 ) and the bulk composition; it outputs one set or a series of sets of mole
  numbers of species that satisfy the bulk composition constraints.
- In general, this in an underdeterimned problem, so there are usually an
+ In general, this in an underdetermined problem, so there are usually an
  infinite number of possible solutions.
- For the methods used in the function to generate the guesses, refer to
- the help page and the comments in the function code itself.
- For now let's compare the guess made by 
+ 
+\end_layout
+
+\begin_layout Standard
+Using the default method (
+\begin_inset Quotes eld
+\end_inset
+
+stoich
+\begin_inset Quotes erd
+\end_inset
+
+) a single guess or multiple guesses are returned based on stoichiometric
+ constraints (see the help page for details as well as the comments in the
+ function code itself).
+ If the 
+\begin_inset Quotes eld
+\end_inset
+
+central
+\begin_inset Quotes erd
+\end_inset
+
+ method is chosen instead, the single guess returned is the central solution
+ from linear optimization using the package limSolve.
+ Let's compare the guesses made by 
 \family typewriter
 guess()
 \family default
- with the default species composition in 
-\family typewriter
-wjd()
-\family default
- (that is taken from 
+ with the default (from 
 \begin_inset CommandInset citation
 LatexCommand citealp
 key "WJD58"
 
 \end_inset
 
-).
+) initial composition in 
+\family typewriter
+wjd()
+\family default
+ .
 \end_layout
 
 \begin_layout Standard
@@ -906,12 +999,22 @@ as.list(args(wjd))$Y
 
 \begin_layout Chunk
 
-Y1 <- guess()
+Y1 <- guess(method="stoich")
 \end_layout
 
 \begin_layout Chunk
 
 Y1
+\end_layout
+
+\begin_layout Chunk
+
+Y2 <- guess(method="central")
+\end_layout
+
+\begin_layout Chunk
+
+Y2
 \end_layout
 
 \begin_layout Chunk
@@ -925,9 +1028,8 @@ Y1
 \end_layout
 
 \begin_layout Standard
-Now let's run the minimization using the first guess, count the number of
- iterations, and test it for equilibrium and also make a plot showing the
- chemical potentials of the elements.
+Now let's run the minimization using the different guesses, count the numbers
+ of iterations, and test them for equilibrium.
 \end_layout
 
 \begin_layout Standard
@@ -945,7 +1047,7 @@ textwidth}
 
 \begin_layout Chunk
 
-<<minguess1, fig=TRUE>>=
+<<stoich_guess>>=
 \end_layout
 
 \begin_layout Chunk
@@ -965,12 +1067,7 @@ niterY1
 
 \begin_layout Chunk
 
-is.near.equil(wY1)
-\end_layout
-
-\begin_layout Chunk
-
-epY1 <- element.potentials(wY1, plot.it=TRUE)
+is.near.equil(wY1, tol=0.0001)
 \end_layout
 
 \begin_layout Chunk
@@ -989,9 +1086,15 @@ textwidth}
 
 \end_inset
 
-Whoa, those differences are a lot smaller than the chemical potentials of
- the elements resulting from the default initial solution of mole numbers
- of species! Also note that there were 
+Using the first guess generated using the 
+\begin_inset Quotes eld
+\end_inset
+
+stoich
+\begin_inset Quotes erd
+\end_inset
+
+ method there were 
 \begin_inset ERT
 status collapsed
 
@@ -1004,18 +1107,181 @@ Sexpr{niterY1-niter}
 
 \end_inset
 
- more iterations than using the default solution in 
+ more iterations than using the default initial solution in 
 \family typewriter
 wjd()
 \family default
 .
- 
 \end_layout
 
 \begin_layout Standard
-Not all guesses lead to the same conclusion.
- Let's make a simple test for closeness to equilibrium of all of the guesses
- available from 
+\begin_inset Branch short
+status open
+
+\begin_layout Chunk
+
+
+\backslash
+setkeys{Gin}{width=0.6
+\backslash
+textwidth}
+\end_layout
+
+\begin_layout Chunk
+
+<<central_guess>>=
+\end_layout
+
+\begin_layout Chunk
+
+wY2 <- wjd(Y=Y2)
+\end_layout
+
+\begin_layout Chunk
+
+niterY2 <- length(wY2$lambda)
+\end_layout
+
+\begin_layout Chunk
+
+niterY2
+\end_layout
+
+\begin_layout Chunk
+
+is.near.equil(wY2, tol=0.0001)
+\end_layout
+
+\begin_layout Chunk
+
+@
+\end_layout
+
+\begin_layout Chunk
+
+
+\backslash
+setkeys{Gin}{width=0.6
+\backslash
+textwidth}
+\end_layout
+
+\end_inset
+
+The initial guess generated using the 
+\begin_inset Quotes eld
+\end_inset
+
+central
+\begin_inset Quotes erd
+\end_inset
+
+ method lead to 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+Sexpr{niterY2-niter}
+\end_layout
+
+\end_inset
+
+ more iterations than encountered using the argument defaults in 
+\family typewriter
+wjd()
+\family default
+, and the algorithm converged to an even lower variability in chemical potential
+s of the elements than using the 
+\begin_inset Quotes eld
+\end_inset
+
+stoich
+\begin_inset Quotes erd
+\end_inset
+
+ method.
+ The differences in convergence could be coincidental, and the 
+\begin_inset Quotes eld
+\end_inset
+
+stoich
+\begin_inset Quotes erd
+\end_inset
+
+ method might be preferable for general usage because it allows multiple
+ guesses to be tested automatically (see below).
+\end_layout
+
+\begin_layout Standard
+Do the different initial guesses actually give similar results?
+\end_layout
+
+\begin_layout Standard
+\begin_inset Branch short
+status open
+
+\begin_layout Chunk
+
+
+\backslash
+setkeys{Gin}{width=0.6
+\backslash
+textwidth}
+\end_layout
+
+\begin_layout Chunk
+
+<<compare_guesses, fig=TRUE>>=
+\end_layout
+
+\begin_layout Chunk
+
+plot(1:10, w$X, xlab="species", ylab="mole fraction")
+\end_layout
+
+\begin_layout Chunk
+
+points(1:10, wY1$X, pch=0)
+\end_layout
+
+\begin_layout Chunk
+
+points(1:10, wY2$X, pch=2)
+\end_layout
+
+\begin_layout Chunk
+
+@
+\end_layout
+
+\begin_layout Chunk
+
+
+\backslash
+setkeys{Gin}{width=0.6
+\backslash
+textwidth}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+At that scale it's fairly difficult to tell them apart.
+\end_layout
+
+\begin_layout Paragraph
+Comparing many different guesses
+\end_layout
+
+\begin_layout Standard
+Let's test for closeness to equilibrium of all of the guesses available
+ from 
 \family typewriter
 guess()
 \family default
@@ -1031,7 +1297,7 @@ guess()
 
 \begin_layout Standard
 \begin_inset Branch long
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -1040,7 +1306,7 @@ status collapsed
 
 \begin_layout Chunk
 
-Ys <- guess(iguess=NULL)
+Ys <- guess(iguess=NULL, method="stoich")
 \end_layout
 
 \begin_layout Chunk
@@ -1090,7 +1356,7 @@ is.near.equil()
 
 \begin_layout Standard
 \begin_inset Branch long
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -1112,12 +1378,16 @@ sapply(iYs,function(i) is.near.equil(wjd(Y=Ys[[i]])))
 Looks like they are.
  What if we're really picky though and want to make sure the chemical potentials
  of the elements are very well-defined? We can decrease the tolerance of
- is.near.equil():
+ 
+\family typewriter
+is.near.equil()
+\family default
+:
 \end_layout
 
 \begin_layout Standard
 \begin_inset Branch long
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -1143,7 +1413,7 @@ Well some of the tests failed.
 
 \begin_layout Standard
 \begin_inset Branch long
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -1172,34 +1442,28 @@ sapply(iYs, function(i) {
 
 \end_inset
 
-We're back to passing all of the equilibrium tests based on uniformity of
- chemical potentials of the elements.
- What is the difference between the resulting species abundances for the
- first and last ones, relative to the species abundances in the first?
+We're back to passing all of the equilibrium tests (well, almost) based
+ on uniformity of chemical potentials of the elements.
+ What are the standard deviations of the resulting species abundances?
 \end_layout
 
 \begin_layout Standard
 \begin_inset Branch long
-status collapsed
+status open
 
 \begin_layout Chunk
 
-<<firstlast.species>>=
+<<sd.species>>=
 \end_layout
 
 \begin_layout Chunk
 
-wYfirst <- wjd(Y=guess(iguess=1), Gfrac=1e-9)
+Xs <- sapply(iYs, function(i) wjd(Y=Ys[[i]], Gfrac=1e-9)$X)
 \end_layout
 
 \begin_layout Chunk
 
-wYlast <- wjd(Y=guess(iguess=nguess), Gfrac=1e-9)
-\end_layout
-
-\begin_layout Chunk
-
-(wYfirst$X - wYlast$X) / wYfirst$Y
+apply(Xs, 1, sd)
 \end_layout
 
 \begin_layout Chunk
@@ -1211,8 +1475,7 @@ wYlast <- wjd(Y=guess(iguess=nguess), Gfrac=1e-9)
 
 Based on this exercise, starting from different initial species abundances
  for the same bulk composition, and arriving at a similar near-equilibrium
- solution, we can be fairly confident that we haven't gotten stuck in a
- local minimum.
+ solution, it seems likely that we are near the global minimum.
 \end_layout
 
 \begin_layout Standard
@@ -1229,9 +1492,384 @@ key "Oth76"
  vector of species mole numbers with the same bulk composition.)
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+An example from the literature: prebiological atmospheres
+\end_layout
+
+\begin_layout Standard
+\begin_inset Branch stuff
+status open
+
+\begin_layout Standard
+We will try to reproduce a subset of the calculations of equilibrium between
+ carbon-containing compounds in model prebiological atmospheres reported
+ by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "DLE64"
+
+\end_inset
+
+, using standard Gibbs energies from 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "DLEN67"
+
+\end_inset
+
+.
+ The standard Gibbs energies shown in Figure 2 of 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "DLEN67"
+
+\end_inset
+
+ for the selected compounds listed in Table 1 of 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "DLE64"
+
+\end_inset
+
+ are provided with CHNOSZ.
+ First let's have a look at what species there are:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Branch short
+status open
+
+\begin_layout Chunk
+
+<<read_dlen>>=
+\end_layout
+
+\begin_layout Chunk
+
+# read formulas and Gibbs energies
+\end_layout
+
+\begin_layout Chunk
+
+file <- system.file("extdata/thermo/DLEN67.csv", package="CHNOSZ")
+\end_layout
+
+\begin_layout Chunk
+
+dlen <- read.csv(file, stringsAsFactors=FALSE, row.names=1)
+\end_layout
+
+\begin_layout Chunk
+
+t(dlen[, 1, drop=FALSE])
+\end_layout
+
+\begin_layout Chunk
+
+@
+\end_layout
+
+\end_inset
+
+Now let's write some code to define the system.
+ The bulk composition in C:H:O space has 40 percent oxygen, a percentage
+ of carbon given by 
+\family typewriter
+xC
+\family default
+, and hydrogen as the remainder; the C:N ratio is taken to be 1:1 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "DLE64"
+
+\end_inset
+
+.
+ The temperature is 500 K and the pressure is 1 atmosphere.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Branch short
+status open
+
+\begin_layout Chunk
+
+<<setup_atmos>>=
+\end_layout
+
+\begin_layout Chunk
+
+# turn formulas into a stoichiometric matrix
+\end_layout
+
+\begin_layout Chunk
+
+A <- i2A(dlen$formula)
+\end_layout
+
+\begin_layout Chunk
+
+# assemble Gibbs energies/RT at 500 K
+\end_layout
+
+\begin_layout Chunk
+
+G0.RT <- 1000 * dlen$G500 / thermo$opt$R / thermo$opt$Tr
+\end_layout
+
+\begin_layout Chunk
+
+# a function to minimize Gibbs energy for system with 
+\end_layout
+
+\begin_layout Chunk
+
+# given mole fraction of carbon (xC)
+\end_layout
+
+\begin_layout Chunk
+
+min.atmos <- function(xC) {
+\end_layout
+
+\begin_layout Chunk
+
+  # the bulk composition C:H:N:O
+\end_layout
+
+\begin_layout Chunk
+
+  B <- c(xC, 100-40-xC, xC, 40)
+\end_layout
+
+\begin_layout Chunk
+
+  # guess the initial composition
+\end_layout
+
+\begin_layout Chunk
+
+  Y <- guess(A, B)
+\end_layout
+
+\begin_layout Chunk
+
+  w <- wjd(A=A, G0.RT=G0.RT, Y=Y, P=1, imax=90, Gfrac=1e-14)
+\end_layout
+
+\begin_layout Chunk
+
+  if(!is.near.equil(w)) cat(paste("not near equilibrium for xC=", xC, "
+\backslash
+n"))
+\end_layout
+
+\begin_layout Chunk
+
+  return(w)
+\end_layout
+
+\begin_layout Chunk
+
+}
+\end_layout
+
+\begin_layout Chunk
+
+@
+\end_layout
+
+\end_inset
+
+Notice the increase in 
+\family typewriter
+imax
+\family default
+ and the decrease in 
+\family typewriter
+Gfrac
+\family default
+ from the defaults! These changes are needed to get closer to equilibrium
+ (and we'll know we're not there if a message is shown).
+ What does the prebiological atmosphere look like with 15% (not counting
+ nitrogen) carbon?
+\end_layout
+
+\begin_layout Standard
+\begin_inset Branch short
+status open
+
+\begin_layout Chunk
+
+<<atmos_C15>>=
+\end_layout
+
+\begin_layout Chunk
+
+sort(min.atmos(15)$X, decreasing=TRUE)
+\end_layout
+
+\begin_layout Chunk
+
+@
+\end_layout
+
+\end_inset
+
+Well that's exciting! The order of abundances of 
+\begin_inset Formula $\mathrm{H_{2}O}$
+\end_inset
+
+, 
+\begin_inset Formula $\mathrm{CO_{2}}$
+\end_inset
+
+, 
+\begin_inset Formula $\mathrm{CH_{4}}$
+\end_inset
+
+, 
+\begin_inset Formula $\mathrm{NH_{3}}$
+\end_inset
+
+, 
+\begin_inset Formula $\mathrm{CO}$
+\end_inset
+
+, ethane (
+\begin_inset Formula $\mathrm{C_{2}H_{6}}$
+\end_inset
+
+), formic acid (
+\begin_inset Formula $\mathrm{CH_{2}O_{2}}$
+\end_inset
+
+) and so on matches the order on the left side of Figure 2 in 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "DLE64"
+
+\end_inset
+
+.
+ How about changing the carbon content?
+\end_layout
+
+\begin_layout Standard
+\begin_inset Branch short
+status open
+
+\begin_layout Chunk
+
+<<atmos_figure, fig=TRUE>>=
+\end_layout
+
+\begin_layout Chunk
+
+xCs <- seq(8, 47, 3)
+\end_layout
+
+\begin_layout Chunk
+
+Xs <- sapply(xCs, function(xC) min.atmos(xC)$X)
+\end_layout
+
+\begin_layout Chunk
+
+# normalize the mole numbers to mole fractions
+\end_layout
+
+\begin_layout Chunk
+
+Xs <- t(t(Xs)/colSums(Xs))
+\end_layout
+
+\begin_layout Chunk
+
+plot(-10, 0, xlim=c(0, 55), ylim=c(-25, 1), xlab="mole percent C", ylab="log10
+ mole fraction")
+\end_layout
+
+\begin_layout Chunk
+
+for(i in 1:nrow(Xs)) lines(xCs, log10(Xs[i, ]))
+\end_layout
+
+\begin_layout Chunk
+
+text(48, log10(Xs[, length(xCs)]), dlen$formula, adj=0)
+\end_layout
+
+\begin_layout Chunk
+
+text(7, log10(Xs[, 1]), dlen$formula, adj=1)
+\end_layout
+
+\begin_layout Chunk
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We triggered a single 
+\begin_inset Quotes eld
+\end_inset
+
+not near equilibrium
+\begin_inset Quotes erd
+\end_inset
+
+ message, but overall it seems well behaved.
+ And, as expected, it is strikingly similar to Fig.
+ 2 of 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "DLE64"
+
+\end_inset
+
+, with a nearly asymptotic crossing of curves at about 28% carbon, together
+ with an increase in aromatic compounds (e.g.
+ naphthalene, anthracene) going toward higher carbon content.
+ Unlike the figure in 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "DLE64"
+
+\end_inset
+
+, there appears to be a second major crossing of curves at about 43% carbon,
+ corresponding to a rise in CO.
+ (For a higher resolution, try setting 
+\family typewriter
+xCs <- seq(8, 44, 1)
+\family default
+.)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Running Down: Using a Thermodynamic Database
 \end_layout
+
+\begin_layout Standard
+\begin_inset Branch stuff
+status open
 
 \begin_layout Standard
 So far the examples shown here have been based on the chemical system defined
@@ -1324,6 +1962,7 @@ waa$elements
 \end_layout
 
 \begin_layout Chunk
+
 is.near.equil(waa)
 \end_layout
 
@@ -1377,6 +2016,7 @@ waa <- run.wjd(c(ialk, iaro), Y=rep(1, 8), imax=12, Gfrac=1e-14)
 \end_layout
 
 \begin_layout Chunk
+
 is.near.equil(waa)
 \end_layout
 
@@ -1438,7 +2078,7 @@ status open
 
 \begin_layout Chunk
 
-<<equil_potentials_aa>>=
+<<element_potentials_C84H106>>=
 \end_layout
 
 \begin_layout Chunk
@@ -1449,16 +2089,6 @@ ep <- equil.potentials(waa)
 \begin_layout Chunk
 
 print(ep)
-\end_layout
-
-\begin_layout Chunk
-
-basis(c("graphite", "H2"), c("cr", "gas"))
-\end_layout
-
-\begin_layout Chunk
-
-basis.logact(ep)
 \end_layout
 
 \begin_layout Chunk
@@ -1483,7 +2113,7 @@ status open
 
 \begin_layout Chunk
 
-<<basis_logact_aa>>=
+<<basis_potentials_C84H106>>=
 \end_layout
 
 \begin_layout Chunk
@@ -1511,10 +2141,19 @@ Bulk composition instead of moles of species
 \end_layout
 
 \begin_layout Standard
-run.wjd() can be given B (bulk chemical composition), instead of Y (initial
- numbers of moles of species).
+
+\family typewriter
+run.wjd()
+\family default
+ can be given B (bulk chemical composition), instead of Y (initial numbers
+ of moles of species).
  When this happens, the function tests the different initial compositions
- generated by guess() until one is found that is near equilibrium.
+ generated by 
+\family typewriter
+guess()
+\family default
+ until one is found that is within the specified tolerance of chemical potential
+s of elements.
  Here's an example:
 \end_layout
 
@@ -1524,12 +2163,12 @@ status open
 
 \begin_layout Chunk
 
-<<run_aa_B, fig=TRUE>>=
+<<run_aa_C100H70, fig=TRUE>>=
 \end_layout
 
 \begin_layout Chunk
 
-waa <- run.wjd(c(ialk, iaro), B="C100H100")
+waa <- run.wjd(c(ialk, iaro), B="C100H70")
 \end_layout
 
 \begin_layout Chunk
@@ -1553,8 +2192,44 @@ text(bp, rep(0.2,8), c(alkanes, aromatics), srt=90, adj=0)
 \end_layout
 
 \begin_layout Standard
-Compared with the previous example, here the lower H/C = 1 defines a more
+Compared with the previous example, here the lower H/C = 0.7 defines a more
  oxidized system, so the increase in aromatic content is expected.
+ As before, we can calculate the chemical potentials of the elements and
+ of a corresponding set of basis species:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Branch short
+status collapsed
+
+\begin_layout Chunk
+
+<<basis_potentials_C84H106>>=
+\end_layout
+
+\begin_layout Chunk
+
+print(ep <- equil.potentials(waa))
+\end_layout
+
+\begin_layout Chunk
+
+basis.logact(ep)
+\end_layout
+
+\begin_layout Chunk
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -1573,8 +2248,36 @@ Revision history
 2012-06-16 Running Down using alkanes and aromatics
 \end_layout
 
+\begin_layout Itemize
+2012-09-20 Add example from Dayhoff et al.
+\end_layout
+
 \begin_layout Standard
 R session information
+\end_layout
+
+\begin_layout Standard
+\begin_inset Branch short
+status collapsed
+
+\begin_layout Chunk
+
+<<sessionInfo>>=
+\end_layout
+
+\begin_layout Chunk
+
+sessionInfo()
+\end_layout
+
+\begin_layout Chunk
+
+@
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard

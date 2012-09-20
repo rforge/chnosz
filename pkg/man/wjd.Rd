@@ -28,17 +28,18 @@
     Gfrac = 1e-7
   )
   element.potentials(w, plot.it=FALSE, iplot=1:ncol(w$A))
-  is.near.equil(w, tol=0.01)
+  is.near.equil(w, tol=0.01, quiet=FALSE)
   guess(  
     A = matrix(c(
       1,2,2,0,0,1,0,0,0,1,
       0,0,0,1,2,1,1,0,0,0,
       0,0,1,0,0,0,1,1,2,1),ncol=3,
       dimnames=list(NULL,c("H","N","O"))),
-    B = c(2,1,1), iguess = 1, ic = NULL
+    B = c(2,1,1), method=c("central", "stoich"), minX = 0.001, iguess = 1, ic = NULL
   )
-  run.wjd(ispecies, B = NULL, Y = run.guess(ispecies, B), P=1, T=25, imax = 10, Gfrac = 1e-7, tol = 0.01)
-  run.guess(ispecies, B = NULL, iguess = NULL)
+  run.wjd(ispecies, B = NULL, method = "stoich", Y = run.guess(ispecies, B, method),
+    P=1, T=25, imax = 10, Gfrac = 1e-7, tol = 0.01)
+  run.guess(ispecies, B = NULL, method = "stoich", iguess = NULL)
   equil.potentials(w)
 }
 
@@ -54,7 +55,10 @@
   \item{plot.it}{logical, make a plot?}
   \item{iplot}{numeric, which elements for which to make plots}
   \item{tol}{numeric, maximum difference in chemical potentials that counts as equilibrium}
+  \item{quiet}{logical, don't output messages?}
   \item{B}{numeric, numbers of moles of the elements}
+  \item{method}{character, method used for generating an initial solution}
+  \item{minX}{numeric, minimum mole number for 'central' method}
   \item{iguess}{numeric, which guess to return}
   \item{ic}{numeric, which combination(s) of variable species to use (NULL for all)}
   \item{ispecies}{numeric, species indices (rownumbers of \code{thermo}$obigt)}
@@ -63,7 +67,14 @@
 
 \details{
 
-  \code{wjd} implements the steepest descent algorithm for Gibbs energy minimization in a closed system described by White et al., 1958. Where those authors use the term \dQuote{free energy} we apply the contemporary usage of \dQuote{Gibbs energy}. The code in this function is independent of other functions or datasets in CHNOSZ. The function's default values of \code{A}, \code{G0.RT}, \code{Y} and \code{P} correspond to the example problem described by White et al., 1958 for gases in the H, N, O system at 3500 K. Note that for this, and for any other equilibrium problem that can be simulated using this function, the mole quantities in \code{Y} must all be positive numbers. Operationally, this vector defines not only the \dQuote{initial solution} but also the bulk composition of the system; it is not possible to define the bulk composition using mole numbers of elements alone. The \code{dimnames} attribute in the default value for \code{A} gives the names of the elements; this attribute is not necessary for the function to operate, but is used in the examples below to help label the plots.
+\code{wjd} implements the steepest descent algorithm for Gibbs energy minimization in a closed system described by White et al., 1958. 
+\dQuote{Gibbs energy} (G) referred to here is the same as the \dQuote{free energy} (F) used by White et al., 1958. 
+\code{wjd} itself is independent of other functions or datasets in CHNOSZ, but \code{run.wjd} and \code{run.guess} are provided to make access to the thermodynamic database in CHNOSZ easier.
+
+The default values of \code{A}, \code{G0.RT}, \code{Y} and \code{P} correspond to the example problem described by White et al., 1958 for gases in the H, N, O system at 3500 K. 
+Note that for this, and for any other equilibrium problem that can be simulated using this function, the mole quantities in \code{Y} must all be positive numbers. 
+Operationally, this vector defines not only the \dQuote{initial solution} but also the bulk composition of the system; it is not possible to define the bulk composition using mole numbers of elements alone. 
+The \code{dimnames} attribute in the default value for \code{A} gives the names of the elements; this attribute is not necessary for the function to operate, but is used in the examples below to help label the plots.
 
   White et al., 1958 describe in detail the computation of the direction of steepest descent by means of Lagrange multipliers. They propose an iterative solution to the energy minimization problem, where at each step the mole numbers of species are recomputed and a new steepest descent direction calculated from there. However, the authors only give general guidelines for computing the value of \eqn{\lambda}{lambda}, that is, the fraction of the total distance the system actually moves in the direction of steepest descent from the current point at each iteration. The two constraints given for determining the value of \eqn{\lambda}{lambda} are that all mole numbers of species are positive, and the Gibbs energy of the system actually decreases (the minimum point is not passed). In the code described here, at each iteration the minimum value of lambda, not exceeding unity, that violates the first condition is computed directly (a value of one is assigned if the mole numbers remain positive through the entire range). With the default setting of \code{nlambda}, 101 values of \eqn{\lambda}{lambda} at even intervals from 0 to this maximum permissible value are tested for the second condition at each iteration, and the highest conforming value is selected. If a value of 0 occurs, it means that the algorithm has reached an endpoint independently of the iteration and convergence tests (\code{rho} and \code{Gfrac}; see below). If this occurs, the value of \code{nlambda} might have to be increased depending on the user's needs.
 
@@ -71,9 +82,28 @@
 
   Using the output of \code{wjd}, provided in the argument \code{w}, \code{element.potentials} calculates the chemical potentials of the elements in the system. It does so by combining the values of \code{G0.RT} of species with the inverses of stoichiometric matrices of combinations of species whose elemental compositions are linearly independent from each other. These possible combinations are constructed using the function \code{\link{invertible.combs}}. The value returned by \code{element.potentials} is a matrix, with each column corresponding to a different element and each row to a different combination of species. The entries in the matrix are the chemical potentials of the elements divided by \eqn{RT}{RT}. If \code{plot.it} is set to TRUE, the chemical potentials of the elements are plotted as a function of species combination number, with as many plots as elements, unless \code{iplot} is set to another value (e.g. \samp{c(1,3)} for only elements 1 and 3). In the first example below, the number of unique combinations of species is 120, but only 76 of these combinations provide stoichiometric independence.
 
-  There is no guarantee that the algorithm will converge on a global (or even be close to a local) minimum. However, some tests are available to help assess the likelihood that a solution is close to equilibrium. A necessary condition of equilibrium is that the chemical potentials of the elements be independent of the particular combination of species used to compute them. \code{is.near.equil} compares the chemical poetntials for each element, computed using \code{element.potentials}, with the value of \code{tol}. If, for each element, the range of potentials/RT (difference between minimum and maximum) is less than \code{tol}, the result is TRUE, otherwise the function returns FALSE. The default value of \code{tol} corresponds to an energy of 0.01 * 1.9872 * 298.15 = ca. 6 cal/mol at 25 degrees C. 
+There is no guarantee that the algorithm will converge on a global (or even be close to a local) minimum.
+However, some tests are available to help assess the likelihood that a solution is close to equilibrium.
+A necessary condition of equilibrium is that the chemical potentials of the elements be independent of the particular combination of species used to compute them.
+\code{is.near.equil} compares the chemical potentials for each element, computed using \code{element.potentials}, with the value of \code{tol}.
+If, for each element, the range of potentials/RT (difference between minimum and maximum) is less than \code{tol}, the result is TRUE, otherwise the function returns FALSE, and prints a message unless \code{quiet} is TRUE.
+The default value of \code{tol} corresponds to an energy of 0.01 * 1.9872 * 298.15 = ca. 6 cal/mol at 25 degrees C.
 
-  One of the limitations of the algorithm coded in \code{wjd} is that the initial solution, and all iterations, require positive (non-zero) numbers of moles of every species. Often, when investigating an equilibrium problem, the stoichiometric constraints are expressed most readily in terms of bulk composition -- numbers of moles of each element. \code{guess} is a function to make initial guesses about the numbers of moles of all species in the system. Its system-specific arguments are the stoichiometric matrix \code{A} (as defined above for \code{wjd}) and the bulk composition vector \code{B}, giving the number of moles of each element, in the same order that the elements appear in \code{A}. The method implemented in this function is to test successive combinations of species whose compositions are linearly independent (all those from \code{\link{invertible.combs}} if \code{ic} is NULL, or only those identified by \code{ic}). Each combination is referred to as the \sQuote{variable} species. Then the function sets the moles of all \sQuote{other} species to a single value. This value is determined by the constraint that the greatest proportion, relative to the bulk composition in \code{B}, of any element contributed by all the \sQuote{other} species is equal to \code{max.frac} (see code). The function tests nine hard-coded values of \code{max.frac} from 0.01 to 0.99 until an accepted result is found: The function solves for the moles of the \sQuote{variable} species that make up the difference in numbers of moles of elements. If the numbers of moles of all the \sQuote{variable} species is positive, this guess is accepted. The first such guess is returned if \code{iguess} is 1 (the default), and higher values of this variable indicate which successive guess to return. If \code{iguess} is NULL, all results are returned in a list, with non-successful guesses indicated by NA. In the first example below, of the 76 combinations of species whose elemental compositions are linearly independent, 32 yield guesses following this method.
+One of the constraints of the algorithm coded in \code{wjd} is that the initial solution, and all iterations, require positive (non-zero) numbers of moles of every species.
+Often, when investigating an equilibrium problem, the stoichiometric constraints are expressed most readily in terms of bulk composition -- numbers of moles of each element.
+\code{guess} is a function to make initial guesses about the numbers of moles of all species in the system subject to the positivity constraints.
+Its system-specific arguments are the stoichiometric matrix \code{A} (as defined above for \code{wjd}) and the bulk composition vector \code{B}, giving the number of moles of each element, in the same order that the elements appear in \code{A}.
+The first \code{method} available in \code{guess} generates the \sQuote{central} solution of the system of linear equations using the \code{\link[limSolve]{xranges}} function from \pkg{limSolve}. The central solution is the mean of ranges of unknowns. The inequality constraint, or minimum number of moles of any species, is given by \code{minX}.
+
+The second method for \code{guess} \sQuote{stoich} (and the default for \code{run.guess} and \code{run.wjd}) is to test successive combinations of species whose elemental compositions are linearly independent.
+The linearly independent combinations tested are all those from \code{\link{invertible.combs}} if \code{ic} is NULL, or only those identified by \code{ic}.
+Each combination is referred to as the \sQuote{variable} species; the moles of all \sQuote{other} species are set to a single value.
+This value is determined by the constraint that the greatest proportion, relative to the bulk composition in \code{B}, of any element contributed by all the \sQuote{other} species is equal to a value in \code{max.frac} (see code).
+The function tests nine hard-coded values of \code{max.frac} from 0.01 to 0.99, at each one solving for the moles of the \sQuote{variable} species that make up the difference in numbers of moles of elements.
+If the numbers of moles of all the \sQuote{variable} species is positive, the guess is accepted.
+The first accepted guess is returned if \code{iguess} is 1 (the default); other values of \code{iguess} indicate which guess to return.
+If \code{iguess} is NULL, all results are returned in a list, with non-successful guesses indicated by NA.
+In the first example below, of the 76 combinations of species whose elemental compositions are linearly independent, 32 yield guesses following this method.
 
   \code{run.wjd} is a wrapper function to run \code{wjd}, provided the \code{ispecies} in the thermodynamic database (\code{\link{thermo}$obigt}), the chemical composition of the system in \code{B}, and the pressure \code{P} and temperature \code{T}; the latter are passed to \code{\link{subcrt}} (with \code{exceed.Ttr = TRUE}) to generate the values of \code{G0.RT} for \code{wjd}. Alternatively to \code{B}, the initial guess of numbers of moles of species can be provided in \code{Y}; otherwise as many combinations of \code{Y} as returned from \code{run.guess} are tested until one is found that \code{is.near.equil}. The function gives an error in none of the guesses in \code{Y} is near equilibrium, within the tolerance set by \code{tol}.
 
@@ -118,10 +148,10 @@ ep <- element.potentials(w, plot.it=TRUE)
 is.near.equil(w)  # FALSE
 
 ## test all of the guesses of inititial mole quantities
-## provided by guess() using default setting (H2NO)
-# 2 of them give FALSE for is.near.equil the tolerance lowered to 0.001
+## provided by guess() using default bulk composition (H2NO)
+# 9 of them are not is.near.equil with the tolerance lowered to 0.0001
 sapply( 1:32, function(i) 
-  is.near.equil(wjd(Y=guess(iguess=i)), tol=0.001) )
+  is.near.equil(wjd(Y=guess(method = "stoich", iguess=i)), tol=0.0001) )
 \dontshow{par(opar)}
 
 ## using run.wjd(): 20 crystalline amino acids

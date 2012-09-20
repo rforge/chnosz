@@ -225,7 +225,7 @@ element.potentials <- function(w, plot.it=FALSE, iplot=1:ncol(w$A)) {
   return(ep)
 }
 
-is.near.equil <- function(w, tol=0.01) {
+is.near.equil <- function(w, tol=0.01, quiet=FALSE) {
   # given the output of wjd(), make a simple test for equilibrium
   # that is, that the chemical potentials of the elements are nearly
   # the same when calculated using different sets of species in the system
@@ -235,6 +235,12 @@ is.near.equil <- function(w, tol=0.01) {
   # equilibrium unless proven guilty
   ine <- TRUE
   for(i in 1:ncol(ep)) if(diff(range(ep[,i])) > tol) ine <- FALSE
+  if(!ine & !quiet) {
+    # talk about the differences in chemical potentials
+    epdiff <- abs(apply(apply(ep, 2, range), 2, diff))
+    imax <- which.max(epdiff)
+    msgout("is.near.equil: solution has variation of ", epdiff[imax], " in mu/RT of ", names(epdiff)[imax], "\n")
+  }
   return(ine)
 }
 
@@ -244,85 +250,108 @@ guess <- function(
     0,0,0,1,2,1,1,0,0,0,
     0,0,1,0,0,0,1,1,2,1),ncol=3,
     dimnames=list(NULL,c("H","N","O"))),
-  B = c(2,1,1), iguess=1, ic=NULL
+  B = c(2,1,1), method=c("central", "stoich"), minX=0.001, iguess=1, ic=NULL
 ){
   # given the elemental stoichiometries of a set of species (A)
   # and the number of moles of elements (B)
   # find moles of species that satisfy mass balance and are all positive
   # generally this will be one of the solutions of an underdetermined system
-  # 20111231 jmd
-
-  # approach: 
-  # - select one of the (many) species combinations (ic) that
-  #   make a square, invertible stoichiometric matrix (the "variable" species)
-  # - assign equal mole numbers to all the "other" species (Xother),
-  #   such that any element has at most max.frac fraction of the desired amount (B)
-  #   (max.frac is scanned from 0.01 to 0.99)
-  # - calculate the mole numbers of the stoichiometry-setting species
-  #   that give the desired elemental composition; accept the provisional
-  #   solution if all numbers are positive
-
-  # arguments:
-  # A - the stoichiometric matrix
-  # B - the moles of elements
-  # iguess - which provisional guess to return (NULL for all)
-  # ic - which specific combination of species to test (NULL for all)
 
   # first of all, we can't do anything if all there are no elements
   if(all(B==0)) stop("there are zero moles of all elements")
-  # get the various combinations of species that are
-  # stoichiometrically independent
-  combs <- invertible.combs(A)
-  # we will potentially process all of them unless a specific one is identified
-  if(is.null(ic)) ic <- 1:nrow(combs)
-  # a counter to keep track of the provisional guesses
-  iprov <- 0
-  # where to store the output if we want all guesses
-  out <- list()
-  for(i in ic) {
-    # which species are the variable ones
-    ivar <- combs[i,]
-    # moles of elements for one mole of all of the other species
-    Bother.1 <- colSums(A[-ivar, , drop=FALSE])
-    # which element is proportionally most highly represented w.r.t. the desired composition
-    imax <- which.max(Bother.1/B)
-    # max.frac - the highest fraction of contribution to moles of elements by the "other" species
-    for(max.frac in c(0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99)) {
-      # the number of moles of all "other" species that give max.frac of any element
-      Xother <- max.frac/(Bother.1/B)[imax]
-      # moles of elements for this number of moles of all the other species
-      Bother <- Bother.1 * Xother
-      # moles of elements that are left for the variable species
-      Bvar <- B - Bother
-      # now solve for the number of moles of the variable species
-      Xvar <- solve(t(A[ivar,]),Bvar)
-      # stop the search if we found a positive solution
-      if(all(Xvar > 0)) break
+
+  # if method="central" get central solution using limSolve package  20120919
+  if("central" %in% method) {
+    if(!"limSolve" %in% row.names(installed.packages())) {
+      msgout("guess: skipping 'central' method as limSolve package is not available\n")
+    } else {
+      require(limSolve)
+      # the inequality constraints for moles of species
+      G <- diag(nrow(A))
+      # minX is the minimum mole number we will accept
+      H <- rep(minX, nrow(A))
+      # get a solution
+      X <- xranges(E=t(A), F=B, G=G, H=H, central=TRUE, full=TRUE)[, "central"]
+      return(X)
     }
-    # put them together
-    X <- numeric(nrow(A))
-    X[-ivar] <- Xother
-    X[ivar] <- Xvar
-    # if all the moles are positive, this is a provisional
-    # guess, otherwise make the result NA
-    if(any(Xvar <= 0)) X <- NA
-    else iprov <- iprov + 1
-    # return the result if we're at the correct guess number
-    if(is.null(iguess)) out <- c(out,list(X))
-    else if(iprov==iguess) return(X)
   }
-  # if we're here, we should return all guesses, or 
-  # make an error (the requested guess number doesn't exist)
-  if(is.null(iguess) & iprov > 0) return(out)
-  else {
-    if(is.null(iguess)) iguess <- "[ALL]"
-    stop(paste("you asked for guess number ",iguess,
-      " but there are only ",iprov,
-      " that satisfy all stoichiometric constraints",sep=""))
+
+  if("stoich" %in% method) {
+    # if method="stoich" use a stoichiometric approach: 20111231 jmd
+    # - select one of the (many) species combinations (ic) that
+    #   make a square, invertible stoichiometric matrix (the "variable" species)
+    # - assign equal mole numbers to all the "other" species (Xother),
+    #   such that any element has at most max.frac fraction of the desired amount (B)
+    #   (max.frac is scanned from 0.01 to 0.99)
+    # - calculate the mole numbers of the stoichiometry-setting species
+    #   that give the desired elemental composition; accept the provisional
+    #   solution if all numbers are positive
+
+    # arguments:
+    # A - the stoichiometric matrix
+    # B - the moles of elements
+    # iguess - which provisional guess to return (NULL for all)
+    # ic - which specific combination of species to test (NULL for all)
+
+    # get the various combinations of species that are
+    # stoichiometrically independent
+    combs <- invertible.combs(A)
+    # we will potentially process all of them unless a specific one is identified
+    if(is.null(ic)) ic <- 1:nrow(combs)
+    # a counter to keep track of the provisional guesses
+    iprov <- 0
+    # where to store the output if we want all guesses
+    out <- list()
+    for(i in ic) {
+      # which species are the variable ones
+      ivar <- combs[i,]
+      # moles of elements for one mole of all of the other species
+      Bother.1 <- colSums(A[-ivar, , drop=FALSE])
+      # which element is proportionally most highly represented w.r.t. the desired composition
+      imax <- which.max(Bother.1/B)
+      # max.frac - the highest fraction of contribution to moles of elements by the "other" species
+      for(max.frac in c(0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99)) {
+        # the number of moles of all "other" species that give max.frac of any element
+        Xother <- max.frac/(Bother.1/B)[imax]
+        # moles of elements for this number of moles of all the other species
+        Bother <- Bother.1 * Xother
+        # moles of elements that are left for the variable species
+        Bvar <- B - Bother
+        # now solve for the number of moles of the variable species
+        Xvar <- solve(t(A[ivar,]),Bvar)
+        # stop the search if we found a positive solution
+        if(all(Xvar > 0)) break
+      }
+      # put them together
+      X <- numeric(nrow(A))
+      X[-ivar] <- Xother
+      X[ivar] <- Xvar
+      # add names
+      names(X) <- rownames(A)
+      # if all the moles are positive, this is a provisional
+      # guess, otherwise make the result NA
+      if(any(Xvar <= 0)) X <- NA
+      else iprov <- iprov + 1
+      # return the result if we're at the correct guess number
+      if(is.null(iguess)) out <- c(out,list(X))
+      else if(iprov==iguess) return(X)
+    }
+    # if we're here, we should return all guesses, or 
+    # make an error (the requested guess number doesn't exist)
+    if(is.null(iguess) & iprov > 0) return(out)
+    else {
+      if(is.null(iguess)) iguess <- "[ALL]"
+      stop(paste("you asked for guess number ",iguess,
+        " but there are only ",iprov,
+        " that satisfy all stoichiometric constraints",sep=""))
+    }
   }
+
+  # if we're here we didn't find a guessing method
+  stop("no method found")
 }
 
-run.wjd <- function(ispecies, B=NULL, Y=run.guess(ispecies, B), P=1, T=25, imax=10, Gfrac=1e-7, tol=0.01) {
+run.wjd <- function(ispecies, B=NULL, method="stoich", Y=run.guess(ispecies, B, method), P=1, T=25, imax=10, Gfrac=1e-7, tol=0.01) {
   ### set up a Gibbs energy minimization
   ### using compositions and standard Gibbs energies of species
   ### from database in CHNOSZ  20120101 jmd
@@ -341,22 +370,30 @@ run.wjd <- function(ispecies, B=NULL, Y=run.guess(ispecies, B), P=1, T=25, imax=
     # a single guess
     w <- wjd(A, G0.RT, Y, P=P, imax=imax, Gfrac=Gfrac)
   } else {
-    # loop over all the guesses created by run.guess
-    Y <- Y[!is.na(Y)]
-    for(i in 1:length(Y)) {
-      w <- wjd(A, G0.RT, Y[[i]], P=P, imax=imax, Gfrac=Gfrac)
-      if(is.near.equil(w, tol=tol)) {
-        msgout("run.wjd: got apparently near equilibrium on initial solution ", i, " of ", length(Y), "\n")
-        break
-      } else if(i==length(Y)) {
-        stop(paste("couldn't get apparently near equilibrium after", length(Y), "initial solutions"))
+    # if we're using method "central" there is only one guess
+    if(method=="central") {
+      w <- wjd(A, G0.RT, Y, P=P, imax=imax, Gfrac=Gfrac)
+    } else {
+      # for method "stoich" loop over all the guesses created by run.guess
+      Y <- Y[!is.na(Y)]
+      for(i in 1:length(Y)) {
+        w <- wjd(A, G0.RT, Y[[i]], P=P, imax=imax, Gfrac=Gfrac)
+        if(is.near.equil(w, tol=tol)) {
+          msgout("run.wjd: got within tolerance on initial solution ", i, " of ", length(Y), "\n")
+          break
+        }
+        if(i==length(Y)) msgout("run.wjd: tested ", length(Y), " initial solutions\n")
       }
+    }
+    # only return a near equilibrium solution
+    if(!is.near.equil(w, tol=tol)) {
+      stop(paste("couldn't find a solution within mu/RT tolerance of", tol))
     }
   }
   return(w)
 }
 
-run.guess <- function(ispecies, B=NULL, iguess=NULL) {
+run.guess <- function(ispecies, B=NULL, method="stoich", iguess=NULL) {
   ## run guess() using species from database  20120612
   # get the stoichiometric matrix for the species
   A <- i2A(ispecies)
@@ -372,7 +409,7 @@ run.guess <- function(ispecies, B=NULL, iguess=NULL) {
     B <- as.numeric(unlist(mB))
   } else B <- as.vector(B)
   # setup initial guess
-  Y <- guess(A, B, iguess=iguess)
+  Y <- guess(A, B, method=method, iguess=iguess)
   # take away NA guesses
   Y <- Y[!is.na(Y)]
   return(Y)

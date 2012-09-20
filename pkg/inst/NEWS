@@ -1,11 +1,11 @@
-CHANGES IN CHNOSZ 0.9-7.98 (2012-09-18)
+CHANGES IN CHNOSZ 0.9-7.98 (2012-09-20)
 ---------------------------------------
 
 SIGNIFICANT USER-VISIBLE CHANGES:
 
-- Add a Suggests dependency on 'testthat' and tests in 'inst/tests',
-  particularly for functions that have been modified during this 
-  development cycle.
+- Create set of tests in 'inst/tests', particularly for functions that
+  have been modified during this development cycle, and add a Suggests 
+  dependency on 'testthat'.
 
 - The 'thermo' object, which holds the thermodynamic database,
   and system definitions (made by the user), is now placed in an
@@ -18,6 +18,10 @@ SIGNIFICANT USER-VISIBLE CHANGES:
   functions element.potentials(), invertible.combs() for finding 
   linearly independent combinations of rows of a matrix, 
   is.near.equil(), and run.wjd().
+
+- Add guess() as another supporting function for wjd(), to produce 
+  initial guesses of moles of species satisfying elemental bulk 
+  composition, and a Suggests dependency on 'limSolve'.
 
 MAJOR CHANGES TO FUNCTIONS:
 

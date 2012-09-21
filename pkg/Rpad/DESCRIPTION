@@ -9,9 +9,6 @@ Description: A workbook-style user interface to R through a web
 Depends: graphics, utils, grDevices
 Suggests: tcltk, R2HTML
 LazyLoad: no
-Maintainer: Tom Short <tshort@epri.com>
+Maintainer: Jeffrey M. Dick <jmdick@asu.edu>
 License: GPL (>= 2)
-URL: http://www.rpad.org/Rpad
-Packaged: Wed Apr 25 09:53:55 2007; ptsh003
-Repository: CRAN
-Date/Publication: 2007-04-25 21:00:25
+URL: http://r-forge.r-project.org/projects/chnosz/

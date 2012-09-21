@@ -12,7 +12,7 @@ function (file, out.form = getOption("R.output.format"), local = FALSE,
 {
     eval.with.vis <- function(expr, envir = parent.frame(), enclos = if (is.list(envir) ||
         is.pairlist(envir))
-        parent.frame()) .Internal(eval.with.vis(expr, envir,
+        parent.frame()) withVisible(eval(expr, envir,
         enclos))
     envir <- if (local)
         parent.frame()

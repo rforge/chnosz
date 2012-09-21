@@ -118,6 +118,7 @@ ghostscript or X11.
   showgraph("graph_B")
 
 # an example with Simon Urbanek's GDD device:
+\donttest{
   if (require(GDD)) {
     graphoptions(type = GDD, width = 4, height = 3) # note the use of inches
     newgraph()
@@ -125,6 +126,7 @@ ghostscript or X11.
     plot(x, y2)
     showgraph()
   }
+}
 }
 
 \keyword{ math }

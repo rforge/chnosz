@@ -2,8 +2,6 @@
 
 ".onLoad" <-
 function(lib, pkg) {
-    require("graphics")
-    require("utils")
     isR2HMTLAvailable <- length(.find.package("R2HTML", quiet = TRUE)) != 0
     if (isR2HMTLAvailable) { 
       options(R2HTML.sortableDF = TRUE)

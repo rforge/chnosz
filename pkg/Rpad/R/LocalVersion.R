@@ -17,12 +17,12 @@ function() {
     guiSource(textcommands)
     sink()
     close(tc)
-    textfromconnection
+    get("textfromconnection")
   }, error=function(e) {
     sink()
     close(tc)
     cat('ERROR1: ')
-    paste(paste(textfromconnection, "\n", collapse=""), '\n', e)},
+    paste(paste(get("textfromconnection"), "\n", collapse=""), '\n', e)},
                       finally=close(textcommands))
   dev.set(.dev.active)
   formattedresults <- paste(results,"\n",sep="",collapse="")

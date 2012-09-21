@@ -78,7 +78,7 @@
   assign("Rpad.plot.type", type, envir = .RpadEnv)
   if (is.character(type) && type == "Rpng") { # for builtin png support
     unlink(grep(paste(name,".*\\.png",sep=""), dir(), value=T))
-    png(file = paste(name,"-%03d.png",sep=""), width = width*res, height = height*res)
+    png(filename = paste(name,"-%03d.png",sep=""), width = width*res, height = height*res)
     assign("RpadPlotParams", list(dev=dev.cur(), extension="png"), envir = .RpadEnv)
   } else if (is.function(type)) { # for an arbitrary R graphics device
     unlink(grep(paste(name,".*\\.", extension, sep=""), dir(), value=T))

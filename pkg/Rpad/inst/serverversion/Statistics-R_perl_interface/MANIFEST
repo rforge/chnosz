@@ -1,0 +1,12 @@
+Changes
+MANIFEST
+Makefile.PL
+README
+lib/Statistics/Rpad.pm
+lib/Statistics/Rpad/Bridge.pm
+lib/Statistics/Rpad/Bridge/Linux.pm
+lib/Statistics/Rpad/Bridge/Win32.pm
+lib/Statistics/Rpad/Bridge/pipe.pm
+script/statistics-r.pl
+script/test-shared.pl
+test.pl

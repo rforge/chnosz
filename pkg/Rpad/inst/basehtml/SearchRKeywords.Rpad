@@ -1,0 +1,291 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+<!-- by Tom Short, EPRI, tshort@epri.com
+(c) Copyright 2005. by EPRI
+
+Licence
+=======
+
+    This is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+
+
+The file COPYING in the Rpad top-level directory is a copy of the 'GNU
+General Public License'.
+ -->
+
+  <head>
+    <title>R Keyword Search</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript" src="gui/Rpad.js"></script>
+<script>
+//alert(document.getElementById('Xinput'));
+function init() {
+  dojo.byId('Xinput').focus();
+  handleKeyUp(25);
+}
+dojo.addOnLoad(init);
+</script>
+  
+  </head>
+
+  <body>
+<table cellpadding='10'><tr><td style="VERTICAL-ALIGN: top;">
+
+<script type="text/javascript">var Entry=" "; var Description=" "; var
+Keywords=" "; var Aliases=" ";
+</script>
+<script type="text/javascript" src="js/helpIndex.js">
+</script>
+
+<script type="text/javascript">
+// modified from http://www.somacon.com/aspdocs/page3003.php::
+
+// This Javascript is granted to the public domain.
+
+// This is the javascript array holding the function list
+// The PrintJavascriptArray ASP function can be used to print this array.
+
+// This is the function that refreshes the list after a keypress.
+// The maximum number to show can be limited to improve performance with
+// huge lists (1000s of entries).
+// The function clears the list, and then does a linear search through the
+// globally defined array and adds the matches back to the list.
+
+function searchInIndex(val,a,b,c) {
+    var maxNumToShow=1000;
+    var selectObj, textObj, listLength;
+    var i, searchPattern, numShown;
+
+    // Set references to the form elements
+    selectObj = document.getElementById('Xselect');
+    textObj = document.getElementById('Xinput');
+
+    // Remember the function list length for loop speedup
+    listLength = Entry.length;
+
+    searchPattern = "^" + val + "$";
+
+    // Create a regulare expression
+    re = new RegExp(searchPattern,"gi");
+    // Clear the options list
+    selectObj.length = 0;
+
+    // Loop through the array and re-add matching options
+    numShown = 0;
+    for(i = 0; i < listLength; i++)
+    {
+        if(Keywords[i].search(re) != -1)
+        {
+            selectObj[numShown] = new Option(Aliases[i].split(" ")[0] + " :- " + Description[i],Entry[i]);
+//            selectObj[numShown] = new Option(Entry[i] + " :- " + Description[i],Entry[i]);
+            numShown++;
+        }
+        // Stop when the number to show is reached
+        if(numShown == maxNumToShow)
+        {
+            break;
+        }
+    }
+    // When options list whittled to one, select that entry
+    if(selectObj.length == 1)
+    {
+        selectObj.options[0].selected = true;
+    }
+}
+
+
+function handleKeyUp(maxNumToShow)
+{
+    var selectObj, textObj, listLength;
+    var i, searchPattern, numShown;
+
+    // Set references to the form elements
+    selectObj = document.getElementById('Xselect');
+    textObj = document.getElementById('Xinput');
+
+    // Remember the function list length for loop speedup
+    listLength = Entry.length;
+
+    searchPattern = textObj.value;
+
+    // Create a regulare expression
+    re = new RegExp(searchPattern,"gi");
+    // Clear the options list
+    selectObj.length = 0;
+
+    // Loop through the array and re-add matching options
+    numShown = 0;
+    for(i = 0; i < listLength; i++)
+    {
+        if(Entry[i].search(re) != -1 || Aliases[i].search(re) != -1 || 
+           Keywords[i].search(re) != -1 || Description[i].search(re) != -1)
+        {
+            selectObj[numShown] = new Option(Aliases[i].split(" ")[0] + " :- " + Description[i],Entry[i]);
+//            selectObj[numShown] = new Option(Entry[i] + " :- " + Description[i],Entry[i]);
+            numShown++;
+        }
+        // Stop when the number to show is reached
+        if(numShown == maxNumToShow)
+        {
+            break;
+        }
+    }
+    // When options list whittled to one, select that entry
+    if(selectObj.length == 1)
+    {
+        selectObj.options[0].selected = true;
+    }
+}
+
+// end from http://www.somacon.com/aspdocs/page3003.php
+</script>
+
+<p>Enter a search term here or click on a keyword at the right:</p>
+<span contenteditable="false">
+<form onSubmit="rpad.calculatePage();return false;">
+<input id="Xinput" onKeyUp="handleKeyUp(25);" type="text" name="Xinput" VALUE="" style="font-size:10pt;width:65ex;"><br>
+<select id="Xselect" onclick="rpad.calculatePage();rpad.gui2._scroll(dojo.widget.byId('mainPre').rpadResults);dojo.widget.byId('mainPre').domNode.focus();"
+name="Xselect" size="25" style="font-size:10pt;width:65ex;">
+<option value='loading...' > loading...</option>
+</select>
+<br><input type="button" onClick="handleKeyUp(9999999);" value="Load All" style="font-size:6pt;">
+</form><sub>Click <a href="UpdateRKeywords.Rpad">here</a> to update
+the search database.</sub>
+</span>
+
+</td><td>      
+<span contenteditable="false">
+<div style="height:570px;overflow:scroll;background:white"> 
+<b>Keywords</b>
+<dl>
+<dt>  Basics</dt>
+<dd>
+ <ul><li><a href="javascript:searchInIndex('attribute', false, true, false);">attribute</a>:  Data Attributes</li>
+ <li><a href="javascript:searchInIndex('chron', false, true, false);">chron</a>:  Dates and Times</li>
+ <li><a href="javascript:searchInIndex('classes', false, true, false);">classes</a>:  Data Types (not OO)</li>
+  <ul><li><a href="javascript:searchInIndex('NA', false, true, false);">NA</a>:  Missing Values </li>
+  <li><a href="javascript:searchInIndex('category', false, true, false);">category</a>:  Categorical Data</li>
+  <li><a href="javascript:searchInIndex('character', false, true, false);">character</a>:  Character Data ("String") Operations</li>
+  <li><a href="javascript:searchInIndex('complex', false, true, false);">complex</a>:  Complex Numbers</li>
+ </ul>
+<li><a href="javascript:searchInIndex('data', false, true, false);">data</a>:  Environments, Scoping, Packages </li>
+ <li><a href="javascript:searchInIndex('datasets', false, true, false);">datasets</a>:  Datasets available by data() </li>
+ <li><a href="javascript:searchInIndex('list', false, true, false);">list</a>:  Lists</li>
+ <li><a href="javascript:searchInIndex('manip', false, true, false);">manip</a>:  Data Manipulation</li>
+ <li><a href="javascript:searchInIndex('sysdata', false, true, false);">sysdata</a>:  Basic System Variables </li>
+</ul></dd><p>
+<dt>  Graphics</dt>
+<dd>
+ <ul><li><a href="javascript:searchInIndex('aplot', false, true, false);">aplot</a>:  Add to Existing Plot / internal plot</li>
+ <li><a href="javascript:searchInIndex('color', false, true, false);">color</a>:  Color, Palettes etc</li>
+ <li><a href="javascript:searchInIndex('device', false, true, false);">device</a>:  Graphical Devices</li>
+ <li><a href="javascript:searchInIndex('dplot', false, true, false);">dplot</a>:  Computations Related to Plotting</li>
+ <li><a href="javascript:searchInIndex('dynamic', false, true, false);">dynamic</a>:  Dynamic Graphics</li>
+ <li><a href="javascript:searchInIndex('hplot', false, true, false);">hplot</a>:  High-Level Plots</li>
+ <li><a href="javascript:searchInIndex('iplot', false, true, false);">iplot</a>:  Interacting with Plots</li>
+</ul></dd><p>
+<dt>  MASS (the book) uses</dt>
+<dd>
+ <ul><li><a href="javascript:searchInIndex('classif', false, true, false);">classif</a>:  Classification </li>
+ <li><a href="javascript:searchInIndex('neural', false, true, false);">neural</a>:  Neural Networks </li>
+ <li><a href="javascript:searchInIndex('spatial', false, true, false);">spatial</a>:  Spatial Statistics </li>
+</ul></dd><p>
+<dt>  Mathematics</dt>
+<dd>
+ <ul><li><a href="javascript:searchInIndex('arith', false, true, false);">arith</a>:  Basic Arithmetic and Sorting	</li>
+ <li><a href="javascript:searchInIndex('array', false, true, false);">array</a>:  Matrices and Arrays</li>
+  <ul><li><a href="javascript:searchInIndex('algebra', false, true, false);">algebra</a>:  Linear Algebra</li>
+ </ul>
+<li><a href="javascript:searchInIndex('graphs', false, true, false);">graphs</a>:  Graphs (not graphics), i.e nodes&edges, e.g. dendrograms</li>
+ <li><a href="javascript:searchInIndex('logic', false, true, false);">logic</a>:  Logical Operators</li>
+ <li><a href="javascript:searchInIndex('math', false, true, false);">math</a>:  Mathematical Calculus etc </li>
+ <li><a href="javascript:searchInIndex('optimize', false, true, false);">optimize</a>:  Optimization</li>
+ <li><a href="javascript:searchInIndex('symbolmath', false, true, false);">symbolmath</a>:  "Symbolic Math", as polynomials, fractions</li>
+</ul></dd><p>
+<dt>  Programming, Input/Ouput, and Miscellaneous</dt>
+<dd>
+ <ul><li><a href="javascript:searchInIndex('IO', false, true, false);">IO</a>:   Input/output</li>
+  <ul><li><a href="javascript:searchInIndex('connection', false, true, false);">connection</a>:  Input/Output Connections</li>
+  <li><a href="javascript:searchInIndex('database', false, true, false);">database</a>:  Interfaces to databases</li>
+  <li><a href="javascript:searchInIndex('file', false, true, false);">file</a>:  Input/Output Files</li>
+ </ul>
+<li><a href="javascript:searchInIndex('debugging', false, true, false);">debugging</a>:  Debugging Tools</li>
+ <li><a href="javascript:searchInIndex('documentation', false, true, false);">documentation</a>:  Documentation</li>
+ <li><a href="javascript:searchInIndex('environment', false, true, false);">environment</a>:  Session Environment</li>
+ <li><a href="javascript:searchInIndex('error', false, true, false);">error</a>:  Error Handling</li>
+ <li><a href="javascript:searchInIndex('internal', false, true, false);">internal</a>:  Internal Objects (not part of API)</li>
+ <li><a href="javascript:searchInIndex('iteration', false, true, false);">iteration</a>:  Looping and Iteration</li>
+ <li><a href="javascript:searchInIndex('methods', false, true, false);">methods</a>:  Methods and Generic Functions</li>
+ <li><a href="javascript:searchInIndex('misc', false, true, false);">misc</a>:  Miscellaneous</li>
+ <li><a href="javascript:searchInIndex('print', false, true, false);">print</a>:  Printing</li>
+ <li><a href="javascript:searchInIndex('programming', false, true, false);">programming</a>:  Programming</li>
+  <ul><li><a href="javascript:searchInIndex('interface', false, true, false);">interface</a>:  Interfaces to Other Languages</li>
+ </ul>
+<li><a href="javascript:searchInIndex('utilities', false, true, false);">utilities</a>:  Utilities</li>
+</ul></dd><p>
+<dt>  Statistics</dt>
+<dd>
+ <ul><li><a href="javascript:searchInIndex('cluster', false, true, false);">cluster</a>:  Clustering</li>
+ <li><a href="javascript:searchInIndex('datagen', false, true, false);">datagen</a>:  Functions for generating data sets</li>
+ <li><a href="javascript:searchInIndex('design', false, true, false);">design</a>:  Designed Experiments</li>
+ <li><a href="javascript:searchInIndex('distribution', false, true, false);">distribution</a>:  Probability Distributions and Random Numbers</li>
+ <li><a href="javascript:searchInIndex('htest', false, true, false);">htest</a>:  Statistical Inference</li>
+ <li><a href="javascript:searchInIndex('models', false, true, false);">models</a>:  Statistical Models</li>
+  <ul><li><a href="javascript:searchInIndex('regression', false, true, false);">regression</a>:  Regression</li>
+   <ul><li><a href="javascript:searchInIndex('nonlinear', false, true, false);">nonlinear</a>:  Non-linear Regression </li>
+ </ul></ul>
+<li><a href="javascript:searchInIndex('multivariate', false, true, false);">multivariate</a>:  Multivariate Techniques</li>
+ <li><a href="javascript:searchInIndex('nonparametric', false, true, false);">nonparametric</a>:  Nonparametric Statistics </li>
+ <li><a href="javascript:searchInIndex('robust', false, true, false);">robust</a>:  Robust/Resistant Techniques</li>
+ <li><a href="javascript:searchInIndex('smooth', false, true, false);">smooth</a>:  Curve (and Surface) Smoothing</li>
+  <ul><li><a href="javascript:searchInIndex('loess', false, true, false);">loess</a>:  Loess Objects</li>
+ </ul>
+<li><a href="javascript:searchInIndex('survey', false, true, false);">survey</a>:  Complex survey samples</li>
+ <li><a href="javascript:searchInIndex('survival', false, true, false);">survival</a>:  Survival Analysis</li>
+ <li><a href="javascript:searchInIndex('tree', false, true, false);">tree</a>:  Regression and Classification Trees</li>
+ <li><a href="javascript:searchInIndex('ts', false, true, false);">ts</a>:  Time Series</li>
+ <li><a href="javascript:searchInIndex('univar', false, true, false);">univar</a>:  simple univariate statistics  </li>
+</ul></dd></dl>
+</div></span>
+</td></tr></table>
+
+<pre dojoType="Rpad" rpadHideSource="true" id="mainPre">
+str = strsplit(Xselect," ")[[1]][1]
+help(str,package=.packages(all.available=TRUE), chmhelp = FALSE, htmlhelp = FALSE,pager=function(a,b,c,d) helpstr &lt;&lt;- gsub('_\b','',readLines(a)))
+
+idx=grep('^Examples:',helpstr)
+if (length(idx)>0) {
+    cat(paste(helpstr[1:idx],collapse="\n"))
+    cat(HTMLon())
+    cat('&lt;br&gt;&lt;span contenteditable="false"&gt;&lt;input type="button" value="Run Examples" onclick="rpad.calculateNext(this);" class="runButton"/&gt;&lt;/span&gt;&lt;br&gt;')
+    cat('&lt;pre dojoType="Rpad" rpadRun="none"&gt;')
+    fixhtmlencodings = function (str) {  
+        str = gsub("&amp;","&amp;amp;",str)  
+        str = gsub("&lt;","&amp;lt;",str)  
+        str = gsub("&gt;","&amp;gt;",str)  
+        str
+    }
+    cat('require(',gsub(".*package:([a-zA-Z0-9\.]*) .*","\\1",helpstr[1]),')&lt;br&gt;')
+    cat('#newgraph(width=6) # uncomment this line to adjust the plot size&lt;br&gt;')
+    cat(fixhtmlencodings(paste(helpstr[(idx+1):NROW(helpstr)],collapse="\n")))
+    cat("HTMLon(); showgraph() # the plot will be blank","if the examples don't plot anything")
+    cat('&lt;/pre&gt;')
+} else
+    cat(paste(helpstr,collapse="\n"))
+</pre>
+<br><br><br><sub>by Tom Short, tshort@epri.com, Copyright 2005. EPRI, license: GNU GPL v2 or greater</sub>
+  </body>
+</html>
+

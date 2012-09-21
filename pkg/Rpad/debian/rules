@@ -1,0 +1,30 @@
+#!/usr/bin/make -f
+# 							-*- makefile -*-
+# debian/rules file for the Debian/GNU Linux r-cran-car package
+# Copyright 2003 by Dirk Eddelbuettel <edd@debian.org>
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/langcore.mk
+
+## We need the CRAN (upstream) name 
+cranName	:= $(shell grep Package: DESCRIPTION | cut -f2 -d" ")
+## and we need to build a Debian Policy-conformant lower-case package name
+cranNameLC	:= $(shell echo $(cranName) | tr "[A-Z]" "[a-z]" | tr "." "-" )
+## which we can use to build the package directory 
+package		:= $(cranNameLC)
+## which we use for the to-be-installed-in directory
+debRlib		:= $(CURDIR)/debian/$(package)/usr/lib/R/site-library
+debPerllib	:= $(CURDIR)/debian/$(package)/usr/share/perl5
+TREE		:= $(CURDIR)/debian/$(package)
+
+common-install-indep:: R_any_arch
+common-install-arch:: R_any_arch
+
+R_any_arch:
+		dh_installdirs		usr/lib/R/site-library
+		R CMD INSTALL -l $(debRlib) .
+		mkdir -p $(debPerllib)
+		cp -r inst/serverversion/Statistics-R_perl_interface/lib/Statistics $(debPerllib)
+		$(CURDIR)/debian/installRpadWWW.sh /var/www/Rpad $(TREE)
+		rm -vf $(debRlib)/R.css $(debRlib)/$(cranName)/COPYING
+

@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+chmod a+w /var/www/Rpad
+chmod a+w /var/www/Rpad/server
+chmod a+x /var/www/Rpad/server/*.pl
+if test -x /usr/bin/update-menus; then update-menus; fi
+R CMD perl /usr/lib/R/share/perl/build-help.pl --htmllists
+cat <<EOF | R --vanilla --slave
+  setwd('/var/www/Rpad')
+  try(source('makeHelpTemplate.R'))
+EOF
+cp /var/www/Rpad/js/helpIndex.js /usr/lib/R/site-library/Rpad/basehtml/js
+apachectl restart

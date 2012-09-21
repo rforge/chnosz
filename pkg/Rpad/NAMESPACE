@@ -1,0 +1,57 @@
+import(graphics)
+import(utils)
+
+export(processRpadCommands,
+       Rpad,
+       startRpadServer,
+       stopRpadServer,
+       ROutputFormat,
+       Html,
+       H,
+       HtmlTree,
+       HfromHTML,
+       BR,
+       HTMLon,
+       HTMLoff,
+       HTMLh1,
+       HTMLh2,
+       HTMLh3,
+       HTMLh4,
+       HTMLh5,
+       HTMLargs,
+       HTMLtag,
+       HTMLetag,
+       HTMLradio,
+       HTMLcheckbox,
+       HTMLselect,
+       HTMLinput,
+       HTMLlink,
+       HTMLimg,
+       HTMLembed,
+       graphoptions,
+       newgraph,
+       showgraph,
+       RpadPlotName,
+       RpadURL,
+       RpadBaseURL,
+       RpadBaseFile,
+       RpadIsLocal,
+       json
+)
+
+S3method(json, default)
+S3method(json, data.frame)
+S3method(json, list)
+S3method(json, NULL)
+S3method(json, character)
+S3method(json, logical)
+S3method(json, numeric)
+S3method(Html, data.frame)
+S3method(Html, matrix)
+S3method(Html, numeric)
+S3method(Html, integer)
+S3method(Html, default)
+S3method(HtmlTree, HtmlTree)
+S3method(HtmlTree, default)
+S3method(print, HtmlTree)
+S3method(print, json)

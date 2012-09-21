@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+<!-- by Tom Short, EPRI, tshort@epri.com
+(c) Copyright 2005. by EPRI
+
+Licence
+=======
+
+    This is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+
+
+The file COPYING in the Rpad top-level directory is a copy of the 'GNU
+General Public License'.
+ -->
+
+  <head>
+    <title>Rpad page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript">
+    rpadConfig = {
+        gui: "alternate"
+    };
+</script>
+    <script type="text/javascript" src="gui/Rpad.js"></script>
+  </head>
+
+  <body>
+<p>Enter text here<br></p>
+
+<pre dojoType="Rpad">
+# Enter R code here:
+
+</pre>
+
+<p><br></p>
+<p><span contenteditable="false"><input onclick="javascript:rpad.calculatePage()" value="Calculate [F9]" type=
+      "button"></span>
+</p>
+
+<p>The following keys are available:</p>
+<ul>
+<li>UP & DOWN ARROWS - select blocks up and down</li>
+<li>RIGHT ARROW - advance the selection "in" or "down"</li>
+<li>LEFT ARROW - move the selection "out"</li>
+<li>ENTER - edit the selected block</li>
+<li>ESC - finish edits</li>
+<li>F9 - calculate page</li>
+<li>F8 - calculate section</li>
+<li>F7 - calculate section and advance to a new section (Shft-Enter or Ctrl-Enter)</li>
+<li>F2 - toggle source view</li>
+</ul>                       
+  
+<p>&nbsp;</p>
+
+  </body>
+</html>
+

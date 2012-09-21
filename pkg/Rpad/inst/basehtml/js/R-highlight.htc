@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+	This work is licensed under a Creative Commons License.
+
+	License: http://creativecommons.org/licenses/by/1.0/
+
+	You are free:
+
+	to copy, distribute, display, and perform the work
+	to make derivative works
+	to make commercial use of the work
+
+	Under the following conditions:
+
+	Attribution. You must give the original author credit
+
+	Author:  Dean Edwards/2004
+	Web:     http://dean.edwards.name/
+-->
+
+<!-- keeping code tidy! -->
+
+<!-- a javascript syntax highlighter -->
+
+<!-- version 1.0.4 (2004/04/10) -->
+
+<public:component xmlns:public="urn:HTMLComponent" lightweight="true">
+<public:attach for="window" event="onload" handler="parse"/>
+<script type="text/javascript">
+//<![CDATA[
+
+// constants
+var RGB_COMMENT  = "#080";
+var RGB_STRING   = "#800";
+var RGB_NUMBER   = "#800";
+var RGB_KEYWORD  = "#00f";
+var RGB_LANGUAGE = "#488";
+var RGB_SPECIAL  = "#f00";
+var FOOTER = "";
+var PLACEHOLDER = "@";
+var KEYWORDS = "return|if|then|else|in|switch|while|for|function|do|done";
+var SPECIAL = "TRUE|FALSE|T|F";
+var JAVASCRIPT = "<-|<<-|="; //this line doesn't work
+
+var patterns = []; // temporary store for patterns
+var REGEXP_PATTERN; // complex regular expression (created later)
+
+function parse() {
+	// IE5.0 doesn't support array.pop/array.push.
+	// it also throws an error when processing the complex
+	// regular expression in parsePatterns().
+	if (!patterns.pop) return;
+	// for ie5.5+, we're ok
+
+	// create the complex RegExp using a string (avoids a crash in IE5.0)
+//	REGEXP_PATTERN = new RegExp("(\\/\\*[^\\000]*?\\*\\/|\\/\\/[^\\n]*\\n)|('[^'\\n]*'|\"[^\"\\n]*\")|(\\/[^\\/\\n]*\\/)", "g");
+//	REGEXP_PATTERN = new RegExp("('[^'\\n]*'|\"[^\"\\n]*\")|(\\/[^\\/\\n]*\\/)", "g");
+	REGEXP_PATTERN = new RegExp("('[^'\\n]*'|\"[^\"\\n]*\")|(#.*)", "g");
+//	var text = getText();
+	var text = tidy(getText(element));
+	text = parseSpecial(parseLanguage(parseKeywords(parseNumbers(parsePatterns(text)))));
+	with (patterns) while (length) text = text.replace(PLACEHOLDER + length + PLACEHOLDER, pop());
+	// put placeholder back
+	text = text.replace(new RegExp("\\\\x" + PLACEHOLDER.charCodeAt(0).toString(16), "g"), PLACEHOLDER);
+	// write the newly formatted script
+	innerHTML = text;
+};
+
+function getText(node) {
+  var text;
+  if (node.nodeType == 3) {
+    text = node.nodeValue; // text node
+//    text = text.replace(/\n/g, "");
+    text = text.replace(/</g, "&lt;");
+    return text;
+  }
+//  if (node.nodeType == 3) {return node.nodeValue;} // text node
+  if (node.nodeType == 1) { // element node
+    if (node.nodeName == "BR") return "\n";
+    var text = [];
+    for (var chld = node.firstChild;chld;chld=chld.nextSibling) {
+        text.push(getText(chld));
+    } return text.join("");
+  } return ""; // some other node, won't contain text nodes.
+}  
+
+function parsePatterns(text) {
+	// strip out comments, regular expressions and strings
+	return text.replace(REGEXP_PATTERN, function ($) {
+		return PLACEHOLDER + patterns.push(($.charAt(0) == "#") ?
+			wrap($, RGB_COMMENT) : wrap($, RGB_STRING)) + PLACEHOLDER;
+	});
+};
+
+function parseKeywords(text) {
+	return parseWords(text, KEYWORDS, RGB_KEYWORD);
+};
+
+function parseSpecial(text) {
+	return parseWords(text, SPECIAL, RGB_SPECIAL);
+};
+
+function parseLanguage(text) {
+	return parseWords(text, JAVASCRIPT, RGB_LANGUAGE);
+};
+
+function parseNumbers(text) {
+	return text;
+	return text.replace(new RegExp("([^\\" + PLACEHOLDER + "\\w])(\\d+)\\b", "g"), function ($, prefix, number) {
+		return prefix + wrap(number, RGB_NUMBER);
+	});
+};
+
+function parseWords(text, words, color) {
+	return text.replace(new RegExp("(\\b)("+words+")(\\b)", "g"), function ($, left, match, right) {
+		return left + wrap(match, color) + right;
+	});
+};
+
+function wrap(text, color) {
+	return "<span style=\"color:" + color + "\">" + text + "</span>";
+};
+
+function tidy(text) {
+	text = text.replace(/\t/g, "&nbsp;&nbsp;&nbsp;&nbsp;").replace(/ /g, "&nbsp;");
+	// a bit of browser-sniffing, tut tut
+	if (/^ms/.test(element.uniqueID)) text = text.replace(/\r|\r\n|\n/g, "&nbsp;<br>\n");
+//	text = text.replace(/\r|\r\n|\n/g, "&nbsp;<br>\n");
+	// esacpe out the placeholder used for parsing
+	return text.replace(new RegExp(PLACEHOLDER, "g"), "\\x" + PLACEHOLDER.charCodeAt(0).toString(16));
+};
+//]]>
+</script>
+</public:component>
+<!-- http://dean.edwards.name/ -->

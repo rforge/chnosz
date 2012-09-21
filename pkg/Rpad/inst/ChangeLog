@@ -1,0 +1,310 @@
+**************  Version 1.3.0, 2007-04-24
+
+	Updated javascript loading to make Rpad pages load faster - split
+	out gui code, and don't load by default. This is the main reason
+	for the version jump -- it shouldn't affect Rpad pages, but it is
+	a sizeable change. It reduces initial loading from 15 sec on
+	www.rpad.org to about 8 sec.
+	
+	Bugfix (http://code.google.com/p/rpad/issues/detail?id=3) in
+	quoting JS strings for reading in .R and .RData files.
+
+	Fixed problem found by Roger where 'x' was interpreted as F9
+	(calculate) on IE. In the process, I changed the key event code to
+	use Dojo's new onkey event, which is "normalized", so hopefully,
+	it will have better cross-platform support.
+	
+	Disabled the "page loading..." popup. It was more trouble than it
+	was worth, especially on CGI installations.
+	
+
+**************  Version 1.2.1, 2006-12-15
+
+	Made the login to R more "load and go". This fixes a bug for CGI
+	server installations where the page loading message never goes
+	away.
+
+	Added the function "R" to execute R commands from the FireBug
+	console -- handy for debugging pages on servers.
+
+**************  Version 1.2.0, 2006-12-12
+
+	Updated Dojo to 0.4.1. This is a more stable release and supports
+	more useful widgets like a sortable table.
+
+	Fixes to make Rpad more compatible with R2HTML.
+
+	Added json generation to facilitate transfering R data to the browser.
+
+	Added the capability (still imperfect though) to use other
+	graphics devices (like GDD) with Rpad.
+
+	Improvements to the "H" code generation.
+
+	Added a throbber that activates when Rpad is communicating with
+	the server.
+
+	Added a drag-and-drop utility. See the DataModeling.Rpad file.
+	
+**************  Version 1.1.1, 2006-03-05
+
+	Fix to RpadUtil.Rd to prevent the example from leaving behind 
+	a data file.
+
+	Changed it to load R2HTML if it is there using require.
+	
+**************  Version 1.1.0, 2006-02-17
+
+	This is the first release based on the Dojo toolkit. The
+	client-side code was completely revamped. The old client code is
+	still present, so old pages *should* work without change. 
+
+	The code for HTML generation was revamped. A new function "H" was
+	introduced to make it easier to generate proper html from within
+	R. This is the most likely source of incompatibility with previous
+	versions. 
+
+	The mini webserver in R/Tcl was rewritten. It is now based on
+	mini1.1.tcl from the tclhttpd webserver
+	(http://www.tcl.tk/software/tclhttpd/). It tries to keep socket
+	connections open if possible. That seems to reduce the problem of
+	the server locking up (until you hit a return at the R command
+	prompt). 
+
+	The little-used function "fspdf" was removed. 
+	
+
+**************  Version 0.9.6, 2005-07-18
+
+	Reverted back to using HTMLArea's getHTML instead innerHTML to
+	save documents. There are tradeoffs with each. Both are buggy, but
+	getHTML is more controllable and more flexible. It would be best
+	to switch to a more robust getHTML. FckEditor seems to have a more
+	robust version.
+
+**************  Version 0.9.5, 2005-06-20
+
+	Replaced \r\n with \n when saving so that TEXTAREA's won't get
+	double spaced after saving. Also tweaked the wrapping of
+	TEXTAREA's.
+
+	Replaced the JSCookMenu with a previous version so insert div,
+	textarea, etc. works again under Mozilla.
+
+	Reverted back to using innerHTML for inserting Rpad sections and
+	textareas. This simplifies the code, and we don't worry about
+	sections appearing in funny places. It does mean the user can do
+	weird things like put Rpad sections inside of Rpad sections.
+
+	Added a kludge to htmlarea_utils.js to improve saving of
+	TEXTAREA's. Under Mozilla, innerHTML doesn't get updated when the
+	user edits textareas (that's in the value property). Saving of
+	changes to INPUT's is still buggy under Mozilla.
+
+	Because TEXTAREA's now work better, some of the examples were
+	changed to include TEXTAREA's for code sections. 
+
+************** Version 0.9.4, 2005-06-13
+
+	Added an adjustable timeout period (defaults to 30 minutes) in
+	pipe.pm in the perl interface to R. Adjust .RPADTIMEOUTMINUTES in
+	.RpadStartup.R to change it.
+
+	Added initial support for file upload. See
+	basehtml/server/fileupload.pl and RpadExtras.R.
+
+	Added an option to change the quoting character in HTMLargs() in
+	HTML.R. 
+
+	Fixed a bug in Rpad_editor.js where PRE and TEXTAREA's got double
+	spaced in internet explorer. Because PRE's work better, I changed 
+	a bunch of the examples to use PRE's to format the R code better.
+	
+************** Version 0.9.3, 2005-05-13
+
+        Per notice from Joel Hardi, removed --gui=none option from
+	Statistics-R_perl_interface/lib/Statistics/Rpad/Bridge/Linux.pm
+	because that option is depreciated in R 2.1.
+
+	Fixed a bug with HTML saving. I had switched from HtmlArea's
+	method of extracting the html to using the standard innerHTML, but
+	I didn't get it fixed quite right. I changed
+	HTMLArea.prototype.getHTML (in htmlarea_replacements.js and
+	htmlarea_utils.js) to just use innerHTML. I'm still not sure it
+	uses innerHTML properly.
+	
+************** Version 0.9.2, 2005-04-14
+
+        Fixed a tcl bug in the local version of Rpad that made it
+	fail under internet explorer under win XP.
+
+	Removed the "checked=" parameter from HTMLcheckbox as it didn't
+	work right. 
+	
+************** Version 0.9.1, 2005-04-13
+	
+        Made Rpad into a full R package that R users can run
+	locally. Based on an idea from Philippe Grosjean, this version
+	uses a built-in web server to serve the Rpad pages to a browser
+	locally. The web server is a mini-webserver implemented in Tcl and
+	launched from within R. With Tcl handling the communication with
+	the browser, the user can continue to use the command line or
+	other GUI. Several functions were added to maintain compatibility
+	between the server version and the local version, mainly to keep
+	track of different directory locations.
+	
+	Switched the default Rpad file extension to .Rpad -- .html will
+	still work. The advantages for users are that they can keep track
+	of Rpad files more easily. One disadvantage is that the server
+	must serve .Rpad files as text/html.
+	
+	Changed all of the HTML generation utilities to always return a
+	string (of class HTMLchunk). When used standalone, the automatic
+	'print'ing feature of R will cat the output to the browser. Note
+	that if a HTML generation function is used inside of a loop or
+	other scenario where the function results are not automatically
+	printed, then you need to enclose the function with cat or
+	print. 
+ 
+	Modified SearchRKeywords.html to add a button to allow the user to
+	update the keyword database.
+
+	Fixed a bug that prevented TEXTAREA's from being used as R input
+	sections.
+
+	Updated the code to allow the use of PRE sections with Rpad
+	input sections. You can either use <pre class="Rpad_input"
+	rpad_type="R"> or <div class="Rpad_input" rpad_type="R"><pre>. 
+	This makes it easier to use an external HTML editor to edit Rpad
+	files because it handles whitespace better.
+
+	Added an R startup file for the server version of Rpad. Upon
+	starting each Rpad page, the file .RpadStartup.R is source'd into
+	R. This allows customizations, including changing default graphics
+	devices.
+
+	Improved the detection of various servers to get the directories
+	right. This improves the compatibility with apache and
+	apache2. Server support on windows was improved: apache, apache2,
+	and IIS were all tested and documented.
+	
+	Added the ability for the Rpad page to choose between the "lite"
+	and "heavy" editor for that page. In the html, before the <script
+	type="text/javascript" src="editor/Rpad_loader.js"> </script>
+	line, add: 
+	    <script type="text/javascript">
+              var Rpad_editmode = "lite";  // or "heavy"
+            </script>
+
+************** 2004/11/02 snapshot
+	Changed the server perl code in Statistics-R to generate R code to
+	always "require" R2HTML and RpadUtils. This eliminates the need to
+	set the environment variable R_DEFAULT_PACKAGES and improves
+	compatibility with apache2 and R 2.0.
+
+	Changed HTML.data.frame in RpadUtils to be more compatible with
+	the newest version of R2HTML (v. 1.4-3). In the future, RpadUtils
+	should not need its own version of HTML.data.frame, but for now
+	it's needed for slightly older versions of R.
+	
+	Changed R_process.pl to always send a header. Upon R login, it
+	didn't send a header, so the perl process got stuck, which
+	sometimes made Internet Explorer get stuck.
+
+	Fixed a bug in saving (HTMLarea.getHTML) where values and names 
+	of input boxes were being skipped.
+
+	Fixed a couple of bugs when inserting text input boxes with focus
+	not in the right place.
+	
+	Fixed a small bug in HTMLembed in RpadUtils.
+
+	In RpadUtils.R, changed newgraph and showgraph to allow the EPS
+	file to contain several images; each is converted to a separate
+	PNG file. 
+
+	Modified SearchRKeywords.html to always show the plots
+	that were generated when the examples are run.
+
+	Added two examples for adding GUI elements for adjusting plot
+	parameters. 
+
+	In Rpad_editor.js & Rpad_lite_editor.js, fixed a bug which unhid
+	all elements (not just code) with "unhide all code". Fixed a bug 
+	in Rpad_lite_editor.js which didn't call "unhide all code".
+
+	Fixed a bug in htmlarea_replacements.js where hitting Enter in a
+	text input box causes an error. Enter now works like it should in
+	InterruptionHistory.html (it's equivalent to F9). 
+
+	Escaped single quotes in string inputs for select boxes and Rstring input
+	boxes, so strings like "John's data" are submitted correctly (as
+	"John\'s data").
+	
+************** 2004/08/30 snapshot
+
+	Fixed a bug preventing nonstring output from javascript Rpad input blocks.
+
+	Added an Rpad/js & Rpad/img directories to house javascript code for
+	GUI's. Added several htc files from Detlef Groth.
+
+	Updated tablesort to work in Mozilla and disabled alternate row coloring.
+
+	Changed 'RpadGraphOptions' to 'graphoptions' in RpadUtils.
+
+	Fixed up Rpad_wrapper.css & Rpad_editor.js a bit to get rid of scroll bars and make
+	it work right in Mozilla in "strict" mode with the heavy editor.
+
+	Removed the requirement for a class of Rpad_input for Rpad input
+	blocks. It now checks for the "Rpad_type" attribute instead. That
+	way, you can format different types of input differently if you want.
+
+	Added an example and R code to generate a gui to plot stuff and specify plot parameters.
+
+	Added HTMLargs and HTMLelement to RpadUtils and cleaned up
+	HTMLinput and similar functions.
+
+	Changed Rpad_run_next_node to a nonrecursive version to get rid of
+	out of stack errors in IE.
+
+	Added a CSS attribute selector to change the color of an INPUT if
+	it's an Rstring (versus Rvariable). It's mozilla only: attribute
+	selectors don't work on IE.
+	
+************** 2004/07/18 snapshot
+
+	Adds support for a "lite" editor not based on HTMLArea that's
+	especially useful with Mozilla browsers. The lite editor does not
+	embed an Iframe, so some things work better (like internal links
+	in Rpad pages). Startup should be
+	faster as well. The lite editor is the default on Mozilla
+	browsers, but it can also be used in IE (you need to change the
+	first line in Rpad_loader.js).
+
+	Added the capability to specify default plot options (RpadGraphOptions).
+
+	For Save and SaveAs, added checks on the server to make sure the
+	file could be created.
+	
+	Renamed the Rpad_utils.R functions img, select, etc. to HTMLimg,
+	HTMLselect, etc. This makes it more consistent with R2HTML, and
+	commands are less likely to interfere with other packages.
+
+	Fixes a carriage return problem on some output.
+
+	Fixes a problem with multiple HTMLon and HTMLoff within the same
+	R script area.
+
+	Known problems: 
+
+	Javascript Rpad sections seem broken.
+
+	Select boxes or other inputs with quotation marks
+	in the string are broken.
+
+	Mozilla: F9 won't work from inside a select box.
+
+************** 6/22/2004 snapshot
+	First milestone release
+
+	

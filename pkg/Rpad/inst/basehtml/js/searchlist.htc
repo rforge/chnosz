@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+  This work is licensed under a Creative Commons License.
+  You are free:
+  to copy, distribute, display, and perform the work
+  to make derivative works
+  to make commercial use of the work
+
+  Under the following conditions:
+     Attribution. You must give the original author credit
+     Author:  Dr. Detlef Groth
+     Web:     http://www.dgroth.de/
+     License: http://creativecommons.org/licenses/by/1.0/
+
+     System        : SEARCHLISTBOX_HTC : 
+     Object Name   : $RCS_FILE$
+     Revision      : $REVISION$
+     Date          : Sun Feb 8 20:29:50 2004
+     Created By    : Dr. Detlef Groth, MPIMG Berlin, Germany
+     Created       : Sun Feb 8 20:29:50 2004
+
+     Last Modified : <040329.1145>
+     ID            : $Id: searchlist.htc,v 1.1.1.1 2004/02/09 14:02:48 dgroth Exp $
+     Source        : $Source: /cygdrive/d/cvs/myhtc/js/searchlist.htc,v $
+     Description	
+     Notes
+     $Log: searchlist.htc,v $
+     Revision 1.1.1.1  2004/02/09 14:02:48  dgroth
+     initial cvs import
+
+     -->
+<public:component xmlns:public="urn:HTMLComponent" lightweight="true">
+  <public:attach event="onload" for="window" handler="init"/>
+  <public:attach event="onkeyup" handler="keyup"/>
+  <public:attach event="oncontentready" handler="initready"/>
+  <script type="text/javascript">
+    //<![CDATA[
+    function keyup() {
+        //alert(element.getElementsByTagName("input")[0].value);
+        var links = element.getElementsByTagName("A") ;
+     
+        var  m = element.getElementsByTagName("input")[0].value ;
+        if (window.event.keyCode == 13) {
+            for (var i = 0 ; i < links.length; i++) {
+                if (links[i].parentNode.style.display == "") {
+                    // alert(links[i].getAttribute("href"));
+                    if ((links[i].getAttribute("target") == "" || 
+                        links[i].getAttribute("target") == null) &&
+                        (window.document.getElementsByTagName("BASE")[0].getAttribute("target") == null ||
+                        window.document.getElementsByTagName("BASE")[0].getAttribute("target") == "")) 
+                    {
+                        window.location.href = links[i].getAttribute("href") ;
+                    } else {
+                        if (links[i].getAttribute("target") != null && links[i].getAttribute("target") != "") {
+                            
+                            eval("parent.frames."+links[i].getAttribute("target")+".location.href = '"+links[i].getAttribute("href")+"';"); 
+                        } else {
+                            eval("parent.frames."+window.document.getElementsByTagName("BASE")[0].getAttribute("target")+".location.href = '"+links[i].getAttribute("href")+"';"); 
+                        }
+                    }
+                    break;
+                }
+            }
+        } else {
+            var found = 0 ;
+            if (m == "") {
+                for (var i = 0 ; i < links.length; i++) {
+                    links[i].parentNode.style.display ="";
+                    if (found == 0) {
+                        links[i].parentNode.style.backgroundColor = "#dddddd";
+                    } else {
+                        links[i].parentNode.style.backgroundColor = "white";
+                    }
+                    found ++ ;
+                }
+            } else {
+                m = m.replace(/\$/, "\\$") ;
+                // fix for vars starting with dots
+                m = m.replace(/^\./, "\\.") ;
+                //alert(m);
+                for (var i = 0 ; i < links.length; i++) {
+                 
+                  
+                    if (links[i].firstChild.data.match(eval("/^"+m+"/i"))) {
+                        links[i].parentNode.style.display ="";
+                        if (found == 0) {
+                            links[i].parentNode.style.backgroundColor = "#dddddd";
+                        } else {
+                            links[i].parentNode.style.backgroundColor = "white";
+                        }
+                        found ++ ;
+                    } else {
+                        links[i].parentNode.style.display ="none";
+                        links[i].parentNode.style.backgroundColor = "white";
+                    }
+                }
+            }
+        }
+    }
+    function init () {
+        element.style.listStylePosition = "outside";
+
+    }
+    function initready() {
+       
+        var input = window.document.createElement("input");
+        input.setAttribute("name", "inputvalue");
+        input.setAttribute("type", "text");
+        input.setAttribute("align", "center");
+        //input.setAttribute("width", 40);
+        //var myText = window.document.createTextNode("Search: ");
+        // input.setAttribute("onkeydown", "alert('Hi')"); // does only work for mozilla
+        
+        element.insertBefore(input, element.firstChild);
+        //element.parentNode.insertBefore(input, element);
+        //element.insertBefore(myText, element.firstChild);
+        
+    }
+    //]]>
+</script>
+</public:component>

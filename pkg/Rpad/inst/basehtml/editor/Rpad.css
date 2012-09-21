@@ -1,0 +1,66 @@
+/* this is a cludge to fix IE's lack of "position: fixed" */
+* html {overflow: hidden; }
+* html body {overflow: auto; height: 100%; }
+#Rpad_topBar {position: absolute; top: 0; background: rgb(192, 192, 192); }
+body>#Rpad_topBar {position: fixed; }
+
+/* for sortable tables in IE & Moz see
+http://goblet.molgen.mpg.de/moz-behaviors-example/tablesort.html */
+span.tablesortheader  {
+    cursor: pointer ;
+    behavior:url(js/tablesort.htc);
+    -moz-binding: url(../js/moz-behaviors.xml#tablesort.htc);
+}
+
+/* Mozile support for contenteditable */
+*[contentEditable=true] { -moz-user-modify: read-write; 
+-moz-user-input: enabled; -moz-user-select: normal; }
+*[contentEditable=false] { -moz-user-modify: read-only; 
+-moz-user-input: auto; -moz-user-select: auto; }
+
+body { background-color: #eeeeee; font-family: tahoma; font-size: 18px; padding:0; margin:0}
+.Rpad_input { background-color: white; font-family: monospace;}
+.Rpad_results { background-color: infobackground; font-family: monospace;}
+
+#Rpad_div { background-color: #eeeeee; padding:8px; -moz-user-focus: normal; }
+
+INPUT[rpad_type="Rstring"] {color:blue}
+
+
+H1 { font-family: Arial, Helvetica, sans-serif; font-size: 20pt; font-style: normal; font-weight: normal; color: #FFFFFF; background: #004080; text-align: center; margin: 10pt 2.5%}
+H2 { font-family: Arial, Helvetica, sans-serif; font-size: 18pt; font-style: normal; font-weight: normal; color: #FFFFFF; background: #000000}
+H2.index { font-family: Arial, Helvetica, sans-serif; font-size: 18pt; font-style: normal; font-weight: normal; color: #FFFFFF; background: #000000; margin: 10pt 5%}
+H3 { font-family: Arial, Helvetica, sans-serif; font-size: 14pt; font-style: normal; font-weight: bold; color: #004080  }
+H4 { font-family: T, Helvetica, sans-serif; font-size: 10pt; font-style: normal; font-weight: bold; color: #000000; line-height: 16pt}
+
+LI { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt }
+
+A { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt ;text-decoration:none}
+
+
+.caption{font-style:italic}
+.title2{ font-family: Arial, Helvetica, sans-serif; font-size: 14pt; font-style: normal; font-weight: bold; color: #004080  }
+
+
+P { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt ;font-weight:normal}
+.command {font-family=verdana, arial; color=red	}
+.function{font-family=verdana, arial; color=blue}
+.partitle{font-family=verdana, arial; font-weight:bold}
+
+
+XMP{font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt }
+.function{font-family=courier; color=blue; font-size: 10pt }
+
+
+TABLE.dataframe{align:left; background: #FFFFFF}
+TR{font-family: Arial, Helvetica,Times, Helvetica, sans-serif; font-size: 10pt; font-style: normal  ; padding:0 0}
+TR.firstline{color: #FFFFFF; background: #000000;text-align=center;font-weight: bold}
+
+TR.ListBackTitle{color: #FFFFFF; background: #000000;text-align=left;font-weight: bold}
+
+
+
+TD{padding:0 0}
+TD.ListBackMain{background: #E0E0E0; padding:0 0}
+TD.firstcolumn{padding:5 10;background:#C0C0C0;text-align=right}
+TD.cellinside{padding:5 10;background:#FFFFFF;text-align=right}

@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+<!-- by Tom Short, EPRI, tshort@epri.com
+(c) Copyright 2005 by EPRI
+
+Licence
+=======
+
+    This is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+
+
+The file COPYING in the Rpad top-level directory is a copy of the 'GNU
+General Public License'.
+ -->
+
+  <head>
+    <title>Rpad Base Page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript">
+    rpadConfig = {
+      rpadRun: "all",
+      rpadHideSource: true
+    };
+</script>
+<script type="text/javascript" src="gui/dojo.js"></script>
+<script type="text/javascript" src="gui/Rpad.js"></script>
+  </head>
+<style>
+.RpadTableHolder TH {padding: 5px; background: transparent;
+                     text-align:right; font-weight:bold;
+                     border: thin none #CCC; }
+.RpadTableHolder TD {padding: 5px; background: transparent;
+                     text-align:right; padding:2px 2px 2px 2px; 
+                     border: thin none #CCC; }
+
+</style>
+  <body>
+
+
+<table width="100%"><tr valign="top"><td width="70%">
+<p>Rpad/HTML pages (click on the link to load the file): </p>
+
+<p><span contenteditable="false">
+<a href="blank.Rpad">New Rpad page</a></span><br></p>
+
+<pre dojoType="Rpad">
+.threecolumns = function(lst) {
+    n = length(lst)
+    if (n <= 3) return(as.matrix(lst))
+    ncol = 3
+    nrow = ceiling(n / ncol)
+    lst = as.matrix(append(lst, rep("", ncol * nrow - n)))
+    dim(lst) = c(nrow, ncol)
+    lst
+}
+.rpadfiles = grep('\\.html$|\\.rpad$', dir(), ignore.case = TRUE, value = TRUE)
+.rpadfiles = H("a", href = .rpadfiles, collapseContents = FALSE,
+               .rpadfiles)
+.rpadfiles = .threecolumns(.rpadfiles)
+HTMLon()
+Html(.rpadfiles)
+</pre>
+
+<p>*.Rdata R binary files  (click to load into R): </p>
+<pre dojoType="Rpad">
+.files = grep('\\.RData$', dir(), ignore.case = TRUE, value = TRUE)
+.files = H("a", href = paste('javascript:rpad.send("R", "load(\\\\"',
+                             .files,
+                             '\\\\")")', sep = ""),
+           collapseContents = FALSE,
+           .files)
+.files = .threecolumns(.files)
+HTMLon()
+Html(.files)
+</pre>
+
+<p>*.R files  (click to source into R): </p>
+<pre dojoType="Rpad">
+.files = grep('\\.R$', dir(), ignore.case = TRUE, value = TRUE)
+.files = H("a", href = paste('javascript:rpad.send("R", "source(\\\\"',
+                             .files,
+                             '\\\\")")', sep = ""),
+           collapseContents = FALSE,
+           .files)
+.files = .threecolumns(.files)
+HTMLon()
+Html(.files)
+</pre>
+
+<p>R objects: </p>
+<pre dojoType="Rpad">
+# print(ls.str(), wid = 40, nchar.max = 20, vec.len=2)
+ls()
+</pre>
+
+</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> <td width="25%">
+<p>Help</p>
+
+<span contenteditable="false">
+<a href="SearchRKeywords.Rpad">R function/object search</a><br>
+<a href="Rpad-refcard.pdf">R/Rpad quick reference</a><br>
+<a href=".UP./.UP./.UP./doc/html/index.html">R documentation</a><br>
+<a href="BasicDocumentation.html">Rpad documentation</a><br>
+<a href=".UP./html/00index.html">Rpad helper functions</a><br>
+<a href="http://www.rpad.org">Rpad homepage</a><br>
+<a href="http://www.r-project.org">R homepage</a><br>
+</span>
+
+<p>Rpad demos</p>
+
+<span contenteditable="false">
+<a  href="Example1.Rpad">General Example</a><br>
+<a  href="InputExamples.Rpad">Data input</a><br>
+<a  href="GuiExamples.Rpad">GUI Examples</a><br>
+</span>
+
+</td></tr></table>
+
+<br><br><br><sub>by Tom Short, tshort@epri.com, Copyright 2005. EPRI, license: GNU GPL v2 or greater</sub>
+  </body>
+</html>
+

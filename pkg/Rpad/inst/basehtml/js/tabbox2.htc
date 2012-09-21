@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+  This work is licensed under a Creative Commons License.
+  You are free:
+  to copy, distribute, display, and perform the work
+  to make derivative works
+  to make commercial use of the work
+
+  Under the following conditions:
+     Attribution. You must give the original author credit
+     Author:  Dr. Detlef Groth
+     Web:     http://www.dgroth.de/
+     License: http://creativecommons.org/licenses/by/1.0/
+
+     System        : TABBOX_XML : 
+     Object Name   : $RCS_FILE$
+     Revision      : $REVISION$
+     Date          : Thu Feb 5 19:44:41 2004
+     Created By    : Dr. Detlef Groth, MPIMG Berlin, Germany
+     Created       : Thu Feb 5 19:44:41 2004
+
+     Last Modified : <040216.2033>
+     ID            : $Id: tabbox.htc,v 1.1.1.1 2004/02/09 14:02:48 dgroth Exp $
+     Source        : $Source: /cygdrive/d/cvs/myhtc/js/tabbox.htc,v $
+     Description	
+     Notes
+     $Log: tabbox.htc,v $
+     Revision 1.1.1.1  2004/02/09 14:02:48  dgroth
+     initial cvs import
+
+-->
+<public:component xmlns:public="urn:HTMLComponent" lightweight="true">
+  <public:attach event="onclick" onevent="raiseTab()" />
+  <public:attach event="onload" for="window" handler="init"/>
+  <public:attach event="ondocumentready" handler="documentready" />
+  <public:attach event="oncontentready" handler="initready"/>
+ <script type="text/javascript">
+   //<![CDATA[
+   loaded = 0 ;
+   var startText = "" ;
+   var ie = (navigator.appName == "Microsoft Internet Explorer");
+   var v50 = navigator.appVersion.match(/5\.0/);
+   function initready () {
+       // it is better to get the first child only
+       var table = element.getElementsByTagName("TABLE");
+       table[0].style.border = "thin ridge" ;
+       if (table.length > 0 && element.className == "Tabbox") {
+            // it is better to get the first childlist only
+           var th = table[0].getElementsByTagName("TH");
+           for (var i = 1 ; i < th.length ; i++) {
+               th[i].style.backgroundColor = "white" ;
+               th[i].style.cursor = "pointer" ;
+           }
+           for (var i = 0 ; i < th.length ; i++) {
+               th[i].style.border = "thin ridge" ;
+               th[i].style.borderTop = "none" ;
+               th[i].style.borderRight = "none" ;
+               if (i == 0) {
+                   th[i].style.borderLeft = "none" ;
+                   th[i].style.borderBottom = "none" ;
+               }
+           }
+
+           var divs = element.getElementsByTagName("DIV");
+           divs[0].innerHTML = divs[1].innerHTML ;
+           
+       }
+   }
+   function init() {
+      // alert(element.nodeName);
+       if (element.nodeName == "DIV" && element.className == "Tabpanel") {
+           element.style.display = "none" ;
+       }
+   }
+   function getNodeUp (node, nodeType) {
+       while (node.nodeName != nodeType) {
+           node=node.parentNode;
+       }
+       return node ;
+   }
+   function raiseTab (e) {
+       e=e||window.event;
+       var node = e.srcElement ;
+       if (node.nodeName != "TH") { return; }
+       var table = node ;
+     
+       // get the th walking up the tree
+       // that's why we can't bind to th, td, tr, table in mozilla
+       while (node.nodeName != "TH") {
+           node = node.parentNode;
+       }
+       while (table.nodeName != "TABLE") {
+           table = table.parentNode ;
+       }
+       var newCol = node.cellIndex ;
+       var headers = node.parentNode.getElementsByTagName("TH");
+       for (var i = 0 ; i<headers.length; i++) {
+           headers[i].style.backgroundColor = "white" ;
+           headers[i].style.borderBottom =   "thin ridge" ;
+           headers[i].style.cursor = "pointer" ;
+       }
+       headers[newCol].style.backgroundColor = table.style.backgroundColor ;
+       headers[newCol].style.cursor = "" ;
+       headers[newCol].style.borderBottom = "none" ;
+       var ix = 1 ;
+       if (ie) {
+           ix = 0 ;
+       }
+       var allTR = node.parentNode.parentNode.parentNode.childNodes[ix].getElementsByTagName("TR") ; //childNodes
+       var divs = allTR[1].getElementsByTagName("DIV");
+       divs[0].innerHTML = divs[newCol+1].innerHTML ;
+    }
+    //]]>
+</script>
+</public:component>

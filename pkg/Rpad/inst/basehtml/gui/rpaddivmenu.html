@@ -1,0 +1,48 @@
+<div>
+<div dojoAttachPoint="bar" style="-moz-user-select: none;" unselectable="on">
+  <img src="gui/draghand.png" dojoAttachPoint="dragHandle" style="vertical-align:text-top">
+  <input dojoAttachPoint="popupButton" type="button" href="javascript:void();return;"
+  onclick="javascript:return false;" rpadIgnore="true">
+</div>
+<div dojoAttachPoint="popup" style="background: #E0E0E0; border: thin
+solid darkgray;" rpadIgnore="true">
+<table>
+<tr><td>
+<h3>Actions</h3>
+<a href="javascript:rpad.gui2.activeRpadWidget.beginEdit()">Edit [Enter]</a><br>
+<a href="javascript:rpad.gui2.activeRpadWidget.calculate()">Calculate
+   	section [F8]</a><br>
+<a href="javascript:rpad.gui2.activeRpadWidget.toggleVisibility()">Calc/Adv [F7, S-Enter]</a><br>
+<a href="javascript:rpad.gui2.activeRpadWidget.appendNew()">Append new</a><br>
+<a href="javascript:var aw = rpad.gui2.activeRpadWidget;
+rpad.gui2.goDown(); if (aw != rpad.gui2.activeRpadWidget) aw.destroy()">Delete</a><br>
+<a href="javascript:rpad.gui2.activeRpadWidget.toggleVisibility()">Toggle source [F2]</a><br>
+<a href="javascript:rpad.gui.saveAs()">Save page as...</a><br>
+</td>
+
+<td>
+<h3>Settings</h3>
+Type: <select dojoAttachPoint="rpadTypeSelect"
+              onchange="rpad.gui2.activeRpadWidget.rpadType = this.value; rpad.gui2.activeRpadWidget.domNode.setAttribute('rpadType', this.value);rpad.gui2.activeRpadWidget.rpadInput.setAttribute('rpadType', this.value)"
+></select><br/>
+<div dojoAttachPoint="filenameWrapper">
+Filename:  <input value="file.txt" dojoAttachPoint="filenameInput"
+                          onchange="rpad.gui2.activeRpadWidget.rpadInput.setAttribute('filename', this.value)"/>
+</div>
+Run: <select dojoAttachPoint="rpadRunSelect"
+             onchange="rpad.gui2.activeRpadWidget.domNode.setAttribute('rpadRun', this.value)">
+  <option>normal</option>
+  <option>init</option>
+  <option>none</option>
+</select><br/>
+Output: <select dojoAttachPoint="rpadOutputSelect" 
+                onchange="rpad.gui2.activeRpadWidget.rpadOutput = this.value">
+  <option>text</option>
+  <option>html</option>
+  <option>javascript</option>
+  <option>none</option>
+</select><br>
+</td>
+</tr>
+</table>
+</div>

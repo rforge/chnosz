@@ -1,0 +1,494 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+<!-- by Tom Short, EPRI Solutions, tshort@epri.com
+(c) Copyright 2005. by EPRI
+
+Licence
+=======
+
+    This is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+
+
+The file COPYING in the Rpad top-level directory is a copy of the 'GNU
+General Public License'.
+ -->
+
+  <head>
+    <title>Rpad Documentation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style>
+      body {font-family: georgia;}
+    </style>
+  </head>
+
+  <body>
+      <h2>Rpad</h2>
+
+      <p>Rpad is an interactive, web-based analysis program. Rpad pages
+      are interactive workbook-type sheets based on R, an open-source
+      implementation of the S language. Rpad is an analysis package, a
+      page designer, and a gui designer all wrapped in one. Rpad
+      makes it easy to develop powerful data analysis applications that
+      can be shared with others (most likely on an intranet). The user
+      doesn't have to install anything--everything's done through a
+      browser.</p>
+
+      <p>From the user's point of view, Rpad shouldn't really need any
+      documentation. It just looks like a web page. The user can run a
+      pre-canned analysis and poke around with the inputs and scripts
+      and outputs. For designers of Rpad pages, some more background is
+      helpful.</p>
+
+  <p>Rpad is available in two versions: a local
+  version and an intranet/internet version. The local version works
+  through the user's local installation of R through the user's web
+  browser. The intranet/internet
+  version works in client-server fashion with the user accessing a remote
+  server through a standard web browser.</p>
+
+      <h2>Editing and Running</h2>
+
+      <p>The simplest way to set up a page is to use one or more Rpad
+      script regions. Scripts can be inside of div, span, or textareas.
+      Scripts can be R, shell, or javascript. Server-side shell scripts
+      are useful for using other scripting or command-lines (python,
+      octave, imagemagick, and so on). Javascript is useful for local
+      processing, interactivity, or for debugging Rpad problems.</p>
+
+      <p>To "run" or "calculate" a page, press the F9 key or use the
+      mouse to press the "Calculate" menu option. While a web page is up, Rpad is
+      communicating with the same R process. That means all the
+      variables are still there (even if you change the script). This
+      can have some desirable or undesirable effects, so it's good to
+      be aware of it. Refreshing the page will restart the R process.</p>
+
+
+
+      <p>In the default configuration, Rpad pages no longer have
+      default in-page editing. As such, Rpad pages are normally
+      created with an external text or HTML editor. In-browser editing is still too
+      immature. There are two page-editing gui's that can be
+      enabled.  Consider both of these as experimental:</p>
+
+      <ul>
+        <li><em>Basic editing gui --</em> The whole page is editable as a
+        simple WYSIWYG html editor on browsers that support the
+        contentEditable feature (Internet Explorer and Mozila with the
+        Mozile plugin). This is much like the "lite"
+        editor in Rpad 0.9.6. The page has a top bar with a menu.
+        </li>
+
+        <li><em>Alternate editing gui --</em> The cursor or mouse can
+      be used to highlight sections of the page. Rpad code blocks can be
+      edited, and the source code visibility can be toggled. Other
+      parts of the page can be edited with a WYSIWYG html editor. The
+      page also operates somewhat like a command line: the last
+      command can be executed while advancing to a new code block by
+      hitting alt-enter. </li>
+      </ul>
+
+      <p>These builtin page editors are somewhat limited. They may not
+      generate very good HTML, and saving pages has some bugs in it
+      (it doesn't save anything in the HEAD, and on some browsers,
+      changes to INPUT blocks don't get saved right). For more
+      advanced and reliable editing, use an external text or HTML
+      editor. The builtin page editors are best used for online
+      changes and exploration.
+      </p>
+
+
+      <h2>Rpad package</h2>
+
+      <p>The Rpad package provides several R utility routines to help
+      the user do graphs and generate HTML output and HTML GUI
+      elements. </p>
+
+      <h2>HTML File Structure</h2>
+
+      <p>You can turn any HTML file into an editable Rpad page. Simply
+      insert the following code into the page header:</p>
+<pre>
+&lt;script type="text/javascript" src="gui/Rpad.js">&lt;/script>
+</pre>
+
+<h3>Rpad sections</h3>
+
+<p>Within the body of an HTML file, any tag can be made into an Rpad
+script tag 
+with 'dojoType="Rpad"'. Normally, this is a pre or textarea. Here's a
+simple example:</p>
+
+<pre>
+&lt;pre dojoType="Rpad">
+ls()
+&lt;/pre>
+</pre>
+
+Rpad input blocks have several optional attributes to control
+behavior. Here's a more detailed example with options specifying that
+the block runs only initially and the source is hidden:
+
+<pre>
+&lt;pre dojoType="Rpad" rpadRun="init" rpadHideSource="true">
+ls()
+&lt;/pre>
+</pre>
+
+
+<h4>rpadType</h4>
+      <p>There are several kinds of Rpad input variations. The attribute
+      'rpadType' specifies the options, which include:</p>
+
+<dl>
+<dt><b>"R"</b> (the default)</dt><dd>R scripts of course</dd>  
+<dt><b>"shell"</b></dt><dd>server shell script</dd>  
+<dt><b>"javascript"</b></dt><dd>local javascript interpreter</dd>  
+</dl>
+
+<h4>rpadRun</h4>
+
+<p>rpadRun controls when an Rpad section is calculated. Options are:
+
+<dl>
+<dt><b>"normal"</b> (the default)</dt><dd>R scripts of course</dd>  
+<dt><b>"init"</b></dt><dd>The script will only run when the page
+first loads and not after.</dd>  
+<dt><b>"none"</b></dt><dd>The script will not run unless explicitly
+directed by some event.</dd>  
+<dt><b>"all"</b></dt><dd>The
+block runs initially and every time the page is calculated.</dd>  
+</dl>
+
+
+
+<h4>rpadOutput</h4>
+
+<p>rpadOutput controls how the output from Rpad section is
+interpreted. Options are:
+
+<dl>
+<dt><b>"text"</b> (the default)</dt><dd>The results are
+displayed as text.</dd>  
+<dt><b>"html"</b></dt><dd>The results of the output are
+displayed as html.</dd>  
+<dt><b>"javascript"</b></dt><dd>Interpret the results as
+javascript commands (with eval).</dd>  
+<dt><b>"none"</b></dt><dd>Do nothing with the output.</dd>  
+</dl>
+
+<p>Within an R block with rpadOutput of "text" or "html", the
+formatting can be switched between "text" and "html" by HTMLon() or
+HTMLoff(). Rpad output sections are normally rendered as plain text
+with a fixed-width font, so text script outputs are formatted
+properly. The output blocks can also contain HTML codes for displaying
+images or for formatted blocks. To change to HTML formatting, send
+'&lt;htmlon/>' to the output. This is HTMLon() or cat('&lt;htmlon/>')
+in R scripts. To turn HTML mode off, send '&lt;htmloff/>' or HTMLoff()
+in R scripts.</p>
+
+<h4>rpadHideSource</h4>
+
+<p>"true" if the script source is hidden (outputs are shown). The
+default is "false".</p>
+
+<h4>Rpad Configuration Options</h4>
+
+You can set various settings and defaults for Rpad with an rpadConfig
+section in the *.Rpad file. All of the options to Rpad sections
+(rpadType, rpadRun, rpadOutput, and rpadHideSource) can be set in the
+rpadConfig definition. Here is an example where scripts are hidden by
+default, the "alternate" gui is enabled, and the user is prompted
+before browsing away from the current page:
+
+<pre>
+&lt;script type="text/javascript">
+    rpadConfig = {
+        gui: "alternate",
+        rpadHideSource: true,
+        onBeforeUnload: false
+    };
+&lt;/script>
+&lt;script type="text/javascript" src="gui/Rpad.js">&lt;/script>
+</pre>
+
+<p>The defaults for rpadConfig are:</p>
+
+<pre>
+    gui: "none"
+    rpadType: "R"
+    rpadHideSource: false
+    rpadOutput: "normal"
+    rpadRun: "normal"
+    onBeforeUnload: false
+</pre>
+
+<p>In addition to the Rpad section defaults, the option "gui" can be
+used to specify the page editing gui. If set to true, the option
+"onBeforeUnload" means to ask the user if it's okay to browse away
+from the current page. </p>
+
+<dl>
+<dt>gui = <b>"none"</b> (the default)</dt><dd>No editing gui. Most
+like a regular webpage.</dd>  
+<dt>gui = <b>"standard"</b></dt><dd>An editable gui where the whole
+page is editable. </dd>  
+<dt>gui = <b>"alternate"</b></dt><dd>An editable gui where the user
+can use the keyboard or mouse to select parts of the page for
+editing. This is more crossplatform than the "standard" gui, but it is
+still not completely "natural".</dd>  
+<dt>onBeforeUnload = <b>false</b> (the default)</dt><dd>Normal webpage
+behavior -- the user can browse away from the current page.</dd>  
+<dt>onBeforeUnload = <b>true</b></dt><dd>An alert requires the user to
+confirm before browsing away from the current page (including a reload
+and hitting the back button).</dd>  
+</dl>
+
+
+<h3>HTML Form Elements</h3>
+
+<p>HTML form elements (input, select, radio, and checkbox) with a name
+attribute are automatically sent to R when calculate is run. The 'name' is
+translated into an R variable name. To make the GUI elements
+selectable, they must be surrounded by &lt;span
+contenteditable=&quot;false&quot;&gt;&lt;/span&gt; (also for url links
+and buttons). </p>
+
+<p>Input elements have two options. The default is that the input is
+read as an R expression. To have the input treated as a string,
+specify rpadType="Rstring" in the declaration of the input.</p>
+
+<p>Radio buttons have two name attributes: commonName is the the name of the
+radio button set, and variableName is the specific name of this radio
+button.</p>
+
+<p>If you have several input tags together, it is best to wrap
+them in a &lt;form> element. Then, all elements are passed to R
+together rather than one at a time, so the page is more responsive.</p>
+
+
+<h3>Javascript Options</h3>
+
+<p>You can use javascript to add interactivity to your Rpad pages. The
+easiest way is to add javascript commands to buttons. Some common
+functions that can be used in an Rpad HTML file are:</p>
+
+<ul>
+  <li>rpad.calculatePage() -- calculate the page</li>
+  <li>rpad.calculateNext(node) -- Calculates the first Rpad widget after or under the given DOM node</li>
+</ul>
+
+
+<h3>Example</h3>
+
+<p>Here is an example of a complete Rpad HTML file:</p>
+
+<pre>
+&lt;html>
+  &lt;head>
+    &lt;title>GUI Examples&lt;/title>
+    &lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    &lt;script type="text/javascript">
+        rpadConfig = {
+            gui: "alternate",
+            rpadHideSource: true
+        };
+    &lt;/script>
+    &lt;script type="text/javascript" src="gui/Rpad.js">&lt;/script>
+  &lt;/head>
+
+  &lt;body>
+    &lt;span contenteditable="false">
+      &lt;form>
+        &lt;input type="checkbox" name="isPepperoni">Pepperoni &lt;br/>
+        &lt;input name="favoriteNumber" rpadType=" Rvariable" value="44">Favorite number&lt;br/>
+      &lt;/form>
+    &lt;/span>
+    &lt;br/>
+
+    &lt;pre dojoType="Rpad rpadRun="init">
+      HTMLon()
+      data(state)
+      select("favoriteAmericanState", state.name) # generate a select box
+    &lt;/pre>
+
+    &lt;pre dojoType="Rpad">
+      cat("isPepperoni=",isPepperoni,"\n")
+      cat("favoriteAmericanState=",favoriteAmericanState,"\n")
+    &lt;/pre>
+  &lt;/body>
+&lt;/html>
+</pre>
+
+<p>In Rpad_input
+sections, everything must be valid HTML,
+so <code>"&lt;-"</code> must be <code>"&amp;lt;-"</code>. Also,
+&lt;br/&gt; tags are needed for line breaks in div tags (they are
+not needed for textarea or pre tags). </p>
+
+<h3>Rpad 1.1.x (Dojo port) incompatibilities</h3>
+<p>The Dojo port (>1.1.x) has introduced some
+incompatibilities at the *.Rpad level relative to version
+0.9.6. Basically, here's what is different:</p>
+
+<br>
+OLD:<br>
+&lt;script type="text/javascript"
+src="editor/rpad_loader.js"&gt;&lt;/script&gt;<br>
+<br>
+NEW:<br>
+&lt;script type="text/javascript"
+src="gui/Rpad.js"&gt;&lt;/script&gt;<br>
+<br>
+OLD:<br>
+&lt;pre class="Rpad_input" rpad_type="R"&gt;<br>
+ls()<br>
+&lt;/pre&gt;<br>
+<br>
+NEW:<br>
+&lt;pre dojoType="Rpad" rpadType="R"&gt;<br>
+ls()<br>
+&lt;/pre&gt;<br>
+<br>
+OLD:<br>
+&lt;span class="wrapperForHidden" contenteditable="false"&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;pre class="Rpad_input"
+rpad_type="R" style="DISPLAY: none"&gt;<br>
+ls()<br>
+&nbsp;&nbsp;&nbsp; &lt;/pre&gt;<br>
+&lt;/span&gt;<br>
+<br>
+NEW:<br>
+&lt;pre dojoType="Rpad" rpadType="R" rpadHideSource="true"&gt;<br>
+ls()<br>
+&lt;/pre&gt;<br>
+<br>
+
+
+
+      <h2>Server Setup in the Client/Server Version</h2>
+
+      <p>The files in Rpad are layed out as follows on the server:</p>
+
+      <ul>
+        <li>/Rpad -- The main *.html pages and data go here.</li>
+
+        <li>/Rpad/editor -- This has the old Rpad javascript GUI stuff,
+        including HTMLArea.</li>
+
+        <li>/Rpad/gui -- This has the new client-side javascript GUI stuff.</li>
+
+        <li>/Rpad/server -- This has the Perl server-side scripts.</li>
+
+        <li>/Rpad/server/ddXXXXXXXX -- When Rpad scripts are run,
+        they're run from temporary directories under the /Rpad/server
+        directory.</li>
+      </ul>
+
+      <p>In Rpad scripts, although you can access files in the main directory (the
+      directory of the page) with "../../whatever", you are better off
+      using <code>RpadBaseFile("whatever")</code> to maintain
+      compatibility with the local version of Rpad. You can access
+      files in the R process's current directory as you would
+      normally, but if you want to specify it as a URL for output in
+      the browser (for a link or an embedded file), use <code>RpadBaseURL("whatever")</code>.</p>
+
+      <p>In the client/server version, each Rpad page gets its own R process on the server, so it is
+      rather resource intensive. Threading and Duncan Temple Lang's
+<a href="http://developer.r-project.org/TODO-DTL.html">idea</a> of "multiple interpreters" would greatly
+help reduce the resource usage on the server. </p>
+
+      <h2>Browser-Server Communications</h2>
+
+      <p>Rpad uses Xmlhttp to communicate between the browser and the
+      server, so browser refreshes are not needed to update data. This
+      is available for both Mozilla and IE. Rpad uses standard HTTP
+      GET or PUT requests, and all
+      data is transmitted as ascii. Xmlhttp allows both synchronous
+      and asynchronous communications. The best implementation (I've
+      tried both) appears to be asynchronous. Synchronous
+      communications can lock up the browser for long periods if the
+      server becomes unavailable, or there's a communications
+      glitch. Asynchronous communication avoids this, but the logic is
+      more contorted internally.</p>
+
+      <h2>Security</h2>
+
+      <p>There is no built in security in Rpad. The user has complete
+      access to any command in R and also in the system shell. I
+      consider this a feature, not a bug. For protection, the system
+      needs to be locked down on the server. Write protect any files
+      and databases that are a concern, and lock out access to the
+      server user to other parts of the system.</p>
+
+      <p>With the base setup, Rpad users can stomp on each others
+      files. If a user saves a file in the Rpad directory, another user
+      can write over it. To make it more permanent, the user would have
+      to request that the system administrator write protect the file
+      and any data that went with the file.</p>
+
+      <p>Because of the relatively lax security, Rpad is best
+      suited for intranets or other relatively controlled
+      situations.</p>
+
+      <p>Rpad could be integrated into a more advanced content
+      management system that would better handle multiple users,
+      passwords, and so on.</p>
+
+      <h2>Server Installation</h2>
+
+      <p>For notes on server installations, click <a href="ServerNotes.html">here</a>.</p>
+
+      <h2>Differences Between the Local Version and the Client/Server Version</h2>
+
+      <p>In the client/server version, each Rpad page gets its own R
+      process on the server. So, multiple users won't interfere with
+      each other. In the local version of Rpad, the browser
+      connects with one R process, so there is more chance of
+      interaction between multiple Rpad pages. Each time the user
+      starts a new page in the client-server version, the local
+      environment is clean. But in the local version of Rpad,
+      this is not true: the local environment may have objects from
+      previous Rpad pages or from interaction at the command line. </p> 
+
+      <p>There are several differences in directory layouts between
+      the local and client-server versions of Rpad. In the local
+      version, the current working directory of the R process is the
+      directory of the Rpad page. In the client-server version, the
+      current directory of the R process is two levels below the Rpad
+      page (something like /var/www/Rpad/server/ddjieyfewx/ for files
+      with a root of /var/www/Rpad/). In both versions, graphics are
+      created in R's current working directory. But pages may read or
+      write data differently depending on whether in the local or
+      client-server version. See the Rpad functions RpadURL,
+      RpadBaseURL, and RpadBaseFile for convenience utilities to make
+      pages portable between the local version and the client-server
+      version.</p>
+
+      <p>In the local version of Rpad, the default graphics device is
+      R's builtin png device. On the client-server version, the
+      default graphics device is the ghostscript-based pngalpha
+      device. Therefore, graphic files may look different between
+      versions. The pngalpha device has the advantage that it is
+      antialiased, you can link to an eps file, and you have more
+      fonts. The disadvantages of the pngalpha device are that you
+      have to have ghostscript installed, and it's slower. On the
+      server side, if you want to use R's png device on unix, you
+      must have X running.  </p>
+
+<br><br><br><sub>by Tom Short, tshort@epri.com, Copyright 2005. EPRI, license: GNU GPL v2 or greater</sub>
+
+  </body>
+</html>
+

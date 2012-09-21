@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+<!-- by Tom Short, EPRI, tshort@epri.com
+(c) Copyright 2005. by EPRI
+
+Licence
+=======
+
+    This is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+
+
+The file COPYING in the Rpad top-level directory is a copy of the 'GNU
+General Public License'.
+ -->
+
+  <head>
+    <title>Data Input Examples</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <script type="text/javascript" src="gui/Rpad.js"></script>
+  </head>
+
+  <body>
+      <h2>Data input</h2>
+
+      <p>There are several ways to input data into an Rpad.
+      For large datasets, like dataframes, you can use a TEXTAREA as
+      follows. This textarea is transfered to the server as a file (in
+      this case named 'states.csv'),
+      which you can read into R. This
+      allows the user to paste in new data if they want. This is the state.x77 data that comes
+      as a built-in dataset with R (from 1977 census data). </p>
+
+<textarea dojoType="Rpad" rpadType="file" filename="states.csv" rows="5" cols="80" rpadOutput="none">
+"state","Population","Income","Illiteracy","Life.Exp","Murder","HS.Grad","Frost","Area"
+"Alabama",3615,3624,2.1,69.05,15.1,41.3,20,50708
+"Alaska",365,6315,1.5,69.31,11.3,66.7,152,566432
+"Arizona",2212,4530,1.8,70.55,7.8,58.1,15,113417
+"Arkansas",2110,3378,1.9,70.66,10.1,39.9,65,51945
+"California",21198,5114,1.1,71.71,10.3,62.6,20,156361
+"Colorado",2541,4884,0.7,72.06,6.8,63.9,166,103766
+"Connecticut",3100,5348,1.1,72.48,3.1,56,139,4862
+"Delaware",579,4809,0.9,70.06,6.2,54.6,103,1982
+"Florida",8277,4815,1.3,70.66,10.7,52.6,11,54090
+"Georgia",4931,4091,2,68.54,13.9,40.6,60,58073
+"Hawaii",868,4963,1.9,73.6,6.2,61.9,0,6425
+"Idaho",813,4119,0.6,71.87,5.3,59.5,126,82677
+"Illinois",11197,5107,0.9,70.14,10.3,52.6,127,55748
+"Indiana",5313,4458,0.7,70.88,7.1,52.9,122,36097
+"Iowa",2861,4628,0.5,72.56,2.3,59,140,55941
+"Kansas",2280,4669,0.6,72.58,4.5,59.9,114,81787
+"Kentucky",3387,3712,1.6,70.1,10.6,38.5,95,39650
+"Louisiana",3806,3545,2.8,68.76,13.2,42.2,12,44930
+"Maine",1058,3694,0.7,70.39,2.7,54.7,161,30920
+"Maryland",4122,5299,0.9,70.22,8.5,52.3,101,9891
+"Massachusetts",5814,4755,1.1,71.83,3.3,58.5,103,7826
+"Michigan",9111,4751,0.9,70.63,11.1,52.8,125,56817
+"Minnesota",3921,4675,0.6,72.96,2.3,57.6,160,79289
+"Mississippi",2341,3098,2.4,68.09,12.5,41,50,47296
+"Missouri",4767,4254,0.8,70.69,9.3,48.8,108,68995
+"Montana",746,4347,0.6,70.56,5,59.2,155,145587
+"Nebraska",1544,4508,0.6,72.6,2.9,59.3,139,76483
+"Nevada",590,5149,0.5,69.03,11.5,65.2,188,109889
+"New Hampshire",812,4281,0.7,71.23,3.3,57.6,174,9027
+"New Jersey",7333,5237,1.1,70.93,5.2,52.5,115,7521
+"New Mexico",1144,3601,2.2,70.32,9.7,55.2,120,121412
+"New York",18076,4903,1.4,70.55,10.9,52.7,82,47831
+"North Carolina",5441,3875,1.8,69.21,11.1,38.5,80,48798
+"North Dakota",637,5087,0.8,72.78,1.4,50.3,186,69273
+"Ohio",10735,4561,0.8,70.82,7.4,53.2,124,40975
+"Oklahoma",2715,3983,1.1,71.42,6.4,51.6,82,68782
+"Oregon",2284,4660,0.6,72.13,4.2,60,44,96184
+"Pennsylvania",11860,4449,1,70.43,6.1,50.2,126,44966
+"Rhode Island",931,4558,1.3,71.9,2.4,46.4,127,1049
+"South Carolina",2816,3635,2.3,67.96,11.6,37.8,65,30225
+"South Dakota",681,4167,0.5,72.08,1.7,53.3,172,75955
+"Tennessee",4173,3821,1.7,70.11,11,41.8,70,41328
+"Texas",12237,4188,2.2,70.9,12.2,47.4,35,262134
+"Utah",1203,4022,0.6,72.9,4.5,67.3,137,82096
+"Vermont",472,3907,0.6,71.64,5.5,57.1,168,9267
+"Virginia",4981,4701,1.4,70.08,9.5,47.8,85,39780
+"Washington",3559,4864,0.6,71.72,4.3,63.5,32,66570
+"West Virginia",1799,3617,1.4,69.48,6.7,41.6,100,24070
+"Wisconsin",4589,4468,0.7,72.48,3,54.5,149,54464
+"Wyoming",376,4566,0.6,70.29,6.9,62.9,173,97203
+</textarea>
+
+<p>Now for some R code. Textareas can also be used for R code blocks.
+This has the advantage that the user can edit the code
+on Mozilla browsers without the Mozile plugin. It also allows larger
+code chunks that don't take up as much screen space.
+</p>
+
+<p>Read in and plot this data:</p>
+
+<textarea dojoType="Rpad" rows="6" cols="80">
+a = read.csv('states.csv')
+plot(a$Population, a$HS.Grad)
+HTMLon()
+showgraph()
+</textarea>
+
+      <p>You can also use HTML input boxes, so the user can enter
+      single-valued data into R. There are two types of R variables
+      that can be associated with an Rpad input box. One is
+      "Rvariable" and it is an R expression, so it can contain 1.33 or
+      2*pi or 3*x + sum(3,6,7). The other is "Rstring" and it is
+      transfered to R as a character string. On Mozilla, the Rstring
+      is colored blue to differentiate it (with a little CSS that IE
+      doesn't support). You can change the name of the R variable and
+      the type of R variable with the input and selection boxes at the 
+      upper right of the browser page. Here are two Rpad variables
+      called <code>myvar</code> and <code>myname</code>.</p>
+
+      <p>myvar: <span contenteditable="false"><input class="Rpad_input" name=
+      "myvar" rpadType="Rvariable" value="3*pi"></span>
+      myname: <span contenteditable="false"><input class="Rpad_input" name=
+      "myname" rpadType="Rstring" value="Tom"></span>
+      </p>
+
+      <p>After fiddling with some of the inputs, hit F9 or the
+      calculate button and see that the following outputs change:</p>
+
+<textarea dojoType="Rpad" rows="3" cols="80">
+cat("myvar =",myvar,"\n")
+cat("myname =",myname,"\n")
+</textarea>
+
+      <p><span contenteditable="false"><input onclick=
+      "javascript:rpad.calculatePage()" value="Calculate" type=
+      "button"></span> </p>
+
+<br><br><br><sub>by Tom Short, tshort@epri.com, Copyright 2005. EPRI, license: GNU GPL v2 or greater</sub>
+  </body>
+</html>
+

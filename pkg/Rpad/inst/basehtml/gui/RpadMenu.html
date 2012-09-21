@@ -1,0 +1,31 @@
+<button label="MENU" 
+   	onmouseover="dojo.widget.getWidgetById('mainMenu').open(0,26, null, [0,0])">
+   	Rpad Menu...
+</button>
+<div contentEditable="false">
+<div dojoType="PopupMenu2"  widgetId="mainMenu">
+	<div dojoType="MenuItem2" caption="Calculate" onClick="rpad.calculatePage()" accelKey="F9"></div>
+	<div dojoType="MenuSeparator2"></div>
+	<div dojoType="MenuItem2" caption="Save As..." onClick="rpad.gui.saveAs()"></div>
+	<div dojoType="MenuSeparator2"></div>
+	<div dojoType="MenuItem2" caption="Toggle code visibility" onClick="rpad.gui.toggleVisibility()" accelKey="F2"></div>
+	<div dojoType="MenuItem2" caption="Unhide all code" onClick="rpad.gui.unhideAllCode()"></div>
+	<div dojoType="MenuSeparator2"></div>
+	<div dojoType="MenuItem2" caption="Insert" submenuId="insertMenu"></div>
+	<div dojoType="MenuItem2" caption="Help" submenuId="helpMenu"></div>
+</div>
+
+<div dojoType="PopupMenu2" widgetId="insertMenu">
+	<div dojoType="MenuItem2" caption="Rpad section" onClick="rpad.gui.insertRpad('R')"></div>
+	<div dojoType="MenuItem2" caption="Rpad textarea" onClick="rpad.gui.insertTextarea('R')"></div>
+	<div dojoType="MenuItem2" caption="Rpad input" onClick="rpad.gui.insertInput()"></div>
+	<div dojoType="MenuItem2" caption="Radio button" onClick="rpad.gui.insertRadioButton()"></div>
+	<div dojoType="MenuItem2" caption="Checkbox" onClick="rpad.gui.insertCheckbox()"></div>
+</div>
+<div dojoType="PopupMenu2" widgetId="helpMenu">
+	<div dojoType="MenuItem2" caption="Rpad homepage" onClick="window.open('http://www.rpad.org')"></div>
+	<div dojoType="MenuItem2" caption="R homepage" onClick="window.open('http://www.r-project.org')"></div>
+	<div dojoType="MenuItem2" caption="R function finder" onClick="window.open('R/doc/html/index.html')"></div>
+	<div dojoType="MenuItem2" caption="R documentation" onClick="window.open('SearchRKeywords.Rpad')"></div>
+</div>
+</div>

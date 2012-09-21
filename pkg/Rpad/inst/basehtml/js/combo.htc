@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<public:component xmlns:public="urn:HTMLComponent" lightweight="true" >
+<public:event iid="error" name="onerror" />
+<public:attach event="ondocumentready" handler="DoInit" />
+<script type="text/javascript">
+//<![CDATA[
+
+var gbLoading = true;
+var gValue = "";			// control value
+var sChange = "";
+var gbTypeahead = true;
+var delayedValue = null;
+var gsTabIndex = tabIndex;
+var gTextClassName = "";
+
+var goText = null;
+var goSpan = null;
+var garWidth = 14;
+
+//+----------------------------------------------------------------------------
+//
+//  Function:       DoInit
+//
+//  Description:    Calls functions, set variables, and attaches events to
+//                  initialize behavior
+//
+//  Arguments:      none
+//
+//  Returns:        nothing
+//
+//-----------------------------------------------------------------------------
+function DoInit()
+{
+alert('here');
+	goText = window.document.createElement('<INPUT type="text" ID="' + uniqueID + 'text">');
+	goSpan = window.document.createElement('<SPAN ID="' + uniqueID + 'span">');
+alert('here2');
+
+	this.applyElement(goSpan,"outside");
+
+	goText = goSpan.appendChild(goText);
+	goText.style.position = 'absolute';
+	
+	// create dummy content for a span since it does not render correctly until it has something in it
+	var d = window.document.createElement('<SPAN style="visibility:hidden">');
+	d.innerHTML = "&nbsp;"
+	goSpan.appendChild(d);
+	
+	// move name property to text control so that form submission works
+	goText.name = name;
+	name = "";
+
+	goText.className = gTextClassName;
+	goText.rpad_type = this.rpad_type;
+	goText.disabled = this.disabled;
+
+	if(currentStyle.width=='auto') {
+		goSpan.style.width = offsetWidth;
+	}
+	else
+		goSpan.style.width = currentStyle.width;
+	if(currentStyle.height == 'auto')
+		goSpan.style.height = offsetHeight;
+	else
+		goSpan.style.height= currentStyle.height;
+
+	runtimeStyle.position = 'absolute';
+
+	goSpan.disabled = this.disabled;
+
+	fnOnResize();
+
+	// update textbox with current drop selection
+	fnUpdateCombo();
+
+	OverrideOnchange();	// will attach onclick event
+
+	// Attach the onpropertychange event (after overriding onchange!)
+	//attachEvent("onpropertychange", DoPropChange);
+
+	// attach textbox events
+	goText.attachEvent("onchange", fnOnTextChange);
+	goText.attachEvent("onkeypress", fnOnTextKeypress);
+
+	gbLoading = false;
+
+	if (delayedValue != null)
+		fnPutValue(delayedValue);
+
+	goSpan.attachEvent("onresize", fnOnResize);
+}
+
+function fnGetTextbox()
+{
+	return goText;
+}
+
+function fnGetTextClass()
+{
+	return goText == null ? gTextClassName : goText.className;
+}
+
+function fnPutTextClass(strClassName)
+{
+	gTextClassName = strClassName;
+	if(goText != null) {
+		goText.className = strClassName;
+		goSpan.className = strClassName;
+	}
+}
+
+function fnPutArrowW(arrowWidth)
+{
+	garWidth = parseInt(arrowWidth);
+	if (isNaN(garWidth))
+	{
+		garWidth = 14;
+	}
+}
+
+function fnGetArrowW()
+{
+	return garWidth;
+}
+
+function fnGetTypeahead()
+{
+	return gbTypeahead;
+}
+
+function fnPutTypeahead(bTypeahead)
+{
+	//if(gbLoading) return;
+	if (!isNaN(parseInt(bTypeahead)))
+	{
+		gbTypeahead = (bTypeahead) ? true:false;
+	}
+	else
+	{
+		var sTypeahead = bTypeahead.toString().toLowerCase();
+		switch (sTypeahead)
+		{
+			case "yes":
+			case "true":
+			case "on":
+				gbTypeahead = true;
+				break;
+			default:
+				gbTypeahead = false;
+				break;
+
+		}
+	}
+}
+
+function fnGetValue()
+{
+	return goText!=null ? goText.value:"";
+}
+
+function fnPutValue(value)
+{
+	if(gbLoading) {
+		delayedValue = value;
+		return;
+	}
+
+	goText.value = value;
+
+	//
+	// Loop through OPTION elements until finding one with a value equal to
+	// that specified by the text property.
+	//
+	selectedIndex = -1;
+	for (i=0; i < options.length; i++)
+	{
+		if (options(i).text == value)
+		{
+			 options(i).selected = true;
+			 break;
+		}
+	}
+}
+
+function fnOnTextChange()
+{
+	if (gbLoading) return;
+	value = value;
+	eval(sChange);
+}
+
+function fnOnTextKeypress()
+{
+	if (!gbTypeahead) return;	// nothing to do
+
+	// Current selection is suitable for typeahead
+	// only if end point of current selection matches
+	// end point of textbox range in which case
+	// some rightmost part of the string is going to be replaced
+	var i;
+
+	switch (window.document.selection.type.toLowerCase())
+	{
+		case "text":
+		case "none":
+			break;
+		default:
+			// selection is control
+			return;
+	}
+
+	var selRange = window.document.selection.createRange();
+	var txtRange = goText.createTextRange();
+	if ( 0 != selRange.compareEndPoints("EndToEnd", txtRange) )
+	{
+		// selection is not suitable for typeahead
+		return;
+	}
+
+	// what our string is going to be after character is inserted?
+
+	var uChar = window.event.keyCode;
+	if (uChar == 27 )
+	{
+		// when escape is pressed - restore listbox selection
+		// and get out as  value in the edit box will be restored
+		fnPutValue(goText.value);
+		return;
+	}
+
+	var insertPos;
+	if ( selRange.text != "" )
+	{
+		insertPos = goText.value.lastIndexOf(selRange.text);
+	}
+	else insertPos = goText.value.length;
+
+	var futureText = goText.value.substring(0, insertPos) +
+			String.fromCharCode(uChar);
+
+	futureText = futureText.toLowerCase();
+	var futureLen = futureText.length;
+	var strOption;
+
+	// try to match existing entries in the listbox
+	// and if match exists - fill it in
+	for (i=0; i < options.length; i++)
+	{
+		strOption = options(i).text.toLowerCase();
+		if (strOption.substr(0,futureLen) == futureText)
+		{
+			 // fill in the rest
+			 selRange.text = options(i).text.substring(
+				insertPos,options(i).text.length);
+
+			 // position text range selection to select
+			 // newly inserted text less one character
+			 txtRange.moveStart("character", futureLen );
+			 txtRange.moveEnd("textedit",1);
+
+			 txtRange.select();
+
+			 // select the option
+			 options(i).selected = true;
+
+			 // cancel the default processing for the event by returning false
+			 return false;
+		}
+	}
+
+}
+
+//+----------------------------------------------------------------------------
+//
+//  Function:       DoPropChange
+//
+//  Description:    Handles property changes on CSS and regular property/
+//                  attributes.
+//
+//  Arguments:      none
+//
+//  Returns:        nothing
+//
+//-----------------------------------------------------------------------------
+
+function DoPropChange()
+{
+    var propertyName = window.event.propertyName;
+    if (propertyName.substring(0,5) == "style")
+    {
+    }
+    else
+    {
+        detachEvent("onpropertychange", DoPropChange);
+        switch(propertyName)
+        {
+			case "onchange"					:
+				OverrideOnchange();
+				break;
+
+            default                         :
+                break;
+        }
+        attachEvent("onpropertychange", DoPropChange);
+
+    }
+}
+
+function fnOnListChange()
+{
+	fnUpdateCombo();
+
+	// set focus to edit control and select all text
+	goText.focus();
+
+	//var txtRange = textBox.createTextRange();
+	//txtRange.select();
+	goText.select();
+
+	//txtRange.moveStart("textedit");
+	//txtRange.moveEnd("textedit");
+
+	eval(sChange);
+}
+
+function fnUpdateCombo() {
+
+	var curIdx = selectedIndex;
+
+	if (curIdx != -1) {
+		goText.value = options[curIdx].text;
+	}
+}
+
+//+----------------------------------------------------------------------------
+//
+//  Function:       OverrideOnchange
+//
+//  Description:    Disallows the user from setting the onchange property.
+//					Instead, takes the script intended for the onchange event
+//					on the page and stores it in a variable to be executed
+//					from the HTC.  This approach is required due to the timing
+//					of the onchange event firing from the page - if the page is
+//					utilizing the event, it will get it first and the HTC will
+//					not have had a chance to change the value.
+//
+//  Arguments:      none
+//
+//  Returns:        none
+//
+//-----------------------------------------------------------------------------
+
+
+function OverrideOnchange()
+{
+	if (onchange == null)
+	{
+		sChange = "";
+	}
+	else
+	{
+		// Get the current script for the onchange event (specified on the page)
+		sChange = getAttribute("onchange");
+		sChange = sChange.toString();
+		sChange = sChange.substring(23, sChange.length-2);
+	}
+
+	// Set the onchange event
+	onchange = fnOnListChange;
+}
+
+
+//+----------------------------------------------------------------------------
+//
+//  Function:       ReturnError
+//
+//  Description:    Fires the error event, along with a descriptive text
+//                  message.
+//
+//  Arguments:      sMsg - descriptive text message
+//
+//  Returns:        nothing
+//
+//-----------------------------------------------------------------------------
+
+function ReturnError(sMsg)
+{
+    var oEvent = createEventObject();
+    oEvent.setAttribute("error", sMsg);
+    error.fire(oEvent);
+}
+
+function fnOnResize()
+{
+	if (!gbLoading)
+		goSpan.detachEvent("onresize", fnOnResize);
+
+	var arWidth = fnGetArrowW();
+
+	runtimeStyle.width = goSpan.offsetWidth;
+	runtimeStyle.height = goSpan.offsetHeight;
+	runtimeStyle.clip = 'rect(auto auto auto ' + (goSpan.offsetWidth - arWidth - 1) + ')';
+	//runtimeStyle.setExpression("left", uniqueID + "span.currentStyle.offsetLeft");
+	//runtimeStyle.setExpression("top", uniqueID + "span.currentStyle.offsetTop");
+
+	goText.style.height = goSpan.offsetHeight;
+	goText.style.width = (goSpan.offsetWidth > arWidth ? goSpan.offsetWidth - arWidth: 0) + "px";
+
+	//goText.style.setExpression("left", uniqueID + "span.currentStyle.offsetLeft");
+	//goText.style.setExpression("top", uniqueID + "span.currentStyle.offsetTop");
+
+	// remove combo from tab order
+	goText.tabIndex = gsTabIndex;
+	tabIndex = -1;
+	goText.zIndex = 1;
+
+	if (!gbLoading)
+		goSpan.attachEvent("onresize", fnOnResize);
+}
+//]]>
+</script>
+</public:component>

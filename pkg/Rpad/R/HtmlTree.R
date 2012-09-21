@@ -46,6 +46,7 @@
   if (length(x) > 0) str <- " " else str <- ""
   for (i in seq(along = x))
     str <- paste(str, names[i], "=", jsQuote(x[[i]]), " ", sep = "")
+  return(str)
 }
 
 "print.HtmlTree" <- function(x, file = "", ...)

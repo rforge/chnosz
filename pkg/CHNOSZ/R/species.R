@@ -90,8 +90,8 @@ species <- function(species=NULL, state=NULL, delete=FALSE, index.return=FALSE) 
   # if no species are given use all of them if available
   if(is.null(species) & !is.null(thermo$species)) species <- 1:nrow(thermo$species)
 
-  if(length(species) > length(state)) state <- rep(state,length.out=length(species)) else 
-  if(length(state) > length(species)) species <- rep(species,length.out=length(state))
+  if(length(species) > length(state) & !is.null(state)) state <- rep(state,length.out=length(species)) else 
+  if(length(state) > length(species) & !is.null(species)) species <- rep(species,length.out=length(state))
 
   # if they don't look like states (aq,gas,cr) or activities (numeric), 
   # use them as a suffix for species name (e.g., a protein-organism)

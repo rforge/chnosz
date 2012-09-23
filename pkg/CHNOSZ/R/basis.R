@@ -137,13 +137,13 @@ basis <- function(species=NULL, state=NULL, logact=NULL, delete=FALSE) {
   if(!length(unique(species))==length(species)) stop("species names are not unique")
   ## processing 'state' and 'logact' arguments
   # they should be same length as species
-  state <- rep(state, length.out=length(species))
-  logact <- rep(logact, length.out=length(species))
+  if(!is.null(state)) state <- rep(state, length.out=length(species))
+  if(!is.null(logact)) logact <- rep(logact, length.out=length(species))
   # results should be identical for
   # basis(c('H2O','CO2','H2'), rep('aq',3), c(0,-3,-3))
   # basis(c('H2O','CO2','H2'), c(0,-3,-3), rep('aq',3))
   # first of all, do we have a third argument?
-  if(!is.null(logact[1])) {
+  if(!is.null(logact)) {
     # does the 3rd argument look like states?
     if(is.character(logact[1])) {
       # swap the arguments into their correct places

@@ -426,11 +426,13 @@ A.ionization <- function(iprotein, vars, vals, T=thermo$opt$Tr, P="Psat", pH=7, 
     # what are the values of ionization affinity for this protein
     thisA <- A[, i]
     # apply the dimensions of T-P-pH
-    thisA <- array(thisA, TPpHdim)
+    tpphdim <- TPpHdim
+    if(length(tpphdim)==0) tpphdim <- 1
+    thisA <- array(thisA, tpphdim)
     # grow into the dimensions of all vars
-    thisA <- array(thisA, c(TPpHdim, otherdim))
-    # even if we're in zero dimensions, we're still a point
-    if(is.null(dim(thisA))) dim(thisA) <- 1
+    alldim <- c(TPpHdim, otherdim)
+    if(length(alldim)==0) alldim <- 1
+    thisA <- array(thisA, alldim)
     # now permute the array to put dimensions in same order as the variables
     thisA <- aperm(thisA, perm)
     # store in output list

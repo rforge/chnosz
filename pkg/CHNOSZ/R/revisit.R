@@ -244,7 +244,10 @@ revisit <- function(d, target="cv", loga.ref=NULL,
   } else if(target.lower=="dgt") {
     # Gibbs energy of transformation to the observed assemblage 
     actarr <- list2array(logact)
-    Astararr <- list2array(d$Astar)
+    # select species, vectorize, then put the Astar values into an array
+    Astar <- d$Astar[ispecies]
+    for(i in 1:ns) Astar[[i]] <- as.vector(Astar[[i]])
+    Astararr <- list2array(Astar)
     Gfun <- function(i, actarr, Astararr) {
       loga.equil <- actarr[i, ]
       Astar <- Astararr[i, ]

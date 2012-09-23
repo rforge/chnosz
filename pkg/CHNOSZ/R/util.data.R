@@ -52,9 +52,8 @@ mod.obigt <- function(...) {
   if(length(inew) > 0) {
     # the right number of blank rows of thermo$obigt
     newrows <- thermo$obigt[1:length(inew), ]
-    # missing values are NA for character, 0 for numeric
-    newrows[, 1:6] <- NA
-    newrows[, 7:20] <- 0
+    # if we don't know something it's NA
+    newrows[] <- NA
     # put in a default state
     newrows$state <- thermo$opt$state
     # fill in the columns

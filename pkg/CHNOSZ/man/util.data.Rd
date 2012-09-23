@@ -48,7 +48,14 @@
 
   \code{add.obigt} reads data from the specified \code{file} and adds it to \code{\link{thermo}$obigt}. Set \code{force} to TRUE to replace species that exist in the thermodynamic database (each unique combination of a name and a state in the database is considered to be a unique species). \code{force}, if not specified, reverts to TRUE if the \code{file} is left at its default. Given the default setting of \code{E.units}, the function does not perform any unit conversions. If \code{E.units} is set to \samp{J}, then the thermodynamic parameters are converted from units of Joules to calories, as used in the CHNOSZ database. 
 
-  \code{mod.obigt} changes one or more of the properties of one or more species or adds species to the thermodynamic database. These changes are lost if you reload the database by calling \code{\link{data}(thermo)} or if you quit the \R session without saving it. The name of the species to add or change must be supplied as the first argument of \code{...} or as a named argument (named \samp{name}). When adding new species, a \code{formula} should be included \code{state} should also be included along with the values of any of the thermodynamic properties. Additional arguments refer to the name of the property(s) to be updated and are matched to any part of compound column names in \code{\link{thermo}$obigt}, such as \samp{z.T}. The values provided should be in the units specifed in the documentation for the \code{thermo} data object, including any order-of-magnitude scaling factors. When adding species, properties that are not specified become NA.
+\code{mod.obigt} changes one or more of the properties of species or adds species to the thermodynamic database.
+These changes are lost if you reload the database by calling \code{\link{data}(thermo)} or if you quit the \R session without saving it.
+The name of the species to add or change must be supplied as the first argument of \code{...} or as a named argument (named \samp{name}).
+When adding new species, a \samp{formula} should be included along with the values of any of the thermodynamic properties.
+Additional arguments refer to the name of the property(s) to be updated and are matched to any part of compound column names in \code{\link{thermo}$obigt}, such as \samp{z} or \samp{T} in \samp{z.T}.
+Unless \samp{state} is specified as one of the properties, its value is taken from \code{thermo$opt$state}.
+When adding species, properties that are not specified become NA (except for \samp{state}).
+The values provided should be in the units specifed in the documentation for the \code{thermo} data object, including any order-of-magnitude scaling factors.
 
   \code{today} returns the current date in the format adopted for \code{thermo$obigt} (inherited from SUPCRT-format data files) e.g. \samp{13.May.12} for May 13, 2012.
 

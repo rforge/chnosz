@@ -98,6 +98,7 @@ longex <- function(which=c("sources", "NaCl", "copper", "cordierite",
     P <- c(list("Psat"), as.list(seq(500, 4000, by=500)))
     # for each of those what's the range of temperature
     T <- list()
+    # T > 350 degC at Psat is possibly inappropriate; see "Warning" of subcrt.Rd 
     T[[1]] <- seq(0, 370, 5)
     T[[2]] <- seq(265, 465, 5)
     T[[3]] <- seq(285, 760, 5)
@@ -113,8 +114,6 @@ longex <- function(which=c("sources", "NaCl", "copper", "cordierite",
       Texpt <- expt$T[iexpt]
       logK <- c(logK, splinefun(s$out$T, s$out$logK)(Texpt))
     }
-    # FIXME: if there are zig-zags in the lines, those
-    # are discontinuities in the EoS code
     legend("bottomleft",pch=unique(expt$pch),
       legend=c(unique(expt$source),tail(expt$source,1)))
     title(main=paste("NaCl(aq) = Na+ + Cl-\n",

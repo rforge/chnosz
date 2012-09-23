@@ -44,10 +44,18 @@
 
   The parameters in the \code{cgl} equations of state for crystalline, gas and liquid species (except liquid water) include \code{V}, \code{a}, \code{b}, \code{c}, \code{d}, \code{e}, \code{f} and \code{lambda}. The terms denoted by \code{a}, \code{b} and \code{c} correspond to the Maier-Kelley equation for heat capacity (Maier and Kelley, 1932); the additional terms are useful for representing heat capacities of minerals (Robie and Hemingway, 1995) and gaseous or liquid organic species (Helgeson et al., 1998). The standard molal volumes (\samp{V}) of species in these calculations are taken to be independent of temperature and pressure.
 
-  The temperature and pressure range of validity of the revised HKF equations of state for aqueous species corresponds to the stability region of liquid water or the supercritical fluid at conditions between 0 to 1000 \eqn{^{\circ}}{degrees }C and 1 to 5000 bar (Tanger and Helgeson, 1988; Shock and Helgeson, 1988). The \code{hkf} function does not check these limits and will compute properties as long as the requisite electrostatic properties of water are available. There are conceptually no temperature limits (other than 0 Kelvin) for the validity of the \code{cgl} equations of state. However, the actual working upper temperature limits correspond to the temperatures of phase transitions of minerals or to those temperatures beyond which extrapolations from experimental data become untenable. These temperature limits are stored in the thermodynamic database, but \code{cgl} ignores them (\code{\link{subcrt}} warns if they are exceeded).
+For both \code{hkf} and \code{cgl}, if at least one equations-of-state parameter for a species is provided, any NA values of the other parameters are reset to zero.
+If all equations-of-state parameters are NA, but values of \samp{Cp} and/or \samp{V} are available, those values are used in the integration of \samp{G}, \samp{H} and \samp{S} as a function of temperature. 
 
-  The \code{T} and \code{P} arguments (and \code{rhohat}, \code{Tc}, \code{alpha}, \code{daldT}, \code{beta} for \code{gfun}) should all be the same length; the functions do no argument validating. An error produced by \code{gfun} for multiple values of \code{T} but only one \code{P} was \dQuote{NAs are not allowed in subscripted assignments}.
+The \code{T} and \code{P} arguments (and \code{rhohat}, \code{Tc}, \code{alpha}, \code{daldT}, \code{beta} for \code{gfun}) should all be the same length; the functions perform no argument validating.
 
+}
+
+\section{Warning}{
+The temperature and pressure range of validity of the revised HKF equations of state for aqueous species corresponds to the stability region of liquid water or the supercritical fluid at conditions between 0 to 1000 \eqn{^{\circ}}{degrees }C and 1 to 5000 bar (Tanger and Helgeson, 1988; Shock and Helgeson, 1988).
+The \code{hkf} function does not check these limits and will compute properties as long as the requisite electrostatic properties of water are available. There are conceptually no temperature limits (other than 0 Kelvin) for the validity of the \code{cgl} equations of state.
+However, the actual working upper temperature limits correspond to the temperatures of phase transitions of minerals or to those temperatures beyond which extrapolations from experimental data become highly uncertain.
+These temperature limits are stored in the thermodynamic database for some minerals, but \code{cgl} ignores them; however, \code{\link{subcrt}} warns if they are exceeded.
 }
 
 \value{

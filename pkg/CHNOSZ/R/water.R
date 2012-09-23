@@ -694,23 +694,22 @@ water.SUPCRT92 <- function(property,T=298.15,P=1,isat=0) {
     for(i in 1:length(T)) {
       states[1] <- Tc[i]
       states[2] <- P[i]
-      if(NaN %in% c(Tc[i],P[i])) {
+      if(any(is.na(c(Tc[i],P[i])))) {
+        # if T or P is NA, all properties are NA
         w <- matrix(rep(NA,23),nrow=1)
         w.out[i,] <- w
         p.out[i] <- NA
         rho.out[i] <- NA
-        if(isat) err <- 0 else err <- 1
-        err.out[i] <- err
       } else {
         inc <- 0
-        t <- .Fortran('H2O92',as.integer(specs),as.double(states),
+        h2o <- .Fortran('H2O92',as.integer(specs),as.double(states),
           as.double(rep(0,46)),as.integer(0),PACKAGE='CHNOSZ')
         # errors
-        err <- t[[4]]
+        err <- h2o[[4]]
         err.out[i] <- err
         # density
-        rho <- t[[2]][3]
-        rho2 <- t[[2]][4]
+        rho <- h2o[[2]][3]
+        rho2 <- h2o[[2]][4]
         if(rho2 > rho) {
           # liquid is denser than vapor
           rho <- rho2 
@@ -719,15 +718,16 @@ water.SUPCRT92 <- function(property,T=298.15,P=1,isat=0) {
         }
         rho.out[i] <- rho
         # most of the properties we're interested in
-        w <- t(t[[3]][iprop+inc])
+        w <- t(h2o[[3]][iprop+inc])
         if(err==1) w[1,] <- NA
         # update the ith row of the output matrix
         w.out[i,] <- w
         # Psat
         if(isat | 'psat' %in% tolower(property)) {
-          p <- t[[2]][2]
-          #if(T[i] < 373.124) p <- 1
-          if(p < 1) p <- 1
+          p <- h2o[[2]][2]
+          p[p==0] <- NA
+          # Psat specifies P=1 below 100 degC
+          p[p < 1] <- 1
           p.out[i] <- p
         } else {
           p.out[i] <- P[i]
@@ -754,8 +754,8 @@ water.SUPCRT92 <- function(property,T=298.15,P=1,isat=0) {
       if(isat) msgout(paste("water.SUPCRT92: error",plural2," calculating ",
         nerr," of ",length(T)," point",plural,"; for Psat we need T < 647.067 K\n",sep=""))
       else msgout(paste("water.SUPCRT92: error",plural2," calculating ",nerr,
-        " of ",length(T)," point",plural,"; T and/or P are NA, ",
-        "or T < Tfusion@P, T > 2250 degC, or P > 30kb.\n",sep=""))
+        " of ",length(T)," point",plural,
+        "; T < Tfusion@P, T > 2250 degC, or P > 30kb.\n",sep=""))
         # that last bit is taken from SUP92D.f in the SUPCRT92 distribution
     }
   } else {

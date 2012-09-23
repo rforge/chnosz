@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 0.9-7.98 (2012-09-20)
+CHANGES IN CHNOSZ 0.9-7.98 (2012-09-23)
 ---------------------------------------
 
 SIGNIFICANT USER-VISIBLE CHANGES:
@@ -113,6 +113,9 @@ OTHER CHANGES TO FUNCTIONS:
   (density) columns if there is more than one T-P point ... makes
   unlist()ing the results easier (used in element.mu() and 
   basis.logact()).
+
+- subcrt() now outputs NA values for properties at temperatures above
+  the critical temperature of H2O, when Psat is being used.
 
 - New function i2A() for generating a stoichiometric matrix from indices
   of species in the thermodynamic database.

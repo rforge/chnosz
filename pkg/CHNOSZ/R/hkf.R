@@ -45,6 +45,16 @@ hkf <- function(property=NULL,T=298.15,P=1,ghs=NULL,eos=NULL,contrib=c('n','s','
   # loop over each species
   GHS <- ghs[k,]
   EOS <- eos[k,]
+  # substitute Cp and V for missing EoS parameters
+  # here we assume that the parameters are in the same position as in thermo$obigt
+  # put the heat capacity in for c1 if both c1 and c2 are missing
+  if(all(is.na(EOS[, 17:18]))) EOS[, 17] <- EOS$Cp
+  # put the volume in for a1 if a1, a2, a3 and a4 are missing
+  if(all(is.na(EOS[, 13:16]))) EOS[, 13] <- convert(EOS$V, "calories")
+  # test for availability of the EoS parameters
+  hasEOS <- any(!is.na(EOS[, 13:20]))
+  # if at least one of the EoS parameters is available, zero out any NA's in the rest
+  if(hasEOS) EOS[, 13:20][, is.na(EOS[, 13:20])] <- 0
   # compute values of omega(P,T) from those of omega(Pr,Tr)
   # using g function etc. (Shock et al., 1992 and others)
   omega <- EOS$omega  # omega.PrTr
@@ -82,31 +92,33 @@ hkf <- function(property=NULL,T=298.15,P=1,ghs=NULL,eos=NULL,contrib=c('n','s','
           p.a <- EOS$a1*(P-Pr) + EOS$a2*log((Psi+P)/(Psi+Pr)) + 
             ((2*T-Theta)/(T-Theta)^2)*(EOS$a3*(P-Pr)+EOS$a4*log((Psi+P)/(Psi+Pr)))
           p <- p.c + p.a
-        }
-        if(prop=="s") {
+        } else if(prop=="s") {
           p.c <- EOS$c1*log(T/Tr) - 
             (EOS$c2/Theta)*( 1/(T-Theta)-1/(Tr-Theta) + 
             log( (Tr*(T-Theta))/(T*(Tr-Theta)) )/Theta )
           p.a <- (T-Theta)^(-2)*(EOS$a3*(P-Pr)+EOS$a4*log((Psi+P)/(Psi+Pr)))
           p <- p.c + p.a
-        }
-        if(prop=="g") {
+        } else if(prop=="g") {
           p.c <- -EOS$c1*(T*log(T/Tr)-T+Tr) - 
             EOS$c2*( (1/(T-Theta)-1/(Tr-Theta))*((Theta-T)/Theta) - 
             (T/Theta^2)*log((Tr*(T-Theta))/(T*(Tr-Theta))) )
           p.a <- EOS$a1*(P-Pr) + EOS$a2*log((Psi+P)/(Psi+Pr)) + 
             (EOS$a3*(P-Pr) + EOS$a4*log((Psi+P)/(Psi+Pr)))/(T-Theta)
           p <- p.c + p.a
-        }
         # nonsolvation cp v kt e equations
-        if(prop=='cp') p <- EOS$c1 + EOS$c2 * ( T - Theta ) ^ (-2)        
-        if(prop=='v') p <- convert(EOS$a1,'cm3bar') + 
-          convert(EOS$a2,'cm3bar') / ( Psi + P) +
-          ( convert(EOS$a3,'cm3bar') + convert(EOS$a4,'cm3bar') / ( Psi + P ) ) / ( T - Theta)
-        if(prop=='kt') p <- ( convert(EOS$a2,'cm3bar') + 
-          convert(EOS$a4,'cm3bar') / (T - Theta) ) * (Psi + P) ^ (-2)
-        if(prop=='e') p <- convert( - ( EOS$a3 + EOS$a4 / convert((Psi + P),'calories') ) * 
-          (T - Theta) ^ (-2),'cm3bar')
+        } else if(prop=='cp') {
+          p <- EOS$c1 + EOS$c2 * ( T - Theta ) ^ (-2)        
+        } else if(prop=='v') {
+          p <- convert(EOS$a1,'cm3bar') + 
+            convert(EOS$a2,'cm3bar') / ( Psi + P) +
+            ( convert(EOS$a3,'cm3bar') + convert(EOS$a4,'cm3bar') / ( Psi + P ) ) / ( T - Theta)
+        } else if(prop=='kt') {
+          p <- ( convert(EOS$a2,'cm3bar') + 
+            convert(EOS$a4,'cm3bar') / (T - Theta) ) * (Psi + P) ^ (-2)
+        } else if(prop=='e') {
+          p <- convert( - ( EOS$a3 + EOS$a4 / convert((Psi + P),'calories') ) * 
+            (T - Theta) ^ (-2),'cm3bar')
+        }
       }
       if( icontrib=="s") {
         # solvation ghs equations
@@ -164,7 +176,7 @@ gfun <- function(rhohat, Tc, P, alpha, daldT, beta) {
   out0 <- numeric(length(rhohat))
   out <- list(g=out0, dgdT=out0, d2gdT2=out0, dgdP=out0)
   # only rhohat less than 1 will give results other than zero
-  idoit <- rhohat < 1
+  idoit <- rhohat < 1 & !is.na(rhohat)
   rhohat <- rhohat[idoit]
   Tc <- Tc[idoit]
   P <- P[idoit]
@@ -196,6 +208,8 @@ gfun <- function(rhohat, Tc, P, alpha, daldT, beta) {
     ( af2 * (1000 - P) ^ 3 + af3 * (1000 - P) ^ 4 ) 
   # limits of the f function (region II of Fig. 6)
   ifg <- Tc > 155 & P < 1000 & Tc < 355
+  # in case any T or P are NA
+  ifg <- ifg & !is.na(ifg)
   # Eq. 32
   g[ifg] <- g[ifg] - f[ifg]
   ## now we have g at P, T

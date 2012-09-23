@@ -41,7 +41,7 @@ expr.species <- function(species, state="", log="", value=NULL) {
   }
   # write logarithm of activity or fugacity
   if(log != "") {
-    if(log %in% c("aq", "cr", "liq")) acity <- "a"
+    if(log %in% c("aq", "cr", "liq", "cr1", "cr2", "cr3", "cr4")) acity <- "a"
     else if(log %in% c("g", "gas")) acity <- "f"
     else stop(paste("'",log,"' is not a recognized state", sep=""))
     logacity <- substitute(log*italic(a), list(a=acity))

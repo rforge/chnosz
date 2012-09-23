@@ -86,7 +86,8 @@ info.character <- function(species, state=NULL, check.protein=TRUE) {
   if(length(ispecies) > length(ispecies.out)) {
     ispecies.other <- ispecies[!ispecies %in% ispecies.out]
     othertext <- paste(thermo$obigt$state[ispecies.other], collapse=", ")
-    msgout("info.character: ", species, " also available in ", othertext, "\n")
+    msgout("info.character: found ", species, "(", thermo$obigt$state[ispecies.out], 
+      "), also available in ", othertext, "\n")
   }
   return(ispecies.out)
 }

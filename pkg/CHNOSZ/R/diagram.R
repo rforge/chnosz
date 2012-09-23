@@ -114,6 +114,7 @@ diagram <- function(affinity,what="logact",ispecies=NULL,balance=NULL,
     residue <- TRUE
   if(is.null(balance)) {
     ib <- which.balance(affinity$species)
+    if(length(ib)==0) stop("a shared basis species is not present in all formation reactions")
     if(!is.null(ib)) {
       balance <- rownames(basis())[ib[1]]
       nbalance <- affinity$species[,ib[1]]

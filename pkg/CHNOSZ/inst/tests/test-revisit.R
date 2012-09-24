@@ -29,7 +29,7 @@ test_that("target calculations give expected results", {
   expect_equal(r.logact$ix, 71)
 })
 
-test_that("DGT target gives zero at equilibrium and >0 not at equilibrium", {
+test_that("DGxf target gives zero at equilibrium and >0 not at equilibrium", {
   # let's use n-alkanes
   basis(c("CH4", "H2"), c("gas", "gas"))
   species(c("methane", "ethane", "propane", "n-butane"), "liq")
@@ -38,22 +38,22 @@ test_that("DGT target gives zero at equilibrium and >0 not at equilibrium", {
   d <- diagram(a, plot.it=FALSE)
   # the reference equilibrium distribution at logfH2 = -7.5
   loga.ref <- list2array(d$logact)[51, ]
-  # calculate the DGT/RT relative to the reference distribution
+  # calculate the DGxf/RT relative to the reference distribution
   # (we use swap12 so that the reference distribution is the initial one)
-  r <- revisit(d, "DGT", loga.ref=loga.ref, DGT.swap12=TRUE, plot.it=FALSE)
+  r <- revisit(d, "DGxf", loga.ref=loga.ref, DGxf.swap12=TRUE, plot.it=FALSE)
   # we should find a minimum of zero at logfH2 = -7.5
   expect_equal(min(r$H), 0)
   expect_equal(a$xvals[which.min(r$H)], -7.5)
-  # we can also call the DGT function directly
+  # we can also call the DGxf function directly
   # again with reference distribution as the initial one, 
   # but this time the Astar is kept constant (for logfH2 = -7.5)
   Astar <- list2array(d$Astar)[51, ]
-  DGT.out <- numeric()
+  DGxf.out <- numeric()
   for(i in 1:length(a$xvals)) {
     loga.equil <- list2array(d$logact)[i, ]
-    DGT.out <- c(DGT.out, DGT(loga.ref, loga.equil, Astar))
+    DGxf.out <- c(DGxf.out, DGxf(loga.ref, loga.equil, Astar))
   }
   # we should find a minimum of zero at logfH2 = -7.5
-  expect_equal(min(DGT.out), 0)
-  expect_equal(a$xvals[which.min(DGT.out)], -7.5)
+  expect_equal(min(DGxf.out), 0)
+  expect_equal(a$xvals[which.min(DGxf.out)], -7.5)
 })

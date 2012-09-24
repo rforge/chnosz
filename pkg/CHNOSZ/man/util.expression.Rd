@@ -53,9 +53,13 @@
      \samp{0} \tab degree sign (standard-state property) \cr
      \samp{f} \tab subscript italic f (property of formation) \cr
      \samp{r} \tab subscript italic r (property of reaction) \cr
+     \samp{x} \tab subscript italic x (property of transformation, xf) \cr
   }
 
-Every other character that is one of the \code{\link{letters}} or \code{\link{LETTERS}} in the description of the property is italicized in the expression; other characters such as numerals or mathematical operators are shown without any special formatting. Special cases for the \code{property} argument (\samp{logK}, \samp{Eh}, \samp{pH}, \samp{pe}, \samp{IS} and \samp{ZC}) are interpreted as simple expressions, and are not parsed according to the above rules.
+A \samp{0} gets interpreted as a degree sign only if it does not immediately follow a number (so that e.g. \samp{2.303} can be included in an expression).
+
+Every other character that is one of the \code{\link{letters}} or \code{\link{LETTERS}} in the description of the property is italicized in the expression; other characters such as numerals or mathematical operators are shown without any special formatting.
+Special cases for the \code{property} argument (\samp{logK}, \samp{Eh}, \samp{pH}, \samp{pe}, \samp{IS} and \samp{ZC}) are interpreted as simple expressions, and are not parsed according to the above rules.
 
   \code{expr.units} returns an expression for the units, based on one or more characters appearing in the \code{property}:
 

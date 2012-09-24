@@ -34,6 +34,9 @@ expr.species <- function(species, state="", log="", value=NULL) {
     }
   }
   # write a designation of physical state
+  # use the state given in log if it's a gas or charged aqueous species
+  if(log %in% c("g", "gas")) state <- "g"
+  if("Z" %in% names(elements)) state <- log
   if(state != "") {
     # subscript it if we're not in a log expression
     if(log != "") expr <- substitute(a*group('(',italic(b),')'),list(a=expr, b=state))
@@ -70,23 +73,27 @@ expr.property <- function(property) {
   if(property=="IS") return(expression(IS))
   if(property=="ZC") return(expression(bar(italic(Z))[C]))
   # process each character in the property abbreviation
+  prevchar <- character()
   for(i in 1:length(propchar)) {
+    if(i > 1) prevchar <- thischar
     thischar <- propchar[i]
     # D for greek Delta
     # A for bold A (affinity)
     # p for subscript italic P (in Cp)
-    # 0 for degree sign
-    # r for subscript italic r (property of reaction)
+    # 0 for degree sign (but not immediately following a number e.g. 2.303)
     # f for subscript italic f (property of formation)
+    # r for subscript italic r (property of reaction)
+    # x for subscript italic x (xf - property of transformation)
     # all other letters are italicized
     if(thischar %in% c(letters, LETTERS)) thisexpr <- substitute(italic(a), list(a=thischar))
     else thisexpr <- substitute(a, list(a=thischar))
     if(thischar=='D') thisexpr <- substitute(Delta)
     if(thischar=='A') thisexpr <- substitute(bold(A))
     if(thischar=='p') thisexpr <- substitute(a[italic(P)], list(a=""))
-    if(thischar=='0') thisexpr <- substitute(degree)
+    if(thischar=='0' & !can.be.numeric(prevchar)) thisexpr <- substitute(degree)
     if(thischar=='f') thisexpr <- substitute(a[italic(f)], list(a=""))
     if(thischar=='r') thisexpr <- substitute(a[italic(r)], list(a=""))
+    if(thischar=='x') thisexpr <- substitute(a[italic(x)], list(a=""))
     # put it together
     expr <- substitute(a*b, list(a=expr, b=thisexpr))
   }

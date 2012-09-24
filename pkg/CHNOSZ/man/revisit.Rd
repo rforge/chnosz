@@ -14,7 +14,7 @@
     ispecies = NULL, add = FALSE, cex = par("cex"), lwd = par("lwd"), 
     mar = NULL, side = 1:4, xlim = NULL, labcex = 0.6, pch = 1, 
     legend = "", legend.x = NULL, lpch = NULL, main = NULL, 
-    lograt.ref = NULL, plot.ext = TRUE, DGT.swap12 = FALSE)
+    lograt.ref = NULL, plot.ext = TRUE, DGxf.swap12 = FALSE)
   extremes(z, target)
   where.extreme(z, target, do.sat = FALSE)
 }
@@ -44,7 +44,7 @@
   \item{plot.ext}{logical, show the location of the extreme value(s)?}
   \item{z}{numeric, matrix of values}
   \item{do.sat}{logical, identify multiple extreme values? }
-  \item{DGT.swap12}{logical, swap order of initial and final states?}
+  \item{DGxf.swap12}{logical, swap order of initial and final states?}
 }
 
 \details{
@@ -62,7 +62,7 @@
     \samp{pearson} \tab Pearson correlation coefficient \tab max \tab \code{loga.ref} \cr
     \samp{count} \tab count of species above a certain activity \tab max \tab \code{loga.ref} \cr
     \samp{logact} \tab logarithm of activity of a single species \tab max \tab \code{loga.ref} \cr
-    \samp{DGT} \tab Gibbs energy of transformation of the system \tab min \tab {loga.ref} \cr
+    \samp{DGxf} \tab Gibbs energy of transformation of the system \tab min \tab {loga.ref} \cr
   }
 
   \code{sd}, \code{cv}, \code{shannon} and \code{qqr} all operate on the logarithms of activities of species. 
@@ -71,7 +71,7 @@
 
   \code{richness} counts the numbers of species whose logarithms of activities are above the single value of \code{loga.ref}. \code{logact} simply operates on the logarithm of activity of a single species (as supplied in \code{d}); \code{loga.ref} in this case is an integer value referring to the number of the species in the list in \code{d}. 
 
-  \code{DGT} is the change in Gibbs energy of a system undergoing transformation among species of interest at constant T, P and chemical potentials of basis species. See \code{\link{DGT}} for the equation that is used. The transformation is from an initial state (the equilibrium values in \code{d}) to a final state (the values given in \code{loga.ref}); setting \code{DGT.swap12} reverses the order, so that the equilibrium state is the final state. Unlike the other targets, \code{DGT} also depends on the values of the starved affinity (\code{Astar}) that are returned by \code{\link{diagram}}.
+  \code{DGxf} is the change in Gibbs energy of a system undergoing transformation among species of interest at constant T, P and chemical potentials of basis species. See \code{\link{DGxf}} for the equation that is used. The transformation is from an initial state (the equilibrium values in \code{d}) to a final state (the values given in \code{loga.ref}); setting \code{DGxf.swap12} reverses the order, so that the equilibrium state is the final state. Unlike the other targets, \code{DGxf} also depends on the values of the starved affinity (\code{Astar}) that are returned by \code{\link{diagram}}.
 
   Toether with the results of the calculation of the \code{target}, the function returns the position (in as many dimensions as the input values) and value of the extremum of the target value -- either the minimum or maximum, as indicated in the table.
 

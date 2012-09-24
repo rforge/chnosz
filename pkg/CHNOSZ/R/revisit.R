@@ -5,7 +5,7 @@
 where.extreme <- function(z, target, do.sat=FALSE) {
   if(missing(target)) stop("no target specified")
   # are we interested in a maximum or minimum?
-  if(tolower(target) %in% c("sd", "sd.log", "cv", "cv.log", "rmsd", "cvrmsd", "dgt"))
+  if(tolower(target) %in% c("sd", "sd.log", "cv", "cv.log", "rmsd", "cvrmsd", "dgxf"))
     myext <- "minimum" else myext <- "maximum"
   # do we care about the sign of the index?
   if(tolower(target) %in% c("sd", "sd.log", "cv", "cv.log", "rmsd", "cvrmsd")) 
@@ -40,7 +40,7 @@ where.extreme <- function(z, target, do.sat=FALSE) {
 extremes <- function(z, target) {
   if(missing(target)) stop("no target specified")
   # are we interested in a maximum or minimum?
-  if(tolower(target) %in% c("sd", "sd.log", "cv", "cv.log", "rmsd", "cvrmsd", "dgt")) 
+  if(tolower(target) %in% c("sd", "sd.log", "cv", "cv.log", "rmsd", "cvrmsd", "dgxf")) 
     myext <- "minimum" else myext <- "maximum"
   # do we care about the sign of the index?
   if(tolower(target) %in% c("sd", "sd.log", "cv", "cv.log", "rmsd", "cvrmsd")) 
@@ -64,7 +64,7 @@ extremes <- function(z, target) {
 revisit <- function(d, target="cv", loga.ref=NULL,
   plot.it=NULL, col=par("fg"), yline=2, ylim=NULL, ispecies=NULL, add=FALSE,
   cex=par("cex"), lwd=par("lwd"), mar=NULL, side=1:4, xlim=NULL, labcex=0.6,
-  pch=1, legend="", legend.x=NULL, lpch=NULL, main=NULL, lograt.ref=NULL, plot.ext=TRUE, DGT.swap12=FALSE) {
+  pch=1, legend="", legend.x=NULL, lpch=NULL, main=NULL, lograt.ref=NULL, plot.ext=TRUE, DGxf.swap12=FALSE) {
   # calculate and plot diversity indices of relative abundances
   # 20090316 jmd
   # d can be the output from diagram (enables plotting)
@@ -88,7 +88,7 @@ revisit <- function(d, target="cv", loga.ref=NULL,
   }
   # check that all needed arguments are present
   target.lower <- tolower(target)
-  if(target.lower %in% c("richness", "cvrmsd", "spearman", "pearson", "logact", "dgt") & is.null(loga.ref))
+  if(target.lower %in% c("richness", "cvrmsd", "spearman", "pearson", "logact", "dgxf") & is.null(loga.ref))
     stop(paste("for '", target, "' target, loga.ref must be supplied", sep=""))
   # take a subset (or all) of the species
   if(is.null(ispecies)) ispecies <- 1:length(logact)
@@ -117,7 +117,7 @@ revisit <- function(d, target="cv", loga.ref=NULL,
   # "spearman" spearman correlation coefficient
   # "pearson" pearson correlation coefficient
   # "logact" maximize the activity of a species
-  # "DGT" minimize the Gibbs energy of transformation
+  # "DGxf" minimize the Gibbs energy of transformation
   
   # vectorize the entries in the logact list
   for(i in 1:ns) {
@@ -241,7 +241,7 @@ revisit <- function(d, target="cv", loga.ref=NULL,
     # where the activity of a species is maximal
     H <- logact[[loga.ref]]
 
-  } else if(target.lower=="dgt") {
+  } else if(target.lower=="dgxf") {
     # Gibbs energy of transformation to the observed assemblage 
     actarr <- list2array(logact)
     # select species, vectorize, then put the Astar values into an array
@@ -254,8 +254,8 @@ revisit <- function(d, target="cv", loga.ref=NULL,
       # direction of transformation:
       # swap12=FALSE: loga.equil(Astar) --> loga.ref
       # swap12=TRUE:  loga.ref(Astar) --> loga.equil
-      if(DGT.swap12) out <- -DGT(loga.ref, loga.equil, Astar)
-      else out <- DGT(loga.equil, loga.ref, Astar)
+      if(DGxf.swap12) out <- -DGxf(loga.ref, loga.equil, Astar)
+      else out <- DGxf(loga.equil, loga.ref, Astar)
       return(out)
     }
     H <- as.numeric(palply(1:length(H), Gfun, actarr, Astararr))
@@ -283,12 +283,12 @@ revisit <- function(d, target="cv", loga.ref=NULL,
     # a 0-D plot
     if(plot.it) {
       plotted <- FALSE
-      if(target=="qqr") {
+      if(target.lower=="qqr") {
         actarr <- list2array(logact)
         qqnorm(actarr,col=col,pch=pch,main="")
         qqline(actarr)
         plotted <- TRUE
-      } else if(target %in% c("rmsd","cvrmsd","spearman","pearson")) {
+      } else if(target.lower %in% c("rmsd","cvrmsd","spearman","pearson")) {
         # plot the points
         ylab <- "loga.calc"
         xlab <- "loga.ref"
@@ -323,7 +323,7 @@ revisit <- function(d, target="cv", loga.ref=NULL,
     # a 1-D plot
     if(plot.it) {
       if(is.null(ylim)) {
-        if(target=="richness") {
+        if(target.lower=="richness") {
             ylim <- 0
             if(max(H) > ylim) ylim <- max(H) + 1
             ylim <- c(0,ylim)
@@ -331,7 +331,10 @@ revisit <- function(d, target="cv", loga.ref=NULL,
         else ylim <- extendrange(H,f=0.075)
       }
       if(is.null(xlim)) xlim <- xrange
-      if(!add) thermo.plot.new(xlim=xlim,ylim=ylim,xlab=axis.label(xname),ylab=target,yline=yline,
+      # format the target name if it's DGxf
+      if(target.lower=="dgxf") ylab <- expr.property("DGxf/2.303RT")
+      else ylab <- target
+      if(!add) thermo.plot.new(xlim=xlim,ylim=ylim,xlab=axis.label(xname),ylab=ylab,yline=yline,
         cex=cex,lwd=lwd,mar=mar,side=side)
       # plot the values
       lines(xs,as.vector(H),col=col)
@@ -342,7 +345,7 @@ revisit <- function(d, target="cv", loga.ref=NULL,
 
   } else if(nd==2) {
     # a 2-D plot
-    iext <- where.extreme(H,target,do.sat=TRUE)
+    iext <- where.extreme(H,target.lower,do.sat=TRUE)
     # what is the extreme value
     ix <- iext$ix
     iy <- iext$iy
@@ -366,7 +369,7 @@ revisit <- function(d, target="cv", loga.ref=NULL,
       # plot the location(s) of the extremum
       points(xs[iext$ix],ys[iext$iy],pch=8,cex=2)
       # show trajectories of the extrema
-      iexts <- extremes(H,target)
+      iexts <- extremes(H,target.lower)
       # take out large jumps
       yext <- ys[iexts$y]
       yext.1 <- c(yext[2:length(yext)],yext[length(yext)])

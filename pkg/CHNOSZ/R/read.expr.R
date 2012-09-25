@@ -39,22 +39,31 @@ yeastgfp <- function(location=NULL, exclusive=TRUE) {
       length(ygfp$abundance[!is.na(ygfp$abundance)]), " abundances\n")
     return(invisible(colnames(ygfp)[6:28]))
   }
-  # what location do we want?
-  ncol <- match(location, colnames(ygfp)[6:28]) + 5
-  if(is.na(ncol)) ncol <- agrep(location, colnames(ygfp)[6:28])[1] + 5
-  if(is.na(ncol)) stop(paste(location, "is not one of the subcellular locations in", ypath))
-  thisygfp <- ygfp[, ncol]
-  if(exclusive) {
-    # find the number of localizations of each ORF
-    localizations <- numeric(nrow(ygfp))
-    for(i in 6:28) localizations <- localizations + as.logical(ygfp[,i])
-    if(all(localizations[thisygfp] > 1)) msgout("yeastgfp: no exclusive localization found for ",location,
-      " ... using non-exclusive localizations\n",sep="")
-    else thisygfp <- thisygfp & ! localizations > 1
+  # iterate over multiple locations
+  out <- list()
+  for(i in 1:length(location)) {
+    # what location do we want?
+    ncol <- match(location[i], colnames(ygfp)[6:28]) + 5
+    if(is.na(ncol)) ncol <- agrep(location[i], colnames(ygfp)[6:28])[1] + 5
+    if(is.na(ncol)) stop(paste(location[i], "is not one of the subcellular locations in", ypath))
+    thisygfp <- ygfp[, ncol]
+    if(exclusive) {
+      # find the number of localizations of each ORF
+      localizations <- numeric(nrow(ygfp))
+      for(j in 6:28) localizations <- localizations + as.logical(ygfp[,j])
+      if(all(localizations[thisygfp] > 1)) msgout("yeastgfp: no exclusive localization found for ",location[i],
+        " ... using non-exclusive localizations\n",sep="")
+      else thisygfp <- thisygfp & ! localizations > 1
+    }
+    protein <- as.character(ygfp$yORF[thisygfp])
+    abundance <- ygfp$abundance[thisygfp]
+    if(length(location)==1) out <- list(protein=protein, abundance=abundance)
+    else {
+      out$protein <- c(out$protein, list(protein))
+      out$abundance <- c(out$abundance, list(abundance))
+    }
   }
-  protein <- as.character(ygfp$yORF[thisygfp])
-  abundance <- ygfp$abundance[thisygfp]
-  return(list(protein=protein, abundance=abundance))
+  return(out)
 }
 
 read.expr <- function(file, idcol, abundcol, filter=NULL) {

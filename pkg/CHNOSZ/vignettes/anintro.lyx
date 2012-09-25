@@ -1635,10 +1635,10 @@ Activity diagrams
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status open
+status collapsed
 
 \begin_layout Subsection
-Quicker example: Bjerrum diagram
+Carbonate speciation (Bjerrum diagram)
 \end_layout
 
 \begin_layout Standard
@@ -1703,7 +1703,16 @@ zooms in
 
 \begin_layout Chunk
 
-<<Bjerrum_diagram>>=
+
+\backslash
+setkeys{Gin}{width=0.6
+\backslash
+textwidth}
+\end_layout
+
+\begin_layout Chunk
+
+<<Bjerrum_diagram,fig=TRUE,width=4,height=4>>=
 \end_layout
 
 \begin_layout Chunk
@@ -1741,8 +1750,17 @@ diagram(a, add=TRUE, col="red")
 @
 \end_layout
 
+\begin_layout Chunk
+
+
+\backslash
+setkeys{Gin}{width=1.0
+\backslash
+textwidth}
+\end_layout
+
 \begin_layout Subsection
-Quick example: stability diagram for proteins
+Stability diagram for proteins
 \end_layout
 
 \begin_layout Standard
@@ -1925,44 +1943,6 @@ textwidth}
 \begin_layout Standard
 Notably, the protein from the organism found at the highest temperatures
  is relatively stable at more reduced conditions.
-\end_layout
-
-\begin_layout Subsection
-How does this work?
-\end_layout
-
-\begin_layout Standard
-Here is a partial explanation: You use 
-\family typewriter
-affinity()
-\family default
- to calculate the chemical affinities of the formation reactions of the
- proteins, taking into account chemical activities of the proteins that
- are set to reference, non-equilibrium values.
- Then, the 
-\family typewriter
-diagram()
-\family default
- function transforms these non-equilibrium affinities into chemical activities
- of the proteins at metastable equilibrium (this is actually achieved using
- the Boltzmann distribution).
- These activities satisfy the conditions that 1) the total activity of an
- immobile component (for proteins, this defaults to the protein backbone
- group) is constant and 2) the chemical affinities of the formation reactions
- are all equal (but generally not zero).
- More details can be found in another vignette (
-\begin_inset Quotes eld
-\end_inset
-
-
-\family typewriter
-protactiv
-\family default
-
-\begin_inset Quotes erd
-\end_inset
-
-).
 \end_layout
 
 \begin_layout Subsection
@@ -2760,27 +2740,28 @@ locations <- yeastgfp()
 
 \begin_layout Chunk
 
+gfp <- yeastgfp(locations)
+\end_layout
+
+\begin_layout Chunk
+
+aa <- more.aa(gfp$protein, "Sce")
+\end_layout
+
+\begin_layout Chunk
+
 for(i in 1:length(locations)) {
 \end_layout
 
 \begin_layout Chunk
 
-  gfp <- yeastgfp(locations[i])
+  avgaa <- aasum(aa[[i]], gfp$abundance[[i]], average=TRUE, protein=locations[i]
+)
 \end_layout
 
 \begin_layout Chunk
 
-  aa <- more.aa(gfp$protein, "Sce")
-\end_layout
-
-\begin_layout Chunk
-
-  aa <- aasum(aa, gfp$abundance, average=TRUE, protein=locations[i])
-\end_layout
-
-\begin_layout Chunk
-
-  add.protein(aa)
+  add.protein(avgaa)
 \end_layout
 
 \begin_layout Chunk
@@ -3358,7 +3339,7 @@ clearpage
 
 \begin_layout Standard
 \begin_inset Branch more
-status collapsed
+status open
 
 \begin_layout Subsection
 Findit
@@ -3434,7 +3415,7 @@ f <- findit(list(CO2=c(-5, 5), O2=c(-85, -65), H2S=c(-10, 5), H2O=c(-10,
 
 \begin_layout Chunk
 
-  niter=10, res=10, balance=1)
+  niter=5, res=10, balance=1)
 \end_layout
 
 \begin_layout Chunk
@@ -3459,7 +3440,7 @@ end{small}
 \end_layout
 
 \begin_layout Standard
-After 10 iterations, what are the fractional equilibrium abundances of the
+After 5 iterations, what are the fractional equilibrium abundances of the
  amino acids? Note that, during its operation, 
 \family typewriter
 findit()

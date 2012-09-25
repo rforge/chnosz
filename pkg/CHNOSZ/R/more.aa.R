@@ -27,31 +27,43 @@ more.aa <- function(protein=NULL, organism) {
     # which columns have the amino acids in the order of thermo$protein 
     iaa <- 1:20 + 5
   }
-  # find the matches
-  icols <- match(searchcols, colnames(mydata))
-  imatch <- match(protein, mydata[, icols[1]])
-  imatch2 <- match(protein, mydata[, icols[2]])
-  # use not-NA matches for "abbrv" in Eco.csv
-  imatch[!is.na(imatch2)] <- imatch2[!is.na(imatch2)]
-  # report and remember the unsuccessful matches
-  if(all(is.na(imatch))) stop("no proteins found!")
-  inotmatch <- which(is.na(imatch)) 
-  if(length(inotmatch) > 0) {
-    if(length(inotmatch)==1) verb <- " was" else verb <- " were"
-    msgout("more.aa: ", paste(protein[inotmatch], collapse=" "), verb, " not matched\n")
+  # iterate over a list
+  waslist <- TRUE
+  out <- list()
+  if(!is.list(protein)) {
+    waslist <- FALSE
+    protein <- list(protein)
   }
-  aa <- data.frame(mydata[imatch, iaa])
-  # add the identifying columns
-  organism <- rep(organism, length(protein))
-  abbrv <- rep(NA, length(protein))
-  ref <- rep(NA, length(protein))
-  chains <- rep(1, length(protein))
-  chains[inotmatch] <- NA
-  precols <- data.frame(protein, organism, ref, abbrv, chains, stringsAsFactors=FALSE)
-  colnames(aa) <- aminoacids(3)
-  aa <- cbind(precols, aa)
+  for(i in 1:length(protein)) {
+    # find the matches
+    icols <- match(searchcols, colnames(mydata))
+    imatch <- match(protein[[i]], mydata[, icols[1]])
+    imatch2 <- match(protein[[i]], mydata[, icols[2]])
+    # use not-NA matches for "abbrv" in Eco.csv
+    imatch[!is.na(imatch2)] <- imatch2[!is.na(imatch2)]
+    # report and remember the unsuccessful matches
+    if(all(is.na(imatch))) stop("no proteins found!")
+    inotmatch <- which(is.na(imatch)) 
+    if(length(inotmatch) > 0) {
+      if(length(inotmatch)==1) verb <- " was" else verb <- " were"
+      msgout("more.aa: ", paste(protein[[i]][inotmatch], collapse=" "), verb, " not matched\n")
+    }
+    aa <- data.frame(mydata[imatch, iaa])
+    # add the identifying columns
+    organism <- rep(organism[[1]], length(protein[[i]]))
+    abbrv <- rep(NA, length(protein[[i]]))
+    ref <- rep(NA, length(protein[[i]]))
+    chains <- rep(1, length(protein[[i]]))
+    chains[inotmatch] <- NA
+    precols <- data.frame(protein[[i]], organism, ref, abbrv, chains, stringsAsFactors=FALSE)
+    colnames(precols)[1] <- "protein"
+    colnames(aa) <- aminoacids(3)
+    aa <- cbind(precols, aa)
+    out <- c(out, list(aa))
+  }
   # done!
-  return(aa)
+  if(!waslist) return(out[[1]])
+  else return(out)
 }
 
 

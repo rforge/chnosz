@@ -584,7 +584,7 @@ subcrt:~6~species~at~298.15~K~and~1~bar~(wet)~
 \section{Activity diagrams}
 
 
-\subsection{Quicker example: Bjerrum diagram}
+\subsection{Carbonate speciation (Bjerrum diagram)}
 
 The sequence of commands \texttt{basis}-\texttt{species}-\texttt{affinity}-\texttt{diagram},
 with various arguments, can be used to create a wide variety of diagrams.
@@ -599,7 +599,8 @@ is expanded to contain all the values on the lines). Also the last
 two lines are optional, unless you really do want to see the effect
 of temperature (I do!)
 
-<<Bjerrum_diagram>>=
+\setkeys{Gin}{width=0.6\textwidth}
+<<Bjerrum_diagram,fig=TRUE,width=4,height=4>>=
 basis("CHNOS+")
 species(c("CO2", "HCO3-", "CO3-2"))
 a <- affinity(pH=c(4, 12))
@@ -607,10 +608,11 @@ diagram(a, ylim=c(-6, 0))
 a <- affinity(pH=c(4, 12), T=150)
 diagram(a, add=TRUE, col="red")
 @
+\setkeys{Gin}{width=1.0\textwidth}
 
 \selectlanguage{english}%
 
-\subsection{Quick example: stability diagram for proteins}
+\subsection{Stability diagram for proteins}
 
 Suppose that we are asked to calculate the relative stabilities of
 some proteins from different organisms. We will use part of a case
@@ -671,22 +673,6 @@ diagram(a, legend.x="bottomleft", ylim=c(-6, -2))
 \selectlanguage{english}%
 Notably, the protein from the organism found at the highest temperatures
 is relatively stable at more reduced conditions.
-
-
-\subsection{How does this work?}
-
-Here is a partial explanation: You use \texttt{affinity()} to calculate
-the chemical affinities of the formation reactions of the proteins,
-taking into account chemical activities of the proteins that are set
-to reference, non-equilibrium values. Then, the \texttt{diagram()}
-function transforms these non-equilibrium affinities into chemical
-activities of the proteins at metastable equilibrium (this is actually
-achieved using the Boltzmann distribution). These activities satisfy
-the conditions that 1) the total activity of an immobile component
-(for proteins, this defaults to the protein backbone group) is constant
-and 2) the chemical affinities of the formation reactions are all
-equal (but generally not zero). More details can be found in another
-vignette (``\texttt{protactiv}'').
 
 
 \subsection{More proteins, more dimensions}
@@ -896,11 +882,11 @@ the current version of CHNOSZ.
 \setkeys{Gin}{width=0.7\textwidth}
 <<yeastplot, fig=TRUE, results=hide, width=7, height=5>>=
 locations <- yeastgfp()
+gfp <- yeastgfp(locations)
+aa <- more.aa(gfp$protein, "Sce")
 for(i in 1:length(locations)) {
-  gfp <- yeastgfp(locations[i])
-  aa <- more.aa(gfp$protein, "Sce")
-  aa <- aasum(aa, gfp$abundance, average=TRUE, protein=locations[i])
-  add.protein(aa)
+  avgaa <- aasum(aa[[i]], gfp$abundance[[i]], average=TRUE, protein=locations[i])
+  add.protein(avgaa)
 }
 basis("CHNOS+")
 species(locations, "Sce")
@@ -1048,13 +1034,13 @@ of the basis species with each iteration.
 basis("CHNOS")
 species(c("isoleucine", "tyrosine", "glutamic acid", "methionine", "aspartic acid"))
 f <- findit(list(CO2=c(-5, 5), O2=c(-85, -65), H2S=c(-10, 5), H2O=c(-10, 0)), 
-  niter=10, res=10, balance=1)
+  niter=5, res=10, balance=1)
 @
 \setkeys{Gin}{width=1.0\textwidth}
 \end{small}
 
 \selectlanguage{english}%
-After 10 iterations, what are the fractional equilibrium abundances
+After 5 iterations, what are the fractional equilibrium abundances
 of the amino acids? Note that, during its operation, \texttt{findit()}
 updates the activities of the basis species so we don't have to set
 them manually.

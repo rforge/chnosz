@@ -11,19 +11,23 @@
 
 \arguments{
   \item{protein}{character, name of protein}
-  \item{organism}{character, name of organism (\samp{Eco} or \samp{Sgd})}
+  \item{organism}{character, name of organism (\samp{Eco} or \samp{Sce})}
 }
 
 \details{
-  \code{more.aa} retrieves the amino acid composition(s) of the proteins for either \emph{Escherichia coli} or \emph{Saccharomyces cerevisiae} (for \code{organism} equal to \samp{ECO} or \samp{SGD}, respectively). The calculation depends on the data files \code{\link{extdata}/protein/Eco.csv.xz} and \code{\link{extdata}/protein/Sce.csv.xz}, which contain the amino acid compositions of proteins in these organisms. The \code{protein} can one or more Ordered Locus Names (OLN) or Open Reading Frame (ORF) names that are found in these files. The output data frame contains rows with NA compositions for names that are not matched.
+\code{more.aa} retrieves the amino acid composition(s) of the indicated proteins in either \emph{Escherichia coli} or \emph{Saccharomyces cerevisiae}.
+The value of \code{organism} can be one of \samp{Eco} or \samp{Sce}.
+The calculation depends on the data files \code{\link{extdata}/protein/Eco.csv.xz} and \code{\link{extdata}/protein/Sce.csv.xz}, which contain the amino acid compositions of the proteins.
+The \code{protein} argument should be a vector or a list of vectors of one or more Ordered Locus Names (OLN) or Open Reading Frame (ORF) names that are found in these files.
+The output data frame contains rows with NA compositions for names that are not matched.
 }
 
 \value{
-  A data frame containing the amino acid composition(s) of the specified protein(s) in the format of \code{\link{thermo}$protein}.
+A data frame, or list of data frames, containing the amino acid composition(s) of the specified protein(s) in the format of \code{\link{thermo}$protein}.
 }
 
 \seealso{
-  There are examples of using this function in conjunction with lists of protein names from \code{\link{yeastgfp}} and \code{\link{read.expr}}.
+\code{\link{extdata}} describes the sources of compositional data for the proteins. Other examples of usage of \code{more.aa} are shown for \code{\link{read.expr}}.
 }
 
 

@@ -33,16 +33,18 @@
 
   \code{stress} is the simplest of these functions since the source of its data, \code{stress.csv}, lists proteins without any abundance data. \code{condition} indicates the name of the stress response experiment (column name of \code{stress.csv}, e.g. \samp{low.C}) and \code{organism} indicates the organism (\samp{Eco} or \samp{Sce}).
 
-  The \code{yeastgfp} function returns the identities and abundances of proteins with the requested subcellular localization (specified in \code{location}) using data from the YeastGFP project that is stored in \code{\link{extdata}/abundance/yeastgfp.csv.xz}. The default value of \code{exclusive} (\code{FALSE}) tells the function to grab all proteins that are localized to a compartment even if they are also localized to other compartments. If \code{exclusive} is \code{TRUE}, only those proteins that are localized exclusively to the requested compartments are identified, unless there are no such proteins, then the non-exclusive localizations are used (applies to the \samp{bud} localization). The values returns by \code{yeastgfp} can be fed to \code{pdata.aa} in order to get the amino acid compositions of the proteins.
+The \code{yeastgfp} function returns the identities and abundances of proteins with the requested subcellular localization(s) (specified in \code{location}) using data from the YeastGFP project that is stored in \code{\link{extdata}/abundance/yeastgfp.csv.xz}.
+The default value of \code{exclusive} (\code{FALSE}) tells the function to grab all proteins that are localized to a compartment even if they are also localized to other compartments.
+If \code{exclusive} is \code{TRUE}, only those proteins that are localized exclusively to the requested compartments are identified, unless there are no such proteins, then the non-exclusive localizations are used (applies to the \samp{bud} localization).
 
   \code{read.expr} reads a \code{file} (CSV format) that contains protein sequence names or IDs and protein abundance data. \code{idcol} and \code{abundcol} are either the names of the columns holding the sequence IDs and protein abundances, or numeric values indicating the column numbers where these data are found. The column indicated by \code{abundcol} might not actually be abundance (it is likely to be abundance ratios). The data can be filtered to only include records that contain the term in the named argument \code{filter}, the name of which indicates the column to apply the filter to.
-
-  The function returns values of the logarithms of activities of the proteins. We associate molality with activity (i.e., activity coefficients are implicitly unity).  If \code{loga.total} is not NULL, the abundances of the proteins from the data file are scaled to give a logarithm of total activity of amino acid residues equal to the value in \code{loga.total}, usually set to zero (see \code{\link{unitize}}). This operation preserves the relative abundances of the proteins. If the abundances of the proteins in the file are already in logarithmic units, set \code{is.log} to TRUE.
 
 }
 
 \value{
-  Each of these functions returns a list with elements named \code{protein} (names of proteins) and \code{abundance} (counts or concentrations without any conversion from the units in the data file). For \code{stress}, the \code{abundance} value is all 1's. For \code{yeastgfp}, if \code{location} is NULL, the function returns the names of all locations.
+Each of these functions returns a list with elements named \code{protein} (names of proteins) and \code{abundance} (counts or concentrations without any conversion from the units in the data file).
+For \code{stress}, the \code{abundance} value is all 1's.
+For \code{yeastgfp}, if \code{location} is NULL, the function returns the names of all known locations, and if the length of \code{location} is >1, the \code{protein} and \code{abundance} values are lists of the results for each location.
 }
 
 \seealso{
@@ -204,12 +206,14 @@ nloc <- c(4,5,3,4,4,3)
 inames <- 1:length(names)
 # define the system
 basis("CHNOS+")
-# calculate amino acid compositions using "pdata.aa" function 
+# get protein names and abundances in each location
+gfp <- yeastgfp(names)
+# get amino acid compositions of proteins
+aa <- more.aa(gfp$protein, "Sce")
+# calculate average amino acid compositions 
 for(i in 1:length(names)) {
-  gfp <- yeastgfp(names[i])
-  aa <- more.aa(gfp$protein, "Sce")
-  aa <- aasum(aa, gfp$abundance, average=TRUE, protein=names[i])
-  add.protein(aa)
+  avgaa <- aasum(aa[[i]], gfp$abundance[[i]], average=TRUE, protein=names[i])
+  add.protein(avgaa)
 }
 species(names, "Sce")
 a <- affinity(H2O=c(-5,0,256),O2=c(-80,-66,256))

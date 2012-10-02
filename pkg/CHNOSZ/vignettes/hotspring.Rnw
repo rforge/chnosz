@@ -1,4 +1,4 @@
-%% LyX 2.0.3 created this file.  For more info, see http://www.lyx.org/.
+%% LyX 2.0.4 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
 \documentclass[english,noae]{article}
 \usepackage{mathpazo}
@@ -79,12 +79,14 @@ of the metagenome that share keywords in the annotations.
 \section{General Setup}
 
 Load CHNOSZ. The thermodynamic data for the methionine sidechain group
-used in the paper has been superseded in CHNOSZ\_0.9-8 \citep{LD12},
+used in the paper has been superseded in CHNOSZ\_0.9.8 \citep{LD12},
 but the older dataset is still available using \texttt{add.obigt()}:
 
+\begin{small}
 <<libraryCHNOSZ>>=
 library(CHNOSZ)
 @
+\end{small}
 
 
 <<datathermo,echo=FALSE>>=
@@ -94,28 +96,34 @@ data(thermo)
 @
 
 
+\begin{small}
 <<add_obigt>>=
 add.obigt()
 @
+\end{small}
 
 
 After loading the package, the amino acid compositions of the model
 proteins are present in \texttt{thermo\$protein}. Assemble the classification
 terms using one of the site names.
 
+\begin{small}
 <<classes>>=
 tp <- thermo$protein
 classes <- tp$protein[tp$organism=="bisonN"]
 classes
 @
+\end{small}
 
 
 Associate the sites with their letter codes.
 
+\begin{small}
 <<sites>>=
-sites <- c("N","S","R","Q","P")
-sitenames <- paste("bison",sites,sep="")
+sites <- c("N", "S", "R", "Q", "P")
+sitenames <- paste("bison", sites, sep="")
 @
+\end{small}
 
 
 
@@ -133,25 +141,27 @@ and finally calculate values of $\overline{Z}_{\mathrm{C}}$. Loop
 over the classes, plotting the lines and labels. After Fig. 4 in Ref.
 \citep{DS11}.
 
-\setkeys{Gin}{width=0.5\textwidth}
+\begin{small}
+\setkeys{Gin}{width=0.6\textwidth}
 <<ZCplot,fig=TRUE,width=6,height=6>>=
-plot(0,0,xlim=c(-1,6),ylim=c(-0.33,-0.11),xlab="site",ylab=expression(bar(italic(Z))[C]),axes=FALSE)
-axis(1,at=1:5)
-axis(2)
-box()
-col <- c("green",rep("black",20))
-lwd <- c(3,rep(1,20))
-clab <- c("hydrolase","overall","protease","oxidoreductase","transport","membrane","permease")
-ip <- iprotein(rep(classes,each=5),rep(sitenames,20))
-p <- thermo$protein[ip,]
+plot(0, 0, xlim=c(-1, 6), ylim=c(-0.33, -0.11), xlab="site", 
+  ylab=expression(bar(italic(Z))[C]), xaxt="n")
+axis(1, at=1:5)
+col <- c("green", rep("black", 20))
+lwd <- c(3, rep(1, 20))
+clab <- c("hydrolase", "overall", "protease", 
+  "oxidoreductase", "transport", "membrane", "permease")
+ip <- iprotein(rep(classes, each=5), rep(sitenames, 20))
+p <- thermo$protein[ip, ]
 pf <- protein.formula(p)
 ZC.p <- ZC(pf)
 for(i in 1:length(classes)) {
-  lines(1:5,ZC.p[(1:5)+5*(i-1)],col=col[i],lwd=lwd[i])
-  if(classes[i] %in% clab) text(0.8,ZC.p[1+5*(i-1)],classes[i],adj=1)
+  lines(1:5, ZC.p[(1:5)+5*(i-1)], col=col[i], lwd=lwd[i])
+  if(classes[i] %in% clab) text(0.8, ZC.p[1+5*(i-1)], classes[i], adj=1)
 }
 @
 \setkeys{Gin}{width=1.0\textwidth}
+\end{small}
 
 
 
@@ -168,9 +178,11 @@ the functions \texttt{basis} and \texttt{species} are important for
 their side effect of setting up the thermodynamic system used by other
 functions in CHNOSZ.
 
+\begin{small}
 <<basis>>=
-basis(c("HCO3-","H2O","NH3","HS-","H2","H+"))
+basis(c("HCO3-", "H2O", "NH3", "HS-", "H2", "H+"))
 @
+\end{small}
 
 
 
@@ -182,11 +194,13 @@ to the chemistry of their environment are needed. The temperature
 samples were collected for sequence analysis are defined below as
 a function of distance (in meters) from the source of the hot spring. 
 
+\begin{small}
 <<TpH>>=
-distance <- c(0,6,11,14,22)
-T.bison <- c(93.3,79.4,67.5,65.3,57.1)
-pH.bison <- c(7.350,7.678,7.933,7.995,8.257)
+distance <- c(0, 6, 11, 14, 22)
+T.bison <- c(93.3, 79.4, 67.5, 65.3, 57.1)
+pH.bison <- c(7.350, 7.678, 7.933, 7.995, 8.257)
 @
+\end{small}
 
 
 The plot shows the temperature and pH as a function of distance. Use
@@ -196,16 +210,18 @@ Use the \texttt{mfrow} option to \texttt{par} to put two plots next
 to each other, and CHNOSZ's \texttt{axis.label} function to make a
 formatted label for temperature. After Fig. 5a,c in Ref. \citep{DS11}.
 
-<<TpHplot,fig=T,height=3.5>>=
-Tfun <- splinefun(distance,T.bison,method="mono")
-pHfun <- splinefun(distance,pH.bison,method="mono")
-xpoints <- seq(0,22,0.25)
-par(mfrow=c(1,2))
-plot(distance,T.bison,xlab="distance, m",ylab=axis.label("T"))
-lines(xpoints,Tfun(xpoints))
-plot(distance,pH.bison,xlab="distance, m",ylab="pH")
-lines(xpoints,pHfun(xpoints))
+\begin{small}
+<<TpHplot,fig=T,height=3>>=
+Tfun <- splinefun(distance, T.bison, method="mono")
+pHfun <- splinefun(distance, pH.bison, method="mono")
+xpoints <- seq(0, 22, 0.25)
+par(mfrow=c(1, 2), mar=c(4, 4, 3, 2))
+plot(distance, T.bison,xlab="distance, m", ylab=axis.label("T"))
+lines(xpoints, Tfun(xpoints))
+plot(distance, pH.bison,xlab="distance, m", ylab="pH")
+lines(xpoints, pHfun(xpoints))
 @
+\end{small}
 
 
 Besides temperature and pH, other chemical properties of the hot spring
@@ -215,9 +231,11 @@ other basis species are set to values that approximate analytical
 observations. Set pH to the value for site 3; the pH gradient will
 be considered later.
 
+\begin{small}
 <<basis>>=
-basis(c("HCO3-","NH3","HS-","H+"),c(-3,-4,-7,-7.933))
+basis(c("HCO3-", "NH3", "HS-", "H+"), c(-3, -4, -7, -7.933))
 @
+\end{small}
 
 
 
@@ -229,11 +247,9 @@ basis(c("HCO3-","NH3","HS-","H+"),c(-3,-4,-7,-7.933))
 Use \texttt{species} to display the coefficients in formation reactions
 of the overall model proteins and set the species definition for CHNOSZ.
 
-%\begin{small}
 <<formation_protein>>=
-species("overall",sitenames)
+species("overall", sitenames)
 @
-%\end{small}
 
 
 After sequencing and assembly, many gene fragments remain, so the
@@ -253,10 +269,10 @@ amino acid residues, not integers for the model proteins), then divide
 the protein formation reactions by the respective protein lengths.
 
 <<formation_residue>>=
-ip <- iprotein("overall",sitenames)
+ip <- iprotein("overall", sitenames)
 pl <- protein.length(ip)
 mys <- species()
-mys[,1:6]/pl
+mys[, 1:6]/pl
 @
 
 
@@ -273,7 +289,7 @@ the logarithm of activity of hydrogen ($\log a_{\mathrm{H_{2}}_{\left(aq\right)}
 as a linear function of temperature.
 
 <<T_H2>>=
-Tlim <- c(50,100)
+Tlim <- c(50, 100)
 H2prot <- function(T) -11 + T * 3/40
 @
 
@@ -284,9 +300,9 @@ of activity of aqueous hydrogen. After Fig. 5b in Ref. \citep{DS11}.
 
 \setkeys{Gin}{width=0.5\textwidth}
 <<TlogaH2plot,fig=T,width=3,height=3>>=
-a <- affinity(T=Tlim,H2=c(-7,-4))
-diagram(a,color=NULL,names=1:5)
-lines(Tlim,H2prot(Tlim),lty=2)
+a <- affinity(T=Tlim, H2=c(-7, -4))
+diagram(a, fill=NULL, names=1:5, normalize=TRUE)
+lines(Tlim, H2prot(Tlim), lty=2)
 title(main="overall")
 @
 \setkeys{Gin}{width=1.0\textwidth}
@@ -302,7 +318,7 @@ Write a function to load one or more of the classes of model proteins.
 <<loadclass>>=
 loadclass <- function(class) {
   species(delete=TRUE)
-  species(rep(class,each=5),rep(sitenames,length(class)))
+  species(rep(class, each=5), rep(sitenames, length(class)))
 }
 @
 
@@ -315,14 +331,14 @@ by CHNOSZ during the calculations are hidden. After Fig. 6 in Ref.
 
 \setkeys{Gin}{width=0.8\textwidth}
 <<TlogaH2plots,fig=T,results=hide,width=5,height=5>>=
-forclasses <- c("transferase","transport","dehydrogenase","synthase")
-par(mfrow=c(2,2))
+forclasses <- c("transferase", "transport", "dehydrogenase", "synthase")
+par(mfrow=c(2, 2))
 for(i in 1:4) {
   loadclass(forclasses[i])
-  a <- affinity(T=Tlim,H2=c(-7,-4))
-  diagram(a,color=NULL,names=1:5)
+  a <- affinity(T=Tlim, H2=c(-7, -4))
+  diagram(a, fill=NULL, names=1:5, normalize=TRUE)
   title(main=forclasses[i])
-  lines(Tlim,H2prot(Tlim),lty=2)
+  lines(Tlim, H2prot(Tlim), lty=2)
 }
 loadclass("overall")
 @
@@ -340,12 +356,14 @@ $\log a_{\mathrm{H_{2}}_{\left(aq\right)}}$ of each site. Use the
 lengths of the model proteins, defined above in \texttt{pl}, to calculate
 the affinities per residue. After Table 5 in Ref. \citep{DS11}.
 
+\begin{small}
 <<affinity>>=
 species(1:5,0)
-a <- affinity(T=T.bison,pH=pH.bison,H2=H2prot(T.bison))
+a <- affinity(T=T.bison, pH=pH.bison, H2=H2prot(T.bison))
 a.res <- t(as.data.frame(a$values))/pl
 a.res
 @
+\end{small}
 
 
 The affinities are expressed as dimensionless values, i.e. $\boldsymbol{A}/2.303RT$
@@ -357,7 +375,7 @@ of sites 3 to 5 (columns 3 to 5) for the model protein from site 4
 (row 4).
 
 <<affinitymax>>=
-sapply(1:5,function(x) which.max(a.res[,x]))
+sapply(1:5, function(x) which.max(a.res[, x]))
 @
 
 
@@ -375,7 +393,7 @@ is described following Eq. 19 in Ref. \citep{DS11}.)
 <<affinityadj>>=
 a.res <- a.res - log10(pl)
 a.res
-sapply(1:5,function(x) which.max(a.res[,x]))
+sapply(1:5, function(x) which.max(a.res[, x]))
 @
 
 
@@ -395,27 +413,27 @@ equal to $10^{-3}$. Run the calculation for the distance intervals
 in \texttt{xpoints}.
 
 <<logaplot>>=
-species(1:5,-3)
+species(1:5, -3)
 xT <- Tfun(xpoints)
 xpH <- pHfun(xpoints)
 xH2 <- H2prot(xT)
-a <- affinity(T=xT,pH=xpH,H2=xH2)
+a <- affinity(T=xT, pH=xpH, H2=xH2)
 @
 
 
-Label the $x$-axis ``distance''. To do so modify a few entries
-in the list returned by \texttt{affinity} (\texttt{xname}, \texttt{xlim},
-\texttt{xvals}); otherwise the $x$-axis would represent temperature
-(the first variable in the argument list to \texttt{affinity}). After
-Fig. 5f in Ref. \citep{DS11}.
+Label the $x$-axis ``distance''. To do so modify a couple of entries
+in the list returned by \texttt{affinity} (\texttt{vars}, \texttt{vals});
+otherwise the $x$-axis would represent temperature (the first variable
+in the argument list to \texttt{affinity}). After Fig. 5f in Ref.
+\citep{DS11}.
 
 \setkeys{Gin}{width=0.5\textwidth}
 <<logaplot,fig=T,width=4,height=4>>=
-a$xname <- "distance, m"
-a$xlim <- c(range(xpoints),length(xpoints))
-a$xvals <- xpoints
-diagram(a,legend.x=NULL)
-legend("bottom",lty=1:5,legend=paste(1:5,"       "),bty="n")
+a$vars[1] <- "distance, m"
+a$vals[[1]] <- xpoints
+e <- equilibrate(a, normalize=TRUE)
+diagram(e, legend.x=NULL)
+legend("bottom", lty=1:5, legend=paste(1:5,"       "), bty="n")
 @
 \setkeys{Gin}{width=1.0\textwidth}
 
@@ -429,17 +447,16 @@ color code go from site 1 (red) to site 5 (blue). The messages printed
 by CHNOSZ during the calculations are not shown here.
 
 \setkeys{Gin}{width=0.8\textwidth}
-<<stripplot,fig=T,results=hide,width=6,height=4>>=
-xclasses <- c("overall","transferase","transport","synthetase","membrane","permease")
+<<stripplot,fig=T,results=hide,width=6,height=3.5>>=
+xclasses <- c("overall", "transferase", "transport", "synthetase", "membrane", "permease")
 loadclass(xclasses)
-a <- affinity(T=xT,pH=xpH,H2=xH2)
-a$xname <- "distance, m"
-a$xlim <- c(range(xpoints),length(xpoints))
-a$xvals <- xpoints
-col <- c("red","orange","yellow","green","blue")
-par(mfrow=c(1,2))
+a <- affinity(T=xT, pH=xpH, H2=xH2)
+a$vars[1] <- "distance, m"
+a$vals[[1]] <- xpoints
+col <- c("red", "orange", "yellow", "green", "blue")
+par(mfrow=c(1, 2), mar=c(4, 4, 1, 1))
 for(i in 1:2) {
-  ispecies <- lapply((1:3)+(i-1)*3,function(x) {1:5+(x-1)*5} )
+  ispecies <- lapply((1:3)+(i-1)*3, function(x) {1:5+(x-1)*5} )
   names(ispecies) <- xclasses[(1:3)+(i-1)*3]
   strip(a = a, ispecies = ispecies, col = col, xticks = distance, cex.names = 1)
 }
@@ -480,9 +497,9 @@ are both included, but for simplicity here they are lumped together.
 The ORP values have units of mV.
 
 <<meters>>=
-T.ORP <- c(93.9,87.7,75.7,70.1,66.4,66.2)
-pH.ORP <- c(8.28,8.31,7.82,7.96,8.76,8.06)
-ORP <- c(-258,-227,-55,-58,-98,-41)
+T.ORP <- c(93.9, 87.7, 75.7, 70.1, 66.4, 66.2)
+pH.ORP <- c(8.28, 8.31, 7.82, 7.96, 8.76, 8.06)
+ORP <- c(-258, -227, -55, -58, -98, -41)
 @
 
 
@@ -498,8 +515,8 @@ of the reaction is equal to the equilibrium constant ($K$).
 
 <<ORP2Eh>>=
 Eh <- ORP/1000 + E.AgAgCl(T.ORP)
-pe <- convert(Eh,"pe",T=convert(T.ORP,"K"))
-logK.ORP <- subcrt(c("e-","H+","H2"),c(-2,-2,1),c("aq","aq","aq"),T=T.ORP)$out$logK
+pe <- convert(Eh, "pe", T=convert(T.ORP, "K"))
+logK.ORP <- subcrt(c("e-", "H+", "H2"), c(-2, -2, 1), c("aq", "aq", "aq"), T=T.ORP)$out$logK
 logaH2.ORP <- logK.ORP - 2*pe - 2*pH.ORP
 @
 
@@ -519,9 +536,10 @@ spectrophotometrically at the hot spring, and sulfate was determined
 using ion chromatography on water samples returned from the field.
 
 <<sulfur>>=
-loga.HS <- log10(c(4.77e-6,2.03e-6,3.12e-7,4.68e-7,2.18e-7))
-loga.SO4 <- log10(c(2.10e-4,2.03e-4,1.98e-4,2.01e-4,1.89e-4))
-logK.S <- subcrt(c("HS-","H2O","SO4-2","H+","H2"),c(-1,-4,1,1,4),state=c("aq","liq","aq","aq","aq"),T=T.bison)$out$logK
+loga.HS <- log10(c(4.77e-6, 2.03e-6, 3.12e-7, 4.68e-7, 2.18e-7))
+loga.SO4 <- log10(c(2.10e-4, 2.03e-4, 1.98e-4, 2.01e-4, 1.89e-4))
+logK.S <- subcrt(c("HS-", "H2O", "SO4-2", "H+", "H2"), c(-1, -4, 1, 1, 4), 
+  state=c("aq", "liq", "aq", "aq", "aq"), T=T.bison)$out$logK
 logaH2.S <- (logK.S + pH.bison - loga.SO4 + loga.HS) / 4
 @
 
@@ -538,9 +556,9 @@ Convert the dissolved oxygen concentrations, in mg/L, to molarities
 (mol/L) and use these values to set the activity of $\mathrm{O_{2}}_{\left(aq\right)}$.
 
 <<oxygen>>=
-DO <- c(0.173,0.776,0.9,1.6,2.8)
+DO <- c(0.173, 0.776, 0.9, 1.6, 2.8)
 logaO2 <- log10(DO/1000/32)
-logK <- subcrt(c("O2","H2","H2O"),c(-0.5,-1,1),c("aq","aq","liq"),T=T.bison)$out$logK
+logK <- subcrt(c("O2", "H2", "H2O"), c(-0.5, -1, 1), c("aq", "aq", "liq"), T=T.bison)$out$logK
 logaH2.O <- 0 - 0.5*logaO2 - logK
 @
 
@@ -554,18 +572,19 @@ sulfur and oxygen measurements. Connect the data points with dashed
 lines and add labels for the lines using specified coordinates. After
 Fig. 9 of Ref. \citep{DS11}.
 
-\setkeys{Gin}{width=0.5\textwidth}
+\setkeys{Gin}{width=0.45\textwidth}
 <<logaH2plot,fig=T,width=4,height=4.5>>=
-plot(Tlim,H2prot(Tlim),xlim=Tlim,ylim=c(-45,0),xlab=axis.label("T"),ylab=axis.label("H2"),type="l")
-points(T.ORP,logaH2.ORP,pch=15)
-lines(T.ORP,logaH2.ORP,lty=2)
-points(T.bison,logaH2.O,pch=16)
-lines(T.bison,logaH2.O,lty=2)
-points(T.bison,logaH2.S,pch=17)
-lines(T.bison,logaH2.S,lty=2)
-llab <- c("H2prot","ORP","oxygen","sulfur")
-text(c(72,80,72,74),c(-4,-25,-34,-10.5),llab)
-# legend("bottomright",lty=c(1,NA,NA,NA),pch=c(NA,15,16,17),legend=llab)
+plot(Tlim, H2prot(Tlim), xlim=Tlim, ylim=c(-45,0),
+  xlab=axis.label("T"), ylab=axis.label("H2"), type="l")
+points(T.ORP, logaH2.ORP, pch=15)
+lines(T.ORP, logaH2.ORP, lty=2)
+points(T.bison, logaH2.O, pch=16)
+lines(T.bison, logaH2.O, lty=2)
+points(T.bison, logaH2.S, pch=17)
+lines(T.bison, logaH2.S, lty=2)
+llab <- c("H2prot", "ORP", "oxygen", "sulfur")
+text(c(72, 80, 72, 74), c(-4, -25, -34, -10.5), llab)
+# legend("bottomright", lty=c(1, NA, NA, NA), pch=c(NA, 15, 16, 17), legend=llab)
 @
 \setkeys{Gin}{width=1.0\textwidth}
 

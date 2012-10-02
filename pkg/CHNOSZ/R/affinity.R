@@ -144,7 +144,7 @@ affinity <- function(...,property=NULL,sout=NULL,exceed.Ttr=FALSE,
       protein.fun <- function(ip) {
         if(ip %% 50 == 0) msgout(paste(ip,"..",sep=""))
         tpext <- as.numeric(thermo$protein[iprotein[ip],5:25])
-        return(psum(pprod(a[ires],tpext)) - loga.protein[ip])
+        return(Reduce("+", pprod(a[ires],tpext)) - loga.protein[ip])
       }
       # use another level of indexing to let the function
       # report on its progress
@@ -177,29 +177,55 @@ affinity <- function(...,property=NULL,sout=NULL,exceed.Ttr=FALSE,
   }
 
   # put together return values
+  # constant T and P, in Kelvin and bar
   T <- args$T
   P <- args$P
-  xname <- yname <- ""
-  xlim <- ylim <- ""
-  xvals <- yvals <- ""
-  if(length(args$vars) > 0) {
-    xname <- names(args$lims)[1]
-    xlim <- args$lims[[1]]
-    xvals <- args$vals[[1]]
-    if(xname=="T") xvals <- outvert(xvals,"K")
+  # the variable names and values
+  vars <- args$vars
+  vals <- args$vals
+  # if T or P is variable it's not constant;
+  # and set it to user's units
+  iT <- match("T", vars)
+  if(!is.na(iT)) {
+    T <- numeric()
+    vals[[iT]] <- outvert(vals[[iT]], "K")
   }
-  if(length(args$vars) > 1 & !args$transect) {
-    #yname <- args$vars[2]
-    yname <- names(args$lims)[2]
-    ylim <- args$lims[[2]]
-    yvals <- args$vals[[2]]
-    if(yname=="T") yvals <- outvert(yvals,"K")
+  iP <- match("P", vars)
+  if(!is.na(iP) > 0) {
+    P <- numeric()
+    vals[[iP]] <- outvert(vals[[iP]], "bar")
+  }
+  # get Eh
+  args.orig <- list(...)
+  iEh <- match("Eh", names(args.orig))
+  if(!is.na(iEh)) {
+    vars[[iEh]] <- "Eh"
+    # we have to reconstruct the values used because
+    # they got converted to log_a(e-) at an unknown temperature
+    Eharg <- args.orig[[iEh]]
+    if(length(Eharg) > 3) Ehvals <- Eharg
+    else if(length(Eharg) == 3) Ehvals <- seq(Eharg[1], Eharg[2], length.out=Eharg[3])
+    else if(length(Eharg) == 2) Ehvals <- seq(Eharg[1], Eharg[2], length.out=128)
+    vals[[iEh]] <- Ehvals
+  }
+  # get pe and pH and Eh
+  ipe <- match("pe", names(args.orig))
+  if(!is.na(ipe)) {
+    ie <- match("e-", names(args$lims))
+    vars[[ie]] <- "pe"
+    vals[[ie]] <- -args$vals[[ie]]
+  }
+  ipH <- match("pH", names(args.orig))
+  if(!is.na(ipH)) {
+    iH <- match("H+", names(args$lims))
+    vars[[iH]] <- "pH"
+    vals[[iH]] <- -args$vals[[iH]]
   }
 
-  if(return.buffer) return(c(tb, list(xname=xname, xlim=xlim, xvals=xvals, yname=yname, ylim=ylim)))
-  a <- list(sout=sout,property=property,basis=mybasis,species=myspecies,T=T,P=P,
-    xname=xname,xlim=xlim,xvals=xvals,yname=yname,ylim=ylim,yvals=yvals,values=a)
-  if(buffer) a <- c(a,list(buffer=tb))
+  # content of return value depends on buffer request
+  if(return.buffer) return(c(tb, list(vars=vars, vals=vals)))
+  a <- list(sout=sout, property=property, basis=mybasis, species=myspecies, T=T, P=P, vars=vars, vals=vals, values=a)
+  if(buffer) a <- c(a, list(buffer=tb))
   return(a)
 
 }

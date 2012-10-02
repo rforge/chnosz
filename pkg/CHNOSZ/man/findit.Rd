@@ -9,7 +9,7 @@
 \usage{
   findit (lims = list(), target = "cv", niter = NULL, iprotein = NULL, 
     plot.it = TRUE, T = 25, P = "Psat", res = NULL, labcex = 0.6, 
-    loga.ref = NULL, as.residue = FALSE, loga.balance = 0, rat = NULL,
+    loga.ref = NULL, loga.balance = 0, rat = NULL,
     balance = NULL)
   \method{plot}{findit}(x, which=NULL, mar=c(3.5,5,2,2), xlab="iteration", \dots)
 }
@@ -25,7 +25,6 @@
   \item{P}{numeric, pressure; or character, "Psat"}
   \item{labcex}{numeric, character expansion for plot labels}
   \item{loga.ref}{numeric, reference logarithms of activity of species}
-  \item{as.residue}{logical, use the activities of residues instead of proteins?}
   \item{loga.balance}{numeric, logarithm of total activity of balanced quantity (passed to \code{\link{diagram}})}
   \item{rat}{numeric, ratio of edge length in successive iterations}
   \item{balance}{character or numeric, balanced quantity (passed to \code{\link{diagram}})}

@@ -78,7 +78,7 @@ Specifically, \code{NA}s are produced for calculations at \samp{Psat} when the t
 \section{Warning}{
 
 Comparison of the output of \code{subcrt} with that of \acronym{SUPCRT92} indicates the two give similar values of properties for neutral aqueous species up to 1000 \eqn{^{\circ}}{degrees }C and 5000 bar.
-Changes were made in CHNOSZ 0.9-8 to improve the calculation of the \eqn{g}{g}- and \eqn{f}{f}-functions (Shock et al., 1992) for the partial derivatives of the omega parameter which are used by the \code{\link{hkf}} function, so thermodynamic properties of charged aqueous species over the temperature range 0 to 1000 \eqn{^{\circ}}{degrees }C are now mostly consistent with \acronym{SUPCRT92}.
+Changes were made in CHNOSZ 0.9.8 to improve the calculation of the \eqn{g}{g}- and \eqn{f}{f}-functions (Shock et al., 1992) for the partial derivatives of the omega parameter which are used by the \code{\link{hkf}} function, so thermodynamic properties of charged aqueous species over the temperature range 0 to 1000 \eqn{^{\circ}}{degrees }C are now mostly consistent with \acronym{SUPCRT92}.
 Note, however, that while \acronym{SUPCRT92} limits calculations at Psat to 350 \eqn{^{\circ}}{degrees }C (\dQuote{beyond range of applicability of aqueous species equations}), there is no corresponding limit in place in \code{subcrt} (or \code{\link{hkf}}), so that inapplicable calculations will be performed up to the critical temperature (373.917 \eqn{^{\circ}}{degrees }C) without any warning.
 It is probably for this reason that there is a noticeable jump in the value of logK at Psat shown in the one of the examples (\code{\link{longex}("NaCl")}).
 

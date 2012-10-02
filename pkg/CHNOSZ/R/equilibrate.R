@@ -1,12 +1,78 @@
-# CHNOSZ/equil.R
+# CHNOSZ/equilibrate.R
 # functions to calculation logarithm of activity
 # of species in (metastable) equilibrium
+
+equilibrate <- function(aout, balance=NULL, loga.balance=NULL, 
+  normalize=FALSE, ispecies=1:length(aout$values)) {
+  ### set up calculation of equilibrium activities of species from the affinities 
+  ### of their formation reactions from basis species at known activities
+  ### split from diagram() 20120925 jmd
+  ## number of possible species
+  nspecies <- length(aout$values)
+  ## get the balancing coefficients
+  n.balance <- balance.coeffs(aout, balance)
+  ## take selected species in 'ispecies'
+  if(length(ispecies)==0) stop("the length of ispecies is zero")
+  # take out species that have NA affinities
+  ina <- sapply(aout$values, function(x) all(is.na(x)))
+  ispecies <- ispecies[!ina[ispecies]]
+  if(length(ispecies)==0) stop("all species have NA affinities")
+  if(!identical(ispecies, 1:nspecies)) {
+    msgout(paste("equilibrate: using", length(ispecies), "of", nspecies, "species\n"))
+    aout$species <- aout$species[ispecies, ]
+    aout$values <- aout$values[ispecies]
+    n.balance <- n.balance[ispecies]
+  }
+  ## number of species that are left
+  nspecies <- length(aout$values)
+  ## say what the balancing coefficients are
+  if(length(n.balance) < 100) msgout(paste("equilibrate: balancing coefficients are", c2s(n.balance), "\n"))
+  ## logarithm of total activity of the balance
+  if(is.numeric(loga.balance)) 
+    msgout(paste("equilibrate: log total activity of", balance, "from argument is", loga.balance, "\n"))
+  else {
+    # sum up the activities, then take absolute value
+    # in case n.balance is negative
+    sumact <- abs(sum(10^aout$species$logact * n.balance))
+    loga.balance <- log10(sumact)
+    msgout(paste("equilibrate: log total activity of", balance, "from species is", loga.balance, "\n"))
+  }
+  ## normalize -- normalize the molar formula by the balance coefficients
+#  # this is the default for systems of proteins as of 20091119
+  m.balance <- n.balance
+  isprotein <- grepl("_", as.character(aout$species$name))
+#  if(missing(normalize) & all(isprotein)) normalize <- TRUE
+  if(normalize) {
+    if(any(n.balance < 0)) stop("one or more negative balancing coefficients prohibit using normalized molar formulas")
+    n.balance <- rep(1, nspecies)
+    msgout(paste("equilibrate: normalizing molar formulas by the balancing coefficients\n"))
+  } else m.balance <- rep(1, nspecies)
+  ## Astar: the affinities/2.303RT of formation reactions with
+  ## formed species in their standard-state activities
+  Astar <- lapply(1:nspecies, function(i) { 
+    # 'starve' the affinity of the activity of the species,
+    # and normalize the value by the nor-molar ratio
+    (aout$values[[i]] + aout$species$logact[i]) / m.balance[i] 
+  })
+  ## compute the equilibrium activities of species
+  if(all(n.balance==1)) loga.equil <- equil.boltzmann(Astar, n.balance, loga.balance)
+  else loga.equil <- equil.reaction(Astar, n.balance, loga.balance)
+  ## if we normalized the formulas, get back to activities to species
+  if(normalize) {
+    loga.equil <- lapply(1:nspecies, function(i) {
+      loga.equil[[i]] - log10(m.balance[i])
+    })
+  }
+  ## put together the output
+  out <- c(aout, list(balance=balance, m.balance=m.balance, n.balance=n.balance, Astar=Astar, loga.equil=loga.equil))
+  # done!
+  return(out)
+}
 
 equil.boltzmann <- function(Astar, n.balance, loga.balance) {
   # 20090217 new "abundance" function
   # return equilibrium logarithms of activity of species
   # works using Boltzmann distribution
-  # A/At = e^(Astar/n.balance) / sum(e^(Astar/n.balance))
   # A/At = e^(Astar/n.balance) / sum(e^(Astar/n.balance))
   # where A is activity of the ith residue and
   # At is total activity of residues
@@ -23,17 +89,18 @@ equil.boltzmann <- function(Astar, n.balance, loga.balance) {
   Astardim <- dim(Astar[[1]])
   Anames <- names(Astar)
   # first loop: make vectors
-  A <- palply(1:length(A),function(i) as.vector(A[[i]]))
+  A <- palply(1:length(A), function(i) as.vector(A[[i]]))
   # second loop: get the exponentiated Astars (numerators)
   # need to convert /2.303RT to /RT
   #A[[i]] <- exp(log(10)*Astar[[i]]/n.balance[i])/n.balance[i]
-  A <- palply(1:length(A),function(i) exp(log(10)*Astar[[i]]/n.balance[i]))
+  A <- palply(1:length(A), function(i) exp(log(10)*Astar[[i]]/n.balance[i]))
   # third loop: accumulate the denominator
   # initialize variable to hold the sum
-  At <- A[[1]]; At[] <- 0
+  At <- A[[1]]
+  At[] <- 0
   for(i in 1:length(A)) At <- At + A[[i]]*n.balance[i]
   # fourth loop: calculate log abundances and replace the dimensions
-  A <- palply(1:length(A),function(i) loga.balance + log10(A[[i]]/At))
+  A <- palply(1:length(A), function(i) loga.balance + log10(A[[i]]/At))
   # fifth loop: replace dimensions
   for(i in 1:length(A)) dim(A[[i]]) <- Astardim
   # add names and we're done!
@@ -60,6 +127,9 @@ equil.reaction <- function(Astar, n.balance, loga.balance) {
   #
   # because of the logarithms, we can't solve the equations directly
   # instead, use uniroot() to compute Abar satisfying [1]
+
+  # we can't run on one species
+  if(length(Astar)==1) stop("at least two species needed for reaction-based equilibration")
   # remember the dimensions and names
   Adim <- dim(Astar[[1]])
   Anames <- names(Astar)
@@ -152,4 +222,56 @@ equil.reaction <- function(Astar, n.balance, loga.balance) {
   names(logact) <- Anames
   # all done!
   return(logact)
+}
+
+balance.coeffs <- function(aout, balance=NULL) {
+  ## generate n.balance from user-given or automatically identified basis species
+  ## extracted from equilibrate() 20120929
+  # 'balance' can be:
+  #   NULL                    - autoselect using which.balance
+  #   name of basis species   - balanced on this basis species
+  #   "length"                   - balanced on sequence length of proteins 
+  #                             (default if balance is missing and all species are proteins)
+  #   1                       - balanced on one mole of species
+  #   numeric vector          - uesr-defined n.balance
+  # the index of the basis species that might be balanced
+  ibalance <- numeric()
+  # deal with proteins
+  isprotein <- grepl("_", as.character(aout$species$name))
+  if(is.null(balance) & all(isprotein)) balance <- "length"
+  # try to automatically find a balance
+  if(is.null(balance)) {
+    ibalance <- which.balance(aout$species)
+    # no shared basis species - balance on one mole of species
+    if(length(ibalance) == 0) balance <- 1
+  } 
+  if(is.numeric(balance[1])) {
+    # a numeric vector
+    n.balance <- rep(balance, length.out=length(aout$values))
+    if(all(n.balance==1)) msgout("balance: coefficients are unity\n")
+    # use 'balance' below as a name
+    if(all(n.balance==1)) balance <- "species"
+    else balance <- "[user defined]"
+  } else {
+    # "length" for balancing on protein length
+    if(identical(balance, "length")) {
+      if(!all(isprotein)) stop("length was the requested balance, but some species are not proteins")
+      n.balance <- protein.length(aout$species$name)
+      msgout("balance: coefficients are protein length\n")
+    } else {
+      # is the balance the name of a basis species?
+      if(length(ibalance)==0) {
+        ibalance <- match(balance, rownames(aout$basis))
+        if(is.na(ibalance)) stop("basis species (", balance, ") not available to balance transformations")
+      }
+      # the name of the basis species (need this if we got ibalance which which.balance, above)
+      balance <- colnames(aout$species)[ibalance[1]]
+      msgout(paste("balance: coefficients are moles of", balance, "in formation reactions\n"))
+      # the balance vector
+      n.balance <- aout$species[, ibalance[1]]
+      # we check if that all formation reactions contain this basis species
+      if(any(n.balance==0)) stop("some species have no ", balance, " in the formation reaction")
+    }
+  }
+  return(n.balance)
 }

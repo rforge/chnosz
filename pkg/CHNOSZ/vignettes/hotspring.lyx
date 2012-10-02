@@ -242,7 +242,7 @@ General Setup
 \begin_layout Standard
 Load CHNOSZ.
  The thermodynamic data for the methionine sidechain group used in the paper
- has been superseded in CHNOSZ_0.9-8 
+ has been superseded in CHNOSZ_0.9.8 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "LD12"
@@ -262,6 +262,12 @@ status open
 
 \begin_layout Chunk
 
+\backslash
+begin{small}
+\end_layout
+
+\begin_layout Chunk
+
 <<libraryCHNOSZ>>=
 \end_layout
 
@@ -273,6 +279,13 @@ library(CHNOSZ)
 \begin_layout Chunk
 
 @
+\end_layout
+
+\begin_layout Chunk
+
+
+\backslash
+end{small}
 \end_layout
 
 \end_inset
@@ -321,6 +334,13 @@ status open
 
 \begin_layout Chunk
 
+
+\backslash
+begin{small}
+\end_layout
+
+\begin_layout Chunk
+
 <<add_obigt>>=
 \end_layout
 
@@ -332,6 +352,13 @@ add.obigt()
 \begin_layout Chunk
 
 @
+\end_layout
+
+\begin_layout Chunk
+
+
+\backslash
+end{small}
 \end_layout
 
 \end_inset
@@ -352,6 +379,13 @@ thermo$protein
 \begin_layout Standard
 \begin_inset Branch general
 status open
+
+\begin_layout Chunk
+
+
+\backslash
+begin{small}
+\end_layout
 
 \begin_layout Chunk
 
@@ -378,6 +412,13 @@ classes
 @
 \end_layout
 
+\begin_layout Chunk
+
+
+\backslash
+end{small}
+\end_layout
+
 \end_inset
 
 
@@ -393,22 +434,36 @@ status open
 
 \begin_layout Chunk
 
+
+\backslash
+begin{small}
+\end_layout
+
+\begin_layout Chunk
+
 <<sites>>=
 \end_layout
 
 \begin_layout Chunk
 
-sites <- c("N","S","R","Q","P")
+sites <- c("N", "S", "R", "Q", "P")
 \end_layout
 
 \begin_layout Chunk
 
-sitenames <- paste("bison",sites,sep="")
+sitenames <- paste("bison", sites, sep="")
 \end_layout
 
 \begin_layout Chunk
 
 @
+\end_layout
+
+\begin_layout Chunk
+
+
+\backslash
+end{small}
 \end_layout
 
 \end_inset
@@ -486,9 +541,15 @@ status open
 
 \begin_layout Chunk
 
+\backslash
+begin{small}
+\end_layout
+
+\begin_layout Chunk
+
 
 \backslash
-setkeys{Gin}{width=0.5
+setkeys{Gin}{width=0.6
 \backslash
 textwidth}
 \end_layout
@@ -500,49 +561,47 @@ textwidth}
 
 \begin_layout Chunk
 
-plot(0,0,xlim=c(-1,6),ylim=c(-0.33,-0.11),xlab="site",ylab=expression(bar(italic(Z
-))[C]),axes=FALSE)
+plot(0, 0, xlim=c(-1, 6), ylim=c(-0.33, -0.11), xlab="site", 
 \end_layout
 
 \begin_layout Chunk
 
-axis(1,at=1:5)
+  ylab=expression(bar(italic(Z))[C]), xaxt="n")
 \end_layout
 
 \begin_layout Chunk
 
-axis(2)
+axis(1, at=1:5)
 \end_layout
 
 \begin_layout Chunk
 
-box()
+col <- c("green", rep("black", 20))
 \end_layout
 
 \begin_layout Chunk
 
-col <- c("green",rep("black",20))
+lwd <- c(3, rep(1, 20))
 \end_layout
 
 \begin_layout Chunk
 
-lwd <- c(3,rep(1,20))
+clab <- c("hydrolase", "overall", "protease", 
 \end_layout
 
 \begin_layout Chunk
 
-clab <- c("hydrolase","overall","protease","oxidoreductase","transport","membran
-e","permease")
+  "oxidoreductase", "transport", "membrane", "permease")
 \end_layout
 
 \begin_layout Chunk
 
-ip <- iprotein(rep(classes,each=5),rep(sitenames,20))
+ip <- iprotein(rep(classes, each=5), rep(sitenames, 20))
 \end_layout
 
 \begin_layout Chunk
 
-p <- thermo$protein[ip,]
+p <- thermo$protein[ip, ]
 \end_layout
 
 \begin_layout Chunk
@@ -562,12 +621,12 @@ for(i in 1:length(classes)) {
 
 \begin_layout Chunk
 
-  lines(1:5,ZC.p[(1:5)+5*(i-1)],col=col[i],lwd=lwd[i])
+  lines(1:5, ZC.p[(1:5)+5*(i-1)], col=col[i], lwd=lwd[i])
 \end_layout
 
 \begin_layout Chunk
 
-  if(classes[i] %in% clab) text(0.8,ZC.p[1+5*(i-1)],classes[i],adj=1)
+  if(classes[i] %in% clab) text(0.8, ZC.p[1+5*(i-1)], classes[i], adj=1)
 \end_layout
 
 \begin_layout Chunk
@@ -587,6 +646,13 @@ for(i in 1:length(classes)) {
 setkeys{Gin}{width=1.0
 \backslash
 textwidth}
+\end_layout
+
+\begin_layout Chunk
+
+
+\backslash
+end{small}
 \end_layout
 
 \end_inset
@@ -655,17 +721,31 @@ status open
 
 \begin_layout Chunk
 
+
+\backslash
+begin{small}
+\end_layout
+
+\begin_layout Chunk
+
 <<basis>>=
 \end_layout
 
 \begin_layout Chunk
 
-basis(c("HCO3-","H2O","NH3","HS-","H2","H+"))
+basis(c("HCO3-", "H2O", "NH3", "HS-", "H2", "H+"))
 \end_layout
 
 \begin_layout Chunk
 
 @
+\end_layout
+
+\begin_layout Chunk
+
+
+\backslash
+end{small}
 \end_layout
 
 \end_inset
@@ -696,27 +776,41 @@ status open
 
 \begin_layout Chunk
 
+
+\backslash
+begin{small}
+\end_layout
+
+\begin_layout Chunk
+
 <<TpH>>=
 \end_layout
 
 \begin_layout Chunk
 
-distance <- c(0,6,11,14,22)
+distance <- c(0, 6, 11, 14, 22)
 \end_layout
 
 \begin_layout Chunk
 
-T.bison <- c(93.3,79.4,67.5,65.3,57.1)
+T.bison <- c(93.3, 79.4, 67.5, 65.3, 57.1)
 \end_layout
 
 \begin_layout Chunk
 
-pH.bison <- c(7.350,7.678,7.933,7.995,8.257)
+pH.bison <- c(7.350, 7.678, 7.933, 7.995, 8.257)
 \end_layout
 
 \begin_layout Chunk
 
 @
+\end_layout
+
+\begin_layout Chunk
+
+
+\backslash
+end{small}
 \end_layout
 
 \end_inset
@@ -767,52 +861,66 @@ status open
 
 \begin_layout Chunk
 
-<<TpHplot,fig=T,height=3.5>>=
+
+\backslash
+begin{small}
 \end_layout
 
 \begin_layout Chunk
 
-Tfun <- splinefun(distance,T.bison,method="mono")
+<<TpHplot,fig=T,height=3>>=
 \end_layout
 
 \begin_layout Chunk
 
-pHfun <- splinefun(distance,pH.bison,method="mono")
+Tfun <- splinefun(distance, T.bison, method="mono")
 \end_layout
 
 \begin_layout Chunk
 
-xpoints <- seq(0,22,0.25)
+pHfun <- splinefun(distance, pH.bison, method="mono")
 \end_layout
 
 \begin_layout Chunk
 
-par(mfrow=c(1,2))
+xpoints <- seq(0, 22, 0.25)
 \end_layout
 
 \begin_layout Chunk
 
-plot(distance,T.bison,xlab="distance, m",ylab=axis.label("T"))
+par(mfrow=c(1, 2), mar=c(4, 4, 3, 2))
 \end_layout
 
 \begin_layout Chunk
 
-lines(xpoints,Tfun(xpoints))
+plot(distance, T.bison,xlab="distance, m", ylab=axis.label("T"))
 \end_layout
 
 \begin_layout Chunk
 
-plot(distance,pH.bison,xlab="distance, m",ylab="pH")
+lines(xpoints, Tfun(xpoints))
 \end_layout
 
 \begin_layout Chunk
 
-lines(xpoints,pHfun(xpoints))
+plot(distance, pH.bison,xlab="distance, m", ylab="pH")
+\end_layout
+
+\begin_layout Chunk
+
+lines(xpoints, pHfun(xpoints))
 \end_layout
 
 \begin_layout Chunk
 
 @
+\end_layout
+
+\begin_layout Chunk
+
+
+\backslash
+end{small}
 \end_layout
 
 \end_inset
@@ -835,17 +943,31 @@ status open
 
 \begin_layout Chunk
 
+
+\backslash
+begin{small}
+\end_layout
+
+\begin_layout Chunk
+
 <<basis>>=
 \end_layout
 
 \begin_layout Chunk
 
-basis(c("HCO3-","NH3","HS-","H+"),c(-3,-4,-7,-7.933))
+basis(c("HCO3-", "NH3", "HS-", "H+"), c(-3, -4, -7, -7.933))
 \end_layout
 
 \begin_layout Chunk
 
 @
+\end_layout
+
+\begin_layout Chunk
+
+
+\backslash
+end{small}
 \end_layout
 
 \end_inset
@@ -876,31 +998,17 @@ status open
 
 \begin_layout Chunk
 
-%
-\backslash
-begin{small}
-\end_layout
-
-\begin_layout Chunk
-
 <<formation_protein>>=
 \end_layout
 
 \begin_layout Chunk
 
-species("overall",sitenames)
+species("overall", sitenames)
 \end_layout
 
 \begin_layout Chunk
 
 @
-\end_layout
-
-\begin_layout Chunk
-
-%
-\backslash
-end{small}
 \end_layout
 
 \end_inset
@@ -957,7 +1065,7 @@ status open
 
 \begin_layout Chunk
 
-ip <- iprotein("overall",sitenames)
+ip <- iprotein("overall", sitenames)
 \end_layout
 
 \begin_layout Chunk
@@ -972,7 +1080,7 @@ mys <- species()
 
 \begin_layout Chunk
 
-mys[,1:6]/pl
+mys[, 1:6]/pl
 \end_layout
 
 \begin_layout Chunk
@@ -1026,7 +1134,7 @@ status open
 
 \begin_layout Chunk
 
-Tlim <- c(50,100)
+Tlim <- c(50, 100)
 \end_layout
 
 \begin_layout Chunk
@@ -1080,17 +1188,17 @@ textwidth}
 
 \begin_layout Chunk
 
-a <- affinity(T=Tlim,H2=c(-7,-4))
+a <- affinity(T=Tlim, H2=c(-7, -4))
 \end_layout
 
 \begin_layout Chunk
 
-diagram(a,color=NULL,names=1:5)
+diagram(a, fill=NULL, names=1:5, normalize=TRUE)
 \end_layout
 
 \begin_layout Chunk
 
-lines(Tlim,H2prot(Tlim),lty=2)
+lines(Tlim, H2prot(Tlim), lty=2)
 \end_layout
 
 \begin_layout Chunk
@@ -1149,7 +1257,7 @@ loadclass <- function(class) {
 
 \begin_layout Chunk
 
-  species(rep(class,each=5),rep(sitenames,length(class)))
+  species(rep(class, each=5), rep(sitenames, length(class)))
 \end_layout
 
 \begin_layout Chunk
@@ -1205,12 +1313,12 @@ textwidth}
 
 \begin_layout Chunk
 
-forclasses <- c("transferase","transport","dehydrogenase","synthase")
+forclasses <- c("transferase", "transport", "dehydrogenase", "synthase")
 \end_layout
 
 \begin_layout Chunk
 
-par(mfrow=c(2,2))
+par(mfrow=c(2, 2))
 \end_layout
 
 \begin_layout Chunk
@@ -1225,12 +1333,12 @@ for(i in 1:4) {
 
 \begin_layout Chunk
 
-  a <- affinity(T=Tlim,H2=c(-7,-4))
+  a <- affinity(T=Tlim, H2=c(-7, -4))
 \end_layout
 
 \begin_layout Chunk
 
-  diagram(a,color=NULL,names=1:5)
+  diagram(a, fill=NULL, names=1:5, normalize=TRUE)
 \end_layout
 
 \begin_layout Chunk
@@ -1240,7 +1348,7 @@ for(i in 1:4) {
 
 \begin_layout Chunk
 
-  lines(Tlim,H2prot(Tlim),lty=2)
+  lines(Tlim, H2prot(Tlim), lty=2)
 \end_layout
 
 \begin_layout Chunk
@@ -1309,6 +1417,13 @@ status open
 
 \begin_layout Chunk
 
+
+\backslash
+begin{small}
+\end_layout
+
+\begin_layout Chunk
+
 <<affinity>>=
 \end_layout
 
@@ -1319,7 +1434,7 @@ species(1:5,0)
 
 \begin_layout Chunk
 
-a <- affinity(T=T.bison,pH=pH.bison,H2=H2prot(T.bison))
+a <- affinity(T=T.bison, pH=pH.bison, H2=H2prot(T.bison))
 \end_layout
 
 \begin_layout Chunk
@@ -1335,6 +1450,13 @@ a.res
 \begin_layout Chunk
 
 @
+\end_layout
+
+\begin_layout Chunk
+
+
+\backslash
+end{small}
 \end_layout
 
 \end_inset
@@ -1378,7 +1500,7 @@ status open
 
 \begin_layout Chunk
 
-sapply(1:5,function(x) which.max(a.res[,x]))
+sapply(1:5, function(x) which.max(a.res[, x]))
 \end_layout
 
 \begin_layout Chunk
@@ -1435,7 +1557,7 @@ a.res
 
 \begin_layout Chunk
 
-sapply(1:5,function(x) which.max(a.res[,x]))
+sapply(1:5, function(x) which.max(a.res[, x]))
 \end_layout
 
 \begin_layout Chunk
@@ -1490,7 +1612,7 @@ status open
 
 \begin_layout Chunk
 
-species(1:5,-3)
+species(1:5, -3)
 \end_layout
 
 \begin_layout Chunk
@@ -1510,7 +1632,7 @@ xH2 <- H2prot(xT)
 
 \begin_layout Chunk
 
-a <- affinity(T=xT,pH=xpH,H2=xH2)
+a <- affinity(T=xT, pH=xpH, H2=xH2)
 \end_layout
 
 \begin_layout Chunk
@@ -1537,21 +1659,17 @@ distance
 \end_inset
 
 .
- To do so modify a few entries in the list returned by 
+ To do so modify a couple of entries in the list returned by 
 \family typewriter
 affinity
 \family default
  (
 \family typewriter
-xname
+vars
 \family default
 , 
 \family typewriter
-xlim
-\family default
-, 
-\family typewriter
-xvals
+vals
 \family default
 ); otherwise the 
 \begin_inset Formula $x$
@@ -1595,27 +1713,27 @@ textwidth}
 
 \begin_layout Chunk
 
-a$xname <- "distance, m"
+a$vars[1] <- "distance, m"
 \end_layout
 
 \begin_layout Chunk
 
-a$xlim <- c(range(xpoints),length(xpoints))
+a$vals[[1]] <- xpoints
 \end_layout
 
 \begin_layout Chunk
 
-a$xvals <- xpoints
+e <- equilibrate(a, normalize=TRUE)
 \end_layout
 
 \begin_layout Chunk
 
-diagram(a,legend.x=NULL)
+diagram(e, legend.x=NULL)
 \end_layout
 
 \begin_layout Chunk
 
-legend("bottom",lty=1:5,legend=paste(1:5,"       "),bty="n")
+legend("bottom", lty=1:5, legend=paste(1:5,"       "), bty="n")
 \end_layout
 
 \begin_layout Chunk
@@ -1667,13 +1785,13 @@ textwidth}
 
 \begin_layout Chunk
 
-<<stripplot,fig=T,results=hide,width=6,height=4>>=
+<<stripplot,fig=T,results=hide,width=6,height=3.5>>=
 \end_layout
 
 \begin_layout Chunk
 
-xclasses <- c("overall","transferase","transport","synthetase","membrane","perme
-ase")
+xclasses <- c("overall", "transferase", "transport", "synthetase", "membrane",
+ "permease")
 \end_layout
 
 \begin_layout Chunk
@@ -1683,32 +1801,27 @@ loadclass(xclasses)
 
 \begin_layout Chunk
 
-a <- affinity(T=xT,pH=xpH,H2=xH2)
+a <- affinity(T=xT, pH=xpH, H2=xH2)
 \end_layout
 
 \begin_layout Chunk
 
-a$xname <- "distance, m"
+a$vars[1] <- "distance, m"
 \end_layout
 
 \begin_layout Chunk
 
-a$xlim <- c(range(xpoints),length(xpoints))
+a$vals[[1]] <- xpoints
 \end_layout
 
 \begin_layout Chunk
 
-a$xvals <- xpoints
+col <- c("red", "orange", "yellow", "green", "blue")
 \end_layout
 
 \begin_layout Chunk
 
-col <- c("red","orange","yellow","green","blue")
-\end_layout
-
-\begin_layout Chunk
-
-par(mfrow=c(1,2))
+par(mfrow=c(1, 2), mar=c(4, 4, 1, 1))
 \end_layout
 
 \begin_layout Chunk
@@ -1718,7 +1831,7 @@ for(i in 1:2) {
 
 \begin_layout Chunk
 
-  ispecies <- lapply((1:3)+(i-1)*3,function(x) {1:5+(x-1)*5} )
+  ispecies <- lapply((1:3)+(i-1)*3, function(x) {1:5+(x-1)*5} )
 \end_layout
 
 \begin_layout Chunk
@@ -1851,17 +1964,17 @@ status open
 
 \begin_layout Chunk
 
-T.ORP <- c(93.9,87.7,75.7,70.1,66.4,66.2)
+T.ORP <- c(93.9, 87.7, 75.7, 70.1, 66.4, 66.2)
 \end_layout
 
 \begin_layout Chunk
 
-pH.ORP <- c(8.28,8.31,7.82,7.96,8.76,8.06)
+pH.ORP <- c(8.28, 8.31, 7.82, 7.96, 8.76, 8.06)
 \end_layout
 
 \begin_layout Chunk
 
-ORP <- c(-258,-227,-55,-58,-98,-41)
+ORP <- c(-258, -227, -55, -58, -98, -41)
 \end_layout
 
 \begin_layout Chunk
@@ -1922,13 +2035,13 @@ Eh <- ORP/1000 + E.AgAgCl(T.ORP)
 
 \begin_layout Chunk
 
-pe <- convert(Eh,"pe",T=convert(T.ORP,"K"))
+pe <- convert(Eh, "pe", T=convert(T.ORP, "K"))
 \end_layout
 
 \begin_layout Chunk
 
-logK.ORP <- subcrt(c("e-","H+","H2"),c(-2,-2,1),c("aq","aq","aq"),T=T.ORP)$out$log
-K
+logK.ORP <- subcrt(c("e-", "H+", "H2"), c(-2, -2, 1), c("aq", "aq", "aq"),
+ T=T.ORP)$out$logK
 \end_layout
 
 \begin_layout Chunk
@@ -1979,18 +2092,23 @@ status open
 
 \begin_layout Chunk
 
-loga.HS <- log10(c(4.77e-6,2.03e-6,3.12e-7,4.68e-7,2.18e-7))
+loga.HS <- log10(c(4.77e-6, 2.03e-6, 3.12e-7, 4.68e-7, 2.18e-7))
 \end_layout
 
 \begin_layout Chunk
 
-loga.SO4 <- log10(c(2.10e-4,2.03e-4,1.98e-4,2.01e-4,1.89e-4))
+loga.SO4 <- log10(c(2.10e-4, 2.03e-4, 1.98e-4, 2.01e-4, 1.89e-4))
 \end_layout
 
 \begin_layout Chunk
 
-logK.S <- subcrt(c("HS-","H2O","SO4-2","H+","H2"),c(-1,-4,1,1,4),state=c("aq","li
-q","aq","aq","aq"),T=T.bison)$out$logK
+logK.S <- subcrt(c("HS-", "H2O", "SO4-2", "H+", "H2"), c(-1, -4, 1, 1, 4),
+ 
+\end_layout
+
+\begin_layout Chunk
+
+  state=c("aq", "liq", "aq", "aq", "aq"), T=T.bison)$out$logK
 \end_layout
 
 \begin_layout Chunk
@@ -2041,7 +2159,7 @@ status open
 
 \begin_layout Chunk
 
-DO <- c(0.173,0.776,0.9,1.6,2.8)
+DO <- c(0.173, 0.776, 0.9, 1.6, 2.8)
 \end_layout
 
 \begin_layout Chunk
@@ -2051,8 +2169,8 @@ logaO2 <- log10(DO/1000/32)
 
 \begin_layout Chunk
 
-logK <- subcrt(c("O2","H2","H2O"),c(-0.5,-1,1),c("aq","aq","liq"),T=T.bison)$out$l
-ogK
+logK <- subcrt(c("O2", "H2", "H2O"), c(-0.5, -1, 1), c("aq", "aq", "liq"),
+ T=T.bison)$out$logK
 \end_layout
 
 \begin_layout Chunk
@@ -2100,7 +2218,7 @@ status open
 
 
 \backslash
-setkeys{Gin}{width=0.5
+setkeys{Gin}{width=0.45
 \backslash
 textwidth}
 \end_layout
@@ -2112,53 +2230,58 @@ textwidth}
 
 \begin_layout Chunk
 
-plot(Tlim,H2prot(Tlim),xlim=Tlim,ylim=c(-45,0),xlab=axis.label("T"),ylab=axis.labe
-l("H2"),type="l")
+plot(Tlim, H2prot(Tlim), xlim=Tlim, ylim=c(-45,0),
 \end_layout
 
 \begin_layout Chunk
 
-points(T.ORP,logaH2.ORP,pch=15)
+  xlab=axis.label("T"), ylab=axis.label("H2"), type="l")
 \end_layout
 
 \begin_layout Chunk
 
-lines(T.ORP,logaH2.ORP,lty=2)
+points(T.ORP, logaH2.ORP, pch=15)
 \end_layout
 
 \begin_layout Chunk
 
-points(T.bison,logaH2.O,pch=16)
+lines(T.ORP, logaH2.ORP, lty=2)
 \end_layout
 
 \begin_layout Chunk
 
-lines(T.bison,logaH2.O,lty=2)
+points(T.bison, logaH2.O, pch=16)
 \end_layout
 
 \begin_layout Chunk
 
-points(T.bison,logaH2.S,pch=17)
+lines(T.bison, logaH2.O, lty=2)
 \end_layout
 
 \begin_layout Chunk
 
-lines(T.bison,logaH2.S,lty=2)
+points(T.bison, logaH2.S, pch=17)
 \end_layout
 
 \begin_layout Chunk
 
-llab <- c("H2prot","ORP","oxygen","sulfur")
+lines(T.bison, logaH2.S, lty=2)
 \end_layout
 
 \begin_layout Chunk
 
-text(c(72,80,72,74),c(-4,-25,-34,-10.5),llab)
+llab <- c("H2prot", "ORP", "oxygen", "sulfur")
 \end_layout
 
 \begin_layout Chunk
 
-# legend("bottomright",lty=c(1,NA,NA,NA),pch=c(NA,15,16,17),legend=llab)
+text(c(72, 80, 72, 74), c(-4, -25, -34, -10.5), llab)
+\end_layout
+
+\begin_layout Chunk
+
+# legend("bottomright", lty=c(1, NA, NA, NA), pch=c(NA, 15, 16, 17), legend=llab
+)
 \end_layout
 
 \begin_layout Chunk

@@ -59,10 +59,3 @@ pprod <- function(x,y) {
   lapply(1:length(y),pfun)
 }
 
-psum <- function(x) {
-  # sum all elements of a list
-  s <- x[[1]]
-  for(j in 2:length(x)) s <- s+x[[j]]
-  return(s)
-}
-

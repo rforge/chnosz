@@ -66,8 +66,6 @@ and also very fun to use. Don't worry if you're new to it; just plow
 through the examples below and you'll start to get the hang of it.
 If you want a more structured approach to learning the language, there
 are some excellent guides in the Manuals section of the \href{http://www.r-project.org}{R Project page}.
-There is also a publication on CHNOSZ available \citep{Dic08}, and
-\href{http://www.chnosz.net}{a website}.
 
 The package was developed since 2006 to support a research project
 on the thermodynamic properties of proteins. Since that time, the
@@ -76,7 +74,7 @@ thermodynamic properties of reactions, and especially the construction
 of equilibrium chemical activity diagrams for both inorganic and organic
 systems. The development of the package since 2009 has focused on
 the calculation of the equilibrium chemical activities of large numbers
-of proteins with applications in interpretation of metagenomic data
+of proteins with applications to interpretation of metagenomic data
 and protein abundances in a variety of settings.
 
 The database and functions are flexible in their use, allowing one
@@ -89,28 +87,32 @@ demonstrate basic usage to new users.
 
 CHNOSZ is made up of a set of functions and supporting datasets. The
 major components of the package are shown in the figure below, which
-is a modified version of the flowchart from \citet{Dic08} (boxes
--- functions; ellipses -- datasets).
+is an updated version of the flowchart from \citet{Dic08} (boxes
+-- functions; ellipses -- datasets; bold text -- major user functions).
 
-\includegraphics[width=0.8\columnwidth]{chnosz_new}
+\includegraphics[bb=0bp 440bp 612bp 792bp,clip,width=0.75\columnwidth]{flowchart}
 
 Some common usage scenarios are:
 \begin{itemize}
-\item using \texttt{info()} to search for species in the thermodynamic database
+\item using \texttt{info()} to search for species in the thermodynamic database;
 \item using \texttt{subcrt()} to calculate the thermodynamic properties
-of species and reactions
+of species and reactions;
 \item using the sequence \texttt{basis()}, \texttt{species()}, \texttt{affinity()},
-\texttt{diagram()} to assign the basis species that define the dimensions
-of chemical composition in a system, define the species of interest
-for relative stability calculations, calculate the affinities of formation
-reactions of the species of interest under reference (non-equilibrium)
-conditions, and to transform the non-equilibrium affinities to equilibrium
-chemical activities and plot the results.
+\texttt{equilibrate()}, \texttt{diagram()} to assign the basis species
+that define the dimensions of chemical composition in a system, define
+the species of interest for relative stability calculations, calculate
+the affinities of formation reactions of the species of interest under
+reference (non-equilibrium) conditions, calculate the equilibrium
+chemical activities, and finally plot the results;%
+\footnote{\texttt{equilibrate()} appeared in version 0.9.8 of CHNOSZ. In previous
+versions, the equilibrium calculations were invoked by calls to \texttt{diagram()}.%
+}
 \item using \texttt{revisit()} to calculate/plot statistics of the chemical
 activities of the species of interest and \texttt{findit()} to search
 for combinations of activities of basis species, temperature and/or
-pressure that optimize those statistics. (These features, first appearing
-in version 0.9-3 of the package, are not covered in this document.)
+pressure that optimize those statistics. These features, first appearing
+in version 0.9-3 of the package, are covered briefly toward the end
+of this document.
 \end{itemize}
 The functions are designed with an interactive setting in mind; you
 can use CHNOSZ without having to write your own scripts. The examples
@@ -586,7 +588,7 @@ subcrt:~6~species~at~298.15~K~and~1~bar~(wet)~
 
 \subsection{Carbonate speciation (Bjerrum diagram)}
 
-The sequence of commands \texttt{basis}-\texttt{species}-\texttt{affinity}-\texttt{diagram},
+The sequence of commands \texttt{basis}-\texttt{species-affinity}-\texttt{{[}equilibrate{]}-diagram},
 with various arguments, can be used to create a wide variety of diagrams.
 The first two lines below configure the basis species and the aqueous
 species. Some of the elements in the basis species are not in the
@@ -604,9 +606,11 @@ of temperature (I do!)
 basis("CHNOS+")
 species(c("CO2", "HCO3-", "CO3-2"))
 a <- affinity(pH=c(4, 12))
-diagram(a, ylim=c(-6, 0))
+e <- equilibrate(a)
+diagram(e, ylim=c(-6, 0))
 a <- affinity(pH=c(4, 12), T=150)
-diagram(a, add=TRUE, col="red")
+e <- equilibrate(a)
+diagram(e, add=TRUE, col="red")
 @
 \setkeys{Gin}{width=1.0\textwidth}
 
@@ -660,13 +664,17 @@ a <- affinity(O2=c(-90,-70))
 @
 
 \selectlanguage{english}%
-Now we can use \texttt{diagram()} to plot the relative stabilities
-of the proteins in the system. We'll also specify where the legend
-should be placed on the plot.
+Now we can use \texttt{equilibrate()} to calculate the equilibrium
+activities of the proteins and \texttt{diagram()} to plot them. \texttt{normalize=TRUE}
+invokes the normalization of the chemical formulas of the proteins
+by the lengths (number of residues), which in most cases is desirable
+for calculating equilibrium activities of proteins. We'll also specify
+where the legend should be placed on the plot.
 
 \setkeys{Gin}{width=0.6\textwidth}
 <<CSG_diagram,fig=T,width=4,height=4>>=
-diagram(a, legend.x="bottomleft", ylim=c(-6, -2))
+e <- equilibrate(a, normalize=TRUE)
+diagram(e, legend.x="bottomleft", ylim=c(-6, -2))
 @
 \setkeys{Gin}{width=1.0\textwidth}
 
@@ -679,14 +687,18 @@ is relatively stable at more reduced conditions.
 
 Now let's add some bacterial surface-layer proteins. They are in some
 way functional analogs (but not \href{http://en.wikipedia.org/wiki/Homology_(biology)}{homologs})
-of the archaeal cell-surface glycoproteins.
+of the archaeal cell-surface glycoproteins. This plot is made using
+the ``maximum affinity method'' to calculate the predominant species;
+alternatively we could insert a call to \texttt{equilibrate()} in
+order to calculate the equilibrium activities of all the species,
+but the resulting predominance diagram would be identical.
 
 \setkeys{Gin}{width=0.6\textwidth}
 <<PredominanceDiagram,fig=T,width=4,height=4>>=
 species(c("SLAP_ACEKI", "SLAP_GEOSE", "SLAP_BACLI", "SLAP_AERSA"))
 basis(c("NH3", "H2S"), c(-1, -10))
 a <- affinity(O2=c(-85, -70), H2O=c(-5, 0))
-diagram(a)
+diagram(a, normalize=TRUE)
 @
 \setkeys{Gin}{width=1.0\textwidth}
 
@@ -707,11 +719,11 @@ This behavior is a result of the elemental makeup of the proteins:
 the bacterial proteins under consideration are, per residue, more
 nitrogen-rich and sulfur-poor than their archaeal counterparts (except
 for CSG\_HALJP, which has no sulfur). CHNOSZ has a function to display
-the compositional makeup of the proteins, per residue, in terms of
-the basis species.
+the compositional makeup of the proteins, per residue (indicated by
+\texttt{normalize=TRUE}), in terms of the basis species.
 
 <<residue.info>>=
-protein.basis(species()$name, residue=TRUE)
+protein.basis(species()$name, normalize=TRUE)
 @
 
 \selectlanguage{english}%
@@ -822,10 +834,9 @@ commands (other than the plots) is hidden.
 This plot, showing the relative stabilities of extracellular $\alpha$-amylase
 on an Eh-pH diagram is similar to Fig. 13 of \citet{DLH06}. The basis(``CHNOSe'')
 includes an electron, so Eh can be used as a variable. The arguments
-in \texttt{diagram()} include setting the balanced component to $\mathrm{CO_{2}}$,
-and setting \texttt{residue=FALSE} so as to not divide the protein
-formulas by lengths to compare the residue equivalents, which is the
-default.
+in \texttt{diagram()} include setting the balanced component to $\mathrm{CO_{2}}$;
+\texttt{normalize=FALSE} is left as the default so that whole protein
+formulas, not normalized by protein length, are used in the calculations.
 
 Note that \texttt{add.obigt()} could be added at the very beginning
 to load the properties of the methionine sidechain group used by \citet{DLH06}
@@ -847,9 +858,9 @@ basis("CHNOSe")
 basis(c("NH3", "H2S"), c(-6, -3))
 species(c("AMY_BACSU", "O08452_PYRFU"))
 a <- affinity(pH=c(2, 10), Eh=c(-1, 1))
-diagram(a, balance="CO2", residue=FALSE, lwd=2, color=NULL, cex.names=1.5)
+diagram(a, balance="CO2", lwd=2, fill=NULL, cex.names=1.5)
 a <- affinity(pH=c(2, 10), Eh=c(-1, 1), T=100)
-diagram(a, balance="CO2", residue=FALSE, lwd=2, color=NULL, col="red", names=NULL, add=TRUE)
+diagram(a, balance="CO2", lwd=2, fill=NULL, col="red", names=NULL, add=TRUE)
 water.lines()
 water.lines(T=398.15, col="red")
 BKMdat <- read.csv(system.file("extdata/cpetc/BKM60_Fig7.csv", package="CHNOSZ"))
@@ -874,10 +885,10 @@ are used here to calculate an abundance-weighted average of amino
 acid compositions of proteins in different subcellular compartments
 of yeast. The relative stabilities of these 23 model proteins are
 calculated as a function of the logarithm of oxygen fugacity ($\log f_{\mathrm{O_{2}}_{\left(g\right)}}$).
-This figure is similar to Fig. 3 of \citet{Dic09}. Some of the differences
-in positions of the lines can be attributed to updated parameters
-for the methionine sidechain group \citep{LD12} that are used in
-the current version of CHNOSZ.
+This figure is similar to Fig. 3 of \citet{Dic09}. Differences in
+positions of the lines can be attributed to updated parameters for
+the methionine sidechain group \citep{LD12} that are used in the
+current version of CHNOSZ.
 
 \setkeys{Gin}{width=0.7\textwidth}
 <<yeastplot, fig=TRUE, results=hide, width=7, height=5>>=
@@ -890,10 +901,11 @@ for(i in 1:length(locations)) {
 }
 basis("CHNOS+")
 species(locations, "Sce")
-a <- affinity(O2=c(-82,-65))
+a <- affinity(O2=c(-82, -65))
+e <- equilibrate(a, loga.balance=0, normalize=TRUE)
 mycolor <- topo.colors(length(locations))
-diagram(a, names=locations, ylim=c(-5,-3), legend.x=NA,
-  col=mycolor, lwd=2, loga.balance=0)
+diagram(e, names=locations, ylim=c(-5, -3), legend.x=NA,
+  col=mycolor, lwd=2)
 dp <- describe.property(c("T", "P"), c(25, 1))
 db <- describe.basis(ibasis=(1:6)[-5])
 legend("topright", legend=c(dp, db), bty="n")
@@ -929,8 +941,9 @@ buffered by minerals and in equilibrium with different activities
 of organic species that are calculated using these two methods.
 
 \begin{small}
-\setkeys{Gin}{width=0.6\textwidth}
-<<bufferplot, fig=TRUE, results=hide, width=5, height=4>>=
+\setkeys{Gin}{width=1.0\textwidth}
+<<bufferplot, fig=TRUE, results=hide, width=8, height=3.5>>=
+layout(matrix(1:2, nrow=1), widths=c(2, 1))
 b.species <- c("Fe", "CO2", "H2O", "N2", "H2", "H2S", "SiO2")
 b.state <- c("cr1", "gas", "liq", "gas", "gas", "aq", "aq")
 b.logact <- c(0, 1, 0, 0, 0, 0, 0)
@@ -940,8 +953,8 @@ thermo.plot.new(xlim=xlim, ylim=c(-4, 4), xlab=axis.label("T"), ylab=axis.label(
 bufferline <- function(buffer, ixlab) {
   basis("H2", buffer)
   a <- affinity(T=xlim, P=300, return.buffer=TRUE, exceed.Ttr=TRUE)
-  lines(a$xvals, a$H2)
-  text(a$xvals[ixlab], a$H2[ixlab], buffer)
+  lines(a$vals[[1]], a$H2)
+  text(a$vals[[1]][ixlab], a$H2[ixlab], buffer)
 }
 bufferline("FeFeO", 20)
 bufferline("QFM", 38)
@@ -952,11 +965,11 @@ for(logact in c(-6, -10, -15)) {
   species(c("formaldehyde", "HCN"), logact)
   a <- affinity(T=xlim, P=300)
   d <- diagram(a, what="H2", lty=c(2, 3), add=TRUE)
-  text(a$xvals[13], mean(sapply(d$logact, c)[13, ]), logact)
+  text(a$vals[[1]][13], mean(sapply(d$plotvals, c)[13, ]), logact)
 }
-legend("topright", legend = c(describe.property("P", 300),
-  describe.basis(ibasis=c(2,4)), "minerals", "HCN", "formaldehyde"), 
-  lty=c(NA, NA, NA, 1, 2, 3), bg="white")
+plot.new()
+legend("topleft", legend = c(describe.property("P", 300), describe.basis(ibasis=c(2,4)),
+  "minerals", "HCN", "formaldehyde"), lty=c(NA, NA, NA, 1, 2, 3), bg="white")
 @
 \setkeys{Gin}{width=1.0\textwidth}
 \end{small}
@@ -965,13 +978,14 @@ legend("topright", legend = c(describe.property("P", 300),
 \clearpage
 
 
-\subsection{Revisit}
+\subsection{revisit}
 
 \texttt{revisit()} computes some summary statistics (default is the
 coefficient of variation) about the equilibrium chemical activities
-of species calculated by \texttt{diagram()}. In this example, the
-coefficient of variation of the activities of the amino acids is plotted
-as a function of $\log f_{\mathrm{O_{2}}_{\left(g\right)}}$ and $\log a_{\mathrm{CO_{2}}_{\left(aq\right)}}$.
+of species calculated by \texttt{equilibrate()}. In this example,
+the coefficient of variation of the activities of the amino acids
+is plotted as a function of $\log f_{\mathrm{O_{2}}_{\left(g\right)}}$
+and $\log a_{\mathrm{CO_{2}}_{\left(aq\right)}}$.
 
 \begin{small}
 \setkeys{Gin}{width=0.35\textwidth}
@@ -979,20 +993,21 @@ as a function of $\log f_{\mathrm{O_{2}}_{\left(g\right)}}$ and $\log a_{\mathrm
 basis("CHNOS")
 species(c("isoleucine", "tyrosine", "glutamic acid", "methionine", "aspartic acid"))
 a <- affinity(CO2=c(2, 5), O2=c(-72, -70))
-d <- diagram(a, balance=1, mam=FALSE, plot.it=FALSE)
-r <- revisit(d)
+e <- equilibrate(a, balance=1)
+r <- revisit(e)
 title(main=paste("CV minimum =", round(r$extval, 2)))
 @
 \setkeys{Gin}{width=1.0\textwidth}
 \end{small}
 
 \selectlanguage{english}%
-The \texttt{balance=1} in \texttt{diagram()} means the relative stabilities
-are calculated using the formation reactions written per mole of amino
-acid (not conserving e.g. $\mathrm{CO_{2}}$ which would be the default
-behaviour in this system). Note the star showing the conditions where
-the coefficient of variation is minimized. Let's look at the fractional
-equilibrium abundances of the amino acids at these conditions.
+The \texttt{balance=1} in \texttt{equilibrate()} means the relative
+stabilities are calculated using the formation reactions written per
+mole of amino acid (not conserving e.g. $\mathrm{CO_{2}}$ which would
+be the default behaviour in this system). Note the star showing the
+conditions where the coefficient of variation is minimized. Let's
+look at the fractional equilibrium abundances of the amino acids at
+these conditions.
 
 \begin{small}
 \setkeys{Gin}{width=0.6\textwidth}
@@ -1000,7 +1015,8 @@ equilibrium abundances of the amino acids at these conditions.
 basis(c("CO2", "O2"), c(r$x, r$y))
 a <- affinity()
 par(mfrow=c(1, 2))
-d <- diagram(a, balance=1, alpha=TRUE, names=aminoacids(1, species()$name))
+e <- equilibrate(a, balance=1)
+d <- diagram(e, alpha=TRUE, names=aminoacids(1, species()$name))
 plot.new()
 legend("topleft", describe.basis(basis()), bg="white")
 @
@@ -1015,7 +1031,7 @@ of the amino acids have a more even distribution?
 \clearpage
 
 
-\subsection{Findit}
+\subsection{findit}
 
 \texttt{findit()} performs a gridded search, on successively smaller
 hypercubes, for the conditions that maximize one of the statistics
@@ -1050,7 +1066,8 @@ them manually.
 <<findit_alpha, fig=T, results=hide, width=6, height=4>>=
 a <- affinity()
 par(mfrow=c(1, 2))
-d <- diagram(a, balance=1, alpha=TRUE, names=aminoacids(1, species()$name))
+e <- equilibrate(a, balance=1)
+d <- diagram(e, alpha=TRUE, names=aminoacids(1, species()$name))
 plot.new()
 legend("topleft", describe.basis(basis()), bg="white")
 @

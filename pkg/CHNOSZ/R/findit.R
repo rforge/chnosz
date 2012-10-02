@@ -5,7 +5,7 @@
 # 20100831 jmd
 
 findit <- function(lims=list(), target="cv", niter=NULL, iprotein=NULL, plot.it=TRUE,
-  T=25, P="Psat", res=NULL, labcex=0.6, loga.ref=NULL, as.residue=FALSE,
+  T=25, P="Psat", res=NULL, labcex=0.6, loga.ref=NULL,
   loga.balance=0, rat=NULL, balance=NULL) {
   # the lims list has the limits of the arguments to affinity()
   # we iteratively move toward a higher/lower value of the target
@@ -118,8 +118,8 @@ findit <- function(lims=list(), target="cv", niter=NULL, iprotein=NULL, plot.it=
     # now calculate the affinities
     a <- do.call(affinity,aargs)
     # then calculate the values of the target function
-    d <- diagram(a,plot.it=FALSE,mam=FALSE,as.residue=as.residue,loga.balance=loga.balance,balance=balance)
-    dd <- revisit(d$logact,target,loga.ref=loga.ref)$H
+    e <- equilibrate(a, balance=balance, loga.balance=loga.balance)
+    dd <- revisit(e$loga.equil, target, loga.ref=loga.ref)$H
     # find the extreme value
     iext <- where.extreme(dd,target)
     # find the extreme value
@@ -162,20 +162,20 @@ findit <- function(lims=list(), target="cv", niter=NULL, iprotein=NULL, plot.it=
       # add our search lines and extreme points
       # to the plot
       if(nd==1) {
-        if(i==1) revisit(d,target,loga.ref,xlim=lims[[1]])
+        if(i==1) revisit(e,target,loga.ref,xlim=lims[[1]])
         # on a 1-D diagram we add vertical lines to show our search limits
         abline(v=outlims[[1]][1:2])
         lines(myinc,dd)
         points(myval,dd[iext])
       } else if(nd==2) {
-        if(i==1) revisit(d,target,loga.ref,xlim=lims[[1]],ylim=lims[[2]],labcex=labcex)
+        if(i==1) revisit(e,target,loga.ref,xlim=lims[[1]],ylim=lims[[2]],labcex=labcex)
         else {
           # on a 2-D diagram we add a box around our search limits
           # and an updated map for this region
           ol1 <- outlims[[1]]
           ol2 <- outlims[[2]]
           rect(ol1[1],ol2[1],ol1[2],ol2[2],border=par("fg"),col="white")
-          revisit(d,target,loga.ref,xlim=lims[[1]],ylim=lims[[2]],add=TRUE,labcex=labcex)
+          revisit(e,target,loga.ref,xlim=lims[[1]],ylim=lims[[2]],add=TRUE,labcex=labcex)
         }
         text(out[[1]],out[[2]])
         points(out[[1]],out[[2]],cex=2)
@@ -193,10 +193,10 @@ findit <- function(lims=list(), target="cv", niter=NULL, iprotein=NULL, plot.it=
         # we extract the third dimension until only two remain
         for(j in 3:nd) {
           # ai[j] - which slice in this dimension has the extremum
-          for(k in 1:length(d$logact)) d$logact[[k]] <- slice(d$logact[[k]],3,ai[j])
+          for(k in 1:length(e$loga.equil)) e$loga.equil[[k]] <- slice(e$loga.equil[[k]],3,ai[j])
         }
         # now make the plot
-        revisit(d,target,loga.ref,xlim=lims[[1]],ylim=lims[[2]],add=add,labcex=labcex)
+        revisit(e,target,loga.ref,xlim=lims[[1]],ylim=lims[[2]],add=add,labcex=labcex)
         # indicate the location of the extremum
         text(out[[1]],out[[2]])
         points(out[[1]],out[[2]],cex=2)

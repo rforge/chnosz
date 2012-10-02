@@ -25,7 +25,7 @@
 @
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
-%\VignetteIndexEntry{Winding Journey Down (in Gibbs energy)}
+%\VignetteIndexEntry{Winding journey down (in Gibbs energy)}
 
 % so DOIs in bibliography show up as hyperlinks
 \newcommand*{\doi}[1]{\href{http://dx.doi.org/#1}{doi: #1}}
@@ -46,7 +46,7 @@
 
 \section{Introduction}
 
-\texttt{wjd()} appeared in CHNOSZ version 0.9-8. It implements the
+\texttt{wjd()} appeared in CHNOSZ version 0.9.8. It implements the
 steepest descent algorithm for Gibbs energy minimization described
 by White, Johnson and Dantzig, \citeyear{WJD58}. This vignette shows
 some examples of its usage. The help page for \texttt{wjd()} in the
@@ -439,7 +439,7 @@ compounds (e.g. naphthalene, anthracene) going toward higher carbon
 content. Unlike the figure in \citet{DLE64}, there appears to be
 a second major crossing of curves at about 43\% carbon, corresponding
 to a rise in CO. (For a higher resolution, try setting \texttt{xCs
-<- seq(8, 44, 1)}.)
+<- seq(8, 47, 1)}.)
 
 
 \section{Running Down: Using a Thermodynamic Database}

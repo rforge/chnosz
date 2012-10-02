@@ -72,10 +72,10 @@ mod.basis <- function(species, state=NULL, logact=NULL) {
         }
         thermo$basis$logact[ib] <<- state[i]
       } else {
-        # look for this state of the species
-        ispecies <- suppressMessages(info(species[i], state[i], check.it=FALSE))
+        # look for a species with this name in the requested state
+        ispecies <- suppressMessages(info(thermo$obigt$name[thermo$basis$ispecies[ib]], state[i], check.it=FALSE))
         if(is.na(ispecies) | is.list(ispecies)) 
-          stop(paste("state or buffer '",state[i],"' not found for ",species[i],"\n",sep=""))
+          stop(paste("state or buffer '", state[i], "' not found for ", thermo$obigt$name[thermo$basis$ispecies[ib]], "\n", sep=""))
         thermo$basis$ispecies[ib] <<- ispecies
         thermo$basis$state[ib] <<- state[i]
       }

@@ -133,9 +133,9 @@ protein.info <- function(protein, T=25, residue=FALSE, round.it=FALSE) {
   return(out)
 }
 
-protein.basis <- function(protein, T=25, residue=FALSE) {
+protein.basis <- function(protein, T=25, normalize=FALSE) {
   # 20090902 calculate the coefficients of basis species in reactions
-  # to form proteins (possibly per residue) listed in protein
+  # to form proteins (possibly per normalized by length) listed in protein
   # 20120528 renamed protein.basis from residue.info ...
   # what are the elemental compositions of the proteins
   aa <- ip2aa(protein)
@@ -149,8 +149,8 @@ protein.basis <- function(protein, T=25, residue=FALSE) {
     Z <- ionize.aa(aa, T=T, pH=pH)[1, ]
     sb[, iHplus] <- sb[, iHplus] + Z
   }
-  # compute per residue coefficients if requested
-  if(residue) {
+  # compute per length-normalized coefficients if requested
+  if(normalize) {
     # get lengths of proteins
     plen <- protein.length(aa)
     sb <- sb/plen
@@ -205,7 +205,7 @@ protein.equil <- function(protein, T=25, loga.protein=0) {
   G0res.RT <- G0protform/thermo$opt$R/TK/plength
   msgout("protein.equil [1]: per residue, reaction to form ", iword, " protein from basis species has G0/RT of ", G0res.RT[1], "\n")
   # coefficients of basis species in formation reactions of residues
-  resbasis <- suppressMessages(protein.basis(aa, T=T, residue=TRUE))
+  resbasis <- suppressMessages(protein.basis(aa, T=T, normalize=TRUE))
   # logQstar and Astar/RT
   logQstar <- colSums(t(resbasis) * - thermo$basis$logact)
   msgout("protein.equil [1]: per residue, logQstar is ", logQstar[1], "\n")
@@ -231,12 +231,15 @@ protein.equil <- function(protein, T=25, loga.protein=0) {
     # boltzmann distribution
     alpha <- expAstar.RT / sumexpAstar.RT    
     msgout("protein.equil [all]: equilibrium degrees of formation (alphas) of residue equivalents are ", paste(alpha, collapse=" "), "\n")
-    # check with diagram()
+    # check with equilibrate()
     if(is.numeric(protein)) {
-      dalpha <- unlist(suppressMessages(diagram(a, alpha=TRUE, as.residue=TRUE, plot.it=FALSE))$logact)
-      msgout("check it!     alphas of residue equivalents from diagram(alpha=TRUE, as.residue=TRUE) are ", paste(dalpha, collapse=" "), "\n")
-      if(!isTRUE(all.equal(alpha, dalpha, check.attributes=FALSE)))
-        stop("Bug alert! The same value for alpha cannot be calculated manually as by using diagram()")
+      loga.equil.protein <- unlist(suppressMessages(equilibrate(a, normalize=TRUE))$loga.equil)
+      # here we do have to convert from logarithms of activities of proteins to degrees of formation of residue equivalents
+      a.equil.residue <- plength*10^loga.equil.protein
+      ealpha <- a.equil.residue/sum(a.equil.residue)
+      msgout("check it!     alphas of residue equivalents from equilibrate() are ", paste(ealpha, collapse=" "), "\n")
+      if(!isTRUE(all.equal(alpha, ealpha, check.attributes=FALSE)))
+        stop("Bug alert! The same value for alpha cannot be calculated manually as by using equilibrate()")
     }
     # total activity of residues
     loga.residue <- log10(sum(plength * 10^loga.protein))
@@ -247,12 +250,12 @@ protein.equil <- function(protein, T=25, loga.protein=0) {
     # equilibrium activities of proteins
     loga.protein.equil <- log10(10^loga.residue.equil/plength)
     msgout("protein.equil [all]: log10 equilibrium activities of proteins are ", paste(loga.protein.equil, collapse=" "), "\n")
-    # check with diagram()
+    # check with equilibrate()
     if(is.numeric(protein)) {
-      dloga.protein.equil <- unlist(suppressMessages(diagram(a, plot.it=FALSE, loga.balance=loga.residue))$logact)
-      msgout("check it!    log10 eq'm activities of proteins from diagram() are ", paste(dloga.protein.equil, collapse=" "), "\n")
-      if(!isTRUE(all.equal(loga.protein.equil, dloga.protein.equil, check.attributes=FALSE)))
-        stop("Bug alert! The same value for log10 equilibrium activities of proteins cannot be calculated manually as by using diagram()")
+      eloga.protein.equil <- unlist(suppressMessages(equilibrate(a, loga.balance=loga.residue, normalize=TRUE))$loga.equil)
+      msgout("check it!    log10 eq'm activities of proteins from equilibrate() are ", paste(eloga.protein.equil, collapse=" "), "\n")
+      if(!isTRUE(all.equal(loga.protein.equil, eloga.protein.equil, check.attributes=FALSE)))
+        stop("Bug alert! The same value for log10 equilibrium activities of proteins cannot be calculated manually as by using equilibrate()")
     }
   }
 }

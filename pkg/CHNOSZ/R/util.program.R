@@ -18,22 +18,18 @@ caller.name <- function(n=2) {
 }
 
 palply <- function(X, FUN, ...) {
-  # a wrapper function to run parLapply if length(X) > 100 
+  # a wrapper function to run parLapply if length(X) > 10000
   # and package 'parallel' is available, otherwise run lapply
-  if(length(X) > 100 & "parallel" %in% (.packages())) {
-    #### tell the user the number of iterations and the name of the calling function
-    ###cn <- caller.name()
-    ###if(length(cn)==0) ntext <- "" else ntext <- paste("(called by ", cn, ")", sep="")
-    ###cat("palply: ", ntext, " ", length(X), " parLapply calculations ...", sep="")
-    # the actual calculations - modified from ?parLapply
+  if(length(X) > 10000 & "parallel" %in% (.packages())) {
+    # the calculations - modified from ?parLapply
     ## Use option mc.cores to choose an appropriate cluster size.
     # or detectCores if that is NULL, and set max at 2 for now
+    # (to be nice to CRAN etc.)
     nCores <- max(getOption("mc.cores", detectCores()), 2)
-    # don't load methods package
+    # don't load methods package, to save startup time - ?makeCluster
     cl <- makeCluster(nCores, methods=FALSE)
     out <- parLapply(cl, X, FUN, ...)
     stopCluster(cl)
-    ###cat(" done!\n")
-  } else out <- lapply(X,FUN,...)
+  } else out <- lapply(X, FUN, ...)
   return(out)
 }

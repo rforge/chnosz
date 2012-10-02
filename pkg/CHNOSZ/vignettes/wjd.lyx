@@ -4,7 +4,7 @@
 \begin_header
 \textclass article
 \begin_preamble
-%\VignetteIndexEntry{Winding Journey Down (in Gibbs energy)}
+%\VignetteIndexEntry{Winding journey down (in Gibbs energy)}
 
 % so DOIs in bibliography show up as hyperlinks
 \newcommand*{\doi}[1]{\href{http://dx.doi.org/#1}{doi: #1}}
@@ -126,7 +126,7 @@ status open
 \family typewriter
 wjd()
 \family default
- appeared in CHNOSZ version 0.9-8.
+ appeared in CHNOSZ version 0.9.8.
  It implements the steepest descent algorithm for Gibbs energy minimization
  described by White, Johnson and Dantzig, 
 \begin_inset CommandInset citation
@@ -1853,7 +1853,7 @@ key "DLE64"
  corresponding to a rise in CO.
  (For a higher resolution, try setting 
 \family typewriter
-xCs <- seq(8, 44, 1)
+xCs <- seq(8, 47, 1)
 \family default
 .)
 \end_layout
@@ -2200,7 +2200,7 @@ Compared with the previous example, here the lower H/C = 0.7 defines a more
 
 \begin_layout Standard
 \begin_inset Branch short
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -2258,7 +2258,7 @@ R session information
 
 \begin_layout Standard
 \begin_inset Branch short
-status collapsed
+status open
 
 \begin_layout Chunk
 

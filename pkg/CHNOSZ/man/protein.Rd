@@ -56,7 +56,7 @@ text(170, -3, dsr, cex=0.8)
 ### Equilibrium activity diagrams
 
 ## surface-layer proteins from Methanococcus and others
-## as a function of oxygen fugacity, after Dick, 2008
+## as a function of oxygen fugacity, after Dick, 2008, Fig. 5b
 # use old properties of [Met] to reproduce this example
 data(thermo)
 add.obigt()
@@ -65,49 +65,27 @@ organisms <- c("METSC", "METJA", "METFE", "HALJP", "METVO",
   "METBU", "ACEKI", "GEOSE", "BACLI", "AERSA")
 proteins <- c(rep("CSG", 6), rep("SLAP", 4))
 proteins <- paste(proteins, organisms, sep="_")
-# set some graphical parameters
 # load the basis species and proteins
 basis("CHNOS+")
 species(proteins)
 # calculate affinities; we go to lower logfO2 than Dick, 2008
 # and find an interesting convergence of stabilities there
 a <- affinity(O2=c(-100, -65))
-d <- diagram(a, ylim=c(-5, -1), legend.x=NA, names=organisms)
+# try normalize=FALSE to make Fig. 5a in the paper
+e <- equilibrate(a, normalize=TRUE)
+d <- diagram(e, ylim=c(-5, -1), legend.x=NA, names=organisms)
 # add water stability line
 abline(v=-83.1, lty=2)
 title(main="Surface-layer proteins, after Dick, 2008")
 # checking the geometry of the diagram
 # most preominant along the x-axis
-stopifnot(organisms[unique(which.pmax(d$logact))] ==
+stopifnot(organisms[unique(which.pmax(e$loga.equil))] ==
   c("METFE", "METJA", "METVO", "HALJP"))
 # stability order close to logfO2=-83.1
-stopifnot(order(as.data.frame(d$logact)[62,],
+stopifnot(order(as.data.frame(e$loga.equil)[62,],
   decreasing=TRUE)==c(2, 6, 7, 5, 3, 1, 9, 8, 10, 4))
 # reset thermodynamic database
 data(thermo)
-
-
-## subcellular homologs of yeast glutaredoxin
-## as a function of logfO2 and logaH2O, after Dick, 2009
-basis("CHNOS+")
-protein <- c("GLRX1", "GLRX2", "GLRX3", "GLRX4", "GLRX5")
-loc <- c("(C)", "(M)", "(N)", "(N)", "(M)")
-species(protein, "YEAST")
-a <- affinity(H2O=c(-10, 0), O2=c(-85, -60))
-d1 <- diagram(a, names=paste(protein, loc))
-title(main="Yeast glutaredoxins, after Dick, 2009")
-text(-10, 60, describe.basis(thermo$basis[-c(2, 5), ]))
-# a stability field for GLRX4 appears if we set as.residue=TRUE 
-# (equal activities of the residues instead of proteins)
-d2 <- diagram(a, names=paste(protein, loc), as.residue=TRUE,
-  add=TRUE, col="blue")
-# identify the protein that appeared in the second case
-inew <- setdiff(as.numeric(d2$out), as.numeric(d1$out))
-# check that this protein "invaded" the space of a smaller one
-iold <- unique(d1$out[d2$out==inew])
-pl <- protein.length(a$species$name)
-stopifnot(all(pl[iold] < pl[inew]))
-
 
 ## relative stabilities of bovine proteins
 ## as a function of temperature along a glutathione redox buffer
@@ -123,33 +101,25 @@ a <- affinity(T=c(0, 200))
 ZC <- ZC(species()$ispecies)
 col <- rep("red", length(prot))
 col[ZC > 0] <- "blue"
-d <- diagram(a, as.residue=TRUE, ylim=c(-2, 0.5), col=col)
-# add some text labels
-text(70, data.frame(d$logact)[45, ], prot)
+e <- equilibrate(a, normalize=TRUE)
+d <- diagram(e, col=col, legend.x=NA)
 title(main="Bovine proteins, GSH/GSSG redox buffer")
-
 
 ## relative stabilities of plasma proteins,
 ## using chemical activities of H2 and O2
+# find that insulin is very stable in oxidizing conditions
 basis(c("CO2", "NH3", "H2S", "H2", "O2"), "aq", c(-3, -3, -10))
 f <- system.file("extdata/abundance/AA03.csv", package="CHNOSZ")
 pdat <- read.csv(f, as.is=TRUE)
-# just take the "IL" (interleukin)
-iil <- grep("^IL", pdat$name)
-species(pdat$name[iil], "HUMAN")
-a <- affinity(H2=c(-20, 0), O2=c(-90, -65))
-# note that the darker colors here go with higher abundances
-# as reported by Anderson and Anderson, 2003
-diagram(a)
-title(main="Interleukins in human plasma (darker color - more abundant)")
-## continuing, find that insulin is very stable in oxidizing conditions
 species(pdat$name, "HUMAN")
 basis("H2", -3)
 a <- affinity(O2=c(-90, -75))
-diagram(a, col="green", legend.x=NA, ylim=c(-10, 1))
+e <- equilibrate(a, normalize=TRUE)
+diagram(e, col="green", legend.x=NA, ylim=c(-10, 1))
 basis("H2", -20)
 a <- affinity(O2=c(-90, -75))
-diagram(a, add=TRUE, col="blue")
+e <- equilibrate(a, normalize=TRUE)
+diagram(e, add=TRUE, col="blue")
 legend("bottomleft", col=c(NA, "green", "blue"), lty=1,
   legend=c(axis.label("H2"), -3, -20))
 title(main="Equilibrium activities of human plasma proteins")
@@ -158,18 +128,17 @@ title(main="Equilibrium activities of human plasma proteins")
 ### Calculations showing effects of ionization of proteins
 
 ## Eh-pH diagrams for intra/extracellular proteins
-organism <- c("PYRFU","ECOLI","YEAST")
-intracellular <- c("AMPM","AMPM","AMPM1")
-extracellular <- c("O08452","AMY1","PST1")
+organism <- c("PYRFU", "ECOLI", "YEAST")
+intracellular <- c("AMPM", "AMPM", "AMPM1")
+extracellular <- c("O08452", "AMY1", "PST1")
 basis("CHNOSe")  # for Eh we need electrons
-mycol <- c("red","green","blue")
+mycol <- c("red", "green", "blue")
 for(i in 1:3) {
   species(delete=TRUE)
-  species(c(intracellular[i],extracellular[i]),organism[i])
-  if(i == 1) add <- FALSE else add <- TRUE
-  a <- affinity(pH=c(0,14),Eh=c(-1,0))
-  diagram(a,add=add,color=NULL,names=species()$name,
-    col=mycol[i],col.names=mycol[i])
+  species(c(intracellular[i], extracellular[i]), organism[i])
+  a <- affinity(pH=c(0, 14), Eh=c(-1, 0))
+  diagram(a, add=i>1, fill=NULL, names=species()$name,
+    col=mycol[i], col.names=mycol[i], normalize=TRUE)
 }
 title(main="Intracellular (AMPM) and extracellular proteins")
 text(9, -0.05, describe.basis(ibasis=1:4, oneline=TRUE))
@@ -189,7 +158,7 @@ basis(c("CO2", "H2O", "NH3", "O2"), "TPX")
 a <- affinity(return.buffer=TRUE, T=50)
 basis(c("CO2", "H2O", "NH3", "O2"), as.numeric(a[1:4]))
 a <- affinity(pH=c(0, 14, 200), T=c(25, 70, 200))
-diagram(a, color=NULL)
+diagram(a, fill=NULL)
 title(main="Thiol peroxidases from bacteria")
 text(0.5, 66, describe.basis(thermo$basis[-6,], oneline=TRUE), adj=0)
 
@@ -211,7 +180,7 @@ logact <- affinity(return.buffer=TRUE, T=25)
 basis(c("CO2", "NH3", "H2S", "O2"), as.numeric(logact))
 species(paste(proteins, "ECOLI", sep="_"))
 a <- affinity(pH=c(5, 10), T=c(10, 40))
-diagram(a, balance="PBB", residue=FALSE)
+diagram(a, normalize=FALSE)
 title(main="Relative stabilities of sigma factors in E. coli")
 ptext <- c(describe.property("T", 25), 
   describe.basis(ibasis=c(2, 6), oneline=TRUE))

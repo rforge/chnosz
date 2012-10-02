@@ -67,9 +67,6 @@ ZC(protein.formula(waaavg))
 ## read.expr using one of the provided data files,
 ## from Ishihama et al., 2008
 file <- system.file("extdata/abundance/ISR+08.csv.xz", package="CHNOSZ")
-# what if we just want kinases?
-# "description" is the name of the column where we search for "kinase"
-expr.kinase <- read.expr(file, "ID", "emPAI", list(description="kinase"))
 # read all protein names and abundances in ID and emPAI columns
 # (emPAI - exponentially modified protein abundance index)
 expr <- read.expr(file, "ID", "emPAI")
@@ -77,8 +74,13 @@ expr <- read.expr(file, "ID", "emPAI")
 aa <- more.aa(expr$protein, "Eco")
 pf <- protein.formula(aa)
 zc <- ZC(pf)
-plot(zc, expr$abundance, ylim=c(0, 100),
-  xlab=expr.property("ZC"), ylab="emPAI")
+# note we specify ylim here that excludes some high-emPAI values
+plot(zc, expr$abundance, xlab=expr.property("ZC"), ylim=c(0, 90), ylab="emPAI",
+  main="Proteins in E. coli cytosol\nAbundance vs oxidation state of carbon")
+legend("topleft", pch=1, legend="Ishihama et al., 2008")
+# what if we just want kinases?
+# "description" is the name of the column where we search for "kinase"
+expr.kinase <- read.expr(file, "ID", "emPAI", list(description="kinase"))
 
 ## read.expr using a different data file,
 ## from Anderson and Anderson, 2003
@@ -105,7 +107,8 @@ logact <- unitize(rep(1, length(ip)), pl)
 basis("CHNOS+")
 a <- affinity(O2=c(-80, -73), iprotein=ip, loga.protein=logact)
 # make a speciation diagram
-diagram(a, ylim=c(-4.9, -2.9))
+e <- equilibrate(a, normalize=TRUE)
+diagram(e, ylim=c(-4.9, -2.9))
 # where we are closest to experimental log activity
 logfO2 <- rep(-78, length(ip))
 abline(v=logfO2[1], lty=3)
@@ -126,44 +129,17 @@ data(thermo)
 ## examples using stress() ##
 #############################
 
-## predominance fields for overall protein compositions induced by
-## carbon, sulfur and nitrogen limitation
-## (experimental data from Boer et al., 2003)
-expt <- c("low.C", "low.N", "low.S")
-for(i in 1:length(expt)) {
-  p <- stress(expt[i], "Sce")
-  aa <- more.aa(p$protein, "Sce")
-  aa <- aasum(aa, average=TRUE, protein=expt[i])
-  add.protein(aa)
-}
-basis("CHNOS+") 
-basis("O2", -75.29)
-species(expt, "Sce")
-a <- affinity(CO2=c(-8,0), H2S=c(-10,0))
-diagram(a, balance="PBB", names=expt, color=NULL)
-db1 <- describe.basis(ibasis=3)
-basis("NH3", -10)
-a <- affinity(CO2=c(-8,0), H2S=c(-10,0))
-diagram(a, balance="PBB", names=NULL, add=TRUE, col="blue")
-title(main=paste("Proteins induced by",
-  "carbon, sulfur and nitrogen limitation", sep="\n"))
-db <- describe.basis(ibasis=c(1,2,4,5,6))
-db2 <- describe.basis(ibasis=3)
-dp <- describe.property(c("T", "P"), c(25, 1))
-legend("topleft", lty=c(rep(NA,7),1,1), col=c("blue", "black"),
-  legend=c(dp, db, db1, db2))
-
 ## predominance fields for overall protein compositions 
 ## induced and repressed in an/aerobic carbon limitation
 ## (experiments of Tai et al., 2005)
 # the activities of ammonium and sulfate
 # are similar to the non-growth-limiting concentrations
 # used by Boer et al., 2003
-basis(c("glucose","H2O","NH4+","hydrogen","SO4-2","H+"),
-  c(-1,0,-1.3,999,-1.4,-7))
+basis(c("glucose", "H2O", "NH4+", "hydrogen", "SO4-2", "H+"),
+  c(-1, 0, -1.3, 999, -1.4, -7))
 # the names of the experiments in thermo$stress
-expt <- c("Clim.aerobic.down","Clim.aerobic.up",
-  "Clim.anaerobic.down","Clim.anaerobic.up")
+expt <- c("Clim.aerobic.down", "Clim.aerobic.up",
+  "Clim.anaerobic.down", "Clim.anaerobic.up")
 # here we use abundance to indicate that the protein
 # compositions should be summed together in equal amounts
 for(i in 1:length(expt)) {
@@ -173,16 +149,16 @@ for(i in 1:length(expt)) {
   add.protein(aa)
 }
 species(expt, "Sce")
-a <- affinity(C6H12O6=c(-45,-20),H2=c(-20,0))
-d <- diagram(a,color=NULL,as.residue=TRUE)
-title(main=paste("Relative stabilities of proteins observed in",
-  "an/aerobic carbon limitation in yeast",sep="\n"))
+a <- affinity(C6H12O6=c(-30, 0), H2=c(-20, 0))
+d <- diagram(a, normalize=TRUE, fill=NULL)
+title(main=paste("Relative stabilities of proteins observed in\n",
+  "an/aerobic carbon limitation in yeast"))
 # the equilibrium distribution favors the proteins upregulated 
 # by carbon limitation at low chemical potentials of C6H12O6 ...
-stopifnot(c(d$out[128,1], d$out[1,1])==grep("up", expt))
+stopifnot(c(d$predominant[1,1], d$predominant[1,128])==grep("up", expt))
 # ... and favors proteins downregulated by aerobic conditions
 # at high hydrogen fugacities
-stopifnot(d$out[1,128]==grep("\\\.aerobic.down", expt))
+stopifnot(c(d$predominant[128, 128], d$predominant[128, 1])==grep("down", expt))
 
 #################################
 ##  examples using yeastgfp()  ##
@@ -196,14 +172,13 @@ add.obigt()
 # arranged by decreasing metastability:
 # order of this list of locations is based on the 
 # (dis)appearance of species on the current set of diagrams
-names <- c("vacuole","early.Golgi","ER","lipid.particle",
-  "cell.periphery","ambiguous","Golgi","mitochondrion",
-  "bud","actin","cytoplasm","late.Golgi",
-  "endosome","nucleus","vacuolar.membrane","punctate.composite",
-  "peroxisome","ER.to.Golgi","nucleolus","spindle.pole",
-  "nuclear.periphery","bud.neck","microtubule")
-nloc <- c(4,5,3,4,4,3)
-inames <- 1:length(names)
+names <- c("vacuole", "early.Golgi", "ER", "lipid.particle",
+  "cell.periphery", "ambiguous", "Golgi", "mitochondrion",
+  "bud", "actin", "cytoplasm", "late.Golgi",
+  "endosome", "nucleus", "vacuolar.membrane", "punctate.composite",
+  "peroxisome", "ER.to.Golgi", "nucleolus", "spindle.pole",
+  "nuclear.periphery", "bud.neck", "microtubule")
+nloc <- c(4, 5, 3, 4, 4, 3)
 # define the system
 basis("CHNOS+")
 # get protein names and abundances in each location
@@ -216,30 +191,25 @@ for(i in 1:length(names)) {
   add.protein(avgaa)
 }
 species(names, "Sce")
-a <- affinity(H2O=c(-5,0,256),O2=c(-80,-66,256))
+a <- affinity(H2O=c(-5, 0, 256), O2=c(-80, -66, 256))
 # setup the plot
-layout(matrix(c(1,1,2:7),byrow=TRUE,nrow=4),heights=c(0.7,3,3,3))
-par(mar=c(0,0,0,0))
+layout(matrix(c(1, 1,2:7), byrow=TRUE, nrow=4), heights=c(0.7, 3, 3, 3))
+par(mar=c(0, 0, 0, 0))
 plot.new()
-text(0.5,0.5,paste("Subcellular proteins of S. cerevisiae,",
+text(0.5, 0.5, paste("Subcellular proteins of S. cerevisiae,",
  "after Dick, 2009\n"), cex=1.5)
-text(0.5, 0.2, describe.basis(ibasis=c(1,3,4,6), oneline=TRUE), cex=1.5)
-opar <- par(mar=c(3,4,1,1),xpd=TRUE)
+text(0.5, 0.2, describe.basis(ibasis=c(1, 3, 4, 6), oneline=TRUE), cex=1.5)
+opar <- par(mar=c(3, 4, 1, 1), xpd=TRUE)
+fill <- heat.colors(length(names))
+inames <- 1:length(names)
 for(i in 1:length(nloc)) {
-  cex.axis <- 0.75
-  # uncomment the following and dev.off() below to generate png files
-  #png(paste(i,"png",sep="."),width=300,height=250); cex.axis <- 1
-  diagram(a,balance="PBB",names=names[inames],
-    ispecies=inames,cex.axis=cex.axis)
+  diagram(a, normalize=TRUE, names=names[inames], groups=as.list(inames),
+    fill=fill[inames], cex.axis=0.75, cex.names=1)
   label.plot(letters[i])
-  title(main=paste(length(inames),"locations"))
-  #dev.off()
+  title(main=paste(length(inames), "locations"))
   # take out the stable species
   inames <- inames[-(1:nloc[i])]
 }
-# make an animated gif from png files (with ImageMagick convert tool)
-#system(paste("convert -delay 100 1.png 1.png 1.png 2.png",
-#  "3.png 4.png 5.png 6.png 6.png 6.png yeast.gif"))
 # return to plot defaults
 layout(matrix(1))
 par(opar)

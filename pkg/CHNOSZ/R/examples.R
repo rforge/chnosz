@@ -183,7 +183,7 @@ longex <- function(which=c("sources", "NaCl", "copper", "cordierite",
       "Cu(Gly)+","Cu(Gly)2","Cu(Gly)2-","HCu(Gly)+2"))
     loga_Cu <- -4
     loga_Gly <- -1
-    diagram(afun(loga_Cu,loga_Gly),color=NULL,col="blue",
+    diagram(afun(loga_Cu,loga_Gly),fill=NULL,col="blue",
       names=species()$name,col.names="blue",add=TRUE)
     water.lines()
     # the glycine ionization constants could be calculated using
@@ -193,7 +193,7 @@ longex <- function(which=c("sources", "NaCl", "copper", "cordierite",
     basis(c("Cu+2","H2O","H+","e-","glycinium","CO2"),c(999,0,999,999,-2,999))
     species(c("copper","cuprite","tenorite","Cu+","Cu+2","CuO2-2","HCuO2-",
       "Cu(Gly)+","Cu(Gly)2","Cu(Gly)2-","HCu(Gly)+2"))
-    diagram(afun(loga_Cu,loga_Gly),color=NULL,col="green",
+    diagram(afun(loga_Cu,loga_Gly),fill=NULL,col="green",
       names=NULL,col.names="green",add=TRUE)
     # let's forget our changes to 'thermo' so that examples
     # below that use glycine will work as expected
@@ -242,7 +242,7 @@ longex <- function(which=c("sources", "NaCl", "copper", "cordierite",
     x100 <- which.min(abs(d100$logact[[3]] - d100$logact[[2]]))
     stopifnot(all.equal(x100, 45))
     ## phosphate predominance f(IS,pH)
-    d <- diagram(affinity(IS=c(0, 0.14), pH=c(6, 13), T=T[1]), color=NULL)
+    d <- diagram(affinity(IS=c(0, 0.14), pH=c(6, 13), T=T[1]), fill=NULL)
     diagram(affinity(IS=c(0, 0.14), pH=c(6, 13), T=T[2]), 
       add=TRUE, names=NULL, col="red")
     par(opar)
@@ -262,7 +262,7 @@ longex <- function(which=c("sources", "NaCl", "copper", "cordierite",
     # (coded for by the homocodon triplets)
     # check out the predominance diagrams
     a.1 <- affinity(H2O=c(-5,0),Eh=c(-0.5,0))
-    diagram(a.1,color=NULL)
+    diagram(a.1,fill=NULL)
     # overlay a different temperature
     a.2 <- affinity(H2O=c(-5,0),Eh=c(-0.5,0),T=100)
     diagram(a.2,col="red",add=TRUE,names=NULL)
@@ -348,7 +348,7 @@ longex <- function(which=c("sources", "NaCl", "copper", "cordierite",
       # calculate the distribution of species
       mylogaH2O <- thermo$basis$logact[rownames(thermo$basis)=='H2O']
       a <- affinity(H2O=c(mylogaH2O,mylogaH2O-1,2),T=T)
-      logacts <- diagram(a,plot.it=FALSE,residue=TRUE,balance=1)$logact
+      logacts <- equilibrate(a, normalize=TRUE, balance=1)$loga.equil
       # assemble the names and logarithms of activities
       # of species that are above a minimum value
       names <- character()
@@ -613,7 +613,8 @@ longex <- function(which=c("sources", "NaCl", "copper", "cordierite",
     # plot 1: calculated logarithms of chemical activity
     # as a function of logfO2 ... a bundle of curves near logfO2 = -77
     a <- affinity(O2=c(-90,-60),iprotein=ip)
-    d <- diagram(a,loga.balance=0,col=col)
+    e <- equilibrate(a, loga.balance=0)
+    d <- diagram(e, col=col)
     title(as.expression("Selected proteins in"~italic("Pelagibacter ubique")))
     legend("bottomleft", lty=c(1,1,1), col=unique(col), legend=myg, bg="white")
     db <- describe.basis(ibasis=c(2, 1, 3))
@@ -630,8 +631,8 @@ longex <- function(which=c("sources", "NaCl", "copper", "cordierite",
     # plot 5: q-q plot at the final loga O2, H2O, CO2, NH3
     # higher correlation coefficient than plot 3
     a <- affinity(iprotein=ip)
-    d <- diagram(a,loga.balance=0,plot.it=FALSE)
-    qqr5 <- revisit(d,"qqr",pch=pch)$H
+    e <- equilibrate(a, loga.balance=0)
+    qqr5 <- revisit(e, "qqr",pch=pch)$H
     legend("topleft",pch=c(1,2,4),legend=myg)
     db <- describe.basis(ibasis=c(5, 2, 1, 3))
     legend("bottomright", legend=db)
@@ -723,7 +724,7 @@ longex <- function(which=c("sources", "NaCl", "copper", "cordierite",
     a <- affinity(return.buffer=TRUE, T=50)
     basis(c("CO2", "H2O", "NH3", "O2"), as.numeric(a[1:4]))
     a <- affinity(pH=c(0, 14, 200), T=c(25, 70, 200))
-    diagram(a, color=NULL)
+    diagram(a, fill=NULL)
     title(main="Thiol peroxidases from bacteria")
     text(0.5, 66, describe.basis(thermo$basis[-6,], oneline=TRUE), adj=0)
 

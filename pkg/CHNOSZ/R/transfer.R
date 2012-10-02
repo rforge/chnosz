@@ -858,7 +858,7 @@ apc <- function(which="open",basis="CO2",plot.it=FALSE) {
   # create a diagram
   if(basis=="CO2") a <- affinity(CO2=c(-10,0),H2=c(-10,0))
   else if(basis=="acetic") a <- affinity(C2H4O2=c(-10,-2),H2=c(-10,-4))
-  diagram(a,residue=TRUE,as.residue=TRUE)
+  diagram(a, normalize=TRUE)
   # set APC2 to react
   species(1:nrow(species()),-999)
   species("APC2_YEAST",0)

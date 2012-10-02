@@ -128,7 +128,7 @@ About
 
 \begin_layout Standard
 \begin_inset Branch load
-status collapsed
+status open
 
 \begin_layout Standard
 This document will orient you to the basic functionality of CHNOSZ, a package
@@ -146,22 +146,6 @@ target "http://www.r-project.org"
 \end_inset
 
 .
- There is also a publication on CHNOSZ available 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "Dic08"
-
-\end_inset
-
-, and 
-\begin_inset CommandInset href
-LatexCommand href
-name "a website"
-target "http://www.chnosz.net"
-
-\end_inset
-
-.
 \end_layout
 
 \begin_layout Standard
@@ -173,7 +157,7 @@ The package was developed since 2006 to support a research project on the
  and organic systems.
  The development of the package since 2009 has focused on the calculation
  of the equilibrium chemical activities of large numbers of proteins with
- applications in interpretation of metagenomic data and protein abundances
+ applications to interpretation of metagenomic data and protein abundances
  in a variety of settings.
 \end_layout
 
@@ -195,26 +179,28 @@ Outline of workflow
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Standard
 CHNOSZ is made up of a set of functions and supporting datasets.
  The major components of the package are shown in the figure below, which
- is a modified version of the flowchart from 
+ is an updated version of the flowchart from 
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Dic08"
 
 \end_inset
 
- (boxes -- functions; ellipses -- datasets).
+ (boxes -- functions; ellipses -- datasets; bold text -- major user functions).
 \end_layout
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename chnosz_new.pdf
+	filename flowchart.pdf
 	lyxscale 70
-	width 80col%
+	width 75col%
+	BoundingBox 0bp 440bp 612bp 792bp
+	clip
 
 \end_inset
 
@@ -230,7 +216,7 @@ using
 \family typewriter
 info()
 \family default
- to search for species in the thermodynamic database
+ to search for species in the thermodynamic database;
 \end_layout
 
 \begin_layout Itemize
@@ -238,7 +224,7 @@ using
 \family typewriter
 subcrt()
 \family default
- to calculate the thermodynamic properties of species and reactions
+ to calculate the thermodynamic properties of species and reactions;
 \end_layout
 
 \begin_layout Itemize
@@ -256,13 +242,37 @@ affinity()
 \family default
 , 
 \family typewriter
+equilibrate()
+\family default
+, 
+\family typewriter
 diagram()
 \family default
  to assign the basis species that define the dimensions of chemical composition
  in a system, define the species of interest for relative stability calculations
 , calculate the affinities of formation reactions of the species of interest
- under reference (non-equilibrium) conditions, and to transform the non-equilibr
-ium affinities to equilibrium chemical activities and plot the results.
+ under reference (non-equilibrium) conditions, calculate the equilibrium
+ chemical activities, and finally plot the results;
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+
+\family typewriter
+equilibrate()
+\family default
+ appeared in version 0.9.8 of CHNOSZ.
+ In previous versions, the equilibrium calculations were invoked by calls
+ to 
+\family typewriter
+diagram()
+\family default
+.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
@@ -277,8 +287,8 @@ findit()
 \family default
  to search for combinations of activities of basis species, temperature
  and/or pressure that optimize those statistics.
- (These features, first appearing in version 0.9-3 of the package, are not
- covered in this document.)
+ These features, first appearing in version 0.9-3 of the package, are covered
+ briefly toward the end of this document.
 \end_layout
 
 \begin_layout Standard
@@ -1635,7 +1645,7 @@ Activity diagrams
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Subsection
 Carbonate speciation (Bjerrum diagram)
@@ -1648,15 +1658,11 @@ basis
 \family default
 -
 \family typewriter
-species
+species-affinity
 \family default
 -
 \family typewriter
-affinity
-\family default
--
-\family typewriter
-diagram
+[equilibrate]-diagram
 \family default
 , with various arguments, can be used to create a wide variety of diagrams.
  The first two lines below configure the basis species and the aqueous species.
@@ -1732,7 +1738,12 @@ a <- affinity(pH=c(4, 12))
 
 \begin_layout Chunk
 
-diagram(a, ylim=c(-6, 0))
+e <- equilibrate(a)
+\end_layout
+
+\begin_layout Chunk
+
+diagram(e, ylim=c(-6, 0))
 \end_layout
 
 \begin_layout Chunk
@@ -1742,7 +1753,12 @@ a <- affinity(pH=c(4, 12), T=150)
 
 \begin_layout Chunk
 
-diagram(a, add=TRUE, col="red")
+e <- equilibrate(a)
+\end_layout
+
+\begin_layout Chunk
+
+diagram(e, add=TRUE, col="red")
 \end_layout
 
 \begin_layout Chunk
@@ -1901,9 +1917,20 @@ a <- affinity(O2=c(-90,-70))
 \begin_layout Standard
 Now we can use 
 \family typewriter
+equilibrate()
+\family default
+ to calculate the equilibrium activities of the proteins and 
+\family typewriter
 diagram()
 \family default
- to plot the relative stabilities of the proteins in the system.
+ to plot them.
+ 
+\family typewriter
+normalize=TRUE
+\family default
+ invokes the normalization of the chemical formulas of the proteins by the
+ lengths (number of residues), which in most cases is desirable for calculating
+ equilibrium activities of proteins.
  We'll also specify where the legend should be placed on the plot.
 \end_layout
 
@@ -1923,7 +1950,12 @@ textwidth}
 
 \begin_layout Chunk
 
-diagram(a, legend.x="bottomleft", ylim=c(-6, -2))
+e <- equilibrate(a, normalize=TRUE)
+\end_layout
+
+\begin_layout Chunk
+
+diagram(e, legend.x="bottomleft", ylim=c(-6, -2))
 \end_layout
 
 \begin_layout Chunk
@@ -1960,6 +1992,21 @@ target "http://en.wikipedia.org/wiki/Homology_(biology)"
 \end_inset
 
 ) of the archaeal cell-surface glycoproteins.
+ This plot is made using the 
+\begin_inset Quotes eld
+\end_inset
+
+maximum affinity method
+\begin_inset Quotes erd
+\end_inset
+
+ to calculate the predominant species; alternatively we could insert a call
+ to 
+\family typewriter
+equilibrate()
+\family default
+ in order to calculate the equilibrium activities of all the species, but
+ the resulting predominance diagram would be identical.
 \end_layout
 
 \begin_layout Chunk
@@ -1993,7 +2040,7 @@ a <- affinity(O2=c(-85, -70), H2O=c(-5, 0))
 
 \begin_layout Chunk
 
-diagram(a)
+diagram(a, normalize=TRUE)
 \end_layout
 
 \begin_layout Chunk
@@ -2052,7 +2099,11 @@ Why did we increase the activity of
  and sulfur-poor than their archaeal counterparts (except for CSG_HALJP,
  which has no sulfur).
  CHNOSZ has a function to display the compositional makeup of the proteins,
- per residue, in terms of the basis species.
+ per residue (indicated by 
+\family typewriter
+normalize=TRUE
+\family default
+), in terms of the basis species.
 \end_layout
 
 \begin_layout Chunk
@@ -2062,7 +2113,7 @@ Why did we increase the activity of
 
 \begin_layout Chunk
 
-protein.basis(species()$name, residue=TRUE)
+protein.basis(species()$name, normalize=TRUE)
 \end_layout
 
 \begin_layout Chunk
@@ -2455,12 +2506,12 @@ diagram()
 \begin_inset Formula $\mathrm{CO_{2}}$
 \end_inset
 
-, and setting 
+; 
 \family typewriter
-residue=FALSE
+normalize=FALSE
 \family default
- so as to not divide the protein formulas by lengths to compare the residue
- equivalents, which is the default.
+ is left as the default so that whole protein formulas, not normalized by
+ protein length, are used in the calculations.
 \end_layout
 
 \begin_layout Standard
@@ -2576,7 +2627,7 @@ a <- affinity(pH=c(2, 10), Eh=c(-1, 1))
 
 \begin_layout Chunk
 
-diagram(a, balance="CO2", residue=FALSE, lwd=2, color=NULL, cex.names=1.5)
+diagram(a, balance="CO2", lwd=2, fill=NULL, cex.names=1.5)
 \end_layout
 
 \begin_layout Chunk
@@ -2586,8 +2637,7 @@ a <- affinity(pH=c(2, 10), Eh=c(-1, 1), T=100)
 
 \begin_layout Chunk
 
-diagram(a, balance="CO2", residue=FALSE, lwd=2, color=NULL, col="red", names=NUL
-L, add=TRUE)
+diagram(a, balance="CO2", lwd=2, fill=NULL, col="red", names=NULL, add=TRUE)
 \end_layout
 
 \begin_layout Chunk
@@ -2708,8 +2758,8 @@ key "Dic09"
 \end_inset
 
 .
- Some of the differences in positions of the lines can be attributed to
- updated parameters for the methionine sidechain group 
+ Differences in positions of the lines can be attributed to updated parameters
+ for the methionine sidechain group 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "LD12"
@@ -2781,7 +2831,12 @@ species(locations, "Sce")
 
 \begin_layout Chunk
 
-a <- affinity(O2=c(-82,-65))
+a <- affinity(O2=c(-82, -65))
+\end_layout
+
+\begin_layout Chunk
+
+e <- equilibrate(a, loga.balance=0, normalize=TRUE)
 \end_layout
 
 \begin_layout Chunk
@@ -2791,12 +2846,12 @@ mycolor <- topo.colors(length(locations))
 
 \begin_layout Chunk
 
-diagram(a, names=locations, ylim=c(-5,-3), legend.x=NA,
+diagram(e, names=locations, ylim=c(-5, -3), legend.x=NA,
 \end_layout
 
 \begin_layout Chunk
 
-  col=mycolor, lwd=2, loga.balance=0)
+  col=mycolor, lwd=2)
 \end_layout
 
 \begin_layout Chunk
@@ -2928,14 +2983,19 @@ begin{small}
 
 
 \backslash
-setkeys{Gin}{width=0.6
+setkeys{Gin}{width=1.0
 \backslash
 textwidth}
 \end_layout
 
 \begin_layout Chunk
 
-<<bufferplot, fig=TRUE, results=hide, width=5, height=4>>=
+<<bufferplot, fig=TRUE, results=hide, width=8, height=3.5>>=
+\end_layout
+
+\begin_layout Chunk
+
+layout(matrix(1:2, nrow=1), widths=c(2, 1))
 \end_layout
 
 \begin_layout Chunk
@@ -2986,12 +3046,12 @@ bufferline <- function(buffer, ixlab) {
 
 \begin_layout Chunk
 
-  lines(a$xvals, a$H2)
+  lines(a$vals[[1]], a$H2)
 \end_layout
 
 \begin_layout Chunk
 
-  text(a$xvals[ixlab], a$H2[ixlab], buffer)
+  text(a$vals[[1]][ixlab], a$H2[ixlab], buffer)
 \end_layout
 
 \begin_layout Chunk
@@ -3046,7 +3106,7 @@ for(logact in c(-6, -10, -15)) {
 
 \begin_layout Chunk
 
-  text(a$xvals[13], mean(sapply(d$logact, c)[13, ]), logact)
+  text(a$vals[[1]][13], mean(sapply(d$plotvals, c)[13, ]), logact)
 \end_layout
 
 \begin_layout Chunk
@@ -3056,17 +3116,18 @@ for(logact in c(-6, -10, -15)) {
 
 \begin_layout Chunk
 
-legend("topright", legend = c(describe.property("P", 300),
+plot.new()
 \end_layout
 
 \begin_layout Chunk
 
-  describe.basis(ibasis=c(2,4)), "minerals", "HCN", "formaldehyde"), 
+legend("topleft", legend = c(describe.property("P", 300), describe.basis(ibasis=c(
+2,4)),
 \end_layout
 
 \begin_layout Chunk
 
-  lty=c(NA, NA, NA, 1, 2, 3), bg="white")
+  "minerals", "HCN", "formaldehyde"), lty=c(NA, NA, NA, 1, 2, 3), bg="white")
 \end_layout
 
 \begin_layout Chunk
@@ -3113,10 +3174,10 @@ clearpage
 
 \begin_layout Standard
 \begin_inset Branch more
-status collapsed
+status open
 
 \begin_layout Subsection
-Revisit
+revisit
 \end_layout
 
 \begin_layout Standard
@@ -3127,7 +3188,7 @@ revisit()
  computes some summary statistics (default is the coefficient of variation)
  about the equilibrium chemical activities of species calculated by 
 \family typewriter
-diagram()
+equilibrate()
 \family default
 .
  In this example, the coefficient of variation of the activities of the
@@ -3181,12 +3242,12 @@ a <- affinity(CO2=c(2, 5), O2=c(-72, -70))
 
 \begin_layout Chunk
 
-d <- diagram(a, balance=1, mam=FALSE, plot.it=FALSE)
+e <- equilibrate(a, balance=1)
 \end_layout
 
 \begin_layout Chunk
 
-r <- revisit(d)
+r <- revisit(e)
 \end_layout
 
 \begin_layout Chunk
@@ -3222,7 +3283,7 @@ balance=1
 \family default
  in 
 \family typewriter
-diagram()
+equilibrate()
 \family default
  means the relative stabilities are calculated using the formation reactions
  written per mole of amino acid (not conserving e.g.
@@ -3275,7 +3336,12 @@ par(mfrow=c(1, 2))
 
 \begin_layout Chunk
 
-d <- diagram(a, balance=1, alpha=TRUE, names=aminoacids(1, species()$name))
+e <- equilibrate(a, balance=1)
+\end_layout
+
+\begin_layout Chunk
+
+d <- diagram(e, alpha=TRUE, names=aminoacids(1, species()$name))
 \end_layout
 
 \begin_layout Chunk
@@ -3342,7 +3408,7 @@ clearpage
 status open
 
 \begin_layout Subsection
-Findit
+findit
 \end_layout
 
 \begin_layout Standard
@@ -3482,7 +3548,12 @@ par(mfrow=c(1, 2))
 
 \begin_layout Chunk
 
-d <- diagram(a, balance=1, alpha=TRUE, names=aminoacids(1, species()$name))
+e <- equilibrate(a, balance=1)
+\end_layout
+
+\begin_layout Chunk
+
+d <- diagram(e, alpha=TRUE, names=aminoacids(1, species()$name))
 \end_layout
 
 \begin_layout Chunk

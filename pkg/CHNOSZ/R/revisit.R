@@ -61,30 +61,29 @@ extremes <- function(z, target) {
   return(list(x=x, y=y))
 }
 
-revisit <- function(d, target="cv", loga.ref=NULL,
+revisit <- function(eout, target="cv", loga.ref=NULL,
   plot.it=NULL, col=par("fg"), yline=2, ylim=NULL, ispecies=NULL, add=FALSE,
   cex=par("cex"), lwd=par("lwd"), mar=NULL, side=1:4, xlim=NULL, labcex=0.6,
   pch=1, legend="", legend.x=NULL, lpch=NULL, main=NULL, lograt.ref=NULL, plot.ext=TRUE, DGxf.swap12=FALSE) {
   # calculate and plot diversity indices of relative abundances
   # 20090316 jmd
-  # d can be the output from diagram (enables plotting)
+  # eout can be the output from equilibrate (enables plotting)
   # or simply a list of logarithms of activity 
   # (each list entry must have the same dimensions)
   # test if the entries have the same dimensions
-  ud <- unique(lapply(1:length(d),function(x) dim(d[[x]])))
+  ud <- unique(lapply(1:length(eout),function(x) dim(eout[[x]])))
   if(length(ud)==1) {
-    # d is list of logarithms of activity
+    # eout is list of logarithms of activity
     if(missing(plot.it)) plot.it <- FALSE
-    if(plot.it) stop("can't make a plot if argument 'd' is not the output from diagram()")
-    logact <- d
+    if(plot.it) stop("can't make a plot if argument 'eout' is not the output from equilibrate()")
+    logact <- eout
   } else {
      # d is the output from diagram()
-    if(!"logact" %in% names(d)) {
-      stop(paste("the list provided in 'd' is not a usable result from diagram()",
-        "(for two variables, diagram(..., mam=FALSE) is required)"))
+    if(!"loga.equil" %in% names(eout)) {
+      stop(paste("the list provided in 'eout' is not the output from equilibrate()"))
     }
     if(missing(plot.it)) plot.it <- TRUE
-    logact <- d$logact
+    logact <- eout$loga.equil
   }
   # check that all needed arguments are present
   target.lower <- tolower(target)
@@ -245,7 +244,7 @@ revisit <- function(d, target="cv", loga.ref=NULL,
     # Gibbs energy of transformation to the observed assemblage 
     actarr <- list2array(logact)
     # select species, vectorize, then put the Astar values into an array
-    Astar <- d$Astar[ispecies]
+    Astar <- eout$Astar[ispecies]
     for(i in 1:ns) Astar[[i]] <- as.vector(Astar[[i]])
     Astararr <- list2array(Astar)
     Gfun <- function(i, actarr, Astararr) {
@@ -266,10 +265,10 @@ revisit <- function(d, target="cv", loga.ref=NULL,
   ## now on to plotting + assembling return values
   # get information about the x-axis
   if(plot.it & nd > 0 & nd < 3) {
-    xname <- d$xname
-    yname <- d$yname
-    xres <- d$xlim[3]
-    xrange <- d$xlim[1:2]
+    xname <- eout$vars[1]
+    yname <- eout$vars[2]
+    xres <- length(eout$vals[[1]])
+    xrange <- range(eout$vals[[1]])
     # special operations for pH
     if(xname=="H+") {
       xname <- "pH"
@@ -352,8 +351,8 @@ revisit <- function(d, target="cv", loga.ref=NULL,
     extval <- H[ix,iy]
     ret.val <- list(H=H,ix=ix,iy=iy,extval=extval) 
     if(plot.it) {
-      yres <- d$ylim[3]
-      yrange <- d$ylim[1:2]
+      yres <- length(eout$vals[[2]])
+      yrange <- range(eout$vals[[2]])
       #if(yname=="T") yrange <- outvert(yrange,"K")
       if(yname=="H+") {
         yname <- "pH"

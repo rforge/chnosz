@@ -3,7 +3,6 @@
 \alias{lsub}
 \alias{lsum}
 \alias{pprod}
-\alias{psum}
 \alias{which.pmax}
 \title{Functions to Work with Lists}
 
@@ -15,7 +14,6 @@
   lsub(x, y)
   lsum(x, y)
   pprod(x, y)
-  psum(x)
   which.pmax(elts, na.rm = FALSE, pmin = FALSE)
 }
 
@@ -28,7 +26,7 @@
 }
 
 \details{
-  \code{lsub} subtracts the elements of list \code{y} from the respective ones in list \code{x}. \code{lsum} sums the respective elements of lists \code{x} and \code{y}. \code{pprod} multiplies each element of list \code{x} by the respective numeric value in \code{y}. \code{psum} sums all elements of the list \code{x}.
+  \code{lsub} subtracts the elements of list \code{y} from the respective ones in list \code{x}. \code{lsum} sums the respective elements of lists \code{x} and \code{y}. \code{pprod} multiplies each element of list \code{x} by the respective numeric value in \code{y}.
 
   \code{which.pmax} takes a list of equal-length numeric vectors (or objects that can be coerced to numeric) in \code{elts} and returns the index of the vector holding the maximum value at each position. If \code{na.rm} is \code{TRUE}, values of \code{NA} are removed; if \code{pmin} is \code{TRUE} the function finds locations of the minimum values instead.
 

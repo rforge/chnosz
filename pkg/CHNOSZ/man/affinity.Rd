@@ -39,14 +39,17 @@
 }
 
 \value{
-  For \code{affinity}, a list, elements of which are \code{sout}, \code{property} (name of the calculated property), \code{basis} and \code{species} (definition of basis species and species of interest in effect at runtime), \code{T} and \code{P} (temperature and pressure, in the system units of Kelvin and bar, of length two (corresponding to minimum/maximum values) if either one is a variable of interest or length one otherwise), \code{xname} (the name of the first variable of interest, "" if none is present), \code{xlim} (if a first variable of interest is present, numeric of length 3 specifying the (minimum, maximum, resolution) of this variable), \code{yname} (the name of the second variable of interest, "" if none present), \code{ylim} (analogous to \code{xlim} but for a second variable of interest), \code{values}. The latter is itself a list, each element of which corresponds to a species of interest (names of the elements in this list are the character versions of the index of the species in \code{\link{thermo}$obigt}). The values for each species are a numeric value (if the number of variables of interest is zero) or an \eqn{n}{n}-dimensional matrix otherwise. The values of chemical affinity of formation reactions of the species of interest are returned in dimensionless (base 10) units (i.e., \emph{\strong{A}}/\eqn{2.303RT}).
+For \code{affinity}, a list, elements of which are \code{sout} output from \code{\link{subcrt}}, \code{property} name of the calculated property (\samp{A} for chemical affinity), \code{basis} and \code{species} definition of basis species and species of interest in effect at runtime, \code{T} and \code{P} temperature and pressure, in the system units of Kelvin and bar, set to \code{numeric()} (length=0) if either one is a variable, \code{vars} the names of the variables, \code{vals} the values of the variables (a list, one element for each variable), \code{values} the result of the calculation (a list, one element for each species, with names taken from the species index in \code{\link{thermo}$obigt}).
+The elements of the lists in \code{vals} and \code{values} are arrays of \eqn{n}{n} dimensions, where \eqn{n}{n} is the number of variables.
+The values of chemical affinity of formation reactions of the species are returned in dimensionless units (for use with decimal logarithms, i.e., \emph{\strong{A}}/\eqn{2.303RT}).
 
-  If \code{pe} or \code{Eh}, or \code{pH} is/are among the variables of interest, \code{xnames} and/or \code{ynames} become \samp{e-} or \samp{H+} (respective to the property) and the minimum and maximum values in \code{xlim} and/or \code{ylim} are adjusted accordingly (using \code{\link{convert}}).
-
+Names other than \samp{T} or \samp{P} in \code{vars} generally refer to basis species, and the corresponding \code{vals} are the logarithms of activity or fugacity. However, if one or more of \code{pe}, \code{Eh} or \code{pH} is among the variables of interest, \code{vals} holds the values of the those variables as indicated.
 }
 
 \seealso{
-  This function calls \code{\link{energy.args}} and \code{\link{energy}} to perform the calculations (the user normally should not need to interact with either of these functions). 
+Usually, \code{\link{equilibrate}} is the next step in calculations of chemical equilibrium.
+The help for \code{\link{buffer}} has some examples of using chemical activity buffers.
+The guts of the calculations provided by \code{affinity} involve \code{\link{energy.args}} and \code{\link{energy}}, which normally are not part of the user interaction.
 }
 
 \examples{
@@ -186,11 +189,11 @@ a <- affinity(T=rb$T, CO2=rb$CO2, H2=rb$H2, `NH4+`=rb$`NH4+`, H2S=rb$H2S, pH=rb$
 # the tricky part: affinity() uses dimensionless values (A/2.303RT)
 # but we want to show the values in cal/mol
 a$values <- lapply(a$values, function(val) {
-  -convert(val, "G", T=convert(a$xvals, "K")) })
-# if we didn't have balance=1 here the values would be divided by
-# the number of moles of CO2 in the reactions ...
-diagram(a, what="affinity", ylim=c(-100000, 100000), ylab=axis.label("A"),
-  balance=1, legend.x=NA, col=topo.colors(4), lwd=2)
+  -convert(val, "G", T=convert(a$vals[[1]], "K")) })
+# if we didn't have balance=1 here the values would be 
+# divided by the number of moles of CO2 in the reactions ...
+diagram(a, balance=1, ylim=c(-100000, 100000), ylab=axis.label("A"),
+  col=topo.colors(4), lwd=2)
 # add a zero-affinity line and a title
 abline(h=0, lty=2, lwd=2)
 title(main="Affinities of organic synthesis, after Shock and Canovas, 2010")

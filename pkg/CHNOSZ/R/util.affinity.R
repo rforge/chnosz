@@ -101,7 +101,7 @@ energy <- function(what,vars,vals,lims,T=thermo$opt$Tr,P="Psat",IS=0,sout=NULL,e
   logQ.basis.fun <- function(ibasis,coeff) - coeff * logact.basis.fun(ibasis)
   # from all basis species in a single formation reaction
   logQ.basis.species <- function(ispecies) 
-    psum(mapply(logQ.basis.fun,ibasis,myspecies[ispecies,1:nbasis],SIMPLIFY=FALSE))
+    Reduce("+", mapply(logQ.basis.fun,ibasis,myspecies[ispecies,1:nbasis],SIMPLIFY=FALSE))
   # all basis species in all reactions
   logQ.basis <- function() mapply(logQ.basis.species,1:nspecies,SIMPLIFY=FALSE)
   # by a single species
@@ -139,7 +139,7 @@ energy <- function(what,vars,vals,lims,T=thermo$opt$Tr,P="Psat",IS=0,sout=NULL,e
   # the logK contribution by any species or basis species
   X.species <- function(ispecies,coeff,X) coeff * sout[[ispecies]][,names(sout[[ispecies]])==X]
   # the logK contribution by all basis species in a reaction
-  X.basis <- function(ispecies,X) psum(mapply(X.species,ibasis,-myspecies[ispecies,ibasis],X,SIMPLIFY=FALSE))
+  X.basis <- function(ispecies,X) Reduce("+", mapply(X.species,ibasis,-myspecies[ispecies,ibasis],X,SIMPLIFY=FALSE))
   # the logK of any reaction
   X.reaction <- function(ispecies,X) X.species((ispecies+nbasis),1,X) + X.basis(ispecies,X)
   # to get logK or subcrt props or other values into the dimensions we are using
@@ -268,8 +268,10 @@ energy.args <- function(args) {
   # where we store the output
   what <- "A"
   vars <- character()
-  vals <- list(0)
-  lims <- list(c(0,0,1))
+  vals <- list(NA)
+  # this needs to have 1 as the third component b/c
+  # energy() uses it to build an array with the given dimension
+  lims <- list(c(NA, NA, 1))
   # clean out non-variables
   if(any(arg.is.T) & !T.is.var) args <- args[names(args)!="T"]
   if(any(arg.is.P) & !P.is.var) args <- args[names(args)!="P"]

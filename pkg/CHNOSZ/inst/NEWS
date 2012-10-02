@@ -1,17 +1,16 @@
-CHANGES IN CHNOSZ 0.9-7.98 (2012-09-24)
----------------------------------------
+CHANGES IN CHNOSZ 0.9.8 (2012-10-02)
+------------------------------------
 
 SIGNIFICANT USER-VISIBLE CHANGES:
 
-- Create set of tests in 'inst/tests', particularly for functions that
-  have been modified during this development cycle, and add a Suggests 
-  dependency on 'testthat'.
+- diagram() split into equilibrate() and diagram().
+  Old workflow: a <- affinity(); d <- diagram(a)
+  New workflow: a <- affinity(); e <- equilibrate(a); d <- diagram(e)
+  (Old workflow is still usable for certain diagrams.)
 
-- The 'thermo' object, which holds the thermodynamic database,
-  and system definitions (made by the user), is now placed in an
-  environment named 'CHNOSZ:thermo' on loading the package. Therefore, 
-  instances of '<<-' in the code now refer to this environment
-  instead of the global environment.
+- 'residue' argument of diagram() changed to 'normalize' in diagram()
+  and equilibrate(). normalize=FALSE is always the default, including
+  for systems of proteins.
 
 - Add wjd() implementing the steepest descent algorithm for free energy
   minimization described by White et al., 1958. Also add supporting 
@@ -23,9 +22,19 @@ SIGNIFICANT USER-VISIBLE CHANGES:
   initial guesses of moles of species satisfying elemental bulk 
   composition, and a Suggests dependency on 'limSolve'.
 
+- Create set of tests in 'inst/tests', particularly for functions that
+  have been modified during this development cycle, and add a Suggests 
+  dependency on 'testthat'.
+
+- The 'thermo' object, which holds the thermodynamic database,
+  and system definitions (made by the user), is now placed in an
+  environment named 'CHNOSZ:thermo' on loading the package. Therefore, 
+  instances of '<<-' in the code now refer to this environment
+  instead of the global environment.
+
 MAJOR CHANGES TO FUNCTIONS:
 
-- Refactor the primary functionality of makeup(), parsing of chemical 
+- Split the primary functionality of makeup(), parsing of chemical 
   formulas, into a smaller makeup() function and supporting functions 
   count.charge(), count.formulas(), and count.elements(). The new 
   functions make extensive use of regular expressions, and no data 
@@ -94,10 +103,16 @@ MAJOR CHANGES TO FUNCTIONS:
 
 OTHER CHANGES TO FUNCTIONS:
 
-- In diagram(), the argument 'logact', specifying the logarithm of
+- In equilibrate(), the argument 'logact' (inherited from diagram()),
+  specifying the logarithm of
   activity of the balanced quantity, has been renamed to 'loga.balance'.
-  The function still has 'logact' in its result, containing the 
+  The function now has 'loga.equil' in its result, containing the 
   equilibrium logarithms of activities of the species of interest.
+
+- In balance(), the option 'PBB' (inherited from diagram()), for
+  balancing on protein length, has been renamed 'length'.
+
+
 
 - Everywhere it appeared, the logical argument 'do.plot' has been 
   renamed to 'plot.it' (diagram(), revisit(), findit(), transfer()).
@@ -266,8 +281,9 @@ OTHER CHANGES:
   since they are discouraged by CRAN guidelines (and calls to them are
   unlikely to be encountered while using the package).
 
-- Add parallel as a "Suggests" package and replace the 'multicore'-based
-  mylapply() with palply() as a wrapper for parLapply and lapply.
+- Add parallel as a "Suggests" package and replace mylapply() (for
+  'multicore') with palply() as a wrapper for parLapply and lapply.
+  palply() now invokes parLapply for length(X) > 10000 instead of 100.
 
 - Remove thermo$opt$verbose and thermo$opt$online.
 

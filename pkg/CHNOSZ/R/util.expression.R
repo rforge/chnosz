@@ -34,9 +34,9 @@ expr.species <- function(species, state="", log="", value=NULL) {
     }
   }
   # write a designation of physical state
-  # use the state given in log if it's a gas or charged aqueous species
+  # use the state given in log if it's a gas or neutral aqueous species
   if(log %in% c("g", "gas")) state <- "g"
-  if("Z" %in% names(elements)) state <- log
+  if(!"Z" %in% names(elements)) state <- log
   if(state != "") {
     # subscript it if we're not in a log expression
     if(log != "") expr <- substitute(a*group('(',italic(b),')'),list(a=expr, b=state))
@@ -46,7 +46,7 @@ expr.species <- function(species, state="", log="", value=NULL) {
   if(log != "") {
     if(log %in% c("aq", "cr", "liq", "cr1", "cr2", "cr3", "cr4")) acity <- "a"
     else if(log %in% c("g", "gas")) acity <- "f"
-    else stop(paste("'",log,"' is not a recognized state", sep=""))
+    else stop(paste("'", log, "' is not a recognized state", sep=""))
     logacity <- substitute(log*italic(a), list(a=acity))
     expr <- substitute(a[b], list(a=logacity, b=expr))
     # write a value if given
@@ -66,7 +66,10 @@ expr.property <- function(property) {
   propchar <- s2c(property)
   expr <- ""
   # some special cases
-  if(property=="logK") return(expression(log*italic(K)))
+  if(property=="logK") return(expression(log~italic(K)))
+  # grepl here b/c diagram() uses "loga.equil" and "loga.basis"
+  if(grepl("loga", property)) return(expression(log~italic(a)))
+  if(property=="alpha") return(expression(alpha))
   if(property=="Eh") return(expression(Eh))
   if(property=="pH") return(expression(pH))
   if(property=="pe") return(expression(pe))
@@ -143,8 +146,9 @@ axis.label <- function(label, units=NULL, basis=thermo$basis, prefix="") {
   # it can be a chemical property, condition, or chemical activity in the system
   # if the label matches one of the basis species
   # or if the state is specified, it's a chemical activity
-#  # 20090826: just return the argument if a comma is already present
-#  if(grepl(",", label)) return(label)
+  # 20090826: just return the argument if a comma is already present
+  # (it's good for custom labels that shouldn't be italicized)
+  if(grepl(",", label)) return(label)
   if(label %in% rownames(basis)) {
     # 20090215: the state this basis species is in
     state <- basis$state[match(label, rownames(basis))]

@@ -15,9 +15,9 @@ test_that("findit() returns known values encoded in a species distribution", {
   a <- affinity(iprotein=ip)
   # scale relative abundances such that total activity of residues 
   # is unity (since loga.balance=0 is default for findit)
-  d <- diagram(a, plot.it=FALSE, loga.balance=0)
+  e <- equilibrate(a, loga.balance=0)
   # loga.ref are the equilibrium logarithms of activities of the proteins
-  loga.ref <- as.numeric(d$logact)
+  loga.ref <- as.numeric(e$loga.equil)
   # return to default values for activities of basis species
   basis("CHNOS")
   ## we have diverged from the reference activities of proteins

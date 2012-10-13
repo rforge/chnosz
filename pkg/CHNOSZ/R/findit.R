@@ -1,14 +1,14 @@
 # CHNOSZ/findit.R
-# find the minimum or maximum of a target 
+# find the minimum or maximum of a objective 
 # (eg cv, richness, shannon)
 # as a function the specified chemical potentials
 # 20100831 jmd
 
-findit <- function(lims=list(), target="cv", niter=NULL, iprotein=NULL, plot.it=TRUE,
-  T=25, P="Psat", res=NULL, labcex=0.6, loga.ref=NULL,
+findit <- function(lims=list(), objective="CV", niter=NULL, iprotein=NULL, plot.it=TRUE,
+  T=25, P="Psat", res=NULL, labcex=0.6, loga2=NULL,
   loga.balance=0, rat=NULL, balance=NULL) {
   # the lims list has the limits of the arguments to affinity()
-  # we iteratively move toward a higher/lower value of the target
+  # we iteratively move toward a higher/lower value of the objective
   # within these limits
   
   # fun stuff: when running on either side of 100 deg C,
@@ -117,19 +117,13 @@ findit <- function(lims=list(), target="cv", niter=NULL, iprotein=NULL, plot.it=
 
     # now calculate the affinities
     a <- do.call(affinity,aargs)
-    # then calculate the values of the target function
+    # then calculate the values of the objective function
     e <- equilibrate(a, balance=balance, loga.balance=loga.balance)
-    dd <- revisit(e$loga.equil, target, loga.ref=loga.ref)$H
-    # find the extreme value
-    iext <- where.extreme(dd,target)
-    # find the extreme value
-    teststat <- c(teststat,dd[iext])
-    # what are its coordinates
-    dd1 <- dd
-    dd1[] <- 1
-    ai <- which(dd1==1,arr.ind=TRUE)
-    if(nd==1) ai <- ai[iext]
-    else ai <- ai[iext,]
+    dd <- revisit(e$loga.equil, objective, loga2=loga2)$H
+    # coordinates of the extreme value (take only the first set of coords)
+    iopt <- optimal.index(dd, objective)[1,, drop=FALSE]
+    # the extreme value
+    teststat <- c(teststat,dd[iopt])
 
     # loop to update the current parameters
     for(j in 1:length(lims)) {
@@ -139,7 +133,7 @@ findit <- function(lims=list(), target="cv", niter=NULL, iprotein=NULL, plot.it=
       # the increments used
       myinc <- seq(mylims[1],mylims[2],length.out=mylims[3])
       # the value of the variable at the extreme of the function
-      myval <- myinc[ai[j]]
+      myval <- myinc[iopt[j]]
       # update the basis table, T or P
       if(names(lims)[j] %in% rownames(basis)) {
         ibasis <- match(names(lims)[j],rownames(basis))
@@ -162,20 +156,20 @@ findit <- function(lims=list(), target="cv", niter=NULL, iprotein=NULL, plot.it=
       # add our search lines and extreme points
       # to the plot
       if(nd==1) {
-        if(i==1) revisit(e,target,loga.ref,xlim=lims[[1]])
+        if(i==1) revisit(e,objective,loga2,xlim=lims[[1]])
         # on a 1-D diagram we add vertical lines to show our search limits
         abline(v=outlims[[1]][1:2])
         lines(myinc,dd)
-        points(myval,dd[iext])
+        points(myval,dd[iopt])
       } else if(nd==2) {
-        if(i==1) revisit(e,target,loga.ref,xlim=lims[[1]],ylim=lims[[2]],labcex=labcex)
+        if(i==1) revisit(e,objective,loga2,xlim=lims[[1]],ylim=lims[[2]],labcex=labcex)
         else {
           # on a 2-D diagram we add a box around our search limits
           # and an updated map for this region
           ol1 <- outlims[[1]]
           ol2 <- outlims[[2]]
           rect(ol1[1],ol2[1],ol1[2],ol2[2],border=par("fg"),col="white")
-          revisit(e,target,loga.ref,xlim=lims[[1]],ylim=lims[[2]],add=TRUE,labcex=labcex)
+          revisit(e,objective,loga2,xlim=lims[[1]],ylim=lims[[2]],add=TRUE,labcex=labcex)
         }
         text(out[[1]],out[[2]])
         points(out[[1]],out[[2]],cex=2)
@@ -193,10 +187,10 @@ findit <- function(lims=list(), target="cv", niter=NULL, iprotein=NULL, plot.it=
         # we extract the third dimension until only two remain
         for(j in 3:nd) {
           # ai[j] - which slice in this dimension has the extremum
-          for(k in 1:length(e$loga.equil)) e$loga.equil[[k]] <- slice(e$loga.equil[[k]],3,ai[j])
+          for(k in 1:length(e$loga.equil)) e$loga.equil[[k]] <- slice(e$loga.equil[[k]],3,iopt[j])
         }
         # now make the plot
-        revisit(e,target,loga.ref,xlim=lims[[1]],ylim=lims[[2]],add=add,labcex=labcex)
+        revisit(e,objective,loga2,xlim=lims[[1]],ylim=lims[[2]],add=add,labcex=labcex)
         # indicate the location of the extremum
         text(out[[1]],out[[2]])
         points(out[[1]],out[[2]],cex=2)
@@ -211,7 +205,7 @@ findit <- function(lims=list(), target="cv", niter=NULL, iprotein=NULL, plot.it=
   }  # end main loop
   # build return list: values of chemical variables and test statistic
   teststat <- list(teststat)
-  names(teststat) <- target
+  names(teststat) <- objective
   value <- c(out,teststat)
   # build return list: limits at each step
   out <- list(value=value,lolim=lolim,hilim=hilim)

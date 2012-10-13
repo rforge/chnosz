@@ -80,23 +80,20 @@ expr.property <- function(property) {
   for(i in 1:length(propchar)) {
     if(i > 1) prevchar <- thischar
     thischar <- propchar[i]
+    # unless indicated below, uppercase letters are italicized
+    # and lowercase letters are italicized and subscripted
+    # (includes f for property of formation and r for property of reaction)
+    if(thischar %in% LETTERS) thisexpr <- substitute(italic(a), list(a=thischar))
+    else if(thischar %in% letters) thisexpr <- substitute(""[italic(a)], list(a=thischar))
+    else thisexpr <- substitute(a, list(a=thischar))
     # D for greek Delta
     # A for bold A (affinity)
     # p for subscript italic P (in Cp)
     # 0 for degree sign (but not immediately following a number e.g. 2.303)
-    # f for subscript italic f (property of formation)
-    # r for subscript italic r (property of reaction)
-    # x for subscript italic x (xf - property of transformation)
-    # all other letters are italicized
-    if(thischar %in% c(letters, LETTERS)) thisexpr <- substitute(italic(a), list(a=thischar))
-    else thisexpr <- substitute(a, list(a=thischar))
     if(thischar=='D') thisexpr <- substitute(Delta)
     if(thischar=='A') thisexpr <- substitute(bold(A))
     if(thischar=='p') thisexpr <- substitute(a[italic(P)], list(a=""))
     if(thischar=='0' & !can.be.numeric(prevchar)) thisexpr <- substitute(degree)
-    if(thischar=='f') thisexpr <- substitute(a[italic(f)], list(a=""))
-    if(thischar=='r') thisexpr <- substitute(a[italic(r)], list(a=""))
-    if(thischar=='x') thisexpr <- substitute(a[italic(x)], list(a=""))
     # put it together
     expr <- substitute(a*b, list(a=expr, b=thisexpr))
   }

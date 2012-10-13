@@ -9,10 +9,10 @@ examples <- function(do.png=FALSE) {
     "util.args", "util.array", "util.blast", "util.character", 
     "util.data", "util.expression", "util.fasta", "util.formula", "util.matrix", 
     "util.misc", "util.program",
-    "util.seq", "util.stat", "util.units", "taxonomy", "info", "protein.info", "hkf", "water", "subcrt",
+    "util.seq", "util.units", "taxonomy", "info", "protein.info", "hkf", "water", "subcrt",
     "makeup", "basis", "swap.basis", "species", "affinity", "util.affinity", "equil.boltzmann", 
-    "diagram", "buffer", "iprotein", "protein", "ionize.aa", "more.aa", "read.expr", "revisit", 
-    "findit", "transfer", "anim", "EOSregress", "wjd")
+    "diagram", "buffer", "iprotein", "protein", "ionize.aa", "more.aa", "read.expr",
+    "objective", "revisit", "findit", "transfer", "anim", "EOSregress", "wjd")
   plot.it <- FALSE
   if(is.character(do.png))
     png(paste(do.png,"%d.png",sep=""),width=700,height=700,pointsize=18)

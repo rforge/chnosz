@@ -1,11 +1,11 @@
-CHANGES IN CHNOSZ 0.9.8 (2012-10-02)
-------------------------------------
+CHANGES IN CHNOSZ 0.9.8-1 (2012-10-13)
+--------------------------------------
 
 SIGNIFICANT USER-VISIBLE CHANGES:
 
 - diagram() split into equilibrate() and diagram().
-  Old workflow: a <- affinity(); d <- diagram(a)
-  New workflow: a <- affinity(); e <- equilibrate(a); d <- diagram(e)
+  Old workflow: a <- affinity(); d <- diagram(a) .
+  New workflow: a <- affinity(); e <- equilibrate(a); d <- diagram(e) .
   (Old workflow is still usable for certain diagrams.)
 
 - 'residue' argument of diagram() changed to 'normalize' in diagram()
@@ -26,13 +26,23 @@ SIGNIFICANT USER-VISIBLE CHANGES:
   have been modified during this development cycle, and add a Suggests 
   dependency on 'testthat'.
 
+- Move the code for the temperature and pressure derivatives of the "g"
+  function (related to the solvation parameter omega) to a new function 
+  gfun(); incorporate some fixes and a series of test_that() tests.
+  There is some impact on the calculated Gibbs energies of charged
+  species.
+
 - The 'thermo' object, which holds the thermodynamic database,
   and system definitions (made by the user), is now placed in an
   environment named 'CHNOSZ:thermo' on loading the package. Therefore, 
   instances of '<<-' in the code now refer to this environment
   instead of the global environment.
 
-MAJOR CHANGES TO FUNCTIONS:
+NEW FUNCTIONS:
+
+- Add msgout(), which is a modification of message() from base R. Now
+  used instead of cat(), to allow suppressing messages (e.g. during
+  testing with test_that).
 
 - Split the primary functionality of makeup(), parsing of chemical 
   formulas, into a smaller makeup() function and supporting functions 
@@ -41,12 +51,12 @@ MAJOR CHANGES TO FUNCTIONS:
   frames. Running makeup() over the ca. 3000 formulas in thermo$obigt 
   drops from ~35 to ~5 seconds on one machine.
 
-- A matrix is now returned by makeup(), GHS() and some other functions
-  to avoid the performace penalty associated with data frames.
-
 - New function as.chemical.formula() to replace the previous
   functionality of makeup() for making string representations of
   chemical formulas.
+
+- New function i2A() for generating a stoichiometric matrix from indices
+  of species in the thermodynamic database.
 
 - Replace element() with two separate functions, mass() and entropy().
 
@@ -73,11 +83,9 @@ MAJOR CHANGES TO FUNCTIONS:
 
 - The basis swapping functionality of basis() is split into 
   basis.matrix(), element.mu(), basis.logact() and swap.basis(). Rename
-  basis.comp() to species.basis() and clean up the code a bit.
+  basis.comp() to species.basis(), and remove expand.formulas().
 
-- Rewrite mod.obigt() (it's now used by info() when adding proteins) and
-  add today() for returning today's date in the format used in SUPCRT 
-  files.
+- Split aminoacids() into aminoacids() and count.aa().
 
 - The monolithic protein() function no longer exists; it has been
   superseded by iprotein(), ip2aa(), get.aa(), dl.aa(), read.aa(),
@@ -97,9 +105,16 @@ MAJOR CHANGES TO FUNCTIONS:
   ionize.aa() for calculating the additive ionization properties of 
   proteins; also add A.ionization(), usually invoked by affinity()
 
-- Add msgout(), which is a modification of message() from base R. Now
-  used instead of cat(), to allow suppressing messages (e.g. during
-  testing with test_that).
+- Add protein.equil() for step-by-step calculation of chemical
+  activities of proteins in metastable equilibrium.
+
+- Objective functions used in revisit() and findit() now each have
+  their own definitions, with an attribute indicating whether the
+  function is minimized or maximized.
+
+- Add an objective function DGtr() for calculating the Gibbs energy of
+  transformation of a system at constant temperature, pressure and
+  chemical activities of basis species.
 
 OTHER CHANGES TO FUNCTIONS:
 
@@ -109,10 +124,8 @@ OTHER CHANGES TO FUNCTIONS:
   The function now has 'loga.equil' in its result, containing the 
   equilibrium logarithms of activities of the species of interest.
 
-- In balance(), the option 'PBB' (inherited from diagram()), for
-  balancing on protein length, has been renamed 'length'.
-
-
+- In balance(), the value of 'balance' used to indicate protein length
+  has been changed from 'PBB' to 'length'.
 
 - Everywhere it appeared, the logical argument 'do.plot' has been 
   renamed to 'plot.it' (diagram(), revisit(), findit(), transfer()).
@@ -132,18 +145,8 @@ OTHER CHANGES TO FUNCTIONS:
 - subcrt() now outputs NA values for properties at temperatures above
   the critical temperature of H2O, when Psat is being used.
 
-- New function i2A() for generating a stoichiometric matrix from indices
-  of species in the thermodynamic database.
-
-- expand.formulas() is removed as it is replaced by more specific code
-  in put.basis() and species.basis().
-
 - ZC() now accepts a numeric argument, referring to one or more species
   indices in the thermodynamic database.
-
-- Move the code for the temperature and pressure derivatives of the "g"
-  function (related to the solvation parameter omega) to a new function 
-  gfun(); incorporate some fixes and a series of test_that() tests.
 
 - Rename equil.react() to equil.reaction(), and give it parallel
   potential (via palply) and a more efficient algorithm for determining
@@ -160,19 +163,14 @@ OTHER CHANGES TO FUNCTIONS:
 
 - residue.info() mostly replaced by protein.basis().
 
-- Split aminoacids() into aminoacids() and count.aa().
-
 - thermo.plot.new() now saves the graphics device parameters 
   (par(no.readonly=TRUE)) to thermo$opar the first time the function is 
   called, allowing the parameters to be restored after running examples
   that change them.
 
-- Add protein.equil() for step-by-step calculation of chemical
-  activities of proteins in metastable equilibrium.
-
-- Add a function DGT() and a corresponding target in revisit() for 
-  calculating the Gibbs energy of transformation of a system at constant
-  temperature, pressure and chemical activities of basis species.
+- Rewrite mod.obigt() (it's now used by info() when adding proteins) and
+  add today() for returning today's date in the format used in SUPCRT 
+  files.
 
 DATA UPDATES:
 
@@ -248,11 +246,19 @@ DOCUMENTATION AND VIGNETTES:
 
 - All examples now run without any warnings (at least, as intended).
 
+- Add an example based on Shock and Canovas, 2010 for the 'transect' 
+  mode of affinity().
+
+- ionize.aa() has examples of contour plots as a function of temperature
+  and pH.
+
 - Group residue.formula(), protein.formula(), protein.name(), 
   protein.length() into new documentation topic (util.protein.Rd).
 
 - Add 'sideeffects.Rd' to document some of the side effects of 
   functions.
+
+- Add 'objective.Rd' for the objective functions.
 
 - To make output of examples reproducible, change mod.obigt() and 
   protein() to not include current date/time for new data entries 
@@ -260,30 +266,27 @@ DOCUMENTATION AND VIGNETTES:
 
 - Move vignette sources to 'vignettes' directory.
 
-- Remove vignettes formation.Rnw, protactiv.Rnw and xadditivity.Rnw 
+- Remove vignettes formation.Rnw and xadditivity.Rnw 
   (and, for the latter, the package Suggests dependency on xtable).
+
+- Rename protactive.Rnw to equilibrium.Rnw, with some changes.
 
 - Add vignette wjd.Rnw to accompany the new function wjd().
 
-- Add an example based on Shock and Canovas, 2010 for the 'transect' 
-  mode of affinity().
+- Add TODO and CHECKLIST to the installation directory of the package.
 
-- ionize.aa() has examples of contour plots as a function of temperature
-  and pH.
+PERFORMANCE AND CODE CLEAN-UPS:
 
+- A matrix is now returned by makeup(), GHS() and some other functions
+  to avoid the performace penalty associated with data frames.
 
-OTHER CHANGES:
-
-- Add TODO notes, a release CHECKLIST, and a short FAQ to the
-  installation directory of the package.
+- Add parallel as a "Suggests" package and replace mylapply() (based on
+  'multicore') with palply(), as a wrapper for parLapply and lapply.
+  palply() now invokes parLapply for length(X) > 10000 instead of 100.
 
 - Comment out lines containing WRITE and STOP statements in src/H2O92D.f
   since they are discouraged by CRAN guidelines (and calls to them are
   unlikely to be encountered while using the package).
-
-- Add parallel as a "Suggests" package and replace mylapply() (for
-  'multicore') with palply() as a wrapper for parLapply and lapply.
-  palply() now invokes parLapply for length(X) > 10000 instead of 100.
 
 - Remove thermo$opt$verbose and thermo$opt$online.
 

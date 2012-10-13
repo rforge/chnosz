@@ -44,16 +44,15 @@
 
   The \code{expr.*} functions create \code{\link{expression}}s using the \code{\link{plotmath}} syntax to describe the names and states and logarithms of activity or fugacity of chemical species, conditions including temperature and pressure and chemical properties such as Gibbs energy and volume. \code{expr.species} takes as input the formula of a single chemical \code{species} and constructs an expression including subscripted coefficients, and a suffixed designation of physical \code{state} (italicized, in parentheses) if provided. If \code{log} designates a physical state (as in \code{\link{thermo}$obigt$state}), the expression includes a \samp{log} prefix, followed by \samp{f} for fugacity of gaseous species, or \samp{a} for activity of species in all other states.
 
-  \code{expr.property} accepts a description in \code{property} that indicates the chemical property of interest. Individual characters in the description are parsed as follows (case-sensitive):
+\code{expr.property} accepts a description in \code{property} that indicates the chemical property of interest.
+Uppercase letters are italicized, and lowercase letters are italicized and subscripted.
+Other specific characters are parsed as follows (case-sensitive):
 
   \tabular{ll}{
      \samp{D} \tab Delta \cr
      \samp{A} \tab bold A (chemical affinity) \cr
      \samp{p} \tab subscript italic P (isobaric heat capacity) \cr
      \samp{0} \tab degree sign (standard-state property) \cr
-     \samp{f} \tab subscript italic f (property of formation) \cr
-     \samp{r} \tab subscript italic r (property of reaction) \cr
-     \samp{x} \tab subscript italic x (property of transformation, xf) \cr
   }
 
 A \samp{0} gets interpreted as a degree sign only if it does not immediately follow a number (so that e.g. \samp{2.303} can be included in an expression).

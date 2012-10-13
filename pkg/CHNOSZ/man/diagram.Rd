@@ -26,7 +26,7 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
   \item{what}{character, what property to calculate and plot}
   \item{alpha}{logical, for speciation diagrams, plot degree of formation instead of activities?}
   \item{normalize}{logical, normalize activities or reaction properties by the balance vector?}
-  \item{balance}{character, balancing constraint; see \code{\link{balance.coeffs}}}
+  \item{balance}{character, balancing constraint; see \code{\link{balance}}}
   \item{groups}{list of numeric, groups of species to consider as a single effective species}
   \item{xrange}{numeric, range of x-values between which predominance field boundaries are plotted}
   \item{mar}{numeric, margins of plot frame}
@@ -96,7 +96,7 @@ The latter is referred to as the maximum affinity method.
 In cases where it applies (see Warning), the maximum affinity method is much faster than an equilibrium calculation.
 
 The arguments have somewhat different effects when the output from \code{affinity} is being used instead of the equilibrium activities from \code{equilibrate}.
-\code{balance} is the option, sent to \code{\link{balance.coeffs}}, that determines the balancing coefficients used in the normalization (this argument has no effect on the calculations of equilibrium activities.)
+\code{balance} is the option, sent to \code{\link{balance}}, that determines the balancing coefficients used in the normalization (this argument has no effect on the calculations of equilibrium activities.)
 \code{what} indicates the type of calculation to perform.
 If \code{what} is the name of a basis species, it refers to option (2) above.
 If \code{what} is missing, it refers to option (1) or (3).

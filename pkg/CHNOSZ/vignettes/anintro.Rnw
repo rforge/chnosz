@@ -995,7 +995,7 @@ species(c("isoleucine", "tyrosine", "glutamic acid", "methionine", "aspartic aci
 a <- affinity(CO2=c(2, 5), O2=c(-72, -70))
 e <- equilibrate(a, balance=1)
 r <- revisit(e)
-title(main=paste("CV minimum =", round(r$extval, 2)))
+title(main=paste("CV minimum =", round(r$optimum, 2)))
 @
 \setkeys{Gin}{width=1.0\textwidth}
 \end{small}

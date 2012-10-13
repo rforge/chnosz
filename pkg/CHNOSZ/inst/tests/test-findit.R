@@ -1,6 +1,6 @@
 context("findit")
 
-# skip test if we're on R CMD check --as-cran
+# this is a long test ... skip it if we're on R CMD check --as-cran
 if(!any(grepl("R_CHECK_TIMINGS", names(Sys.getenv())))) {
 
 test_that("findit() returns known values encoded in a species distribution", {
@@ -16,8 +16,8 @@ test_that("findit() returns known values encoded in a species distribution", {
   # scale relative abundances such that total activity of residues 
   # is unity (since loga.balance=0 is default for findit)
   e <- equilibrate(a, loga.balance=0)
-  # loga.ref are the equilibrium logarithms of activities of the proteins
-  loga.ref <- as.numeric(e$loga.equil)
+  # loga2 are the equilibrium logarithms of activities of the proteins
+  loga2 <- as.numeric(e$loga.equil)
   # return to default values for activities of basis species
   basis("CHNOS")
   ## we have diverged from the reference activities of proteins
@@ -29,7 +29,9 @@ test_that("findit() returns known values encoded in a species distribution", {
   # now find the activities of the basis species
   # that get us close to reference activities of proteins
   f <- findit(lims=list(CO2=c(-5,0), H2O=c(-5,0), NH3=c(-5,0)),
-    target="rmsd", n=2, iprotein=ip, loga.ref=loga.ref, res=24, rat=0.2, plot.it=FALSE)
+    objective="RMSD", n=2, iprotein=ip, loga2=loga2, res=24, rat=0.2, plot.it=FALSE)
+  # sanity check: the output values are all the same length
+  expect_equal(length(unique(sapply(f$value, length))), 1)
   # -pi, -e and -sqrt(2) were approximately retrieved!
   expect_equal(tail(f$value[[1]],1), -pi, tol=1e-2)
   expect_equal(tail(f$value[[2]],1), -exp(1), tol=1e-2)

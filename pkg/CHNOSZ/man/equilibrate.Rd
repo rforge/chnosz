@@ -1,6 +1,6 @@
 \name{equilibrate}
 \alias{equilibrate}
-\alias{balance.coeffs}
+\alias{balance}
 \alias{equil.boltzmann}
 \alias{equil.reaction}
 \title{Equilibrium Chemical Activities of Species}
@@ -10,7 +10,7 @@ Calculate equilibrium chemical activities of species from the affinities of form
 
 \usage{
   equilibrate(aout, balance=NULL, loga.balance=NULL, normalize=FALSE, ispecies=1:length(aout$values))
-  balance.coeffs(aout, balance=NULL)
+  balance(aout, balance=NULL)
   equil.boltzmann(Astar, n.balance, loga.balance)
   equil.reaction(Astar, n.balance, loga.balance)
 }
@@ -32,7 +32,7 @@ It takes as input \code{aout}, the output from \code{\link{affinity}}, which may
 The equilibrium chemical activities of species are calculated using either the \code{equil.reaction} or \code{equil.boltzmann} functions, the latter only if the balance is on one mole of species.
 
 As \code{aout} contains the chemical affinities of formation reactions of each species of interest, \code{equilibrate} in order to function needs to be provided constraints on how to balance the reactions representing transformations between the species.
-\code{balance.coeffs} returns the balancing coefficients, where \code{balance} indicates the balancing constraints, according to the following scheme:
+\code{balance} returns the balancing coefficients, where \code{balance} indicates the balancing constraints, according to the following scheme:
 \tabular{ll}{
       \samp{NULL} \tab autoselect using \code{\link{which.balance}}\cr
       \emph{name of basis species} \tab balance on this basis species\cr
@@ -84,7 +84,7 @@ This calculation is faster than the algorithm of \code{equil.reaction}, but is l
 \value{
 \code{equil.reaction} and \code{equil.boltzman} each return a list with dimensions and length equal to those of \code{Astar}, giving the \code{\link{log10}} of the equilibrium activities of the species of interest.
 \code{equilibrate} returns a list, containing first the values in \code{aout}, to which are appended \code{m.balance} (the balancing coefficients if \code{normalize} is TRUE, a vector of \samp{1}s otherwise), \code{n.balance} (the balancing coefficients if \code{normalize} is FALSE, a vector of \samp{1}s otherwise) and \code{loga.equil} (the calculated equilibrium activities of the species).
-\code{balance.coeffs} returns a numeric vector.
+\code{balance} returns a list containing the balancing coefficients (\code{n}) and a textual description (\code{description}).
 }
 
 \examples{

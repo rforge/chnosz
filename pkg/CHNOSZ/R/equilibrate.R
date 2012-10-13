@@ -10,7 +10,8 @@ equilibrate <- function(aout, balance=NULL, loga.balance=NULL,
   ## number of possible species
   nspecies <- length(aout$values)
   ## get the balancing coefficients
-  n.balance <- balance.coeffs(aout, balance)
+  balance <- balance(aout, balance)
+  n.balance <- balance$n
   ## take selected species in 'ispecies'
   if(length(ispecies)==0) stop("the length of ispecies is zero")
   # take out species that have NA affinities
@@ -29,13 +30,13 @@ equilibrate <- function(aout, balance=NULL, loga.balance=NULL,
   if(length(n.balance) < 100) msgout(paste("equilibrate: balancing coefficients are", c2s(n.balance), "\n"))
   ## logarithm of total activity of the balance
   if(is.numeric(loga.balance)) 
-    msgout(paste("equilibrate: log total activity of", balance, "from argument is", loga.balance, "\n"))
+    msgout(paste("equilibrate: logarithm of total", balance$description, "(from loga.balance) is", loga.balance, "\n"))
   else {
     # sum up the activities, then take absolute value
     # in case n.balance is negative
     sumact <- abs(sum(10^aout$species$logact * n.balance))
     loga.balance <- log10(sumact)
-    msgout(paste("equilibrate: log total activity of", balance, "from species is", loga.balance, "\n"))
+    msgout(paste("equilibrate: logarithm of total", balance$description, "is", loga.balance, "\n"))
   }
   ## normalize -- normalize the molar formula by the balance coefficients
 #  # this is the default for systems of proteins as of 20091119
@@ -224,7 +225,7 @@ equil.reaction <- function(Astar, n.balance, loga.balance) {
   return(logact)
 }
 
-balance.coeffs <- function(aout, balance=NULL) {
+balance <- function(aout, balance=NULL) {
   ## generate n.balance from user-given or automatically identified basis species
   ## extracted from equilibrate() 20120929
   # 'balance' can be:
@@ -250,14 +251,15 @@ balance.coeffs <- function(aout, balance=NULL) {
     n.balance <- rep(balance, length.out=length(aout$values))
     if(all(n.balance==1)) msgout("balance: coefficients are unity\n")
     # use 'balance' below as a name
-    if(all(n.balance==1)) balance <- "species"
-    else balance <- "[user defined]"
+    if(all(n.balance==1)) balance.description <- "moles of species"
+    else balance <- "moles of user-specified coefficients"
   } else {
     # "length" for balancing on protein length
     if(identical(balance, "length")) {
       if(!all(isprotein)) stop("length was the requested balance, but some species are not proteins")
       n.balance <- protein.length(aout$species$name)
-      msgout("balance: coefficients are protein length\n")
+      balance.description <- "protein length"
+      msgout(paste("balance: coefficients are", balance.description, "\n"))
     } else {
       # is the balance the name of a basis species?
       if(length(ibalance)==0) {
@@ -266,12 +268,13 @@ balance.coeffs <- function(aout, balance=NULL) {
       }
       # the name of the basis species (need this if we got ibalance which which.balance, above)
       balance <- colnames(aout$species)[ibalance[1]]
-      msgout(paste("balance: coefficients are moles of", balance, "in formation reactions\n"))
+      balance.description <- paste("moles of", balance)
+      msgout(paste("balance: coefficients are", balance.description, "in formation reactions\n"))
       # the balance vector
       n.balance <- aout$species[, ibalance[1]]
       # we check if that all formation reactions contain this basis species
       if(any(n.balance==0)) stop("some species have no ", balance, " in the formation reaction")
     }
   }
-  return(n.balance)
+  return(list(n=n.balance, description=balance.description))
 }

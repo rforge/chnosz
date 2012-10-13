@@ -3252,7 +3252,7 @@ r <- revisit(e)
 
 \begin_layout Chunk
 
-title(main=paste("CV minimum =", round(r$extval, 2)))
+title(main=paste("CV minimum =", round(r$optimum, 2)))
 \end_layout
 
 \begin_layout Chunk

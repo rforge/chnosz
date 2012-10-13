@@ -42,7 +42,7 @@ diagram <- function(
     if(!"loga.equil" %in% names(eout)) {
       eout.is.aout <- TRUE
       # get the balancing coefficients
-      n.balance <- balance.coeffs(eout, balance)
+      n.balance <- balance(eout, balance)$n
     }
   } else if(what %in% rownames(eout$basis)) {
     # to calculate the loga of basis species at equilibrium

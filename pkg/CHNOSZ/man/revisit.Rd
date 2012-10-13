@@ -2,33 +2,31 @@
 \alias{revisit}
 \alias{richness}
 \alias{extremes}
-\alias{where.extreme}
-\title{Summarize Logarithms of Activity of Chemical Species}
+\alias{optimal.index}
+\title{Plots and Optima of Objective Functions}
 \description{
-  For logarithms of activities of chemical species, calculate standard deviation, coefficient of variation, Shannon diversity index, or correlation coefficient with a normal distribution. For logarithms of activities of species compared with reference values, calculate Spearman or Pearson correlation coefficients, or coefficient of variation of the root mean squared deviation. For logarithms of activities compared with one reference value, return the logarithm of activity (of a single species, unchanged) or richness (number of species with activities greater than the reference value). For differences of logarithms of activities of species from reference values, compared with reference differences, calculate Spearman or Pearson correlation coefficients, or coefficient of variation of the root mean squared deviation. Report the position and of the minimum or maximum of the values and make line or contour plots showing the values.
+Calculate values of an objective function from logarithms of activities of chemical species and (for some objectives) reference logarithms of activity.
+Make line or contour plots showing the values of the objective function and the positions of the optima (minimum or maximum).
 }
 
 \usage{
-  revisit(eout, target = "cv", loga.ref = NULL,
-    plot.it = NULL, col = par("fg"), yline = 2, ylim = NULL, 
-    ispecies = NULL, add = FALSE, cex = par("cex"), lwd = par("lwd"), 
-    mar = NULL, side = 1:4, xlim = NULL, labcex = 0.6, pch = 1, 
-    legend = "", legend.x = NULL, lpch = NULL, main = NULL, 
-    lograt.ref = NULL, plot.ext = TRUE, DGxf.swap12 = FALSE)
-  extremes(z, target)
-  where.extreme(z, target, do.sat = FALSE)
+  revisit(eout, objective = "CV", loga2 = NULL, ispecies = NULL,
+    col = par("fg"), yline = 2, ylim = NULL, cex = par("cex"),
+    lwd = par("lwd"), mar = NULL, side = 1:4, xlim = NULL, labcex = 0.6,
+    pch = 1, main = NULL, plot.it = NULL, add = FALSE, plot.optval = TRUE,
+    style.2D = "contour")
+  optimal.index(z, objective)
+  extremes(z, objective)
 }
 
 \arguments{
-  \item{eout}{list, output from \code{\link{equilibrate}}, or list of logarithms of activities of species}
-  \item{target}{character, what statistic to calculate}
-  \item{loga.ref}{numeric, logarithm of activities for comparison statistics}
-  \item{plot.it}{logical, make a plot?}
+  \item{eout}{list, output from \code{\link{equilibrate}}, containing logarithms of activities of species}
+  \item{objective}{character, name of \code{\link{objective}} function}
+  \item{loga2}{numeric array, reference values of logarithm of activities}
+  \item{ispecies}{numeric, which species to consider}
   \item{col}{character, color to use for points or lines}
   \item{yline}{numeric, margin line for y-axis label}
   \item{ylim}{numeric, limits of y axis}
-  \item{ispecies}{numeric, which species to consider}
-  \item{add}{logical, add to an existing plot?}
   \item{cex}{numeric, character expansion factor}
   \item{lwd}{numeric, line width}
   \item{mar}{numeric, plot margin specifications}
@@ -36,82 +34,80 @@
   \item{xlim}{numeric, limits of x axis}
   \item{labcex}{numeric, character expansion factor for species labels}
   \item{pch}{numeric, plotting symbol(s) to use for points}
-  \item{legend}{character, text to use for legend}
-  \item{legend.x}{character, placement of legend}
-  \item{lpch}{numeric, plotting symbol(s) to use in legend}
   \item{main}{character, main title for plot}
-  \item{lograt.ref}{numeric, log10 of reference abundance ratios}
-  \item{plot.ext}{logical, show the location of the extreme value(s)?}
-  \item{z}{numeric, matrix of values}
-  \item{do.sat}{logical, identify multiple extreme values? }
-  \item{DGxf.swap12}{logical, swap order of initial and final states?}
+  \item{plot.it}{logical, make a plot?}
+  \item{add}{logical, add to an existing plot?}
+  \item{plot.optval}{logical, show the location of the optimal value(s)?}
+  \item{style.2D}{character, type of 2-D plot}
+  \item{z}{numeric, matrix of values (\samp{H} element of output from \code{revisit})}
 }
 
 \details{
 
-  Supply the output of \code{\link{equilibrate}} as the value for \code{eout}. The type of calculation is indicated by \code{target}, as summarized in the following table.
+Most commonly, the output of \code{\link{equilibrate}} is used as the value for \code{eout}.
+The type of calculation is indicated by \code{objective}, giving the name of an \code{\link{objective}} function.
+The list of logarithms of chemical activities in \code{eout$loga.equil} is passed as \code{loga1} to the objective function.
+If the objective function has an argument \code{a1} instead of \code{loga1}, the activities instead of their logarithms are passed.
+Reference logarithms of activities, for those objective functions that require them, are supplied in the \code{loga2} argument.
+Generally, \code{loga2} must be a numeric vector with length equal to that of \code{loga1} (i.e., number of species).
+If a single numeric value is supplied for \code{loga2}, it is recycled to the length of \code{loga1}.
 
-  \tabular{llll}{
-    target \tab description \tab extremum \tab additional arguments \cr
-    \samp{sd} \tab standard deviation \tab min \tab none \cr
-    \samp{cv} \tab coefficient of variation \tab min \tab none \cr
-    \samp{shannon} \tab Shannon diversity index \tab max \tab none \cr
-    \samp{qqr} \tab correlation coefficient on q-q plot (normal distribution) \tab max \tab none \cr
-    \samp{cvrmsd} \tab coefficient of variation of RMSD \tab min \tab \code{loga.ref} \cr
-    \samp{spearman} \tab Spearman correlation coefficient \tab max \tab \code{loga.ref} \cr
-    \samp{pearson} \tab Pearson correlation coefficient \tab max \tab \code{loga.ref} \cr
-    \samp{count} \tab count of species above a certain activity \tab max \tab \code{loga.ref} \cr
-    \samp{logact} \tab logarithm of activity of a single species \tab max \tab \code{loga.ref} \cr
-    \samp{DGxf} \tab Gibbs energy of transformation of the system \tab min \tab {loga.ref} \cr
-  }
+If \code{plot.it} is TRUE, and \code{eout} is the output from \code{equilibrate}, and the number of variables is 1 or 2, the results are plotted --- a line diagram in 1 dimension or a contour plot in 2 dimensions.
+No plot is made for calculations at a single condition (0-D, no variation), except for the \code{qqr} objective, showing a quantile-quantile plot (\code{\link{qqnorm}}).
+\code{style.2D} can be set to \code{\link{image}} to fill the plot with colors instead of the \code{\link{contour}} plot that is the default.
 
-  \code{sd}, \code{cv}, \code{shannon} and \code{qqr} all operate on the logarithms of activities of species. 
+If \code{plot.optval} is TRUE, the location of the optimum (or optima) is indicated by a dashed vertical line(s) on a 1-D plot or a point(s) marked by an asterisk on a 2-D plot.
+Also, on 2-D plots, the locations of the optima at each grid line perpendicular to the \eqn{x}{x} and \eqn{y}{y} axes are plotted.
+These points follow major ridges or valleys, and are plotted as dashed lines colored green for the \eqn{x}{x} and blue for the \eqn{y}{y} values returned by \code{extremes}.
 
-\code{cvrmsd}, \code{spearman} and \code{pearson} operate on the logarithms of activities of species in \code{eout} compared against reference values in \code{loga.ref}, which must have the same length as the number of species.
-However, if code \code{lograt.ref} is supplied, the ratio of the activities in \code{eout} to those in \code{loga.ref} (the difference in the logarithms) is calculated instead; and those values are compared to \code{lograt.ref} using the selected target.
+An alternative source for the \code{eout} argument is any list of numeric values, each element of which corresponds to a different observation (such as a single species), all having the same dimensions (as vectors, matrices or higher-dimensional arrays)
+In this case, plotting is disabled, since the names of the variables are not in the input.
 
-\code{richness} counts the numbers of species whose logarithms of activities are above the single value of \code{loga.ref}.
-\code{logact} simply operates on the logarithm of activity of a single species (as supplied in \code{eout}); \code{loga.ref} in this case is an integer value referring to the number of the species in the list in \code{eout}. 
-
-\code{DGxf} is the change in Gibbs energy of a system undergoing transformation among species of interest at constant T, P and chemical potentials of basis species.
-See \code{\link{DGxf}} for the equation that is used.
-The transformation is from an initial state (the equilibrium values in \code{eout}) to a final state (the values given in \code{loga.ref}); setting \code{DGxf.swap12} reverses the order, so that the equilibrium state is the final state.
-Unlike the other targets, \code{DGxf} also depends on the values of the starved affinity (\code{Astar}) that are returned by \code{\link{equilibrate}}.
-
-Toether with the results of the calculation of the \code{target}, the function returns the position (in as many dimensions as the input values) and value of the extremum of the target value -- either the minimum or maximum, as indicated in the table.
-
-If \code{plot.it} is TRUE, and \code{eout} is the output from \code{diagram}, and the number of variables is 1 or 2, the results are plotted --- a line diagram in 1 dimension or a contour plot in 2 dimensions.
-No plot is made if the logarithms of activity have no dimensions (a single value for each species), except for the case of \code{qqr}, showing a quantile-quantile plot (\code{\link{qqnorm}}).
-On the plots the location of the extreme value is indicated by a dashed vertical line on a 1-D plot or a point marked by an asterisk on a 2-D plot.
-On 2-D plots the valleys (or ridges) leading to the location of the extremum are plotted. The ridges or valleys are plotted as dashed lines and are colored green for the \eqn{x}{x} values returned by \code{extremes} and blue for the \eqn{y}{y} values returned by \code{extremes}.
-
-An alternative source for the \code{eout} argument is any list of numeric values (such as logarithms of activities of species); the list elements each correspond to a different observation (such as a single species) and can be vectors, matrices, or higher-dimensional arrays, but they must all have the same dimensions.
-However, plotting is disabled if \code{eout} is not the output from \code{diagram}, since the names of the variables are not available.
- 
-The function name was changed to \code{revisit} in CHNOSZ-0.9 because there was already a function named \code{\link[vegan]{diversity}} in the \pkg{vegan} package.
-While \code{diversity} operates on a matrix with (biological) species on the columns, \code{revisit} operates on a list with (chemical) species as the elements of the list. 
-
-Given a matrix of numeric values in \code{z}, \code{extremes} locates the maximum or minimum values in both dimensions.
-That is, the \eqn{x}{x} values that are returned are the column numbers where the extreme is found for each row, and the \eqn{y}{y} values that are returned are the row numbers where the extreme is found for each column.
-The location of the extreme value in a matrix or vector \code{z} is calculated using \code{where.extreme}.
-Whether the extreme is the minimum or the maximum value depends on the value of \code{target}.
-For matrices, if \code{do.sat} is TRUE, and the extreme value is repeated, the row and columns numbers for all instances are returned. 
+\samp{revisit} is a loose anagram of \samp{diversity}, which was the provisional name of the function but was changed in CHNOSZ-0.9.
+While the \code{\link[vegan]{diversity}} function (in \pkg{vegan}) operates on a matrix with (biological) species on the columns, \code{revisit} operates on a list with (chemical) species as the elements of the list.
+The name of the \samp{H} output value is the conventional symbol for the Shannon diversity index, which was the first target statistic to be implemented in \code{revisit}.
 
 }
 
 \value{
-A list containing at least an element named \samp{H} giving the calculated values for the target.
-This has the same dimensions as a single element of \code{d$logact} (or \code{eout} itself, if \code{eout} was not the output from \code{diagram}).
-For calculations as a function of one or two variables, the output also contains the elements \code{ix} (location of the extremum in the first direction), \code{x} (x-value at the extremum), and \code{extval} (extreme value).
-For calculations as a function of two variables, the output also contains the elements \code{iy} (location of the extremum in the second direction) and \code{y} (y-value at the extremum).
+
+\code{revisit} returns a list containing at least an element named \samp{H}, giving the calculated values of the objective function.
+For 1 or 2 dimensions of varibility of chemical conditions, the output also contains the elements \code{ixopt} and \code{iyopt} (1-D and 2-D) and \code{iyopt} and \code{yopt} (2-D) indicating the positions and values of the optimum.
+For calculations in more than two dimensions, the output contains \code{iopt} which is a matrix 
+
+\code{optimum.index} returns the index (or indices) of the optimal values in \code{z} using \code{\link{array}(..., arr.ind=TRUE)}.
+\code{extremes} returns \eqn{x}{x} values that are the column numbers where the optimum is found for each row, and \eqn{y}{y} values that are the row numbers where the optimum is found for each column.
+The \samp{optimum} attribute of the \code{objective} function indicates whether minimal or maximal values are used.
+
 }
 
 \seealso{
-  \code{\link{findit}} calls \code{revisit} iteratively to optimize one or more chemical activities, temperature and/or pressure for one of the target statistics.
+
+\code{\link{findit}} for gridded search of chemical activities, temperature and/or pressure that optimize the objective function.
+
 }
 
 \examples{
+## example of defining a new objective function
+# count the species with logarithms of activity greater than loga2
+count <- function(loga1, loga2) rowSums(loga1 > loga2)
+# set the attribute indicating the type of optimum
+attr(count, "optimum") <- "maximal"
+# equilibrate a system of amino acids
+basis("CHNOS")
+species(aminoacids(""))
+a <- affinity(O2=c(-80, -60))
+e <- equilibrate(a)
+# make a plot
+r <- revisit(e, "count", -5)
+title(main="amino acids with metastable log activities > -5")
 \donttest{
+# can also make a 2-D plot
+a <- affinity(O2=c(-74, -60), H2O=c(-3, 3))
+e <- equilibrate(a)
+r <- revisit(e, "count", -5, style.2D="image", plot.optval=FALSE)
+title(main="amino acids with metastable log activities > -5")
+
 ## 'revisit' calculations for amino acids
 opar <- par(mfrow=c(2, 2))
 basis("CHNOS+")
@@ -129,7 +125,7 @@ legend("bottomright", c(dp, db))
 # default is to plot coefficient of variation
 r <- revisit(e)
 # show a title with the optimal conditions
-mincv <- format(r$extval, digits=3)
+mincv <- format(r$optimum, digits=3)
 t1 <- paste("minimum coeff of variation,", mincv, "at:")
 # the logfO2 that minimized the C.V.
 basis("O2", r$x)
@@ -145,7 +141,7 @@ legend("bottomright", db)
 e <- equilibrate(a)
 r <- revisit(e)
 # show a title with the optimal conditions
-mincv <- format(r$extval, digits=3)
+mincv <- format(r$optimum, digits=3)
 t1 <- paste("minimum coeff of variation,", mincv, "at:")
 # the logaNH3 and T that minimized the C.V.
 basis("NH3", r$x)

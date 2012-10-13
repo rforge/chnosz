@@ -5,7 +5,6 @@
 \alias{nonideal}
 \alias{which.balance}
 \alias{unitize}
-\alias{DGxf}
 \title{Functions for Miscellaneous Tasks}
 \description{
   Calculate \eqn{dP/dT}{dP/dT} and temperature of phase transitions, calculate heat capacities of unfolded proteins using an equation from the literature, calculate non-ideal contributions to apparent standard molal properties, identify a conserved basis species, scale logarithms of activity to a desired total activity, calculate Gibbs energy of transformation of a system.
@@ -17,7 +16,6 @@
   nonideal(species, proptable, IS, T)
   which.balance(species)
   unitize(logact = NULL, length = NULL, logact.tot = 0)
-  DGxf(loga1, loga2, Astar)
 }
 
 \arguments{
@@ -31,9 +29,6 @@
   \item{logact}{numeric, logarithms of activity}
   \item{length}{numeric, numbers of residues}
   \item{logact.tot}{numeric, logarithm of total activity}
-  \item{loga1}{numeric, initial logarithms of activities of the species of interest}
-  \item{loga2}{numeric, final logarithms of activities of the species of interest}
-  \item{Astar}{numeric, the starved affinity}
 }
 
 \details{
@@ -49,8 +44,6 @@
   \code{spearman} calculates Spearman's rank correlation coefficient for \code{a} and \code{b}.
 
   \code{unitize} scales the logarithms of activities given in \code{logact} so that the logarithm of total activity of residues is equal to zero (i.e. total activity of residues is one), or to some other value set in \code{logact.tot}.  \code{length} indicates the number of residues in each species. If \code{logact} is NULL, the function takes the logarithms of activities from the current species definition. If any of those species are proteins, the function gets their lengths using \code{protein.length}.
-
-  \code{DGxf} calculates the change in Gibbs energy/2.303RT of a system in which species with initial logarithms of activitiy (\code{loga1}) are transformed to the same species with different final logarithms of activity (\code{loga2}) at constant temperature, pressure and chemical potentials of basis species. It is calculated as the sum over species of (G2-G1) where G1/RT = -a1*Astar + a1*loga1 - a1 + a constant (where a1 is 10^loga1), likewise for G2, and where \code{Astar} is the starved affinity, that is the affinity of the reaction to form one mole of the species at unit activity from the basis species in their defined activities. The equation used arises from integrating dG = -A/dxi = -A/dn where xi is the reaction progress variable, dn/dxi = 1 is the reaction coefficient on the species, and A = Astar - 2.303RTloga is the chemical affinity. 
 }
 
 \value{

@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 0.9.8-1 (2012-10-13)
+CHANGES IN CHNOSZ 0.9.8-2 (2012-10-21)
 --------------------------------------
 
 SIGNIFICANT USER-VISIBLE CHANGES:
@@ -222,11 +222,11 @@ DATA UPDATES:
 
 EXTDATA UPDATES:
 
-- In extdata/refseq, scripts and data files updated for Reference 
-  Sequence (RefSeq) release 49 (2011-09-07).
+- In extdata/refseq, scripts and data files were updated for NCBI
+  Reference Sequence (RefSeq) release 55 (2012-09-17).
 
 - In extdata/bison, sample BLAST output files for Bison Pool metagenome
-  use target database generated from RefSeq release 49.
+  use target database generated from RefSeq release 55.
 
 - Add P(ressure) column to extdata/cpetc/SOJSH.csv and a stopifnot() 
   test for similarity to the experimental data to the example in 

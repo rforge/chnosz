@@ -11,6 +11,7 @@
 \alias{RMSD}
 \alias{CVRMSD}
 \alias{DDGmix}
+\alias{DGinf}
 \alias{DGtr}
 \alias{get.objfun}
 \title{Objective Functions}
@@ -31,6 +32,7 @@ These functions can be specified as objectives in \code{\link{revisit}} and \cod
   RMSD(loga1, loga2)
   CVRMSD(loga1, loga2)
   DDGmix(loga1, loga2)
+  DGinf(a1, a2)
   DGtr(loga1, loga2, Astar)
   get.objfun(objective)
 }
@@ -39,6 +41,7 @@ These functions can be specified as objectives in \code{\link{revisit}} and \cod
   \item{a1}{numeric matrix, chemical activities of species}
   \item{loga1}{numeric matrix, logarithms of activity}
   \item{loga2}{numeric, reference values of logarithms of activity}
+  \item{a2}{numeric, reference values of activity}
   \item{Astar}{numeric, reference values of chemical affinity}
   \item{objective}{character, name of objective function}
 }
@@ -46,7 +49,7 @@ These functions can be specified as objectives in \code{\link{revisit}} and \cod
 \details{
 
 The value in \code{a1} or \code{loga1} is a matrix of chemical activities or logarithms of activity with a column for each species, and a row for each chemical condition.
-Except for calculations of the Shannon entropy, all logarithmic bases are decimal.
+Except for calculations of the Shannon entropy, all logarithmic bases (including in the equations below) are decimal.
 
 \code{SD}, \code{CV} and \code{shannon} calculate the standard deviation, coefficient of variation, and Shannon entropy for the values in each row of \code{a1}. The Shannon entropy is calculated from the fractional abundances: H = sum(-p * log(p)) (natural logarithm), where p=a1/sum(a1).
 
@@ -60,6 +63,11 @@ Except for calculations of the Shannon entropy, all logarithmic bases are decima
 The CVRMSD is computed as the RMSD divided by the mean of the values in \code{loga1}.
 
 \code{DDGmix} calculates the difference in Gibbs energy/2.303RT of ideal mixing between the assemblages with logarithms of activity \code{loga1} and \code{loga2}.
+
+\code{DGinf} calculates the difference in Gibbs energy/2.303RT attributed to relative informatic entropy between an initial assemblage with activities \code{a2} and final assemblage(s) with activities with activities in each row of \code{a1}.
+The equation used is DGinf/2.303RT = sum(p2 * (logp2 - logp1)), where p1 and p2 are the proportions, i.e. p1 = a1 / sum(a1) and p2 = a2 / sum(a2). 
+This equation has the form of the Kullback-Leibler divergence, sometimes known as relative entropy (Ludovisi and Taticchi, 2006).
+In specific cases (systems where formulas of species are normalized by the balancing coefficients), the values of \code{DGinf} and \code{DGtr} are equal.
 
 \code{DGtr} calculates the change in Gibbs energy/2.303RT of a system in which species with initial logarithms of activitiy (\code{loga1}) are transformed to the same species with different final logarithms of activity (\code{loga2}) at constant temperature, pressure and chemical potentials of basis species.
 It is calculated as the sum over species of (G2-G1) where G1/RT = -a1*Astar + a1*loga1 - a1 + a constant (where a1 is 10^loga1), likewise for G2, and where \code{Astar} is the starved affinity, that is the affinity of the reaction to form one mole of the species at unit activity from the basis species in their defined activities.
@@ -99,7 +107,7 @@ e <- equilibrate(a)
 # take a reference equilibrium distribution at logfH2 = -7.5
 loga1 <- list2array(e$loga.equil)[51, ]
 Astar <- list2array(e$Astar)[51, ]
-# equilibrium at any other logfH2 is not equilibrium at logfH2 = -75
+# equilibrium at any other logfH2 is not equilibrium at logfH2 = -7.5
 DGtr.out <- DDGmix.out <- numeric()
 for(i in 1:length(a$vals[[1]])) {
   loga2 <- list2array(e$loga.equil)[i, ]
@@ -129,6 +137,9 @@ title(main=paste("transformation between metastable equilibrium\n",
 \references{
 
   Anderson, G. M. (2005) \emph{Thermodynamics of Natural Systems}, 2nd ed., Cambridge University Press, 648 p. \url{http://www.worldcat.org/oclc/474880901}
+
+  Ludovisi, A. and Taticchi, M. I. (2006) Investigating beta diversity by Kullback-Leibler information measures. \emph{Ecological Modelling} \bold{192}, 299--313. \url{http://dx.doi.org/10.1016/j.ecolmodel.2005.05.022}
+
 
 }
 

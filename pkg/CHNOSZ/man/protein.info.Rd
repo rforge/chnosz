@@ -82,8 +82,8 @@ protein.equil(protein, loga.protein=-3)
 
 ## using protein.formula: average oxidation state of 
 ## carbon of proteins from different organisms
-# get amino acid compositions of proteins 
-# generated from the RefSeq database
+# get amino acid compositions of microbial proteins 
+# generated from the RefSeq database 
 file <- system.file("extdata/refseq/protein_refseq.csv.xz", package="CHNOSZ")
 ip <- add.protein(read.aa(file))
 # only use those organisms with a certain
@@ -93,9 +93,9 @@ pf <- protein.formula(thermo$protein[ip, ])
 zc <- ZC(pf)
 # the organism names we search for
 # "" matches all organisms
-terms <- c("Streptomyces", "Pseudomonas", "Salmonella",
-  "Escherichia", "Vibrio", "Bacteroides", "Lactobacillus",
-  "Staphylococcus", "Streptococcus", "Methano", "Bacillus", "Thermo","")
+terms <- c("Halo", "Streptomyces", "Pseudomonas", "Salmonella",
+  "Escherichia", "Bacteroides", "Lactobacillus", "Staphylococcus",
+  "Streptococcus", "Methano", "Bacillus", "Thermo", "")
 tps <- thermo$protein$ref[ip]
 plot(0, 0, xlim=c(1, 13), ylim=c(-0.3, -0.05), pch="",
   ylab="average oxidation state of carbon in proteins",
@@ -105,7 +105,7 @@ for(i in 1:length(terms)) {
   zct <- zc[it]
   points(jitter(rep(i, length(zct))), zct, pch=20)
 }
-terms[13] <- paste("all organisms")
+terms[13] <- paste("all microbial")
 axis(1, 1:13, terms, las=2)
 title(main=paste("Average Oxidation State of Carbon:",
   "Total Protein per taxID in NCBI RefSeq", sep="\n"))

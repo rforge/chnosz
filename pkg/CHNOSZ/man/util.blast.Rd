@@ -76,7 +76,7 @@
   taxid.names <- read.csv(nfile)
   # the BLAST files
   sites <- c("N","S","R","Q","P")
-  bfile <- paste("extdata/bison/bison", sites, "_vs_refseq49.blastp.xz", sep="")
+  bfile <- paste("extdata/bison/bison", sites, "_vs_refseq55.blastp.xz", sep="")
   for(i in 1:5) {
     file <- system.file(bfile[i], package="CHNOSZ")
     # read the blast file, with default filtering settings

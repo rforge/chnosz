@@ -150,6 +150,20 @@ DDGmix <- structure(
   optimum="minimal"
 )
 
+DGinf <- structure(
+  function(a1, a2) {
+    dginf <- function(a1, a2) {
+      # informatic Gibbs energy/2.303RT difference between assemblages
+      p1 <- a1/sum(a1)
+      p2 <- a2/sum(a2)
+      sum(p2 * log10(p2/p1))
+    }
+    DGinf <- apply(a1, 1, dginf, a2=a2)
+    return(DGinf)
+  },
+  optimum="minimal"
+)
+
 DGtr <- structure(
   function(loga1, loga2, Astar) {
     dgtr <- function(loga1, loga2, Astar) {

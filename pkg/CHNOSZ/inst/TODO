@@ -1,12 +1,19 @@
+*********
+for 1.0.0
+*********
+
+- revisit the documentation, make it consistent with code changes!
+
+- check docs and function: does affinity return A/RT or A/2.303RT?
+
+- check examples of protein buffer calculations
+
+
 ********
 features
 ********
 
 - let diagram() map NA's - as in kyanite/sillimanite/andalusite example
-
-- implement alpha=TRUE for 2D diagram()
-
-- check docs and function: does affinity return A/RT or A/2.303RT?
 
 - make is.near.equil() a function of ep (element.potentials), not w (wjd)?
 

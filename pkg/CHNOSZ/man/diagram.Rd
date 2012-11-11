@@ -10,7 +10,7 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
 \usage{
   diagram(eout, what = "loga.equil", alpha = FALSE, normalize = FALSE,
     balance=NULL, groups=as.list(1:length(eout$values)), xrange=NULL,
-    mar=NULL, yline=par("mgp")[1]+1, side=1:4,
+    mar=NULL, yline=par("mgp")[1]+0.7, side=1:4,
     ylog=TRUE, xlim=NULL, ylim=NULL, xlab=NULL, ylab=NULL,
     cex=par("cex"), cex.names=1, cex.axis=par("cex"),
     lty=NULL, lwd=par("lwd"), dotted=0,
@@ -25,7 +25,7 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
   \item{eout}{list, object returned by \code{\link{equilibrate}}} or \code{\link{affinity}}
   \item{what}{character, what property to calculate and plot}
   \item{alpha}{logical, for speciation diagrams, plot degree of formation instead of activities?}
-  \item{normalize}{logical, normalize activities or reaction properties by the balance vector?}
+  \item{normalize}{logical, normalize chemical formulas or reaction properties by the balance vector?}
   \item{balance}{character, balancing constraint; see \code{\link{balance}}}
   \item{groups}{list of numeric, groups of species to consider as a single effective species}
   \item{xrange}{numeric, range of x-values between which predominance field boundaries are plotted}
@@ -90,17 +90,16 @@ If \code{plot.it} is FALSE, no plot will be generated but all the intermediate c
 
 \code{diagram} also accepts the output from \code{\link{affinity}}, for which three actions are possible:
 1) plot a property of a reaction, such as the equilibrium constant (\samp{logK}) (0-D or 1-D);
-2) plot the equilibrium activity of a selected basis species in all of the formation reactions (0-D or 1-D);
+2) plot the equilibrium activity of a selected basis species in all of the formation reactions (0-D, 1-D or 2-D);
 3) plot predominance fields, based on the relative magnitudes of the affinities of the formation reactions (2-D only).
+
+Some of the arguments have different effects when the output from \code{affinity} is being used instead of the equilibrium activities from \code{equilibrate}.
+If \code{what} is missing, option (1) is selected if the number of dimensions is 0 or 1, and option (3) is selected if the number of dimensions is 2.
 The latter is referred to as the maximum affinity method.
 In cases where it applies (see Warning), the maximum affinity method is much faster than an equilibrium calculation.
-
-The arguments have somewhat different effects when the output from \code{affinity} is being used instead of the equilibrium activities from \code{equilibrate}.
 \code{balance} is the option, sent to \code{\link{balance}}, that determines the balancing coefficients used in the normalization (this argument has no effect on the calculations of equilibrium activities.)
-\code{what} indicates the type of calculation to perform.
 If \code{what} is the name of a basis species, it refers to option (2) above.
-If \code{what} is missing, it refers to option (1) or (3).
-Option (1) is automatically selected if the number of dimensions is 0 or 1, and option (3) is selected if the number of dimensions is 2.
+A contour plot is made in the case of 2-D diagrams of the equilibrium activity of a basis species (see \code{\link{demos}("CO2Ac")}, and only the first species of interest is used in the calculation; a warning is produced if there is more than one.
 
 A different incarnation of 1-D speciation diagrams is provided by \code{strip}.
 This function generates any number of strip diagrams in a single plot.
@@ -132,7 +131,7 @@ However, if aqueous species are present with different balancing coefficients, t
 }
 
 \seealso{ 
-Other examples are present in the help for \code{\link{protein}} and \code{\link{buffer}}, and even more can be found in \code{\link{longex}}.
+Other examples are present in the help for \code{\link{protein}} and \code{\link{buffer}}, and even more can be found in \code{\link{demos}}.
 }
 
 \examples{
@@ -299,6 +298,8 @@ title(main=paste("Equilibrium degrees of formation of",
 }
 
 \references{
+
+  Aksu, S. and Doyle, F. M. (2001) Electrochemistry of copper in aqueous glycine solutions. \emph{J. Electrochem. Soc.} \bold{148}, B51--B57. \url{http://dx.doi.org/10.1149/1.1344532}
 
   Helgeson, H. C. (1970) A chemical and thermodynamic model of ore deposition in hydrothermal systems. \emph{Mineral. Soc. Amer. Spec. Pap.} \bold{3}, 155--186. \url{http://www.worldcat.org/oclc/583263}
 

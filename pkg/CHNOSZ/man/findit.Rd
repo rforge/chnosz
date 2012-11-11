@@ -10,7 +10,7 @@
   findit (lims = list(), objective = "CV", niter = NULL, iprotein = NULL, 
     plot.it = TRUE, T = 25, P = "Psat", res = NULL, labcex = 0.6, 
     loga2 = NULL, loga.balance = 0, rat = NULL,
-    balance = NULL)
+    balance = NULL, normalize = FALSE)
   \method{plot}{findit}(x, which=NULL, mar=c(3.5,5,2,2), xlab="iteration", \dots)
 }
 
@@ -28,6 +28,7 @@
   \item{loga.balance}{numeric, logarithm of total activity of balanced quantity (passed to \code{\link{diagram}})}
   \item{rat}{numeric, ratio of edge length in successive iterations}
   \item{balance}{character or numeric, balanced quantity (passed to \code{\link{diagram}})}
+  \item{normalize}{logical, normalize chemical formulas by the balance vector? (passed to \code{\link{diagram}})}
   \item{x}{list, object of class \code{findit}}
   \item{which}{numeric, which of the parameters to plot}
   \item{mar}{numeric, plot margin specification}
@@ -70,7 +71,7 @@ Detailed studies of a system might have to use more iterations and/or higher res
 }
 
 \seealso{
-  \code{\link{longex}("findit")} and \code{tests/test-findit.R} for more examples.
+  \code{\link{demos}("findit")} and \code{tests/test-findit.R} for more examples.
 }
 
 \examples{\dontshow{data(thermo)}

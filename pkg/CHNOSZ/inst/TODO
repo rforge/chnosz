@@ -8,6 +8,8 @@ for 1.0.0
 
 - check examples of protein buffer calculations
 
+- get demo("copper") to work ... might involve refactoring species()
+
 
 ********
 features

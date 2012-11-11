@@ -6,9 +6,9 @@ release checklist for CHNOSZ
 
 - run examples() to make sure that all examples can be run (includes \donttest ones)
 
-- check that all longex() examples can be run
+- run demos() to run all demos
 
-- check output of longex("sources") to make sure all data sources are cited
+- check output of demo("sources") to make sure all data sources are cited
 
 - recreate extdata/thermo/obigt_check.csv after all data updates:
   co <- check.obigt()

@@ -12,7 +12,7 @@ diagram <- function(
   what="loga.equil", alpha=FALSE, normalize=FALSE, balance=NULL,
   groups=as.list(1:length(eout$values)), xrange=NULL,
   # plot dimensions
-  mar=NULL, yline=par("mgp")[1]+1, side=1:4,
+  mar=NULL, yline=par("mgp")[1]+0.7, side=1:4,
   # axes
   ylog=TRUE, xlim=NULL, ylim=NULL, xlab=NULL, ylab=NULL, 
   # sizes
@@ -240,7 +240,7 @@ diagram <- function(
 
     } else if(nd==2) {
 
-      ### 2-D diagram - fields indicating species predominance
+      ### 2-D diagram - fields indicating species predominance, or contours for other properties
 
       ### functions for constructing predominance area diagrams
       ## color fill function
@@ -397,13 +397,18 @@ diagram <- function(
         # add a title
         if(!is.null(main)) title(main=main)
       }
-      # colors and curves
-      # put predominance matrix in the right order for image() etc
-      zs <- t(predominant[, ncol(predominant):1])
-      if(!is.null(fill)) fill.color(xs, ys, zs, fill, ngroups)
-      if(!is.null(names)) plot.names(zs, xs, ys, names)
-      if(!is.null(dotted)) plot.line(zs, xlim, ylim, dotted, col, lwd, xrange=xrange)
-      # done with that plot!
+      # colors and curves (predominance), or contours (properties)
+      if(identical(predominant, NA)) {
+        zs <- plotvals[[1]]
+        if(length(plotvals) > 1) warning("showing only first species in 2-D property diagram")
+        contour(xs, ys, zs, add=TRUE, col=col, lty=lty, lwd=lwd, labcex=cex)
+      } else {
+        # put predominance matrix in the right order for image() etc
+        zs <- t(predominant[, ncol(predominant):1])
+        if(!is.null(fill)) fill.color(xs, ys, zs, fill, ngroups)
+        if(!is.null(names)) plot.names(zs, xs, ys, names)
+        if(!is.null(dotted)) plot.line(zs, xlim, ylim, dotted, col, lwd, xrange=xrange)
+      } # done with the 2D plot!
     } # end if(nd==2)
   } # end if(plot.it)
 

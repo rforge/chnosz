@@ -29,7 +29,7 @@ test_that("findit() returns known values encoded in a species distribution", {
   # now find the activities of the basis species
   # that get us close to reference activities of proteins
   f <- findit(lims=list(CO2=c(-5,0), H2O=c(-5,0), NH3=c(-5,0)),
-    objective="RMSD", n=2, iprotein=ip, loga2=loga2, res=24, rat=0.2, plot.it=FALSE)
+    objective="RMSD", niter=2, iprotein=ip, loga2=loga2, res=24, rat=0.2, plot.it=FALSE)
   # sanity check: the output values are all the same length
   expect_equal(length(unique(sapply(f$value, length))), 1)
   # -pi, -e and -sqrt(2) were approximately retrieved!

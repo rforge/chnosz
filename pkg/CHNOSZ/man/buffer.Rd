@@ -73,7 +73,7 @@ affinity(O2=c(-85,-70,4),T=c(25,100,4),return.buffer=TRUE)
 # change the activity of species in the buffer
 mod.buffer("AC",logact=-10)
 affinity(O2=c(-85,-70,4),T=c(25,100,4),return.buffer=TRUE)
-# see longex('co2ac') for a different strategy using the
+# see demos('CO2Ac') for a different strategy using the
 # 'what' argument of diagram
 
 ## buffer made of three species

@@ -6,7 +6,7 @@
 
 findit <- function(lims=list(), objective="CV", niter=NULL, iprotein=NULL, plot.it=TRUE,
   T=25, P="Psat", res=NULL, labcex=0.6, loga2=NULL,
-  loga.balance=0, rat=NULL, balance=NULL) {
+  loga.balance=0, rat=NULL, balance=NULL, normalize=FALSE) {
   # the lims list has the limits of the arguments to affinity()
   # we iteratively move toward a higher/lower value of the objective
   # within these limits
@@ -118,7 +118,7 @@ findit <- function(lims=list(), objective="CV", niter=NULL, iprotein=NULL, plot.
     # now calculate the affinities
     a <- do.call(affinity,aargs)
     # then calculate the values of the objective function
-    e <- equilibrate(a, balance=balance, loga.balance=loga.balance)
+    e <- equilibrate(a, balance=balance, loga.balance=loga.balance, normalize=normalize)
     dd <- revisit(e$loga.equil, objective, loga2=loga2)$H
     # coordinates of the extreme value (take only the first set of coords)
     iopt <- optimal.index(dd, objective)[1,, drop=FALSE]

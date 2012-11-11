@@ -191,7 +191,7 @@ legend("bottomleft", legend=c("preset (input values):",
 }
 
 \seealso{
-  For even more protein-related examples, see \code{\link{more.aa}}, \code{\link{ionize.aa}}, and \code{\link{apc}} for reaction-path calculations.
+  For even more protein-related examples, see \code{\link{read.expr}}, \code{\link{more.aa}}, \code{\link{ionize.aa}}, and \code{\link{apc}} for reaction-path calculations.
 }
 
 \keyword{protein}

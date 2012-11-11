@@ -151,7 +151,7 @@ revisit <- function(eout, objective = "CV", loga2 = NULL, ispecies = NULL,
     if(plot.it) {
       if(objective=="qqr") {
         # make a q-q plot for qqr
-        qqnorm(loga1, col=col, pch=pch)
+        qqnorm(loga1, col=col, pch=pch, main=NA)
         qqline(loga1)
       } else if(any(grepl("a2", objargs))) {
         # plot the points for a referenced objective

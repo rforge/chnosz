@@ -66,10 +66,11 @@ test_that("'groups', 'alpha' and 'normalize' work as expected", {
 #  expect_equal(d$plotvals[[3]], d.norm$plotvals[[3]] - log10(2))
 })
 
-test_that("diagram() handles 2D plots with different x and y resolution", {
+test_that("diagram() handles 2D plots with different x and y resolution and warns for >1 species in contour plot", {
   basis("CHNOS")
   species(c("alanine", "glycine", "serine", "methionine"))
   a <- affinity(T=c(0, 200, 6), O2=c(-90, -60, 5))
   # TODO: fix plot.line() function in diagram() so that the plot can be made
   #expect_equal(diagram(a), diagram(a, plot.it=FALSE))
+  expect_warning(diagram(a, what="CO2"), "showing only first species in 2-D property diagram")
 })

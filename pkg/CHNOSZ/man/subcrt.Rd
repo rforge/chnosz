@@ -80,7 +80,7 @@ Specifically, \code{NA}s are produced for calculations at \samp{Psat} when the t
 Comparison of the output of \code{subcrt} with that of \acronym{SUPCRT92} indicates the two give similar values of properties for neutral aqueous species up to 1000 \eqn{^{\circ}}{degrees }C and 5000 bar.
 Changes were made in CHNOSZ 0.9.8 to improve the calculation of the \eqn{g}{g}- and \eqn{f}{f}-functions (Shock et al., 1992) for the partial derivatives of the omega parameter which are used by the \code{\link{hkf}} function, so thermodynamic properties of charged aqueous species over the temperature range 0 to 1000 \eqn{^{\circ}}{degrees }C are now mostly consistent with \acronym{SUPCRT92}.
 Note, however, that while \acronym{SUPCRT92} limits calculations at Psat to 350 \eqn{^{\circ}}{degrees }C (\dQuote{beyond range of applicability of aqueous species equations}), there is no corresponding limit in place in \code{subcrt} (or \code{\link{hkf}}), so that inapplicable calculations will be performed up to the critical temperature (373.917 \eqn{^{\circ}}{degrees }C) without any warning.
-It is probably for this reason that there is a noticeable jump in the value of logK at Psat shown in the one of the examples (\code{\link{longex}("NaCl")}).
+It is probably for this reason that there is a noticeable jump in the value of logK at Psat shown in the one of the examples (\code{\link{demos}("NaCl")}).
 
   A known bug is misidentification of the stable polymorph of some minerals at high temperature; an example of this bug is shown in the \code{\link{stopifnot}} at the end of the skarn example below.
  
@@ -93,7 +93,7 @@ It is probably for this reason that there is a noticeable jump in the value of l
 }
 
 \seealso{
-  \code{\link{longex}("nonideal")} runs an example using the \code{IS} argument. \code{\link{info}} can be used to find species in the thermodynamic database. \code{\link{makeup}} is used by \code{subcrt} for parsing formulas to check mass balance of reactions.
+  \code{\link{demos}("nonideal")} runs an example using the \code{IS} argument. \code{\link{info}} can be used to find species in the thermodynamic database. \code{\link{makeup}} is used by \code{subcrt} for parsing formulas to check mass balance of reactions.
 }
 
 \examples{

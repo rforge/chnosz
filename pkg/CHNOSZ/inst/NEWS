@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 0.9.8-2 (2012-10-21)
+CHANGES IN CHNOSZ 0.9.8-3 (2012-11-11)
 --------------------------------------
 
 SIGNIFICANT USER-VISIBLE CHANGES:
@@ -242,7 +242,10 @@ EXTDATA UPDATES:
 
 DOCUMENTATION AND VIGNETTES:
 
-- Added a Known Bugs section to the package help page.
+- Add a Known Bugs section to the package help page.
+
+- Move 'extra' examples previously available in longex() to individual
+  demos, and add a function demos() to run them all.
 
 - All examples now run without any warnings (at least, as intended).
 

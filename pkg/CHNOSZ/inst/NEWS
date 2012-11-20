@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 0.9.8-3 (2012-11-11)
+CHANGES IN CHNOSZ 0.9.8-4 (2012-11-20)
 --------------------------------------
 
 SIGNIFICANT USER-VISIBLE CHANGES:
@@ -171,6 +171,10 @@ OTHER CHANGES TO FUNCTIONS:
 - Rewrite mod.obigt() (it's now used by info() when adding proteins) and
   add today() for returning today's date in the format used in SUPCRT 
   files.
+
+- EOSvar() has new variables invPPsi and invPPsiTTheta, used for
+  temperature- and pressure-dependent regressions in the revised HKF
+  equations of state.
 
 DATA UPDATES:
 

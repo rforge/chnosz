@@ -14,6 +14,8 @@ EOSvar <- function(var,T,P) {
     "invTTheta" = (T-thermo$opt$Theta)^-1,         # 1/(T-Theta)
     "TTheta2" = (T-thermo$opt$Theta)^2,            # (T-Theta)^2
     "invTTheta2" = (T-thermo$opt$Theta)^-2,        # 1/(T-Theta)^2
+    "invPPsi" = (P+thermo$opt$Psi)^-1,             # 1/(P-Psi)
+    "invPPsiTTheta" = (P+thermo$opt$Psi)^-1 * (T-thermo$opt$Theta)^-1,  # 1/[(P-Psi)(T-Theta)]
     "V" = water(var,T=T,P=P)[,1],
     "E" = water(var,T=T,P=P)[,1],
     "kT" = water(var,T=T,P=P)[,1],

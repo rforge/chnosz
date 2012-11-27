@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{ionize.aa}
 \alias{ionize.aa}
 \title{Properties of Ionization of Proteins}
@@ -13,8 +14,8 @@
 \arguments{
   \item{aa}{data frame, amino acid composition in the format of \code{thermo$protein}}
   \item{property}{character, property to calculate}
-  \item{T}{numeric, temperature in \eqn{^{\circ}}{degrees }C}
-  \item{P}{numeric, pressure in bar, or \samp{Psat} for vapor pressure of \eqn{\mathrm{H_2O}}{H2O} above 100 \eqn{^{\circ}}{degrees }C}
+  \item{T}{numeric, temperature in \eqn{^{\circ}}{°}C}
+  \item{P}{numeric, pressure in bar, or \samp{Psat} for vapor pressure of \eqn{\mathrm{H_2O}}{H2O} above 100 \eqn{^{\circ}}{°}C}
   \item{pH}{numeric, pH}
   \item{ret.val}{character, return the indicated value from intermediate calculations}
   \item{suppress.Cys}{logical, suppress (ignore) the ionization of the cysteine groups?}
@@ -64,8 +65,8 @@ points(RT71$pH, RT71$Z)
 legend("topright", pch=1, legend="Roxby and Tanford, 1971")
 title(main=paste("Ionization of unfolded LYSC_CHICK\n",
   "After Dick et al., 2006"))
-\donttest{
-## Heat capacity of LYSC_CHICK as a function of T
+
+\donttest{## Heat capacity of LYSC_CHICK as a function of T
 pH <- c(5, 9, 3)
 T <- seq(0, 100)
 # Cp of non-ionized protein

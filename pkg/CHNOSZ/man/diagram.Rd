@@ -150,8 +150,8 @@ title(main=paste("Aqueous sulfur speciation, 325 degC, 350 bar\n",
   "After Seewald, 1997"))
 # try it with and without the loga.balance argument (total activity of 
 # the balanced quantity, in this case H2S aka sulfur) 
-\donttest{
-## Degrees of formation of ionized forms of glycine
+
+\donttest{## Degrees of formation of ionized forms of glycine
 ## After Fig. 1 of Aksu and Doyle, 2001 
 basis("CHNOS+")
 species(ispecies <- info(c("glycinium", "glycine", "glycinate")))

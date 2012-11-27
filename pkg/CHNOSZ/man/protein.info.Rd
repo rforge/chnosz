@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{protein.info}
 \alias{group.formulas}
 \alias{protein.formula}
@@ -27,7 +28,7 @@
   \item{organism}{character, names of organisms}
   \item{residue}{logical, return per-residue values (those of the proteins divided by their lengths)?}
   \item{normalize}{logical, return per-residue values (those of the proteins divided by their lengths)?}
-  \item{T}{numeric, temperature in \eqn{^{\circ}}{degrees }C}
+  \item{T}{numeric, temperature in \eqn{^{\circ}}{°}C}
   \item{round.it}{logical, round the values in the output?}
   \item{loga.protein}{numeric, decimal logarithms of reference activities of proteins}
 }
@@ -50,7 +51,7 @@ If \code{normalize} is TRUE, the coefficients on the basis species are divided b
 
   \code{protein.equil} produces a series of messages showing step-by-step a calculation of the chemical activities of proteins in metastable equilibrium. For the first protein, it shows the standard Gibbs energies of the reaction to form the nonionized protein from the basis species and of the ionization reaction of the protein (if \samp{H+} is in the basis), then the standard Gibbs energy/RT of the reaction to form the (possibly ionized) protein per residue. The per-residue values of \samp{logQstar} and \samp{Astar/RT} are also shown for the first protein. Equilibrium calculations are then performed, only if more than one protein is specified. This calculation applies the Boltzmann distribution to the calculation of the equilibrium degrees of formation of the residue equivalents of the proteins, then converts them to activities of proteins taking account of \code{loga.protein} and protein length. If the \code{protein} argument is numeric (indicating rownumbers in \code{thermo$protein}), the values of \samp{Astar/RT} are compared with the output of \code{\link{affinity}}, and those of the equilibrium degrees of formation of the residues and the chemical activities of the proteins with the output of \code{\link{diagram}}. If the values in any of these tests are are not \code{\link{all.equal}} an error is produced indicating a bug. 
 
-  \code{MP90.cp} takes \code{protein} (name of protein) and \code{T} (one or more temperatures in \eqn{^{\circ}}{degrees }C) and returns the additive heat capacity (J mol \eqn{^{-1}}{^-1}) of the unfolded protein using values of heat capacities of the residues taken from Makhatadze and Privalov, 1990. Those authors provided values of heat capacity at six points between 5 and 125 \eqn{^{\circ}}{degrees }C; this function interpolates (using \code{\link{splinefun}}) values at other temperatures.
+  \code{MP90.cp} takes \code{protein} (name of protein) and \code{T} (one or more temperatures in \eqn{^{\circ}}{°}C) and returns the additive heat capacity (J mol \eqn{^{-1}}{^-1}) of the unfolded protein using values of heat capacities of the residues taken from Makhatadze and Privalov, 1990. Those authors provided values of heat capacity at six points between 5 and 125 \eqn{^{\circ}}{°}C; this function interpolates (using \code{\link{splinefun}}) values at other temperatures.
 }
 
 \seealso{
@@ -80,7 +81,7 @@ swap.basis("O2", "H2")
 # show the steps of the equilibrium calculation
 protein.equil(protein, loga.protein=-3)
 
-## using protein.formula: average oxidation state of 
+\donttest{## using protein.formula: average oxidation state of 
 ## carbon of proteins from different organisms
 # get amino acid compositions of microbial proteins 
 # generated from the RefSeq database 
@@ -109,6 +110,7 @@ terms[13] <- paste("all microbial")
 axis(1, 1:13, terms, las=2)
 title(main=paste("Average Oxidation State of Carbon:",
   "Total Protein per taxID in NCBI RefSeq", sep="\n"))
+}
 }
 
 \references{

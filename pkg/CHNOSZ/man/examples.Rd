@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{examples}
 \alias{examples}
 \alias{demos}
@@ -49,7 +50,7 @@ See the comments in the source code for more information about each demo.
 
   Alberty, R. A. (2003) \emph{Thermodynamics of Biochemical Reactions}, John Wiley & Sons, Hoboken, New Jersey, 397 p. \url{http://www.worldcat.org/oclc/51242181}
   
-  Shock, E. L., Oelkers, E. H., Johnson, J. W., Sverjensky, D. A. and Helgeson, H. C. (1992) Calculation of the thermodynamic properties of aqueous species at high pressures and temperatures: Effective electrostatic radii, dissociation constants and standard partial molal properties to 1000 \eqn{^{\circ}}{degrees }C and 5 kbar. \emph{J. Chem. Soc. Faraday Trans.} \bold{88}, 803--826. \url{http://dx.doi.org/10.1039/FT9928800803}
+  Shock, E. L., Oelkers, E. H., Johnson, J. W., Sverjensky, D. A. and Helgeson, H. C. (1992) Calculation of the thermodynamic properties of aqueous species at high pressures and temperatures: Effective electrostatic radii, dissociation constants and standard partial molal properties to 1000 \eqn{^{\circ}}{°}C and 5 kbar. \emph{J. Chem. Soc. Faraday Trans.} \bold{88}, 803--826. \url{http://dx.doi.org/10.1039/FT9928800803}
 
   Spear, J. R., Walker, J. J., McCollom, T. M. and  Pace, N. R. (2005) Hydrogen and bioenergetics in the Yellowstone geothermal ecosystem. \emph{Proc. Natl. Acad. Sci. U. S. A.} \bold{102}, 2555--2560. \url{http://dx.doi.org/10.1073/pnas.0409574102}
 }
@@ -61,8 +62,7 @@ demos(c("orp", "NaCl"))
 \dontshow{par(thermo$opar)}
 \dontrun{
 # use the following to run examples in all help topics
-examples()
-}
+examples()}
 }
 
 

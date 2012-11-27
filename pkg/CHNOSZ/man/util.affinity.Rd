@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{util.affinity}
 \alias{util.affinity}
 \alias{energy}
@@ -20,8 +21,8 @@
   \item{vars}{character, names of variables over which to calculate a property}
   \item{vals}{list of numeric, values for each variable}
   \item{lims}{list of numeric, limits of the values for each variable}
-  \item{T}{numeric, temperature. Default is to take the temperature from \code{\link{thermo}$opt$Tr}, which corresponds to 25 \eqn{^{\circ}}{degrees }C}
-  \item{P}{numeric, pressure, or character "Psat" (default), which denotes 1 bar or the saturation vapor pressure of \eqn{\mathrm{H_2O}}{H2O} above 100 \eqn{^{\circ}}{degrees }C (see \code{\link{water}})}
+  \item{T}{numeric, temperature. Default is to take the temperature from \code{\link{thermo}$opt$Tr}, which corresponds to 25 \eqn{^{\circ}}{°}C}
+  \item{P}{numeric, pressure, or character "Psat" (default), which denotes 1 bar or the saturation vapor pressure of \eqn{\mathrm{H_2O}}{H2O} above 100 \eqn{^{\circ}}{°}C (see \code{\link{water}})}
   \item{IS}{numeric, ionic strength; default is 0 mol kg\eqn{^{-1}}{^-1}}
   \item{sout}{list, output from subcrt function}
   \item{exceed.Ttr}{logical, allow subcrt to compute properties for phases beyond their transition temperature?}

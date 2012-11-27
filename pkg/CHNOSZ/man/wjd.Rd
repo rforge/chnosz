@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{wjd}
 \alias{wjd}
 \alias{element.potentials}
@@ -62,7 +63,7 @@
   \item{iguess}{numeric, which guess to return}
   \item{ic}{numeric, which combination(s) of variable species to use (NULL for all)}
   \item{ispecies}{numeric, species indices (rownumbers of \code{thermo}$obigt)}
-  \item{T}{numeric, temperature in \eqn{^{\circ}}{degrees }C}
+  \item{T}{numeric, temperature in \eqn{^{\circ}}{°}C}
 }
 
 \details{
@@ -87,7 +88,7 @@ However, some tests are available to help assess the likelihood that a solution 
 A necessary condition of equilibrium is that the chemical potentials of the elements be independent of the particular combination of species used to compute them.
 \code{is.near.equil} compares the chemical potentials for each element, computed using \code{element.potentials}, with the value of \code{tol}.
 If, for each element, the range of potentials/RT (difference between minimum and maximum) is less than \code{tol}, the result is TRUE, otherwise the function returns FALSE, and prints a message unless \code{quiet} is TRUE.
-The default value of \code{tol} corresponds to an energy of 0.01 * 1.9872 * 298.15 = ca. 6 cal/mol at 25 degrees C.
+The default value of \code{tol} corresponds to an energy of 0.01 * 1.9872 * 298.15 = ca. 6 cal/mol at 25 \eqn{^{\circ}}{°}C.
 
 One of the constraints of the algorithm coded in \code{wjd} is that the initial solution, and all iterations, require positive (non-zero) numbers of moles of every species.
 Often, when investigating an equilibrium problem, the stoichiometric constraints are expressed most readily in terms of bulk composition -- numbers of moles of each element.
@@ -147,7 +148,7 @@ ep <- element.potentials(w, plot.it=TRUE)
 # and we're pretty far from equilibrium
 is.near.equil(w)  # FALSE
 
-## test all of the guesses of inititial mole quantities
+\donttest{## test all of the guesses of inititial mole quantities
 ## provided by guess() using default bulk composition (H2NO)
 # 9 of them are not is.near.equil with the tolerance lowered to 0.0001
 sapply( 1:32, function(i) 
@@ -166,6 +167,7 @@ aminoacids()[order(w$X)]
 # because the elements are redistributed among the species,
 # the total number of moles of species does not remain constant
 sum(w$X)  # <20
+}
 }
 
 \references{

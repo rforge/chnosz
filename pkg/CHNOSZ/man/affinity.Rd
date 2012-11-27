@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{affinity}
 \alias{affinity}
 \title{Chemical Affinities of Formation Reactions}
@@ -28,7 +29,7 @@
 
   Valid properties are \samp{A} or NULL for chemical affinity, \samp{logK} or \samp{logQ} for logarithm of equilibrium constant and reaction activity product, or any of the properties available in \code{\link{subcrt}} except for \samp{rho}. The properties returned are those of the formation reactions of the species of interest from the basis species. It is also possible to calculate the properties of the species of interest themselves (not their formation reactions) by setting the \code{property} to \samp{G.species}, \samp{Cp.species}, etc. Except for \samp{A}, the properties of proteins or their reactions calculated in this manner are restricted to nonionized proteins.
 
-  Zero, one, or more leading arguments to the function identify which of the chemical activities of basis species, temperature, pressure and/or ionic strength to vary. The names of each of these arguments may be the formula of any of the basis species of the system, or \samp{T}, \samp{P}, \samp{pe}, \samp{pH}, \samp{Eh}, or \samp{IS} (but names may not be repeated). To use the names of charged basis species such as \samp{K+} and \samp{SO4-2} as the arguments, they should be enclosed in quotes (see the example for aluminum speciation in \code{\link{diagram}}). The value of each argument is of the form \code{c(min,max)} or \code{c(min,max,res)} where \code{min} and \code{max} refer to the minimimum and maximum values of variable identified by the name of the argument, and \code{res} denotes the resolution, or number of points along which to do the calculations (this is assigned a default value of 128 if it is missing). For any arguments that refer to basis species, the numerical values are the logarithms of the activities of that basis species, or logarithms of fugacities if it is a gas. Unlike the \code{energy} function, the units of \samp{T} and \samp{P} in \code{affinity} are those the user has set using \code{\link{T.units}} and \code{\link{P.units} }(on program start-up these are \eqn{^{\circ}}{degrees }C and bar, respectively). 
+  Zero, one, or more leading arguments to the function identify which of the chemical activities of basis species, temperature, pressure and/or ionic strength to vary. The names of each of these arguments may be the formula of any of the basis species of the system, or \samp{T}, \samp{P}, \samp{pe}, \samp{pH}, \samp{Eh}, or \samp{IS} (but names may not be repeated). To use the names of charged basis species such as \samp{K+} and \samp{SO4-2} as the arguments, they should be enclosed in quotes (see the example for aluminum speciation in \code{\link{diagram}}). The value of each argument is of the form \code{c(min,max)} or \code{c(min,max,res)} where \code{min} and \code{max} refer to the minimimum and maximum values of variable identified by the name of the argument, and \code{res} denotes the resolution, or number of points along which to do the calculations (this is assigned a default value of 128 if it is missing). For any arguments that refer to basis species, the numerical values are the logarithms of the activities of that basis species, or logarithms of fugacities if it is a gas. Unlike the \code{energy} function, the units of \samp{T} and \samp{P} in \code{affinity} are those the user has set using \code{\link{T.units}} and \code{\link{P.units} }(on program start-up these are \eqn{^{\circ}}{°}C and bar, respectively). 
 
    If one or more buffers are assigned to the definition of \code{\link{basis}} species, \code{affinity} calls \code{\link{buffer}} to calculate the logarithms of activities of these basis species from the buffer.
 
@@ -53,8 +54,7 @@ The guts of the calculations provided by \code{affinity} involve \code{\link{ene
 }
 
 \examples{
-\dontshow{data(thermo)}
-## set up a system and calculate
+\dontshow{data(thermo)}## set up a system and calculate
 ## chemical affinities of formation reactions
 basis(c("SiO2","MgO","H2O","O2"),c(-5,-5,0,999))
 species(c("quartz","enstatite","forsterite"))
@@ -76,8 +76,7 @@ affinity(property="G.species")
 # Standard molal Gibbs energies of reactions
 affinity(property="G")
 
-\donttest{
-## amino acid synthesis at low and high temperatures
+\donttest{## amino acid synthesis at low and high temperatures
 ## after Amend and Shock, 1998
 # select the basis species and species of interest
 # and set their activities, first for the 18 degree C case
@@ -122,7 +121,6 @@ stopifnot(sum(out$G.100 < 0)==9)
 # reset units and species to run next examples
 E.units("cal")
 species(delete=TRUE)
-
 
 ## affinities of metabolic reactions
 ## after Amend and Shock, 2001, Fig. 7

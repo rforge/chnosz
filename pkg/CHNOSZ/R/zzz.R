@@ -1,4 +1,4 @@
-# CHNOSZ/xxx.R
+# CHNOSZ/zzz.R
 # this has the .onAttach function for package startup message and data initialization
 
 .onAttach <- function(libname,pkgname) {

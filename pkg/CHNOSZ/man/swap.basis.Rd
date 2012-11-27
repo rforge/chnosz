@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{swap.basis}
 \alias{basis.matrix}
 \alias{element.mu}
@@ -24,7 +25,7 @@
 }
 
 \details{
-  To change the basis definition, specify the names or formulas of the new basis species in the first argument. When the basis definition is changed, any species of interest that were present are deleted, unless the new basis definition has exactly the same elements as before. In that case, the species are kept and the activities of the new basis species are set so that the chemical potentials of the elements at 25 \eqn{^{\circ}}{degrees }C and 1 bar are unchanged.
+  To change the basis definition, specify the names or formulas of the new basis species in the first argument. When the basis definition is changed, any species of interest that were present are deleted, unless the new basis definition has exactly the same elements as before. In that case, the species are kept and the activities of the new basis species are set so that the chemical potentials of the elements at 25 \eqn{^{\circ}}{°}C and 1 bar are unchanged.
 
 }
 

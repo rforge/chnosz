@@ -85,6 +85,7 @@ basis(c("H2O", "O2"))
 basis(c("H2O", "O2", "H+"))
 ## clear the basis species
 basis(delete=TRUE)
+
 \dontrun{
 ## marked dontrun because they produce errors
 # fewer species than elements
@@ -92,7 +93,8 @@ basis(c("H2O", "H+"))
 # more species than elements
 basis(c("H2O", "O2", "H2", "H+"))
 # non-independent species
-basis(c("CO2", "H2O", "HCl", "Cl-", "H+")) }
+basis(c("CO2", "H2O", "HCl", "Cl-", "H+"))}
+
 ## specify activities and states
 basis(c("H2O", "O2", "CO2"), c(-2, -78, -3), c("liq", "aq", "aq"))
 # change logarithms of activities/fugacities	

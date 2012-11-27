@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{EOSregress}
 \alias{EOSregress}
 \alias{EOSvar}
@@ -68,7 +69,7 @@
 
   \code{EOScoeffs} retrieves coefficients in the Helgeson-Kirkham-Flowers equations from the thermodynamic database (\code{\link{thermo}$obigt}) for the given aqueous \code{species}. If the \code{property} is \samp{Cp}, the resulting dataframe has column names of \samp{(Intercept)}, \samp{invTTheta2} and \samp{TX}, respectively holding the coefficients \eqn{c_1}{c1}, \eqn{c_2}{c2} and \eqn{\omega}{omega} in equation \eqn{Cp^\circ = c_1 + c_2/(T-\Theta)^2 + {\omega}TX}{Cp = c1 + c2/(T-Theta)^2 + omega*TX}. If the \code{property} is \samp{V}, the data frame has column names of \samp{(Intercept)}, \samp{invTTheta} and \samp{Q}, respectively holding the coefficients \eqn{\sigma}{sigma}, \eqn{\xi}{xi} and \eqn{-\omega}{-omega} in \eqn{V^\circ = \sigma + \xi/(T-\Theta) - {\omega}Q}{V = sigma + xi/(T-Theta) - omega*Q}.
 
-  The motivation for writing these functions is to explore alternatives or possible modifications to the revised Helgeson-Kirkham-Flowers equations applied to aqueous nonelectrolytes. As pointed out by Schulte et al., 2001, the functional forms of the equations do not permit retrieving values of the solvation parameter (\eqn{\omega}{omega}) that closely represent the observed trends in both heat capacity and volume at high temperatures (above ca. 200 degrees C).
+  The motivation for writing these functions is to explore alternatives or possible modifications to the revised Helgeson-Kirkham-Flowers equations applied to aqueous nonelectrolytes. As pointed out by Schulte et al., 2001, the functional forms of the equations do not permit retrieving values of the solvation parameter (\eqn{\omega}{omega}) that closely represent the observed trends in both heat capacity and volume at high temperatures (above ca. 200 \eqn{^{\circ}}{°}C).
 
 }
 

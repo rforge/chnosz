@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{thermo}
 \docType{data}
 \alias{thermo}
@@ -14,7 +15,11 @@
 
   The \code{thermo} object holds the thermodynamic database of properties of species, some thermodynamic constants and operational parameters for functions in CHNOSZ, the properties of elements, references to literature sources of thermodynamic data, compositions of chemical activity buffers, and amino acid compositions of proteins. The \code{thermo} object also holds intermediate data used in calculations, in particular the definitions of basis species and species of interest input by the user, and the calculated properties of \code{\link{water}} so that subsequent calculations at the same temperature-pressure conditions can be accelerated.
 
-  The \code{thermo} object is a \code{\link{list}} composed of \code{\link{data.frame}}s or lists each representing a class of data. The object is created in the global environment upon loading the package (by \code{\link{.onAttach}}). At any time, the user can restore the data object to its initial state by calling \code{data(thermo)}. This is sometimes a useful command to use during an interactive session, when previous definitions of basis species and species of interest are longer desired.
+The \code{thermo} object is a \code{\link{list}} composed of \code{\link{data.frame}}s or lists each representing a class of data.
+The object is created in an environment named \code{thermo}; see \code{\link{sideeffects}} for details.
+It is created upon loading the package, through a call to \code{data(thermo)} in \code{\link{.onAttach}}.
+At any time, the user can restore the data object to its initial state by calling \code{data(thermo)}.
+This is sometimes a useful command to use during an interactive session, when previous definitions of basis species and species of interest are longer desired.
 
   The function \code{\link{add.obigt}} is available to update the thermodynamic database in use in a running session. For example, one can run \code{add.obigt("mydata.csv")} after loading the package, and the data in that file will be added to the database. The format of this file must be the same as the \code{OBIGT.csv} file provided with CHNOSZ. Although changes made using \code{add.obigt} are lost when the current \R session is closed, the data can always be restored the next time as long as the user has the \code{mydata.csv} (or other) file available.
 
@@ -50,17 +55,17 @@
 }
 
     \item \code{thermo$element}
-    Dataframe containing the thermodynamic properties of elements taken from Cox et al., 1989 and Wagman et al., 1982. The standard molal entropy (\eqn{S}(\code{Z})) at 25 \eqn{^{\circ}}{degrees }C and 1 bar for the element of charge (\code{Z}) was calculated from \eqn{S}(H2,g) + 2\eqn{S}(\code{Z}) =  2\eqn{S}(H+), where the standard molal entropies of H2,g and H+ were taken from Cox et al., 1989. The mass of \code{Z} is taken to be zero. Accessing this data frame using \code{\link{mass}} or \code{\link{entropy}} will select the first entry found for a given element; i.e., values from Wagman et al., 1982 will only be retrieved if the properties of the element are not found from Cox et al., 1989.
+    Dataframe containing the thermodynamic properties of elements taken from Cox et al., 1989 and Wagman et al., 1982. The standard molal entropy (\eqn{S}(\code{Z})) at 25 \eqn{^{\circ}}{°}C and 1 bar for the element of charge (\code{Z}) was calculated from \eqn{S}(H2,g) + 2\eqn{S}(\code{Z}) =  2\eqn{S}(H+), where the standard molal entropies of H2,g and H+ were taken from Cox et al., 1989. The mass of \code{Z} is taken to be zero. Accessing this data frame using \code{\link{mass}} or \code{\link{entropy}} will select the first entry found for a given element; i.e., values from Wagman et al., 1982 will only be retrieved if the properties of the element are not found from Cox et al., 1989.
       \tabular{lll}{
       \code{element}  \tab character  \tab Symbol of element\cr
-      \code{state}  \tab character \tab Stable state of element at 25 \eqn{^{\circ}}{degrees }C and 1 bar\cr
+      \code{state}  \tab character \tab Stable state of element at 25 \eqn{^{\circ}}{°}C and 1 bar\cr
       \code{source} \tab character \tab Source of data\cr
       \code{mass}  \tab numeric \tab Mass of element (in natural isotopic distribution;\cr
       \tab \tab referenced to a mass of 12 for \eqn{^{12}}{12}C)\cr
       \code{s}   \tab numeric \tab Entropy of the compound of the element in its stable\cr
-      \tab \tab state at 25 \eqn{^{\circ}}{degrees }C and 1 bar (cal K\eqn{^{-1}}{^-1} mol\eqn{^{-1}}{^-1})\cr
+      \tab \tab state at 25 \eqn{^{\circ}}{°}C and 1 bar (cal K\eqn{^{-1}}{^-1} mol\eqn{^{-1}}{^-1})\cr
       \code{n}  \tab numeric \tab Number of atoms of the element in its stable\cr
-      \tab \tab compound at 25 \eqn{^{\circ}}{degrees }C and 1 bar
+      \tab \tab compound at 25 \eqn{^{\circ}}{°}C and 1 bar
     }
 
     \item \code{thermo$obigt}
@@ -73,17 +78,17 @@
 
   \itemize{
      \item Use corrected values of \eqn{a_2}{a2} and \eqn{a_4}{a4} for [-CH2NH2] (were incorrectly listed as zero in Table 6 of Dick et al., 2006).
-     \item The standard molal thermodynamic properties and equations of state parameters of the aqueous electron are zero except for the standard molal entropy at 25 \eqn{^{\circ}}{degrees }C and 1 bar, which is the opposite of that for the element of charge (\code{Z}, see above).
+     \item The standard molal thermodynamic properties and equations of state parameters of the aqueous electron are zero except for the standard molal entropy at 25 \eqn{^{\circ}}{°}C and 1 bar, which is the opposite of that for the element of charge (\code{Z}, see above).
      \item The properties and parameters of some reference unfolded proteins used by Dick et al., 2006 are included here. Their names have dashes, instead of underscores, so that they are not confused with proteins whose properties are generated at runtime.
-     \item The standard molal Gibbs energies and enthalpies of formation of the elements and entropies at 25 \eqn{^{\circ}}{degrees }C and 1 bar of aqueous metal-amino acid (alanate or glycinate) complexes reported by Shock and Koretsky, 1995 were recalculated by adding to their values the differences in the corresponding properties between the values for aqueous alanate and glycinate used by Shock and Koretsky, 1995, and those used by Amend and Helgeson, 1997b and Dick et al., 2006.
+     \item The standard molal Gibbs energies and enthalpies of formation of the elements and entropies at 25 \eqn{^{\circ}}{°}C and 1 bar of aqueous metal-amino acid (alanate or glycinate) complexes reported by Shock and Koretsky, 1995 were recalculated by adding to their values the differences in the corresponding properties between the values for aqueous alanate and glycinate used by Shock and Koretsky, 1995, and those used by Amend and Helgeson, 1997b and Dick et al., 2006.
      \item The standard molal properties and equations-of-state parameters of four phase species (see below) of Fe(cr) were generated from heat capacity data given by Robie and Hemingway, 1995. 
   } 
 
   These modifications are indicated in \code{OBIGT.csv} by having \samp{CHNOSZ} as one of the sources of data. Note also that some data appearing in the \acronym{slop98.dat} file (Shock et al., 1998) were corrected or modified as noted in that file, and are indicated in \code{OBIGT.csv} by having \samp{SLOP98} as one of the sources of data.
 
-  In order to represent thermodynamic data for minerals with phase transitions, the different phases of these minerals are represented as phase species that have states denoted by \samp{cr1}, \samp{cr2}, etc. The standard molar thermodynamic properties at 25 \eqn{^{\circ}}{degrees }C and 1 bar (\eqn{T_r}{Pr} and \eqn{P_r}{Pr}) of the \samp{cr2} phase species of minerals were generated by first calculating those of the \samp{cr1} phase species at the transition temperature (\eqn{T_{tr}}{Ttr}) and 1 bar then taking account of the volume and entropy of transition (the latter can be retrieved by combining the former with the Clausius-Clapeyron equation and values of \eqn{(dP/dT)} of transitions taken from the \acronym{SUPCRT92} data file) to calculate the standard molar entropy of the \samp{cr2} phase species at \eqn{T_{tr}}{Ttr}, and taking account of the enthalpy of transition (\eqn{{\Delta}H^{\circ}}{DeltaH0}, taken from the \acronym{SUPCRT92} data file) to calculate the standard molar enthalpy of the \samp{cr2} phase species at \eqn{T_{tr}}{Ttr}. The standard molar properties of the \samp{cr2} phase species at \eqn{T_{tr}}{Ttr} and 1 bar calculated in this manner were combined with the equations-of-state parameters of the species to generate values of the standard molar properties at 25 \eqn{^{\circ}}{degrees }C and 1 bar. This process was repeated as necessary to generate the standard molar properties of phase species represented by \samp{cr3} and \samp{cr4}, referencing at each iteration the previously calculated values of the standard molar properties of the lower-temperature phase species (i.e., \samp{cr2} and \samp{cr3}). A consequence of tabulating the standard molar thermodynamic properties of the phase species is that the values of \eqn{(dP/dT)} and \eqn{{\Delta}H^{\circ}}{DeltaH0} of phase transitions can be calculated using the equations of state and therefore do not need to be stored in the thermodynamic database. However, the transition temperatures (\eqn{T_{tr}}{Ttr}) generally can not be assessed by comparing the Gibbs energies of phase species and are tabulated in the database.
+  In order to represent thermodynamic data for minerals with phase transitions, the different phases of these minerals are represented as phase species that have states denoted by \samp{cr1}, \samp{cr2}, etc. The standard molar thermodynamic properties at 25 \eqn{^{\circ}}{°}C and 1 bar (\eqn{T_r}{Pr} and \eqn{P_r}{Pr}) of the \samp{cr2} phase species of minerals were generated by first calculating those of the \samp{cr1} phase species at the transition temperature (\eqn{T_{tr}}{Ttr}) and 1 bar then taking account of the volume and entropy of transition (the latter can be retrieved by combining the former with the Clausius-Clapeyron equation and values of \eqn{(dP/dT)} of transitions taken from the \acronym{SUPCRT92} data file) to calculate the standard molar entropy of the \samp{cr2} phase species at \eqn{T_{tr}}{Ttr}, and taking account of the enthalpy of transition (\eqn{{\Delta}H^{\circ}}{DeltaH0}, taken from the \acronym{SUPCRT92} data file) to calculate the standard molar enthalpy of the \samp{cr2} phase species at \eqn{T_{tr}}{Ttr}. The standard molar properties of the \samp{cr2} phase species at \eqn{T_{tr}}{Ttr} and 1 bar calculated in this manner were combined with the equations-of-state parameters of the species to generate values of the standard molar properties at 25 \eqn{^{\circ}}{°}C and 1 bar. This process was repeated as necessary to generate the standard molar properties of phase species represented by \samp{cr3} and \samp{cr4}, referencing at each iteration the previously calculated values of the standard molar properties of the lower-temperature phase species (i.e., \samp{cr2} and \samp{cr3}). A consequence of tabulating the standard molar thermodynamic properties of the phase species is that the values of \eqn{(dP/dT)} and \eqn{{\Delta}H^{\circ}}{DeltaH0} of phase transitions can be calculated using the equations of state and therefore do not need to be stored in the thermodynamic database. However, the transition temperatures (\eqn{T_{tr}}{Ttr}) generally can not be assessed by comparing the Gibbs energies of phase species and are tabulated in the database.
 
-  The identification of species and their standard molal thermodynamic properties at 25 \eqn{{^\circ}}{degrees }C and 1 bar are located in the first 12 columns of \code{thermo$obigt}:
+  The identification of species and their standard molal thermodynamic properties at 25 \eqn{{^\circ}}{°}C and 1 bar are located in the first 12 columns of \code{thermo$obigt}:
 
     \tabular{lll}{
       \code{name}     \tab character \tab Species name\cr
@@ -227,7 +232,7 @@ thermo$obigt$formula[runif(10)*n]
 
   Dick, J. M., LaRowe, D. E. and Helgeson, H. C. (2006) Temperature, pressure, and electrochemical constraints on protein speciation: Group additivity calculation of the standard molal thermodynamic properties of ionized unfolded proteins. \emph{Biogeosciences} \bold{3}, 3110--336. \url{http://www.biogeosciences.net/3/311/2006/bg-3-311-2006.html}
 
-  Johnson, J. W., Oelkers, E. H. and Helgeson, H. C. (1992) SUPCRT92: A software package for calculating the standard molal thermodynamic properties of minerals, gases, aqueous species, and reactions from 1 to 5000 bar and 0 to 1000\eqn{^{\circ}}{degrees }C. \emph{Comp. Geosci.} \bold{18}, 899--947. \url{http://dx.doi.org/10.1016/0098-3004(92)90029-Q}
+  Johnson, J. W., Oelkers, E. H. and Helgeson, H. C. (1992) SUPCRT92: A software package for calculating the standard molal thermodynamic properties of minerals, gases, aqueous species, and reactions from 1 to 5000 bar and 0 to 1000\eqn{^{\circ}}{°}C. \emph{Comp. Geosci.} \bold{18}, 899--947. \url{http://dx.doi.org/10.1016/0098-3004(92)90029-Q}
 
   Shock, E. L. and Koretsky, C. M. {1995} Metal-organic complexes in geochemical processes: Estimation of standard partial molal thermodynamic properties of aqueous complexes between metal cations and monovalent organic acid ligands at high pressures and temperatures. \emph{Geochim. Cosmochim. Acta} \bold{59}, 1497--1532. \url{http://dx.doi.org/10.1016/0016-7037(95)00058-8}
 

@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{util.units}
 \alias{util.units}
 \alias{P.units}
@@ -34,16 +35,19 @@
 
    The units settings are used by \code{\link{subcrt}}, \code{\link{affinity}}, and \code{\link{diagram}} to accept input in or convert output to the units desired by the user. The settings, which can be queried or changed with \code{T.units}, \code{E.units} and \code{P.units}, refer to the units of temperature (\code{K} or \code{C}), energy (\code{cal} or \code{J}), and pressure (\code{bar}, \code{MPa}). (The first value in each of those pairs refers to the default units).
 
-  The actual units conversions are handled by \code{convert}, through which \code{values} are transformed into destination \code{units} (names not case sensitive). The possible unit conversions are shown in the following table. Note that \samp{Eh} and \samp{E0} both stand for the value of Eh (do not confuse \samp{E0} with the standard reduction potential, which is written similarly); they have different names so that one can choose to convert to \samp{pe} or \samp{logfO2}. 
+The actual units conversions are handled by \code{convert}, through which \code{values} are transformed into destination \code{units} (names not case sensitive).
+The possible conversions and settings for the \code{units} argument are shown in the following table.
+Note that \samp{Eh} and \samp{E0} both stand for the value of Eh (oxidation-reduction potential in volts); they have different names so that one can choose to convert between Eh and either \samp{pe} or \samp{logfO2}. 
 
   \tabular{lll}{
-     \code{C} \tab \code{K} \tab temperature \cr
-     \code{cal} \tab \code{J}  \tab energy \cr
-     \code{bar} \tab \code{MPa} \tab pressure \cr
-     \code{E0} \tab \code{logfO2} \tab oxidation state \cr
-     \code{G} \tab \code{logK} \tab energy \cr
-     \code{cm3bar} \tab \code{calories} \tab energy \cr
-     \code{pe} \tab \code{Eh}  \tab oxidation state \cr
+     property \tab units \tab setting of \code{units} argument \cr
+     temperature \tab \eqn{^{\circ}}{°}C, K \tab \code{C}, \code{K} \cr
+     pressure \tab bar, MPa \tab \code{bar}, \code{MPa} \cr
+     energy \tab cal, J \tab \code{cal}, \code{J} \cr
+     energy \tab cal, cm\eqn{^3}{^3} bar \tab \code{calories}, \code{cm3bar} \cr
+     energy \tab cal, [none] \tab \code{G}, \code{logK} \cr
+     oxidation potential \tab volt, [none] \tab \code{Eh}, \code{pe} \cr
+     oxidation potential \tab volt, [none] \tab \code{E0}, \code{logfO2} \cr
   }
 
   \code{envert} and \code{outvert} are wrappers for \code{convert} that handle the conditional conversion of values from or to the current units settings. \code{envert} converts the value \emph{to} the units in the argument, and \code{outvert} converts the value \emph{from} the units in the argument, only if they are different than the current setting; otherwise the value is returned unchanged.

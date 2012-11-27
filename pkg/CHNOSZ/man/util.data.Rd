@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{util.data}
 \alias{util.data}
 \alias{add.obigt}
@@ -63,9 +64,9 @@ The values provided should be in the units specifed in the documentation for the
 
   \code{browse.refs} with default arguments uses \code{\link{browseURL}} to display the sources of thermodynamic data in \code{thermo$refs}, with the URLs in that table showing as hyperlinks in the browser. Otherwise, if \code{key} is character, the URLs of those reference \code{key}s are opened in the browser. If \code{key} is numeric, the values refer to the species in those rows of \code{thermo$obigt}, and the URLs for each listed reference (\code{thermo$obigt$ref1}, \code{thermo$obigt$ref2}) are opened. If \code{key} is a list, it is interpreted as the result of a call to \code{subcrt}, and the reference URLs for each species involved in the calculation are opened.
 
-  \code{checkEOS} compares heat capacity and volume calculated from equation-of-state parameters with reference (tabulated) values at 25 degrees C and 1 bar and prints a message and returns the calculated value if tolerance is exceeded. The Helgeson-Kirkham-Flowers equations of state parameters are in \code{eos}, which is a data frame with columns (and column names) in the same format as \code{\link{thermo}$obigt}. The \code{prop}erty can be one of \samp{Cp} or \code{V}. The code only distinguishes between \code{state}s of \samp{aq} and all others. The default tolerances, given in \code{thermo$opt$Cp.tol} and \code{thermo$opt$V.tol}, are 1 cal/K.mol for Cp and 1 cm3/mol for V. If \code{ret.diff} is TRUE, the differences are returned irrespective of their values, and no messages are printed.
+  \code{checkEOS} compares heat capacity and volume calculated from equation-of-state parameters with reference (tabulated) values at 25 \eqn{^{\circ}}{°}C and 1 bar and prints a message and returns the calculated value if tolerance is exceeded. The Helgeson-Kirkham-Flowers equations of state parameters are in \code{eos}, which is a data frame with columns (and column names) in the same format as \code{\link{thermo}$obigt}. The \code{prop}erty can be one of \samp{Cp} or \code{V}. The code only distinguishes between \code{state}s of \samp{aq} and all others. The default tolerances, given in \code{thermo$opt$Cp.tol} and \code{thermo$opt$V.tol}, are 1 cal/K.mol for Cp and 1 cm3/mol for V. If \code{ret.diff} is TRUE, the differences are returned irrespective of their values, and no messages are printed.
 
-  \code{checkGHS} compares G (standard molal Gibbs energy of formation from the elements) calculated from H (standard molal enthalpy of formation) and S (standard molal entropy) with reference (tabulated) values of G at 25 degrees C and 1 bar. A message is printed and the calculated difference is returned if it exceeds the value given in \code{thermo$opt$G.tol}, which has a default value of 100 cal/mol. The calculation requires that G, H and S, and the chemical formula of the species all be present. \code{checkEOS} and \code{checkGHS} are used by \code{\link{info}} when retrieving species parameters from the database.
+  \code{checkGHS} compares G (standard molal Gibbs energy of formation from the elements) calculated from H (standard molal enthalpy of formation) and S (standard molal entropy) with reference (tabulated) values of G at 25 \eqn{^{\circ}}{°}C and 1 bar. A message is printed and the calculated difference is returned if it exceeds the value given in \code{thermo$opt$G.tol}, which has a default value of 100 cal/mol. The calculation requires that G, H and S, and the chemical formula of the species all be present. \code{checkEOS} and \code{checkGHS} are used by \code{\link{info}} when retrieving species parameters from the database.
 
   \code{check.obigt} is a function to check self-consistency of each entry (with itself) in the thermodynamic database, using \code{checkEOS} and \code{checkGHS}. The function checks data in both \code{\link{thermo}$obigt} and \code{\link{extdata}/thermo/OBIGT-2.csv}. The output is a table listing only species that exceed at least one of the tolerance limits, giving the name of the database (OBIGT or OBIGT-2), the species index (rownumber in the database), species name and state, and DCp, DV and DG, for the calculated differences (only those above the tolerances are given). This function is used to generate the file found at \code{extdata/thermo/obigt_check.csv}.
 
@@ -111,7 +112,7 @@ browse.refs("HOK+98")
 browse.refs(info("alanine"))
 # open three URLs for species in the reaction
 s <- subcrt(c("O2","O2"),c("gas","aq"),c(-1,1))
-browse.refs(s) } # end dontrun
+browse.refs(s) }
 
 ## calculate thermodynamic properties of organic compounds
 ## using group additivity, after Richard and Helgeson, 1998

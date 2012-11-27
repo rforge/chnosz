@@ -92,11 +92,9 @@ stopifnot(as.chemical.formula(protein.formula(ip))=="C41H69N11O18")
 aa <- dl.aa("ALAT1_HUMAN")
 ip6 <- add.protein(aa)
 # now it's possible to calculate some properties ...
-subcrt("ALAT1_HUMAN", c("cr", "aq"), c(-1, 1))$out[[1]]$H
-} 
+subcrt("ALAT1_HUMAN", c("cr", "aq"), c(-1, 1))$out[[1]]$H} 
 
-\donttest{
-# read a fasta file, calculate H/C and O/C for all proteins
+\donttest{# read a fasta file, calculate H/C and O/C for all proteins
 # and averages by polypeptide chain, residue and mass
 ffile <- system.file("extdata/fasta/HTCC1062.faa.xz", package="CHNOSZ")
 aa <- read.aa(ffile)

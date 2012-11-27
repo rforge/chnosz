@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{util.formula}
 \alias{util.formula}
 \alias{as.chemical.formula}
@@ -45,7 +46,7 @@
 
   The remaining functions documented here accept vectors of chemical formulas, species indices, or a mixture of both, or stoichiometric matrices with elements on the columns. They do so by passing the supplied \code{formula} argument through both \code{get.formula} and \code{i2A}.
 
-  \code{mass} and \code{entropy} return the sums of masses or entropies of elements in each of the \code{formula}s. The masses are calculated using the masses of the elements in their natural isotopic distribution, and the entropies, in cal K\eqn{^{-1}}{^-1} mol\eqn{^{-1}}{^-1}, are calculated using the entropies of the compounds of the pure elements in their stable states at 25 \eqn{^{\circ}}{degrees }C and 1 bar. The properties of the elements used by this function are taken from \code{\link{thermo}$element}.
+  \code{mass} and \code{entropy} return the sums of masses or entropies of elements in each of the \code{formula}s. The masses are calculated using the masses of the elements in their natural isotopic distribution, and the entropies, in cal K\eqn{^{-1}}{^-1} mol\eqn{^{-1}}{^-1}, are calculated using the entropies of the compounds of the pure elements in their stable states at 25 \eqn{^{\circ}}{°}C and 1 bar. The properties of the elements used by this function are taken from \code{\link{thermo}$element}.
 
   \code{GHS} computes one of the standard molal Gibbs energy or enthalpy of formation from the elements, or standard molal entropy, from values of the other two. The \code{formula}, \code{G}, \code{H} and \code{S} arguments must all have the same length. The entropies of the elements (\code{Se}) in each \code{formula} are calculated using \code{\link{entropy}}. The equation in effect can be written as \eqn{{\Delta}G^{\circ}={\Delta}H^{\circ}-T{\Delta}S^{\circ}}{delta_G = delta_H - T * delta_S}, where \eqn{{\Delta}S^{\circ}=S-S_e}{delta_S = S - Se} and \eqn{T}{T} is the temperature given in \code{T} (defaults to 298.15 K) (note that \code{G} and \code{H} in the arguments correspond respectively to \eqn{{\Delta}G^{\circ}}{delta_G} and \eqn{{\Delta}H^{\circ}}{delta_H} in the equation). For each formula, if one of \code{G}, \code{H}, or \code{S} is NA, its value is calculated from the other two. Otherwise, the values are returned unchanged. Units of cal mol\eqn{^{-1}}{^-1} (\code{DG}, \code{DH}) and cal K\eqn{^{-1}}{^-1} mol\eqn{^{-1}}{^-1} (\code{S}) are assumed.
 

@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 0.9.8-4 (2012-11-20)
+CHANGES IN CHNOSZ 0.9.8-5 (2012-11-27)
 --------------------------------------
 
 SIGNIFICANT USER-VISIBLE CHANGES:
@@ -281,6 +281,8 @@ DOCUMENTATION AND VIGNETTES:
 - Add vignette wjd.Rnw to accompany the new function wjd().
 
 - Add TODO and CHECKLIST to the installation directory of the package.
+
+- Use UTF-8 degree symbol in second argument of \eqn{}{}.
 
 PERFORMANCE AND CODE CLEAN-UPS:
 

@@ -8,6 +8,8 @@ release checklist for CHNOSZ
 
 - run demos() to run all demos
 
+- run test_package("CHNOSZ") to run all tests
+
 - check output of demo("sources") to make sure all data sources are cited
 
 - recreate extdata/thermo/obigt_check.csv after all data updates:
@@ -30,6 +32,6 @@ release checklist for CHNOSZ
 
 - clean up all TODO, XXX, etc. in Rd files (and hopefully R files too)
 
-- all Rd files have \keyword{...}
+- ensure all Rd files have \keyword{...}
 
 - test read.supcrt(), write.supcrt() on e.g. slop98.dat

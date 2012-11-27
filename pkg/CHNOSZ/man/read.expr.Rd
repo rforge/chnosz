@@ -88,7 +88,7 @@ file <- system.file("extdata/abundance/AA03.csv", package="CHNOSZ")
 # look for proteins described as "Complement"
 read.expr(file, "name", "log10(pg/ml)", list(description="Complement"))
 
-## speciation diagram for ER.to.Golgi proteins (COPII coat 
+\donttest{## speciation diagram for ER.to.Golgi proteins (COPII coat 
 ## proteins) as a function of logfO2, after Dick, 2009
 # add old parameters for [Met] sidechain to database
 add.obigt()
@@ -124,7 +124,6 @@ title(main=paste("ER.to.Golgi; points - relative abundances",
 # restore default thermodynamic database
 data(thermo)
 
-\donttest{
 #############################
 ## examples using stress() ##
 #############################
@@ -216,7 +215,7 @@ par(opar)
 # reset thermodynamic database
 data(thermo)
 
-} # end donttest
+}
 }
 
 \references{

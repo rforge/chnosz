@@ -30,8 +30,7 @@ Gr.ionized <- Gr.nonionized + Gr.ionization
 # in cal/mol ionized residue:
 Gr.ionized_residue <- Gr.ionized/protein.length("LYSC_CHICK")
 
-\donttest{
-## Standard molal entropy of a protein reaction
+\donttest{## Standard molal entropy of a protein reaction
 basis("CHNOS")
 # here we provide the reaction coefficients of the 
 # proteins (per protein backbone); 'subcrt' function calculates 

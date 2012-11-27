@@ -101,8 +101,8 @@ e <- equilibrate(a)
 # make a plot
 r <- revisit(e, "count", -5)
 title(main="amino acids with metastable log activities > -5")
-\donttest{
-# can also make a 2-D plot
+
+\donttest{# can also make a 2-D plot
 a <- affinity(O2=c(-74, -60), H2O=c(-3, 3))
 e <- equilibrate(a)
 r <- revisit(e, "count", -5, style.2D="image", plot.optval=FALSE)

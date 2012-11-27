@@ -94,8 +94,8 @@ print(a <- affinity(T=c(200, 400, 11), P=2000,
   exceed.Ttr=TRUE)$values)
 for(i in 1:length(a)) stopifnot(isTRUE(
   all.equal(as.numeric(a[[i]]),rep(0,length(a[[i]])))))
-\donttest{
-## buffer made of one species: show values of logfO2 on an 
+
+\donttest{## buffer made of one species: show values of logfO2 on an 
 ## Eh-pH diagram; after Garrels, 1960, Figure 6
 basis("CHNOSe")
 # here we will buffer the activity of the electron by O2

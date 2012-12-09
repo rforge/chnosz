@@ -29,9 +29,9 @@ examples <- function(do.png=FALSE) {
   cat("Time elapsed: ", proc.time() - .ptime, "\n")
 }
 
-demos <- function(which=c("sources", "NaCl", "copper", "cordierite", 
-  "phosphate", "nucleobase", "pie", "orp",
-  "findit", "CO2Ac", "nonideal", "TPX")) {
+demos <- function(which=c("sources", "NaCl", "cordierite", 
+  "phosphate", "nucleobase", "orp",
+  "findit", "CO2Ac", "nonideal")) {
   # run one or more demos from CHNOSZ with ask=FALSE, and return the value of the last one
   for(i in 1:length(which)) {
     # say something so the user sees where we are

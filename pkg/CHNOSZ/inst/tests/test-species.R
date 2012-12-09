@@ -26,4 +26,33 @@ test_that("deleting nonexistent species causes error or warning", {
   species("H2O")
   expect_warning(species("CO2", delete=TRUE), "not present, so can not be deleted")
   expect_is(species("water", delete=TRUE), "NULL")
+  # we should also get NULL if *all* species are deleted
+  species("H2O")
+  expect_is(species(delete=TRUE), "NULL")
+})
+
+test_that("non-available species cause error, and species can be added or modified by numeric index", {
+  basis("CHNOS")
+  expect_error(species("wate"), "species not available")
+  # add CO2, aq
+  species("CO2")
+  # we can't add the same species twice
+  expect_equal(nrow(species("CO2")), 1)
+  # change it to gas
+  expect_equal(species(1, "gas")$state, "gas")
+  # change its log fugacity to -5
+  expect_equal(species(1, -5)$logact, -5)
+  # add CO2, aq
+  expect_equal(nrow(species("CO2")), 2)
+  # add alanine by index in thermo$obigt
+  expect_equal(nrow(species(info("alanine"))), 3)
+})
+
+test_that("index_return provides indices for touched species", {
+  basis("CHNOS")
+  expect_equal(species("CO2", index.return=TRUE), 1)
+  # here it's "touched" (but not added or modified)
+  expect_equal(species("CO2", index.return=TRUE), 1)
+  expect_equal(species(c("H2O", "NH3"), index.return=TRUE), c(2, 3))
+  expect_equal(species(2, "gas", index.return=TRUE), 2)
 })

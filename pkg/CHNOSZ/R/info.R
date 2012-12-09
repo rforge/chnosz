@@ -218,7 +218,7 @@ info <- function(species=NULL, state=NULL, check.it=TRUE) {
     out <- sapply(seq_along(species), function(i) {
       # first look for exact match
       ispecies <- info.character(species[i], state[i])
-      # if no exact match and it's not a protein, show but do not use approximate matches
+      # if no exact match and it's not a protein, show approximate matches (side effect of info.approx)
       if(identical(ispecies, NA) & !grepl("_", species[i])) ispecies.notused <- info.approx(species[i], state[i])
       # do not accept multiple matches
       if(length(ispecies) > 1) ispecies <- NA

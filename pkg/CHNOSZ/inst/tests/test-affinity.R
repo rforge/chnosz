@@ -93,6 +93,8 @@ test_that("'iprotein' gives consistent results on a transect", {
   pH <- c(7.350, 7.678, 7.933, 7.995, 8.257)
   # Eq. 24 of the paper
   H2 <- -11+T*3/40
+  # remove "RESIDUE" entries in thermo$obigt (clutter from first test)
+  data(thermo)
   basis(c("HCO3-", "H2O", "NH3", "HS-", "H2", "H+"),
     "aq", c(-3, 0, -4, -7, 999, 999))
   sites <- c("N", "S", "R", "Q", "P")
@@ -132,4 +134,13 @@ test_that("affinity() for proteins (with/without 'iprotein') returns same value 
   expect_equal(affinity(iprotein=ip)$values[[1]][1], A.2303RT.ionized, 1e-6)
   species("CSG_HALJP")
   expect_equal(affinity()$values[[1]][1], A.2303RT.ionized, 1e-6)
+})
+
+test_that("affinity() for proteins keeps track of pH on 2-D calculations", {
+  # (relates to the "thisperm" construction in A.ionization() )
+  basis("CHNOS+")
+  species("LYSC_CHICK")
+  a1 <- affinity(pH=c(6, 8, 3))
+  a2 <- affinity(pH=c(6, 8, 3), T=c(0, 75, 4))
+  expect_equal(as.numeric(a1$values[[1]]), a2$values[[1]][, 2])
 })

@@ -52,7 +52,9 @@ swap.basis <- function(species, species2) {
   # before we do anything, remember the old basis definition
   oldbasis <- thermo$basis
   # and the species definition
-  ts <- species(delete=TRUE)
+  ts <- species()
+  # the delete the species
+  species(delete=TRUE)
   if(is.null(oldbasis)) 
     stop("swapping basis species requires an existing basis definition")
   # both arguments must have length 1

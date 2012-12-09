@@ -386,7 +386,11 @@ A.ionization <- function(iprotein, vars, vals, T=thermo$opt$Tr, P="Psat", pH=7, 
   if(transect) TPpH <- list(T=T, P=P, pH=pH)
   else {
     # make a grid of all combinations
-    TPpH <- expand.grid(T=T, P=P, pH=pH, stringsAsFactors=FALSE)
+    # put T, P, pH in same order as they show up vars
+    egargs <- list(T=T, P=P, pH=pH)
+    TPpHorder <- order(c(iT, iP, iHplus))
+    egargs <- c(egargs[TPpHorder], list(stringsAsFactors=FALSE))
+    TPpH <- do.call(expand.grid, egargs)
     # figure out the dimensions of T-P-pH (making sure to drop any that aren't in vars)
     TPpHdim <- numeric(3)
     TPpHdim[iT] <- length(T)

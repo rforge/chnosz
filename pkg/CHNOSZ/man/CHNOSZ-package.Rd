@@ -56,7 +56,11 @@
 
 
 \section{Compatibility}{
-  The recommended version of \R is 2.14.0 or greater (to find vignettes in the \code{vignettes} directory). The package nominally depends on \R version 2.10.0 or greater (to read compressed data files). Before version 0.9-6 of the package, the dependency was given as \R version 2.7.0 or greater (major update of the X11 device in 2.7.0). However, without accessing the compressed data files in \code{extdata} it should be possible to run CHNOSZ under \R versions 2.4.0 or greater (availability of the \samp{stringsAsFactors} argument of \code{\link{data.frame}}). 
+  The recommended version of \R is 2.14.0 or greater (to find vignettes in the \code{vignettes} directory).
+  The package depends on \R version 2.12.0 or greater (so useDynLib in the NAMESPACE can find the shared library on Windows).
+  Before version 0.9-9 of the package, the dependency was given as \R version 2.10.0 or greater (to read compressed data files).
+  Before version 0.9-6 of the package, the dependency was given as \R version 2.7.0 or greater (major update of the X11 device in 2.7.0).
+  However, without accessing the compressed data files in \code{extdata} it should be possible to run CHNOSZ on Unix-alikes under \R versions 2.4.0 or greater (availability of the \samp{stringsAsFactors} argument of \code{\link{data.frame}}). 
 }
 
 \section{Acknowledgements}{

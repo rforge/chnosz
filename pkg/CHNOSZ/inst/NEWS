@@ -1,16 +1,29 @@
-CHANGES IN CHNOSZ 0.9.8-6 (2012-12-09)
+CHANGES IN CHNOSZ 0.9.8-7 (2012-12-16)
 --------------------------------------
 
 SIGNIFICANT USER-VISIBLE CHANGES:
 
-- diagram() split into equilibrate() and diagram().
+- Split the functionality of diagram() into equilibrate() and diagram().
   Old workflow: a <- affinity(); d <- diagram(a) .
   New workflow: a <- affinity(); e <- equilibrate(a); d <- diagram(e) .
-  (Old workflow is still usable for certain diagrams.)
+  Old workflow is still usable for plotting the values of affinity, or
+  for making predominance diagrams using the maximum affinity method.
 
-- 'residue' argument of diagram() changed to 'normalize' in diagram()
-  and equilibrate(). normalize=FALSE is always the default, including
-  for systems of proteins.
+- The 'thermo' object, which holds the thermodynamic database,
+  and system definitions (made by the user), is now placed in an
+  environment named 'CHNOSZ:thermo' on loading the package. Therefore, 
+  instances of '<<-' in the code now refer to this environment
+  instead of the global environment.
+
+- Create a set of tests in 'inst/tests', particularly for functions that
+  have been modified during this development cycle, and add a Suggests 
+  dependency on 'testthat'.
+
+- Move the code for the temperature and pressure derivatives of the "g"
+  function (related to the solvation parameter omega) to a new function 
+  gfun(); incorporate some fixes and a series of test_that() tests.
+  There is some impact on the calculated Gibbs energies of charged
+  species.
 
 - Add wjd() implementing the steepest descent algorithm for free energy
   minimization described by White et al., 1958. Also add supporting 
@@ -22,27 +35,81 @@ SIGNIFICANT USER-VISIBLE CHANGES:
   initial guesses of moles of species satisfying elemental bulk 
   composition, and a Suggests dependency on 'limSolve'.
 
-- Create set of tests in 'inst/tests', particularly for functions that
-  have been modified during this development cycle, and add a Suggests 
-  dependency on 'testthat'.
-
-- Move the code for the temperature and pressure derivatives of the "g"
-  function (related to the solvation parameter omega) to a new function 
-  gfun(); incorporate some fixes and a series of test_that() tests.
-  There is some impact on the calculated Gibbs energies of charged
-  species.
-
-- The 'thermo' object, which holds the thermodynamic database,
-  and system definitions (made by the user), is now placed in an
-  environment named 'CHNOSZ:thermo' on loading the package. Therefore, 
-  instances of '<<-' in the code now refer to this environment
-  instead of the global environment.
-
 NEW FUNCTIONS:
+
+- New function i2A() for generating a stoichiometric matrix from indices
+  of species in the thermodynamic database.
+
+- Add protein.equil() for step-by-step calculation of chemical
+  activities of proteins in metastable equilibrium.
+
+- Add an objective function DGtr() for calculating the Gibbs energy of
+  transformation of a system at constant temperature, pressure and
+  chemical activities of basis species.
 
 - Add msgout(), which is a modification of message() from base R. Now
   used instead of cat(), to allow suppressing messages (e.g. during
   testing with test_that).
+
+CHANGES TO ARGUMENTS:
+
+- In equilibrate(), the argument 'logact' (inherited from diagram()),
+  specifying the logarithm of activity of the balanced quantity, has
+  been renamed to 'loga.balance'. The function now has 'loga.equil'
+  in its result, containing the equilibrium logarithms of activities
+  of the species of interest.
+
+- The 'residue' argument of diagram() has been changed to 'normalize'
+  in diagram() and equilibrate(). normalize=FALSE is always the default,
+  including for systems of proteins.
+
+- In balance(), the value of 'balance' used to indicate protein length
+  has been changed from 'PBB' to 'length'.
+
+- Everywhere it appeared, the logical argument 'do.plot' has been 
+  renamed to 'plot.it' (diagram(), revisit(), findit(), transfer()).
+  (This scheme is more consistent with e.g. qqplot().)
+
+- 'do.phases' argument in subcrt() and affinity() has been renamed to
+  'exceed.Ttr'. When that argument is FALSE (the default for subcrt()),
+  the Gibbs energies of mineral phases at temperatures beyond their 
+  transition temperature are set to NA, instead of 999999 used 
+  previously.
+
+- ZC() now accepts a numeric argument, referring to one or more species
+  indices in the thermodynamic database.
+
+CHANGES TO OUTPUT:
+
+- subcrt() now only outputs T (temperature), P (pressure) and rho
+  (density) columns if there is more than one T-P point ... makes
+  unlist()ing the results easier (used in element.mu() and 
+  basis.logact()).
+
+- subcrt() now outputs NA values for properties at temperatures above
+  the critical temperature of H2O, when Psat is being used.
+
+- read.blast() accepts NA for 'similarity', 'evalue' and 'max.hits' 
+  options. Descriptive column names are now assigned to the data frame
+  returned by the function.
+
+- energy.args() (called by affinity()) shows units in messages about
+  limits of variables.
+
+- EOSvar() has new variables invPPsi and invPPsiTTheta, used for
+  temperature- and pressure-dependent regressions in the revised HKF
+  equations of state.
+
+- thermo.plot.new() now saves the graphics device parameters 
+  (par(no.readonly=TRUE)) to thermo$opar the first time the function is 
+  called, allowing the parameters to be restored after running examples
+  that change them.
+
+- Rewrite mod.obigt() (it's now used by info() when adding proteins) and
+  add today() for returning today's date in the format used in SUPCRT 
+  files.
+
+REFACTORING OF FUNCTIONS:
 
 - Split the primary functionality of makeup(), parsing of chemical 
   formulas, into a smaller makeup() function and supporting functions 
@@ -54,9 +121,6 @@ NEW FUNCTIONS:
 - New function as.chemical.formula() to replace the previous
   functionality of makeup() for making string representations of
   chemical formulas.
-
-- New function i2A() for generating a stoichiometric matrix from indices
-  of species in the thermodynamic database.
 
 - Replace element() with two separate functions, mass() and entropy().
 
@@ -105,48 +169,7 @@ NEW FUNCTIONS:
   ionize.aa() for calculating the additive ionization properties of 
   proteins; also add A.ionization(), usually invoked by affinity()
 
-- Add protein.equil() for step-by-step calculation of chemical
-  activities of proteins in metastable equilibrium.
-
-- Objective functions used in revisit() and findit() now each have
-  their own definitions, with an attribute indicating whether the
-  function is minimized or maximized.
-
-- Add an objective function DGtr() for calculating the Gibbs energy of
-  transformation of a system at constant temperature, pressure and
-  chemical activities of basis species.
-
-OTHER CHANGES TO FUNCTIONS:
-
-- In equilibrate(), the argument 'logact' (inherited from diagram()),
-  specifying the logarithm of
-  activity of the balanced quantity, has been renamed to 'loga.balance'.
-  The function now has 'loga.equil' in its result, containing the 
-  equilibrium logarithms of activities of the species of interest.
-
-- In balance(), the value of 'balance' used to indicate protein length
-  has been changed from 'PBB' to 'length'.
-
-- Everywhere it appeared, the logical argument 'do.plot' has been 
-  renamed to 'plot.it' (diagram(), revisit(), findit(), transfer()).
-  (This scheme is more consistent with e.g. qqplot().)
-
-- 'do.phases' argument in subcrt() and affinity() has been renamed to
-  'exceed.Ttr'. When that argument is FALSE (the default for subcrt()),
-  the Gibbs energies of mineral phases at temperatures beyond their 
-  transition temperature are set to NA, instead of 999999 used 
-  previously.
-
-- subcrt() now only outputs T (temperature), P (pressure) and rho
-  (density) columns if there is more than one T-P point ... makes
-  unlist()ing the results easier (used in element.mu() and 
-  basis.logact()).
-
-- subcrt() now outputs NA values for properties at temperatures above
-  the critical temperature of H2O, when Psat is being used.
-
-- ZC() now accepts a numeric argument, referring to one or more species
-  indices in the thermodynamic database.
+- residue.info() mostly replaced by protein.basis().
 
 - Rename equil.react() to equil.reaction(), and give it parallel
   potential (via palply) and a more efficient algorithm for determining
@@ -154,27 +177,9 @@ OTHER CHANGES TO FUNCTIONS:
   arguments are now identical to those of equil.boltzmann() (and that
   function was renamed from equil.boltz()).
 
-- read.blast() accepts NA for 'similarity', 'evalue' and 'max.hits' 
-  options. Descriptive column names are now assigned to the data frame
-  returned by the function.
-
-- energy.args() (called by affinity()) shows units in messages about
-  limits of variables.
-
-- residue.info() mostly replaced by protein.basis().
-
-- thermo.plot.new() now saves the graphics device parameters 
-  (par(no.readonly=TRUE)) to thermo$opar the first time the function is 
-  called, allowing the parameters to be restored after running examples
-  that change them.
-
-- Rewrite mod.obigt() (it's now used by info() when adding proteins) and
-  add today() for returning today's date in the format used in SUPCRT 
-  files.
-
-- EOSvar() has new variables invPPsi and invPPsiTTheta, used for
-  temperature- and pressure-dependent regressions in the revised HKF
-  equations of state.
+- Objective functions used in revisit() and findit() now each have
+  their own definitions, with an attribute indicating whether the
+  function is minimized or maximized.
 
 DATA UPDATES:
 
@@ -284,12 +289,12 @@ DOCUMENTATION AND VIGNETTES:
 
 - Use UTF-8 degree symbol in second argument of \eqn{}{}.
 
-PERFORMANCE AND CODE CLEAN-UPS:
+OTHER CHANGES:
 
 - A matrix is now returned by makeup(), GHS() and some other functions
   to avoid the performace penalty associated with data frames.
 
-- Add parallel as a "Suggests" package and replace mylapply() (based on
+- Add parallel as a Suggests dependency and replace mylapply() (based on
   'multicore') with palply(), as a wrapper for parLapply and lapply.
   palply() now invokes parLapply for length(X) > 10000 instead of 100.
 
@@ -301,6 +306,8 @@ PERFORMANCE AND CODE CLEAN-UPS:
 
 - In c2s(), use 'collapse' argument of paste() instead of a for loop.
 
+- Change R dependency to R >= 2.12.0, for useDynLib in NAMESPACE to
+  find the shared library on Windows.
 
 CHANGES IN CHNOSZ 0.9-7 (2011-08-23)
 ------------------------------------

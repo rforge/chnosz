@@ -190,7 +190,9 @@ legend("bottomleft", legend=c("preset (input values):",
 }
 
 \seealso{
-  For even more protein-related examples, see \code{\link{read.expr}}, \code{\link{more.aa}}, \code{\link{ionize.aa}}, and \code{\link{apc}} for reaction-path calculations.
+  For accessing, updating, and downloading amino acid compositions of proteins, see \code{\link{iprotein}}. 
+  For getting chemical formulas and stoichiometric coefficients in reactions of proteins, see \code{\link{protein.info}}.
+For more examples of metastable equilibrium calculations for proteins, see \code{\link{read.expr}}, \code{\link{more.aa}}, \code{\link{ionize.aa}}, and \code{\link{apc}} for reaction-path calculations.
 }
 
 \keyword{protein}

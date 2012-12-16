@@ -34,7 +34,7 @@
 }
 
 \seealso{
-  A discussion on \dQuote{What does the "<<-" operator mean?} appeared on the R-help mailing list, \url{https://stat.ethz.ch/pipermail/r-help/2011-April/275905.html}. Also, \code{\link[fortunes]{fortune}("<<-")}.
+  A discussion on \dQuote{What does the "<<-" operator mean?} appeared on the R-help mailing list, \url{https://stat.ethz.ch/pipermail/r-help/2011-April/275905.html}.
 }
 
 \examples{

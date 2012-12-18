@@ -23,7 +23,9 @@
 }
 
 \details{
-  \code{affinity} calculates the chemical affinities of reactions to form the species of interest from the basis species. The calculation of chemical affinities relies on the global definitions of the \code{\link{basis}} species and \code{\link{species}} of interest. It is possible to use the results of \code{affinity} to generate equilibrium activity diagrams using \code{\link{diagram}}.
+\code{affinity} calculates the chemical affinities of reactions to form the species of interest from the basis species.
+The calculation of chemical affinities relies on the current definitions of the \code{\link{basis}} species and \code{\link{species}} of interest.
+It is possible to use the results of \code{affinity} to generate equilibrium activity diagrams using \code{\link{diagram}}.
 
   The equation used to calculate chemical affinity \emph{\bold{A}} is \emph{\bold{A}}=\eqn{RT\ln (K/Q)}{RT*ln(K/Q)} (Kondepudi and Prigogine, 1998), where \eqn{K} denotes the equilibrium constant of the reaction and \eqn{Q} stands for the activity product of the species in the reaction. (The equilibrium constant is related to standard Gibbs energy of reaction, \eqn{\Delta G^{\circ}_r}{DeltaG0r}, by \eqn{\Delta G^{\circ}_r = -2.303RT\log K}{DeltaG0r = -2.303*RT*logK}, where \eqn{R} and \eqn{T} stand for, respectively, the gas constant and temperature). With the approach of a given reaction to a state of equilibrium, the chemical affinity tends toward zero, or \eqn{K = Q}. 
 
@@ -33,7 +35,10 @@
 
    If one or more buffers are assigned to the definition of \code{\link{basis}} species, \code{affinity} calls \code{\link{buffer}} to calculate the logarithms of activities of these basis species from the buffer.
 
-   The \code{iprotein} and \code{loga.protein} arguments can be used to compute the chemical affinities of formation reactions of proteins that are not in the global \code{\link{species}} definition. This approach can be utilized in order to calculate the properties of many proteins in a fraction of the time it would take to calculate them individually. The appropriate \code{\link{basis}} species still must be defined prior to calling \code{affinity}. \code{iprotein} contains indices of desired proteins in \code{\link{thermo}$protein}; \code{affinity} add to the species list the amino acid residues and protein backbone group then calculate the properties of the reactions for the residues (including ionization effects), and adds them together to get those of the indicated proteins.
+The \code{iprotein} and \code{loga.protein} arguments can be used to compute the chemical affinities of formation reactions of proteins that are not in the current \code{\link{species}} definition.
+This approach can be utilized in order to calculate the properties of many proteins in a fraction of the time it would take to calculate them individually.
+The appropriate \code{\link{basis}} species still must be defined prior to calling \code{affinity}.
+\code{iprotein} contains indices of desired proteins in \code{\link{thermo}$protein}; \code{affinity} adds to the species list the amino acid residues and protein backbone group then calculate the properties of the reactions for the residues (including ionization effects), and adds them together to get those of the indicated proteins.
 
   In CHNOSZ version 0.9, \code{energy} gained a new argument \samp{transect} which is set to TRUE by \code{energy.args} when the length(s) of the variables is(are) greater than three. In this mode of operation, instead of performing the calculations on an \eqn{n}{n}-dimensional grid, the affinities are calculated on an \eqn{n}{n}-dimensional transect through chemical potential (possibly including T and/or P) space. 
 

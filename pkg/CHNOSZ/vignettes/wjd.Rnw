@@ -1,13 +1,12 @@
-%% LyX 2.0.4 created this file.  For more info, see http://www.lyx.org/.
+%% LyX 2.0.5 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
-\documentclass[english,noae,round]{article}
+\documentclass[noae,round]{article}
 \usepackage{mathpazo}
 \usepackage[T1]{fontenc}
 \usepackage[latin9]{inputenc}
 \usepackage[letterpaper]{geometry}
 \geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
 \usepackage{color}
-\usepackage{babel}
 \usepackage[authoryear]{natbib}
 \usepackage[unicode=true,
  bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
@@ -46,7 +45,7 @@
 
 \section{Introduction}
 
-\texttt{wjd()} appeared in CHNOSZ version 0.9.8. It implements the
+\texttt{wjd()} appeared in CHNOSZ version 0.9-9. It implements the
 steepest descent algorithm for Gibbs energy minimization described
 by White, Johnson and Dantzig, \citeyear{WJD58}. This vignette shows
 some examples of its usage. The help page for \texttt{wjd()} in the

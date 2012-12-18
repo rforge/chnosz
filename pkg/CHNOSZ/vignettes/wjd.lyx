@@ -126,7 +126,7 @@ status open
 \family typewriter
 wjd()
 \family default
- appeared in CHNOSZ version 0.9.8.
+ appeared in CHNOSZ version 0.9-9.
  It implements the steepest descent algorithm for Gibbs energy minimization
  described by White, Johnson and Dantzig, 
 \begin_inset CommandInset citation

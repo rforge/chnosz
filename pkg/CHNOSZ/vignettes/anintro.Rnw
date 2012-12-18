@@ -1,13 +1,12 @@
-%% LyX 2.0.4 created this file.  For more info, see http://www.lyx.org/.
+%% LyX 2.0.5 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
-\documentclass[english,noae,round]{article}
+\documentclass[noae,round]{article}
 \usepackage{mathpazo}
 \usepackage[T1]{fontenc}
 \usepackage[latin9]{inputenc}
 \usepackage[letterpaper]{geometry}
 \geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
 \usepackage{color}
-\usepackage{babel}
 \usepackage{amsbsy}
 \usepackage{amssymb}
 \usepackage{graphicx}
@@ -38,7 +37,7 @@
 {\end{list}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
-%\VignetteIndexEntry{An introduction to CHNOSZ}
+%\VignetteIndexEntry{An Introduction to CHNOSZ}
 
 % so DOIs in bibliography show up as hyperlinks
 \newcommand*{\doi}[1]{\href{http://dx.doi.org/#1}{doi: #1}}
@@ -104,7 +103,7 @@ the species of interest for relative stability calculations, calculate
 the affinities of formation reactions of the species of interest under
 reference (non-equilibrium) conditions, calculate the equilibrium
 chemical activities, and finally plot the results;%
-\footnote{\texttt{equilibrate()} appeared in version 0.9.8 of CHNOSZ. In previous
+\footnote{\texttt{equilibrate()} appeared in version 0.9-9 of CHNOSZ. In previous
 versions, the equilibrium calculations were invoked by calls to \texttt{diagram()}.%
 }
 \item using \texttt{revisit()} to calculate/plot statistics of the chemical
@@ -136,7 +135,7 @@ file.)
 install.packages("CHNOSZ")
 @
 
-\selectlanguage{english}%
+
 Then load the CHNOSZ package to make its functions and data available
 in your working session.
 
@@ -144,7 +143,7 @@ in your working session.
 library(CHNOSZ)
 @
 
-\selectlanguage{english}%
+
 The rest of this document assumes that the CHNOSZ package is loaded.
 
 
@@ -163,7 +162,7 @@ CHNOSZ.
 info("ethylene")
 @
 
-\selectlanguage{english}%
+
 There are two species named ``ethylene'' in the database. Normally,
 \texttt{info()} gives preference to aqueous species if they exist,
 so in this case we find that aqueous ethylene is species number 88
@@ -174,7 +173,7 @@ index to the function.
 info(88)
 @
 
-\selectlanguage{english}%
+
 If you were instead interested in the properties of the gas, you could
 run:
 
@@ -182,7 +181,7 @@ run:
 info("ethylene","gas")
 @
 
-\selectlanguage{english}%
+
 \texttt{info()} itself is used by other functions in the package.
 It prints output to the screen, but also returns a numeric value if
 it finds a species matching the search term. So, we can retrieve the
@@ -206,7 +205,7 @@ session, are stored in a list object called \texttt{thermo}.
 summary(thermo)
 @
 
-\selectlanguage{english}%
+
 Within this list, the thermodynamic database is contained in a data
 frame (an R object that is like a matrix with named columns), \texttt{thermo\$obigt},
 and the references to the original sources of thermodynamic data in
@@ -222,7 +221,7 @@ number to open the URL(s) associated with that entry in the database
 browse.refs(88)
 @
 
-\selectlanguage{english}%
+
 \texttt{browse.refs: opening URL for SH90 (E. L. Shock and H. C. Helgeson,
 \citeyear{SH90})}
 
@@ -235,7 +234,7 @@ Want to know what acids are in the database?
 info("acid")
 @
 
-\selectlanguage{english}%
+
 Here, \texttt{info()} couldn't find an exact match to a name, so it
 performed a fuzzy search. That's why ``uracil'' and ``metacinnabar''
 show up above. If you really just want species whose names include
@@ -248,7 +247,7 @@ will do; here we use a space.)
 info(" acid")
 @
 
-\selectlanguage{english}%
+
 The names of species other than proteins use (almost) exclusively
 lowercase letters. \texttt{info()} can also be used to search the
 text of the chemical formulas as they are entered in the database;
@@ -279,7 +278,7 @@ aa <- ip2aa(ip)
 aa2eos(aa)
 @
 
-\selectlanguage{english}%
+
 What happened there? Well, the first line found the row number (6)
 of \texttt{thermo\$protein} that contains the amino acid composition
 of LYSC\_CHICK. The second line extracted as a data frame. The third
@@ -308,7 +307,7 @@ si <- info("LYSC_CHICK")
 info(si)
 @
 
-\selectlanguage{english}%
+
 When CHNOSZ is first loaded, the thermodynamic properties and parameters
 of the proteins are not present in \texttt{thermo\$obigt}. Therefore,
 the first call to\texttt{ info()} just above had a side effect of
@@ -335,7 +334,7 @@ grid.
 subcrt("water")
 @
 
-\selectlanguage{english}%
+
 The columns in the output are temperature ($^{\circ}$C), pressure
 (bar), density of water (g cm$^{-3}$), logarithm of the equilibrium
 constant (only meaningful for reactions; see below), and standard
@@ -360,7 +359,7 @@ The function call below also shows the specification of temperature.
 subcrt(c("C2H5OH","O2","CO2","H2O"),c(-1,-3,2,3),T=37)
 @
 
-\selectlanguage{english}%
+
 For historical reasons (i.e., the prevalence of the use of oxygen
 fugacity in geochemical modeling; \citealp{And05}), $\mathrm{O_{2}}$
 breaks the general rule in CHNOSZ that species whose states are not
@@ -374,7 +373,7 @@ form is used in the calculation.
 subcrt(c("C2H5OH","O2","CO2","H2O"),c(-1,-3,2,3),c("aq","aq","aq","liq"),T=37)
 @
 
-\selectlanguage{english}%
+
 A useful feature of \texttt{subcrt()} is that it emits a warning if
 the reaction is not balanced. Let's say you forgot to account for
 oxygen on the left-hand side of the reaction%
@@ -389,7 +388,7 @@ Acid) $\rightarrow$Acetyl-CoA$\rightarrow$3H$_{2}$O+2CO$_{2}$''.%
 subcrt(c("C2H5OH","CO2","H2O"),c(-1,2,3),T=37)
 @
 
-\selectlanguage{english}%
+
 The function still reports the results of the calculations, but use
 them very cautiously (only if you have a specific reason for writing
 an unbalanced reaction). In the next section we'll see how to use
@@ -417,7 +416,6 @@ diagrams. Let's start with an example that \emph{doesn't} work.
 basis(c("CO2","H2O","NH3","H2S","H+"))
 @
 
-\selectlanguage{english}%
 \begin{lyxcode}
 Error~in~put.basis(basis,~mystates)~:~
 
@@ -439,7 +437,7 @@ species. Now let's write a working basis definition.
 basis(c("CO2","H2O","NH3","O2","H2S","H+"))
 @
 
-\selectlanguage{english}%
+
 First basis definition! Note the column names, which give CHNOSZ its
 name. These represent the elements in the commonly-occurring amino
 acids, together with charge, denoted by ``Z''.
@@ -454,7 +452,7 @@ again.
 subcrt(c("C2H5OH","CO2","H2O"),c(-1,2,3),T=37)
 @
 
-\selectlanguage{english}%
+
 Here, \texttt{subcrt()} detected an unbalanced reaction, but since
 the missing element was among the elements of the basis species, it
 added the appropriate amount of $\mathrm{O_{2}}_{\left(gas\right)}$
@@ -466,7 +464,7 @@ call, but still get the same results.
 subcrt(c("C2H5OH"),c(-1),T=37)
 @
 
-\selectlanguage{english}%
+
 What if you were interested in the thermodynamic properties of the
 reaction of ethanol to acetaldehyde, but didn't want to balance the
 reaction yourself (and you also didn't know how the formulas of the
@@ -476,7 +474,7 @@ species are written in the database)?
 subcrt(c("ethanol","acetaldehyde"),c(-1,1),T=37)
 @
 
-\selectlanguage{english}%
+
 Notice how 2 H's needed to be added to the right-hand side of the
 reaction; in our definition of basis species this comes out to $\mathrm{H_{2}O}-0.5\mathrm{O_{2}}$.
 With a different choice of basis species, but the same elements, the
@@ -491,7 +489,7 @@ basis(c("glutamic acid","methionine","isoleucine","lysine","tyrosine","H+"))
 subcrt(c("ethanol","acetaldehyde"),c(-1,1),T=37)
 @
 
-\selectlanguage{english}%
+
 In this case, the function finds that 2 H's are the compositional
 equivalent of $0.5\mathrm{C_{6}H_{13}NO_{2}}-0.125\mathrm{C_{6}H_{14}N_{2}O_{2}}-0.250\mathrm{C_{9}H_{11}NO_{3}}$.
 It's pretty easy for the computer to figure that out using matrix
@@ -516,7 +514,7 @@ basis("CHNOS+")
 subcrt("LYSC_CHICK",1,T=25)
 @
 
-\selectlanguage{english}%
+
 Note that using the keyword argument in \texttt{basis()} also set
 the logarithms of activities (or fugacity in the case of $\mathrm{O_{2}}_{\left(g\right)}$)
 to nominal values. While these settings do not affect the results
@@ -535,7 +533,6 @@ is about to be performed.
 subcrt("ALAT1_HUMAN",1,T=25)
 @
 
-\selectlanguage{english}%
 \begin{lyxcode}
 Shall~I~try~an~online~search~for~~ALAT1\_HUMAN~\_~SWISS~?~y
 
@@ -614,7 +611,7 @@ diagram(e, add=TRUE, col="red")
 @
 \setkeys{Gin}{width=1.0\textwidth}
 
-\selectlanguage{english}%
+
 
 \subsection{Stability diagram for proteins}
 
@@ -635,7 +632,7 @@ basis("CHNOS")
 species(c("SLAP_ACEKI", "CSG_METJA", "CSG_METVO", "CSG_HALJP"))
 @
 
-\selectlanguage{english}%
+
 Note the output: the matrix denotes the coefficients of each of the
 basis species in the formation reaction for one mole of each of the
 species of interest. The \textbf{formation reaction} is the chemical
@@ -663,7 +660,7 @@ taken to be constants equal to the values shown above.
 a <- affinity(O2=c(-90,-70))
 @
 
-\selectlanguage{english}%
+
 Now we can use \texttt{equilibrate()} to calculate the equilibrium
 activities of the proteins and \texttt{diagram()} to plot them. \texttt{normalize=TRUE}
 invokes the normalization of the chemical formulas of the proteins
@@ -678,7 +675,7 @@ diagram(e, legend.x="bottomleft", ylim=c(-6, -2))
 @
 \setkeys{Gin}{width=1.0\textwidth}
 
-\selectlanguage{english}%
+
 Notably, the protein from the organism found at the highest temperatures
 is relatively stable at more reduced conditions.
 
@@ -702,7 +699,7 @@ diagram(a, normalize=TRUE)
 @
 \setkeys{Gin}{width=1.0\textwidth}
 
-\selectlanguage{english}%
+
 Equilibrium predominances for proteins as a function of two chemical
 activities! If you don't like the colors in the plot, don't worry...
 the colors can be changed by using the \texttt{col} argument of \texttt{diagram()}.
@@ -726,7 +723,7 @@ the compositional makeup of the proteins, per residue (indicated by
 protein.basis(species()$name, normalize=TRUE)
 @
 
-\selectlanguage{english}%
+
 
 \subsection{A mineral example}
 
@@ -745,7 +742,7 @@ diagram(a)
 @
 \setkeys{Gin}{width=1.0\textwidth}
 
-\selectlanguage{english}%
+
 The 999's in the assignment of logarithms of activities of basis species
 could be any number -- these settings do not affect the outcome of
 the calculation. This is so because 1) $\mathrm{HCl}$, $\mathrm{CO_{2}}$
@@ -789,7 +786,7 @@ can run all of the examples there with a single command:
 example(diagram)
 @
 
-\selectlanguage{english}%
+
 Or you can use the following to run \emph{all} of the examples provided
 in the documentation for the package. You will see a lot of text fly
 by on the screen, as well as a variety of plots. The examples will
@@ -799,14 +796,15 @@ take about 5--10 minutes to run, depending on your machine.
 examples()
 @
 
-\selectlanguage{english}%
-There are even more examples in longex():
 
-<<longex,eval=FALSE>>=
-longex("findit")
+There are even more examples that can be accessed by \texttt{demo()}
+(or \texttt{demos()} to run all of them):
+
+<<demo,eval=FALSE>>=
+demo("findit")
 @
 
-\selectlanguage{english}%
+
 If you want to add to or modify the thermodynamic database, read the
 instructions at the top of the help page for \texttt{thermo}:
 
@@ -814,7 +812,7 @@ instructions at the top of the help page for \texttt{thermo}:
 help(thermo)
 @
 
-\selectlanguage{english}%
+
 Have fun!
 
 
@@ -874,7 +872,7 @@ legend("bottomleft", legend=ltext, pch=c(20, 3, 17))
 @
 \setkeys{Gin}{width=1.0\textwidth}
 
-\selectlanguage{english}%
+
 \clearpage
 
 
@@ -912,7 +910,7 @@ legend("topright", legend=c(dp, db), bty="n")
 @
 \setkeys{Gin}{width=1.0\textwidth}
 
-\selectlanguage{english}%
+
 Notable features include: proteins in the early Golgi, endoplasmic
 reticulum (ER) and vacuole are chemically the most stable relative
 to those in other locations in the cell; proteins in the vacuole are
@@ -974,7 +972,7 @@ legend("topleft", legend = c(describe.property("P", 300), describe.basis(ibasis=
 \setkeys{Gin}{width=1.0\textwidth}
 \end{small}
 
-\selectlanguage{english}%
+
 \clearpage
 
 
@@ -1000,7 +998,7 @@ title(main=paste("CV minimum =", round(r$optimum, 2)))
 \setkeys{Gin}{width=1.0\textwidth}
 \end{small}
 
-\selectlanguage{english}%
+
 The \texttt{balance=1} in \texttt{equilibrate()} means the relative
 stabilities are calculated using the formation reactions written per
 mole of amino acid (not conserving e.g. $\mathrm{CO_{2}}$ which would
@@ -1023,7 +1021,7 @@ legend("topleft", describe.basis(basis()), bg="white")
 \setkeys{Gin}{width=1.0\textwidth}
 \end{small}
 
-\selectlanguage{english}%
+
 This hypothetical metastably equilibrated mixture has very little
 methionine and aspartic acid. Can we find where the relative abundances
 of the amino acids have a more even distribution?
@@ -1055,7 +1053,7 @@ f <- findit(list(CO2=c(-5, 5), O2=c(-85, -65), H2S=c(-10, 5), H2O=c(-10, 0)),
 \setkeys{Gin}{width=1.0\textwidth}
 \end{small}
 
-\selectlanguage{english}%
+
 After 5 iterations, what are the fractional equilibrium abundances
 of the amino acids? Note that, during its operation, \texttt{findit()}
 updates the activities of the basis species so we don't have to set
@@ -1074,7 +1072,7 @@ legend("topleft", describe.basis(basis()), bg="white")
 \setkeys{Gin}{width=1.0\textwidth}
 \end{small}
 
-\selectlanguage{english}%
+
 We found a combination of chemical activities of basis species that
 lowered the variation of the equilibrium activities of the amino acids.
 Woohoo!

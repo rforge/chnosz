@@ -4,21 +4,11 @@ for 1.0.0
 
 - revisit the documentation, make it consistent with code changes!
 
-- check docs and function: does affinity return A/RT or A/2.303RT?
-
-- check examples of protein buffer calculations
-
-- get demo("copper") to work ... might involve refactoring species()
-
-
 ********
 features
 ********
 
-- let diagram() map NA's - as in kyanite/sillimanite/andalusite example
-
 - make is.near.equil() a function of ep (element.potentials), not w (wjd)?
-
 
 ***********
 performance
@@ -31,6 +21,7 @@ performance
 - does affinity(iprotein=...) add H2O_RESIDUE to thermo$obigt?
   ... if so stop it from doing so?
 
+- byte-compiling is known to break test-subcrt.R
 
 *****
 style
@@ -53,10 +44,11 @@ style
 
 - get away from determining species indices with rownames(thermo$obigt)
 
-
 *************
 documentation
 *************
+
+- check docs: does affinity return A/RT or A/2.303RT?
 
 - better documentation on how makeup() handles charge
 
@@ -85,7 +77,6 @@ documentation
 
 - add a lograt example to revisit.Rd
 
-
 ********
 database
 ********
@@ -99,7 +90,6 @@ database
   Zuccolini et al., 2011 (doi:10.1016/j.cageo.2010.03.024)
 
 - get up-to-date with SLOP07 data set?
-
 
 ***********
 longer term

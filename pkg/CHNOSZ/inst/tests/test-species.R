@@ -31,11 +31,11 @@ test_that("deleting nonexistent species causes error or warning", {
   expect_is(species(delete=TRUE), "NULL")
 })
 
-test_that("non-available species cause error, and species can be added or modified by numeric index", {
+test_that("non-available species cause error, and species can be added or modified", {
   basis("CHNOS")
   expect_error(species("wate"), "species not available")
   # add CO2, aq
-  species("CO2")
+  sdef <- species("CO2")
   # we can't add the same species twice
   expect_equal(nrow(species("CO2")), 1)
   # change it to gas
@@ -46,6 +46,12 @@ test_that("non-available species cause error, and species can be added or modifi
   expect_equal(nrow(species("CO2")), 2)
   # add alanine by index in thermo$obigt
   expect_equal(nrow(species(info("alanine"))), 3)
+  # if we just use an index, get only that species
+  expect_equal(species(3)$name, "alanine")
+  # we can add a species with the same name but different state
+  expect_equal(nrow(species("alanine", "cr")), 4)
+  # we can modify the logact of a named species (only first match)
+  expect_equal(species("alanine", -7)$logact[3], -7)
 })
 
 test_that("index_return provides indices for touched species", {

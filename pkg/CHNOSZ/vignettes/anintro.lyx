@@ -4,7 +4,7 @@
 \begin_header
 \textclass article
 \begin_preamble
-%\VignetteIndexEntry{An introduction to CHNOSZ}
+%\VignetteIndexEntry{An Introduction to CHNOSZ}
 
 % so DOIs in bibliography show up as hyperlinks
 \newcommand*{\doi}[1]{\href{http://dx.doi.org/#1}{doi: #1}}
@@ -128,7 +128,7 @@ About
 
 \begin_layout Standard
 \begin_inset Branch load
-status open
+status collapsed
 
 \begin_layout Standard
 This document will orient you to the basic functionality of CHNOSZ, a package
@@ -179,7 +179,7 @@ Outline of workflow
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status open
+status collapsed
 
 \begin_layout Standard
 CHNOSZ is made up of a set of functions and supporting datasets.
@@ -254,14 +254,14 @@ diagram()
  under reference (non-equilibrium) conditions, calculate the equilibrium
  chemical activities, and finally plot the results;
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
 \family typewriter
 equilibrate()
 \family default
- appeared in version 0.9.8 of CHNOSZ.
+ appeared in version 0.9-9 of CHNOSZ.
  In previous versions, the equilibrium calculations were invoked by calls
  to 
 \family typewriter
@@ -332,6 +332,10 @@ Install packages from CRAN
  from a local package file.)
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<install_CHNOSZ,eval=FALSE>>=
@@ -347,10 +351,19 @@ install.packages("CHNOSZ")
 @
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 Then load the CHNOSZ package to make its functions and data available in
  your working session.
 \end_layout
+
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
 
 \begin_layout Chunk
 
@@ -365,6 +378,11 @@ library(CHNOSZ)
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -403,6 +421,10 @@ info()
  the thermodynamic database packaged with CHNOSZ.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<info_ethylene>>=
@@ -416,6 +438,11 @@ info("ethylene")
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -437,6 +464,10 @@ info()
  Let's display this entry, now by giving the species index to the function.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<info_88>>=
@@ -452,9 +483,18 @@ info(88)
 @
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 If you were instead interested in the properties of the gas, you could run:
 \end_layout
+
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
 
 \begin_layout Chunk
 
@@ -471,6 +511,11 @@ info("ethylene","gas")
 @
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 
 \family typewriter
@@ -482,6 +527,10 @@ info()
  So, we can retrieve the properties of aqueous acetic acid without having
  to type in the species ID number.
 \end_layout
+
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
 
 \begin_layout Chunk
 
@@ -501,6 +550,11 @@ print(aadata)
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -528,6 +582,10 @@ thermo
 .
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<summary_thermo>>=
@@ -541,6 +599,11 @@ summary(thermo)
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -567,6 +630,10 @@ browse.refs()
  that entry in the database (this requires an Internet connection).
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<browse.refs,eval=F>>=
@@ -580,6 +647,11 @@ browse.refs(88)
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -620,6 +692,10 @@ info()
 Want to know what acids are in the database?
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<info_acid>>=
@@ -633,6 +709,11 @@ info("acid")
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -679,6 +760,10 @@ _
  Any other character will do; here we use a space.)
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<info_spaceacid>>=
@@ -692,6 +777,11 @@ info(" acid")
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -708,6 +798,10 @@ info()
  that contain the symbol commonly used to represent the hydroxide group.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<info_OH>>=
@@ -721,6 +815,11 @@ info("(OH)")
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -753,6 +852,10 @@ C and 1 bar of a protein using group additivity.
  studied than lysozyme from the egg of the chicken.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<protein_LYSC>>=
@@ -778,6 +881,11 @@ aa2eos(aa)
 @
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 What happened there? Well, the first line found the row number (6) of 
 \family typewriter
@@ -798,6 +906,10 @@ key "DLH06"
  the chemical formula of the protein.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<formula_LYSC>>=
@@ -816,6 +928,11 @@ as.chemical.formula(pf)
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -857,6 +974,10 @@ target "http://www.uniprot.org"
 .
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<info_LYSC>>=
@@ -875,6 +996,11 @@ info(si)
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -944,6 +1070,10 @@ info()
  grid.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<subcrt_water>>=
@@ -957,6 +1087,11 @@ subcrt("water")
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1032,6 +1167,10 @@ subcrt()
  The function call below also shows the specification of temperature.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<subcrt_C2H5OH>>=
@@ -1045,6 +1184,11 @@ subcrt(c("C2H5OH","O2","CO2","H2O"),c(-1,-3,2,3),T=37)
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1073,6 +1217,10 @@ key "And05"
  
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<subcrt_C2H5OH_O2aq>>=
@@ -1086,6 +1234,11 @@ subcrt(c("C2H5OH","O2","CO2","H2O"),c(-1,-3,2,3),c("aq","aq","aq","liq"),T=37)
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1176,6 +1329,10 @@ O+2CO
 .
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<subcrt_C2H5OH_unbal>>=
@@ -1189,6 +1346,11 @@ subcrt(c("C2H5OH","CO2","H2O"),c(-1,2,3),T=37)
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1245,6 +1407,10 @@ doesn't
  work.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<basis_not,eval=FALSE>>=
@@ -1258,6 +1424,11 @@ basis(c("CO2","H2O","NH3","H2S","H+"))
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout LyX-Code
@@ -1288,6 +1459,10 @@ A limitation of CHNOSZ is that the number of basis species must be equal
  Now let's write a working basis definition.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<basis>>=
@@ -1301,6 +1476,11 @@ basis(c("CO2","H2O","NH3","O2","H2S","H+"))
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1325,6 +1505,10 @@ Auto-balancing a reaction
 Now that the basis species are defined, try the unbalanced reaction again.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<subcrt_C2H5OH_auto>>=
@@ -1338,6 +1522,11 @@ subcrt(c("C2H5OH","CO2","H2O"),c(-1,2,3),T=37)
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1362,6 +1551,10 @@ subcrt()
  from the function call, but still get the same results.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<subcrt_C2H5OH>>=
@@ -1377,12 +1570,21 @@ subcrt(c("C2H5OH"),c(-1),T=37)
 @
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 What if you were interested in the thermodynamic properties of the reaction
  of ethanol to acetaldehyde, but didn't want to balance the reaction yourself
  (and you also didn't know how the formulas of the species are written in
  the database)?
 \end_layout
+
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
 
 \begin_layout Chunk
 
@@ -1397,6 +1599,11 @@ subcrt(c("ethanol","acetaldehyde"),c(-1,1),T=37)
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1419,6 +1626,10 @@ thermo
 \family default
  object to its original state, in order to clear the current system definition.
 \end_layout
+
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
 
 \begin_layout Chunk
 
@@ -1443,6 +1654,11 @@ subcrt(c("ethanol","acetaldehyde"),c(-1,1),T=37)
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1476,6 +1692,10 @@ subcrt()
  from the basis species.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<subcrt_LYSC>>=
@@ -1499,6 +1719,11 @@ subcrt("LYSC_CHICK",1,T=25)
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1529,6 +1754,10 @@ If the protein is not found in CHNOSZ's own database, the amino acid composition
  be performed.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<subcrt_ALAT1,eval=FALSE>>=
@@ -1542,6 +1771,11 @@ subcrt("ALAT1_HUMAN",1,T=25)
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout LyX-Code
@@ -1645,7 +1879,7 @@ Activity diagrams
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status open
+status collapsed
 
 \begin_layout Subsection
 Carbonate speciation (Bjerrum diagram)
@@ -1706,6 +1940,10 @@ zooms in
  Also the last two lines are optional, unless you really do want to see
  the effect of temperature (I do!)
 \end_layout
+
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
 
 \begin_layout Chunk
 
@@ -1775,6 +2013,11 @@ setkeys{Gin}{width=1.0
 textwidth}
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 Stability diagram for proteins
 \end_layout
@@ -1818,6 +2061,10 @@ species of interest
  
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<CSG_species>>=
@@ -1836,6 +2083,11 @@ species(c("SLAP_ACEKI", "CSG_METJA", "CSG_METVO", "CSG_HALJP"))
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1899,6 +2151,10 @@ affinity()
  equal to the values shown above.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<CSG_affinity>>=
@@ -1912,6 +2168,11 @@ a <- affinity(O2=c(-90,-70))
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1933,6 +2194,10 @@ normalize=TRUE
  equilibrium activities of proteins.
  We'll also specify where the legend should be placed on the plot.
 \end_layout
+
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
 
 \begin_layout Chunk
 
@@ -1972,6 +2237,11 @@ setkeys{Gin}{width=1.0
 textwidth}
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 Notably, the protein from the organism found at the highest temperatures
  is relatively stable at more reduced conditions.
@@ -2008,6 +2278,10 @@ equilibrate()
  in order to calculate the equilibrium activities of all the species, but
  the resulting predominance diagram would be identical.
 \end_layout
+
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
 
 \begin_layout Chunk
 
@@ -2055,6 +2329,11 @@ diagram(a, normalize=TRUE)
 setkeys{Gin}{width=1.0
 \backslash
 textwidth}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2106,6 +2385,10 @@ normalize=TRUE
 ), in terms of the basis species.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<residue.info>>=
@@ -2119,6 +2402,11 @@ protein.basis(species()$name, normalize=TRUE)
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -2140,6 +2428,10 @@ key "BJH84"
 
 C and 1000 bar.
 \end_layout
+
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
 
 \begin_layout Chunk
 
@@ -2197,6 +2489,11 @@ diagram(a)
 setkeys{Gin}{width=1.0
 \backslash
 textwidth}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2328,6 +2625,10 @@ diagram()
 ; you can run all of the examples there with a single command:
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
 \begin_layout Chunk
 
 <<example_diagram,eval=FALSE>>=
@@ -2343,6 +2644,11 @@ example(diagram)
 @
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 Or you can use the following to run 
 \emph on
@@ -2354,6 +2660,10 @@ all
  The examples will take about 5--10 minutes to run, depending on your machine.
  
 \end_layout
+
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
 
 \begin_layout Chunk
 
@@ -2370,23 +2680,45 @@ examples()
 @
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
-There are even more examples in longex():
+There are even more examples that can be accessed by 
+\family typewriter
+demo()
+\family default
+ (or 
+\family typewriter
+demos()
+\family default
+ to run all of them):
+\end_layout
+
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
+
+\begin_layout Chunk
+
+<<demo,eval=FALSE>>=
 \end_layout
 
 \begin_layout Chunk
 
-<<longex,eval=FALSE>>=
-\end_layout
-
-\begin_layout Chunk
-
-longex("findit")
+demo("findit")
 \end_layout
 
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2397,6 +2729,10 @@ thermo
 \family default
 :
 \end_layout
+
+\begin_layout Standard
+\begin_inset Branch stuff
+status collapsed
 
 \begin_layout Chunk
 
@@ -2411,6 +2747,11 @@ help(thermo)
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2469,7 +2810,7 @@ clearpage
 
 \begin_layout Standard
 \begin_inset Branch more
-status collapsed
+status open
 
 \begin_layout Subsection
 Protein Eh-pH
@@ -2591,6 +2932,10 @@ describe.property()
 , and degree sign in the units).
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status open
+
 \begin_layout Chunk
 
 
@@ -2704,6 +3049,11 @@ setkeys{Gin}{width=1.0
 textwidth}
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 \begin_inset ERT
 status collapsed
@@ -2727,7 +3077,7 @@ clearpage
 
 \begin_layout Standard
 \begin_inset Branch more
-status collapsed
+status open
 
 \begin_layout Subsection
 Subcellular proteins
@@ -2768,6 +3118,10 @@ key "LD12"
 
  that are used in the current version of CHNOSZ.
 \end_layout
+
+\begin_layout Standard
+\begin_inset Branch stuff
+status open
 
 \begin_layout Chunk
 
@@ -2883,6 +3237,11 @@ setkeys{Gin}{width=1.0
 textwidth}
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 Notable features include: proteins in the early Golgi, endoplasmic reticulum
  (ER) and vacuole are chemically the most stable relative to those in other
@@ -2915,7 +3274,7 @@ clearpage
 
 \begin_layout Standard
 \begin_inset Branch more
-status collapsed
+status open
 
 \begin_layout Subsection
 Buffers
@@ -2971,6 +3330,10 @@ key "SS95"
  buffered by minerals and in equilibrium with different activities of organic
  species that are calculated using these two methods.
 \end_layout
+
+\begin_layout Standard
+\begin_inset Branch stuff
+status open
 
 \begin_layout Chunk
 
@@ -3151,6 +3514,11 @@ textwidth}
 end{small}
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 \begin_inset ERT
 status collapsed
@@ -3202,6 +3570,10 @@ equilibrate()
 
 .
 \end_layout
+
+\begin_layout Standard
+\begin_inset Branch stuff
+status open
 
 \begin_layout Chunk
 
@@ -3276,6 +3648,11 @@ textwidth}
 end{small}
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 The 
 \family typewriter
@@ -3297,6 +3674,10 @@ equilibrate()
  Let's look at the fractional equilibrium abundances of the amino acids
  at these conditions.
 \end_layout
+
+\begin_layout Standard
+\begin_inset Branch stuff
+status open
 
 \begin_layout Chunk
 
@@ -3375,6 +3756,11 @@ textwidth}
 end{small}
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 This hypothetical metastably equilibrated mixture has very little methionine
  and aspartic acid.
@@ -3441,6 +3827,10 @@ balance=1
  iteration.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status open
+
 \begin_layout Chunk
 
 
@@ -3505,6 +3895,11 @@ textwidth}
 end{small}
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 After 5 iterations, what are the fractional equilibrium abundances of the
  amino acids? Note that, during its operation, 
@@ -3514,6 +3909,10 @@ findit()
  updates the activities of the basis species so we don't have to set them
  manually.
 \end_layout
+
+\begin_layout Standard
+\begin_inset Branch stuff
+status open
 
 \begin_layout Chunk
 
@@ -3587,6 +3986,11 @@ textwidth}
 end{small}
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 We found a combination of chemical activities of basis species that lowered
  the variation of the equilibrium activities of the amino acids.
@@ -3628,7 +4032,7 @@ Document information
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Standard
 Revision history:
@@ -3664,6 +4068,10 @@ More activity diagrams
 R session information:
 \end_layout
 
+\begin_layout Standard
+\begin_inset Branch stuff
+status open
+
 \begin_layout Chunk
 
 <<session_info>>=
@@ -3677,6 +4085,11 @@ sessionInfo()
 \begin_layout Chunk
 
 @
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset

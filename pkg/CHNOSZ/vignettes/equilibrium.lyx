@@ -246,7 +246,7 @@ equilibrate(..., normalize=TRUE)
 \family typewriter
 diagram(..., normalize=TRUE)
 \family default
- starting with version 0.9.8 of CHNOSZ.
+ starting with version 0.9-9 of CHNOSZ.
 \end_layout
 
 \end_inset
@@ -1457,7 +1457,7 @@ equilibrate()
 \family typewriter
 protein.equil()
 \family default
- function introduced in version 0.9.8.
+ function introduced in version 0.9-9.
  Below is its output when configured for CSG example we have been discussing.
 \end_layout
 
@@ -2031,16 +2031,15 @@ end{small}
 \end_layout
 
 \begin_layout Standard
-Here an example where the predominant species in the equilibrium assemblage
+Here is an example where the predominant species in the equilibrium assemblage
  are 
 \series bold
-\size giant
+\emph on
 not
 \series default
-\size default
- identical to those calculated the maximum affinity method, and by experience
- it is not possible for the maximum affinity method to make those curved
- lines!!
+\emph default
+ identical to those calculated the maximum affinity method, and it is not
+ possible for the maximum affinity method to make those curved lines!!
 \end_layout
 
 \begin_layout Standard

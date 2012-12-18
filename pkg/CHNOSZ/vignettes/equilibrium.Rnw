@@ -1,13 +1,12 @@
-%% LyX 2.0.4 created this file.  For more info, see http://www.lyx.org/.
+%% LyX 2.0.5 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
-\documentclass[english,noae]{article}
+\documentclass[noae]{article}
 \usepackage{mathpazo}
 \usepackage[T1]{fontenc}
 \usepackage[latin9]{inputenc}
 \usepackage[letterpaper]{geometry}
 \geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
 \usepackage{color}
-\usepackage{babel}
 \usepackage{amsbsy}
 \usepackage{amssymb}
 \usepackage[numbers]{natbib}
@@ -87,7 +86,7 @@ proteins \citep{Dic08}; here the terminology of \emph{normalize}
 will be used preferentially%
 \footnote{The older style of function call using \texttt{diagram(..., residue=TRUE)}
 has been replaced by \texttt{equilibrate(..., normalize=TRUE)} or
-\texttt{diagram(..., normalize=TRUE)} starting with version 0.9.8
+\texttt{diagram(..., normalize=TRUE)} starting with version 0.9-9
 of CHNOSZ.%
 }.
 
@@ -425,7 +424,7 @@ But can we automate the step-by-step calculation for any system, including
 more than two proteins? And can we be sure that higher-level functions
 in CHNOSZ, particularly \texttt{equilibrate()}, match the output of
 the step-by-step calculations? Now we can, with the \texttt{protein.equil()}
-function introduced in version 0.9.8. Below is its output when configured
+function introduced in version 0.9-9. Below is its output when configured
 for CSG example we have been discussing.
 
 \begin{small}
@@ -559,9 +558,9 @@ stopifnot(identical(dA$predominant, dE$predominant))
 \end{small}
 
 
-Here an example where the predominant species in the equilibrium assemblage
-are \textbf{\Huge not} identical to those calculated the maximum affinity
-method, and by experience it is not possible for the maximum affinity
+Here is an example where the predominant species in the equilibrium
+assemblage are \textbf{\emph{not}} identical to those calculated the
+maximum affinity method, and it is not possible for the maximum affinity
 method to make those curved lines!!
 
 \begin{small}

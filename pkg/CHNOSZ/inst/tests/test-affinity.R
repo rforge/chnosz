@@ -116,7 +116,7 @@ test_that("'iprotein' gives consistent results on a transect", {
 
 test_that("affinity() for proteins (with/without 'iprotein') returns same value as in previous package versions", {
   # our test case is CSG_HALJP because it has no methionine
-  # (aqueous [Met] was updated in 0.9.8)
+  # (aqueous [Met] was updated in 0.9-9)
   # these values were calculated using versions 0.6, 0.8 and 0.9-7
   # (25 degrees C, 1 bar, basis species "CHNOS" or "CHNOS+")
   A.2303RT.nonionized <- -3795.297

@@ -44,6 +44,7 @@ species <- function(species=NULL, state=NULL, delete=FALSE, index.return=FALSE) 
   # 20080925 default quiet=TRUE 20101003 default quiet=FALSE
   # 20120128 remove 'quiet' argument (messages can be hidden with suppressMessages())
   # 20120523 return thermo$species instead of rownumbers therein, and remove message showing thermo$species
+  ## argument processing
   # we can't deal with NA species
   if(identical(species, NA)) {
     cn <- caller.name()
@@ -78,12 +79,12 @@ species <- function(species=NULL, state=NULL, delete=FALSE, index.return=FALSE) 
     }
     return(thermo$species)
   }
-  # parse state argument
-  state <- state.args(state)
   # if no species or states are given, just return the species list
   if(is.null(species) & is.null(state)) return(thermo$species)
   # if no species are given use all of them if available
   if(is.null(species) & !is.null(thermo$species)) species <- 1:nrow(thermo$species)
+  # parse state argument
+  state <- state.args(state)
   # make species and state arguments the same length
   if(length(species) > length(state) & !is.null(state)) state <- rep(state,length.out=length(species)) else 
   if(length(state) > length(species) & !is.null(species)) species <- rep(species,length.out=length(state))
@@ -99,9 +100,14 @@ species <- function(species=NULL, state=NULL, delete=FALSE, index.return=FALSE) 
     species <- paste(species, state, sep="_")
     state <- rep(thermo$opt$state, length.out=length(state))
   }
-  # character first argument, look for species in thermo$obigt
+  # parse species argument
   iobigt <- NULL
   if(is.character(species[1])) {
+    # look for named species in species definition
+    ispecies <- match(species, thermo$species$name)
+    # if all species names match, and logact is given, re-call the function with the species indices
+    if(!any(is.na(ispecies)) & !is.null(logact)) return(species(ispecies, state=logact, index.return=index.return))
+    # look for species in thermo$obigt
     iobigt <- suppressMessages(info(species, state))
     # check if we got all the species
     ina <- is.na(iobigt)
@@ -112,6 +118,7 @@ species <- function(species=NULL, state=NULL, delete=FALSE, index.return=FALSE) 
     if(is.null(thermo$species)) nspecies <- 0
     if(max(species) > nspecies) iobigt <- species
   }
+  ## done with argument processing ... now to do work
   # create or add to species definition
   if(!is.null(iobigt)) {
     if(is.null(thermo$basis)) stop("basis species are not defined")
@@ -143,8 +150,14 @@ species <- function(species=NULL, state=NULL, delete=FALSE, index.return=FALSE) 
   } else {
     # update activities or states of existing species
     # first get the rownumbers in thermo$species
-    if(is.numeric(species[1])) ispecies <- species
-    else ispecies <- match(species, thermo$species$name)
+    if(is.numeric(species[1])) {
+      ispecies <- species
+      # if state and logact are both NULL we don't do anything but return the selected species
+      if(is.null(state) & is.null(logact)) {
+        if(index.return) return(ispecies)
+        else return(thermo$species[ispecies, ])
+      }
+    } else ispecies <- match(species, thermo$species$name)
     # replace activities?
     if(!is.null(logact)) {
       thermo$species$logact[ispecies] <<- logact

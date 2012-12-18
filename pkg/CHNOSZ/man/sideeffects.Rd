@@ -29,7 +29,7 @@
     \code{opar} \tab \code{\link{thermo.plot.new}} \tab -- \tab graphical parameters \cr
   }
 
-  Beginning with CHNOSZ version 0.9.8, instances of \code{\link{<<-}} in the code have the effect of \dQuote{superassignment} to an enclosing environment (\samp{CHNOSZ:thermo} on the search path), instead of the \emph{very} highly discouraged assignment to the global environment (user's workspace) used in previous versions of the package. This convention means that if, from the command line, \emph{you} wish to alter something in \code{thermo}, you also should use the \code{\link{<<-}} operator; examples of changing \code{thermo$opt$water} in this manner can found in the help page for \code{\link{water}}.
+  Beginning with CHNOSZ version 0.9-9, instances of \code{\link{<<-}} in the code have the effect of \dQuote{superassignment} to an enclosing environment (\samp{CHNOSZ:thermo} on the search path), instead of the \emph{very} highly discouraged assignment to the global environment (user's workspace) used in previous versions of the package. This convention means that if, from the command line, \emph{you} wish to alter something in \code{thermo}, you also should use the \code{\link{<<-}} operator; examples of changing \code{thermo$opt$water} in this manner can found in the help page for \code{\link{water}}.
   
 }
 

@@ -51,7 +51,7 @@ If \code{loga.balance} is missing, its value is taken from the activities of spe
 \code{normalize} if TRUE indicates to normalize the molar formulas of species by the balance coefficients.
 This operation is intended for systems of polymers, such as proteins, whose conventional formulas are much larger than the basis speices.
 The normalization also applies to the balancing coefficients, which as a result consist of \samp{1}s.
-\code{normalize} has the same effect as did \code{diagram(..., residue=TRUE)} in versions of CHNOSZ before 0.9.8.
+\code{normalize} has the same effect as did \code{diagram(..., residue=TRUE)} in versions of CHNOSZ before 0.9-9.
 
 \code{ispecies} can be supplied to identify a subset of the species to include in the calculation.
 
@@ -68,8 +68,8 @@ The first constraint does \emph{not} impose a complete equilibrium, where the af
 
 In \code{equil.reaction} (the algorithm described in Dick, 2008 and the only one available prior to CHNOSZ-0.8), the calculations of relative abundances of species are based on a solving a system of equations representing the two constraints stated above.
 A close approximation of the solution is found using \code{\link{uniroot}}.
-Prior to CHNOSZ_0.9.8, the values in the \code{Astar} were used to generate initial guesses of the logarithms of activities of species; values of \code{loga.balance} that were hugely different from these guesses could generate errors from \code{uniroot} such as "f() values at end points not of opposite sign".
-Now (from version 0.9.8), a more flexible method for generating guesses is in place. 
+Prior to CHNOSZ_0.9-9, the values in the \code{Astar} were used to generate initial guesses of the logarithms of activities of species; values of \code{loga.balance} that were hugely different from these guesses could generate errors from \code{uniroot} such as "f() values at end points not of opposite sign".
+Now (from version 0.9-9), a more flexible method for generating guesses is in place. 
 
 In \code{equil.boltzmann} (algorithm available beginning with CHNOSZ-0.8), the chemical activities of species are calculated using the Boltzmann distribution.
 This calculation is faster than the algorithm of \code{equil.reaction}, but is limited to systems where the transformations are all balanced on one mole of species.

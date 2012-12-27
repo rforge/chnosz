@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 0.9.8-8 (2012-12-18)
+CHANGES IN CHNOSZ 0.9.8-9 (2012-12-27)
 --------------------------------------
 
 SIGNIFICANT USER-VISIBLE CHANGES:
@@ -180,6 +180,9 @@ REFACTORING OF FUNCTIONS:
 - Objective functions used in revisit() and findit() now each have
   their own definitions, with an attribute indicating whether the
   function is minimized or maximized.
+
+- Separate idealgas.IAPWS95() and residual.IAPWS95() from
+  water.IAPWS95() (in order to write some test_that tests.)
 
 DATA UPDATES:
 

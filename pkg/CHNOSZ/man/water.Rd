@@ -3,6 +3,8 @@
 \alias{water}
 \alias{water.AW90}
 \alias{water.IAPWS95}
+\alias{idealgas.IAPWS95}
+\alias{residual.IAPWS95}
 \alias{water.WP02}
 \alias{water.SUPCRT92}
 \title{Properties of Water}
@@ -14,16 +16,21 @@
   water(property = NULL, T = thermo$opt$Tr, P = "Psat")
   water.SUPCRT92(property, T = 298.15, P = 1, isat = 0)
   water.IAPWS95(property, T = 298.15, rho = 1000)
+  idealgas.IAPWS95(p, delta, tau)
+  residual.IAPWS95(p, delta, tau)
   water.WP02(property, T = 298.15)
   water.AW90(T = 298.15, rho = 1000, P = 0.1)
 }
 
 \arguments{
-  \item{property}{character, name(s) of property(s) to calculate.}
-  \item{T}{numeric, temperature (K).}
-  \item{P}{character or numeric, \samp{Psat}; or pressure (bar for \code{water}, \code{water.SUPCRT92}; MPa for \code{water.AW90}, \code{water.IAPWS95}, \code{water.WP02}).}
+  \item{property}{character, name(s) of property(s) to calculate}
+  \item{T}{numeric, temperature (K)}
+  \item{P}{character or numeric, \samp{Psat}; or pressure (bar for \code{water}, \code{water.SUPCRT92}; MPa for \code{water.AW90}, \code{water.IAPWS95}, \code{water.WP02})}
   \item{isat}{numeric, if \eqn{1}, calculate values of \samp{Psat}}
-  \item{rho}{numeric, density (kg m\eqn{^{-3}}{^-3}).}
+  \item{rho}{numeric, density (kg m\eqn{^{-3}}{^-3})}
+  \item{p}{character, name of property (Helmholtz free energy or its derivatives)}
+  \item{delta}{numeric, density divided by critical density}
+  \item{tau}{numeric, critical temperature divided by temperature}
 }
 
 \details{
@@ -76,9 +83,12 @@
 
   \code{water.SUPCRT92} interfaces to the FORTRAN subroutine taken from the \acronym{SUPCRT92} package (H2O92D.F) for calculating properties of water. These calculations are based on data and equations of Levelt-Sengers et al., 1983, Haar et al., 1984, and Johnson and Norton, 1991, among others (see Johnson et al., 1992). If \code{isat} is equal to \eqn{1} (or \code{TRUE}), the values of \code{P} are ignored and values of \samp{Psat} are returned. \samp{Psat} refers to one bar below 100 \eqn{^{\circ}}{°}C, otherwise to the vapor-liquid saturation pressure at temperatures below the critical point (\samp{Psat} is not available at temperatures above the critical point). \code{water.SUPCRT92} function provides a limited interface to the FORTRAN subroutine; some functions provided there are not made available here (e.g., using variable density instead of pressure, or calculating the properties of steam). The properties of steam in CHNOSZ, as in \acronym{SUPCRT92}, are calculated using general equations for crystalline, gaseous and liquid species (\code{\link{cgl}}). The IAPWS-95 formulation also has provisions for computing the properties of steam, but these are currently not used by CHNOSZ.
 
-  \code{water.IAPWS95} provides an implementation of the IAPWS-95 formulation for properties (including pressure) calculated as a function of temperature and density. To compute the thermodynamic and electrostatic properties of water as a function of temperature and pressure using \code{water.IAPWS95}, \code{water} applies a root-finding function (\code{\link{uniroot}}) to determine the corresponding values of density. Electrostatic properties in this case are derived from values of the static dielectric constant (\code{epsilon}) calculated using equations given by Archer and Wang, 1990 and coded in \code{water.AW90}. Note that the \code{water.AW90} computes the static dielectric constant at given temperatures and pressures, so \code{water} contains routines for calculating its derivatives with respect to temperature and pressure. A keyword, \samp{test}, may be given as \code{property} to \code{water.IAPWS95}, which causes the printing of two tables, one representing the ideal-gas and residual contributions to the Helmholtz free energy (Table 6.6 of Wagner and Pruss, 2002), and a second with a selection of calculated properties for the liquid and vapor at the triple and boiling points.
+  \code{water.IAPWS95} provides an implementation of the IAPWS-95 formulation for properties (including pressure) calculated as a function of temperature and density. To compute the thermodynamic and electrostatic properties of water as a function of temperature and pressure using \code{water.IAPWS95}, \code{water} applies a root-finding function (\code{\link{uniroot}}) to determine the corresponding values of density. Electrostatic properties in this case are derived from values of the static dielectric constant (\code{epsilon}) calculated using equations given by Archer and Wang, 1990 and coded in \code{water.AW90}. Note that the \code{water.AW90} computes the static dielectric constant at given temperatures and pressures, so \code{water} contains routines for calculating its derivatives with respect to temperature and pressure.
 
   The \code{water.IAPWS95} function returns values of thermodynamic properties in specific units (per gram) which are converted to molar properties by \code{water}. The IAPWS-95 formulation follows the triple point convention used in engineering (values of internal energy and entropy are taken to be zero at the triple point). For compatibility with geochemical modeling conventions, the values of Gibbs energy, enthalpy and entropy output by \code{water.IAPWS95} are converted by \code{water} to the triple point reference state adopted in \code{SUPCRT92} (Johnson and Norton, 1991; Helgeson and Kirkham, 1974). Auxiliary equations to the IAPWS-95 formulation (Wagner and Pruss, 2002) are provided in \code{water.WP02}; the \code{property} for this function can be one of \samp{P.sigma} (saturation vapor pressure in MPa), \samp{dP.sigma.dT} (derivative of saturation vapor pressure with respect to temperature), or \samp{rho.liquid} or \samp{rho.vapor} (density of liquid or vapor in kg m\eqn{^{-3}}{^-3}).
+
+\code{idealgas.IAPWS95} and \code{residual.IAPWS95} are supporting functions to \code{water.IAPWS95} for calculating the ideal-gas and residual parts in the IAPWS-95 formulation.
+The value of \code{p} can be one of \samp{phi}, \samp{phi.delta}, \samp{phi.delta.delta}, \samp{phi.tau}, \samp{phi.tau.tau}, or \samp{phi.delta.tau}, to calculate the specific dimensionless Helmholtz free energy (\samp{phi}) or one of its respective derivatives.
 
 The stated temperature limits of validity of calculations in \code{water.SUPCRT92} are from the greater of 0 \eqn{^{\circ}}{°}C or the melting temperature at pressure, to 2250 \eqn{^{\circ}}{°}C (Johnson et al., 1992).
 For \code{water.IAPWS} the upper temperature limit of validity is 1000 \eqn{^{\circ}}{°}C, but extrapolation to much higher temperatures is possible (Wagner and Pruss, 2002).
@@ -102,8 +112,6 @@ The present functions do not check these limits and will attempt calculations fo
 T <- 500; rho <- 838.0235
 # calculate pressure 				
 P <- as.numeric(water.IAPWS95('P',T=T,rho=rho))
-# output table of test values
-water.IAPWS95('test')	
 # calculate dielectric constant 	
 water.AW90(T=T,rho=rho,P=P)	
 # find water density for this T, P		

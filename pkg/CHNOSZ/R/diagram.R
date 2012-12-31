@@ -376,7 +376,7 @@ diagram <- function(
       # default to heat colors if we're on screen, or to transparent if we're adding to a plot
       if(missing(fill)) {
         if(add) fill <- "transparent"
-        else if(any(grepl(names(dev.cur()), c("X11cairo", "quartz")))) fill <- "heat"
+        else if(any(grepl(names(dev.cur()), c("X11cairo", "quartz", "windows")))) fill <- "heat"
       }
       if(is.null(fill)) fill <- "transparent"
       else if(fill[1]=="rainbow") fill <- rainbow(ngroups)

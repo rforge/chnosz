@@ -1,6 +1,5 @@
 # CHNOSZ/wjd.R  
-# Gibbs energy minimization by steepest descent algorithm
-# of White et al., 1958; and supporting functions
+# Gibbs energy minimization and supporting functions
 # 20111117 jmd
 
 wjd <- function(
@@ -351,7 +350,8 @@ guess <- function(
   stop("no method found")
 }
 
-run.wjd <- function(ispecies, B=NULL, method="stoich", Y=run.guess(ispecies, B, method), P=1, T=25, imax=10, Gfrac=1e-7, tol=0.01) {
+run.wjd <- function(ispecies, B=NULL, method="stoich", Y=run.guess(ispecies, B, method),
+  P=1, T=25, nlambda=101, imax=10, Gfrac=1e-7, tol=0.01) {
   ### set up a Gibbs energy minimization
   ### using compositions and standard Gibbs energies of species
   ### from database in CHNOSZ  20120101 jmd
@@ -368,16 +368,16 @@ run.wjd <- function(ispecies, B=NULL, method="stoich", Y=run.guess(ispecies, B, 
     # the length of Y must be equal to number of species
     if(length(Y) != nrow(A)) stop("Y must have same length as number of species")
     # a single guess
-    w <- wjd(A, G0.RT, Y, P=P, imax=imax, Gfrac=Gfrac)
+    w <- wjd(A, G0.RT, Y, P=P, nlambda=nlambda, imax=imax, Gfrac=Gfrac)
   } else {
     # if we're using method "central" there is only one guess
     if(method=="central") {
-      w <- wjd(A, G0.RT, Y, P=P, imax=imax, Gfrac=Gfrac)
+      w <- wjd(A, G0.RT, Y, P=P, nlambda=nlambda, imax=imax, Gfrac=Gfrac)
     } else {
       # for method "stoich" loop over all the guesses created by run.guess
       Y <- Y[!is.na(Y)]
       for(i in 1:length(Y)) {
-        w <- wjd(A, G0.RT, Y[[i]], P=P, imax=imax, Gfrac=Gfrac)
+        w <- wjd(A, G0.RT, Y[[i]], P=P, nlambda=nlambda, imax=imax, Gfrac=Gfrac)
         if(is.near.equil(w, tol=tol)) {
           msgout("run.wjd: got within tolerance on initial solution ", i, " of ", length(Y), "\n")
           break
@@ -415,8 +415,8 @@ run.guess <- function(ispecies, B=NULL, method="stoich", iguess=NULL) {
   return(Y)
 }
 
-equil.potentials <- function(w) {
+equil.potentials <- function(w, tol=0.01, T=25) {
   ## return the average of the element.potentials, only if w is.near.equil  20120613
-  if(!is.near.equil(w)) return(NULL)
-  else return(colMeans(element.potentials(w)))
+  if(!is.near.equil(w, tol=tol)) return(NULL)
+  else return(colMeans(element.potentials(w)) * thermo$opt$R * convert(T, "K"))
 }

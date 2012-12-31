@@ -123,7 +123,7 @@ It can be used with the output from \code{diagram} for calculations in 2 dimensi
 }
 
 \section{Warning}{
-The validity of the maximum affinity method is premised on the calculation of the affinities of formation reactions at equal activities of the species of interest.
+The maximum affinity method is premised on the calculation of the affinities of formation reactions at equal activities of the species of interest.
 Then, the species with the highest affinity of formation, after normalization by the balancing coefficients, corresponds to the predominant species in an equilibrium calculation.
 The examples below \dQuote{work} because they are relatively simple - the balancing coefficients are unity or all the same value (aqueous aluminum example), or the species are solids with unit activities (the mineral examples).
 The examples shown for \code{\link{protein}s} elsewhere also take the balancing coefficients to unity, after normalizing by protein length.

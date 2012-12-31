@@ -15,7 +15,7 @@
  bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
  breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=true]
  {hyperref}
-\hypersetup{pdftitle={An Introduction to CHNOSZ},
+\hypersetup{pdftitle={An introduction to CHNOSZ},
  pdfauthor={Jeffrey M. Dick},
  citecolor=blue}
 \usepackage{breakurl}
@@ -37,7 +37,7 @@
 {\end{list}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
-%\VignetteIndexEntry{An Introduction to CHNOSZ}
+%\VignetteIndexEntry{An introduction to CHNOSZ}
 
 % so DOIs in bibliography show up as hyperlinks
 \newcommand*{\doi}[1]{\href{http://dx.doi.org/#1}{doi: #1}}

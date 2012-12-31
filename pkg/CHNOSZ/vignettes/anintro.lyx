@@ -4,7 +4,7 @@
 \begin_header
 \textclass article
 \begin_preamble
-%\VignetteIndexEntry{An Introduction to CHNOSZ}
+%\VignetteIndexEntry{An introduction to CHNOSZ}
 
 % so DOIs in bibliography show up as hyperlinks
 \newcommand*{\doi}[1]{\href{http://dx.doi.org/#1}{doi: #1}}
@@ -37,7 +37,7 @@ sweave
 \paperfontsize default
 \spacing single
 \use_hyperref true
-\pdf_title "An Introduction to CHNOSZ"
+\pdf_title "An introduction to CHNOSZ"
 \pdf_author "Jeffrey M. Dick"
 \pdf_bookmarks true
 \pdf_bookmarksnumbered false
@@ -128,7 +128,7 @@ About
 
 \begin_layout Standard
 \begin_inset Branch load
-status collapsed
+status open
 
 \begin_layout Standard
 This document will orient you to the basic functionality of CHNOSZ, a package
@@ -179,7 +179,7 @@ Outline of workflow
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Standard
 CHNOSZ is made up of a set of functions and supporting datasets.
@@ -314,7 +314,7 @@ Installing and loading CHNOSZ
 
 \begin_layout Standard
 \begin_inset Branch load
-status collapsed
+status open
 
 \begin_layout Standard
 If you have just installed R, and you are online, installing the CHNOSZ
@@ -334,7 +334,7 @@ Install packages from CRAN
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -363,7 +363,7 @@ Then load the CHNOSZ package to make its functions and data available in
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -400,7 +400,7 @@ Thermodynamic database
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Subsection
 
@@ -423,7 +423,7 @@ info()
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -466,7 +466,7 @@ info()
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -494,7 +494,7 @@ If you were instead interested in the properties of the gas, you could run:
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -530,7 +530,7 @@ info()
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -564,7 +564,7 @@ print(aadata)
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Subsection
 
@@ -584,7 +584,7 @@ thermo
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -632,7 +632,7 @@ browse.refs()
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -678,7 +678,7 @@ key "SH90"
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Subsection
 
@@ -694,7 +694,7 @@ Want to know what acids are in the database?
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -762,7 +762,7 @@ _
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -800,7 +800,7 @@ info()
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -833,7 +833,7 @@ Proteins
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Subsection
 
@@ -854,7 +854,7 @@ C and 1 bar of a protein using group additivity.
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -908,7 +908,7 @@ key "DLH06"
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -942,7 +942,7 @@ as.chemical.formula(pf)
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Subsection
 
@@ -976,7 +976,7 @@ target "http://www.uniprot.org"
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -1033,7 +1033,7 @@ Reaction properties
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Subsection
 A single species
@@ -1072,7 +1072,7 @@ info()
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -1169,7 +1169,7 @@ subcrt()
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -1219,7 +1219,7 @@ key "And05"
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -1331,7 +1331,7 @@ O+2CO
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -1372,7 +1372,7 @@ Basis species
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Subsection
 What are basis species?
@@ -1409,7 +1409,7 @@ doesn't
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -1461,7 +1461,7 @@ A limitation of CHNOSZ is that the number of basis species must be equal
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -1507,7 +1507,7 @@ Now that the basis species are defined, try the unbalanced reaction again.
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -1553,7 +1553,7 @@ subcrt()
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -1584,7 +1584,7 @@ What if you were interested in the thermodynamic properties of the reaction
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -1629,7 +1629,7 @@ thermo
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -1694,7 +1694,7 @@ subcrt()
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -1756,7 +1756,7 @@ If the protein is not found in CHNOSZ's own database, the amino acid composition
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -1879,7 +1879,7 @@ Activity diagrams
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Subsection
 Carbonate speciation (Bjerrum diagram)
@@ -1943,7 +1943,7 @@ zooms in
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -2063,7 +2063,7 @@ species of interest
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -2153,7 +2153,7 @@ affinity()
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -2197,7 +2197,7 @@ normalize=TRUE
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -2281,7 +2281,7 @@ equilibrate()
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -2387,7 +2387,7 @@ normalize=TRUE
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -2431,7 +2431,7 @@ C and 1000 bar.
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -2600,7 +2600,7 @@ Where to go from here
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Standard
 You can explore the package documentation through R's help system; just
@@ -2627,7 +2627,7 @@ diagram()
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -2663,7 +2663,7 @@ all
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -2699,7 +2699,7 @@ demos()
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -2732,7 +2732,7 @@ thermo
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -2769,7 +2769,7 @@ More activity diagrams
 
 \begin_layout Standard
 \begin_inset Branch more
-status collapsed
+status open
 
 \begin_layout Standard
 The following pages contain activity diagrams created with more complex

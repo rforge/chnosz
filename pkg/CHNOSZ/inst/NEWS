@@ -1,7 +1,7 @@
-CHANGES IN CHNOSZ 0.9.8-9 (2012-12-27)
+CHANGES IN CHNOSZ 0.9.8-10 (2012-12-31)
 --------------------------------------
 
-SIGNIFICANT USER-VISIBLE CHANGES:
+MAJOR CHANGES:
 
 - Split the functionality of diagram() into equilibrate() and diagram().
   Old workflow: a <- affinity(); d <- diagram(a) .
@@ -288,7 +288,7 @@ DOCUMENTATION AND VIGNETTES:
 
 - Add vignette wjd.Rnw to accompany the new function wjd().
 
-- Add TODO and CHECKLIST to the installation directory of the package.
+- Add a release CHECKLIST to the installation directory of the package.
 
 - Use UTF-8 degree symbol in second argument of \eqn{}{}.
 

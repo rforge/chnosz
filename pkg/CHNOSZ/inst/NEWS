@@ -1,5 +1,5 @@
-CHANGES IN CHNOSZ 0.9.8-10 (2012-12-31)
---------------------------------------
+CHANGES IN CHNOSZ 0.9-9 (2013-01-01)
+------------------------------------
 
 MAJOR CHANGES:
 
@@ -25,6 +25,8 @@ MAJOR CHANGES:
   There is some impact on the calculated Gibbs energies of charged
   species.
 
+NEW FUNCTIONS:
+
 - Add wjd() implementing the steepest descent algorithm for free energy
   minimization described by White et al., 1958. Also add supporting 
   functions element.potentials(), invertible.combs() for finding 
@@ -32,10 +34,8 @@ MAJOR CHANGES:
   is.near.equil(), and run.wjd().
 
 - Add guess() as another supporting function for wjd(), to produce 
-  initial guesses of moles of species satisfying elemental bulk 
-  composition, and a Suggests dependency on 'limSolve'.
-
-NEW FUNCTIONS:
+  initial guesses of moles of species satisfying a given elemental
+  bulk composition, and a Suggests dependency on 'limSolve'.
 
 - New function i2A() for generating a stoichiometric matrix from indices
   of species in the thermodynamic database.
@@ -55,8 +55,8 @@ CHANGES TO ARGUMENTS:
 
 - In equilibrate(), the argument 'logact' (inherited from diagram()),
   specifying the logarithm of activity of the balanced quantity, has
-  been renamed to 'loga.balance'. The function now has 'loga.equil'
-  in its result, containing the equilibrium logarithms of activities
+  been renamed to 'loga.balance'. In the result, rename 'logact' to
+  'loga.equil', containing the equilibrium logarithms of activities
   of the species of interest.
 
 - The 'residue' argument of diagram() has been changed to 'normalize'
@@ -163,7 +163,7 @@ REFACTORING OF FUNCTIONS:
 
 - get.expr(), for reading abundances or expression levels of proteins
   from variously formatted data files, is renamed to read.expr(), with
-  retrieval of amino acid compositions of proteins split into more.aa().
+  retrieval of amino acid compositions of proteins moved to more.aa().
 
 - Replace ionize() with a completely rewritten and much easier to use
   ionize.aa() for calculating the additive ionization properties of 
@@ -290,7 +290,8 @@ DOCUMENTATION AND VIGNETTES:
 
 - Add a release CHECKLIST to the installation directory of the package.
 
-- Use UTF-8 degree symbol in second argument of \eqn{}{}.
+- Replace "degrees" with UTF-8 degree symbol in second argument of
+  \eqn{}{}; add \encoding{UTF-8} to affected Rd files.
 
 OTHER CHANGES:
 
@@ -309,8 +310,8 @@ OTHER CHANGES:
 
 - In c2s(), use 'collapse' argument of paste() instead of a for loop.
 
-- Change R dependency to R >= 2.12.0, for useDynLib in NAMESPACE to
-  find the shared library on Windows.
+- Change R dependency to R >= 2.12.0, required for useDynLib in
+  NAMESPACE to find the shared library on Windows.
 
 CHANGES IN CHNOSZ 0.9-7 (2011-08-23)
 ------------------------------------

@@ -102,21 +102,6 @@ Jeffrey M.
  Dick
 \end_layout
 
-\begin_layout Standard
-\begin_inset Branch stuff
-status open
-
-\begin_layout Abstract
-The purpose of this document is to describe using a specific example the
- theoretical basis for the calculations of equilibrium activities of species
- in the CHNOSZ software package.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Section
 Background; terminology
 \end_layout
@@ -2125,7 +2110,8 @@ Take-home: when making predominance diagrams, confidently use the maximum
 \family typewriter
 normalize=TRUE
 \family default
- (as done here for proteins) otherwise it is at your own risk.
+ (as done here for proteins); otherwise it is advisable to compute the equilibri
+um distribution.
 \end_layout
 
 \end_inset

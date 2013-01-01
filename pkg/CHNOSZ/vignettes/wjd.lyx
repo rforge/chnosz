@@ -144,8 +144,7 @@ wjd()
  in the CHNOSZ documentation has details of the implementation that are
  not covered in this vignette.
  The functions demonstrated here are not intended for aqueous solutions
- or heterogeneous phase equilibria, which have been the subject of other
- reviews 
+ or heterogeneous phase equilibria, which are covered in some reviews 
 \begin_inset CommandInset citation
 LatexCommand citep
 before "e.g."
@@ -222,7 +221,7 @@ Gibbs energy
 \begin_inset Quotes erd
 \end_inset
 
- and corresponding notation is used here.
+ and corresponding notation are used here.
 \end_layout
 
 \begin_layout Standard
@@ -1442,8 +1441,8 @@ sapply(iYs, function(i) {
 
 \end_inset
 
-We're back to passing all of the equilibrium tests (well, almost) based
- on uniformity of chemical potentials of the elements.
+We're back to passing all but one of the equilibrium tests based on uniformity
+ of chemical potentials of the elements.
  What are the standard deviations of the resulting species abundances?
 \end_layout
 
@@ -1831,7 +1830,7 @@ not near equilibrium
 \end_inset
 
  message, but overall it seems well behaved.
- And, as expected, it is strikingly similar to Fig.
+ And, as expected, it is similar to Fig.
  2 of 
 \begin_inset CommandInset citation
 LatexCommand citet
@@ -1839,8 +1838,8 @@ key "DLE64"
 
 \end_inset
 
-, with a nearly asymptotic crossing of curves at about 28% carbon, together
- with an increase in aromatic compounds (e.g.
+, with a major crossing of curves at about 28% carbon, together with an
+ increase in aromatic compounds (e.g.
  naphthalene, anthracene) going toward higher carbon content.
  Unlike the figure in 
 \begin_inset CommandInset citation

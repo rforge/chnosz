@@ -16,12 +16,6 @@ release checklist for CHNOSZ
   co <- check.obigt()
   write.csv(co, "obigt_check.csv", row.names=FALSE, na="")
 
-- when creating vignettes use a vig.bib that has curly braces around capital letters
-
-- remove deugging <<- assignments inside functions
-
-- remove debugging print()s (usually placed in first column)
-
 - especially on Windows:  
   data files are uncompressed on installation? (from BuildResaveData: no)
   anim.*() produce pngs / movies (ImageMagick dependency)?

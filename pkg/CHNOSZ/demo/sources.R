@@ -17,7 +17,9 @@ obigt.source <- obigt.source[!is.na(obigt.source)]
 # sources of protein compositions
 protein.source <- thermo$protein$ref
 # sources of stress response proteins
-stress.source <- as.character(thermo$stress[2,])
+stressfile <- system.file("extdata/abundance/stress.csv", package="CHNOSZ")
+stressdat <- read.csv(stressfile, check.names=FALSE, as.is=TRUE)
+stress.source <- as.character(stressdat[2,])
 # if the sources are all accounted for 
 # these all produce character(0)
 print("missing these sources for elemental properties:")

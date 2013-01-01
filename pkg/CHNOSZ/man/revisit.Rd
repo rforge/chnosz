@@ -133,7 +133,7 @@ t2 <- describe.basis(ibasis=5)
 mtitle(c(t1, t2))
 # chemical affinities as a function of two other variables
 a <- affinity(NH3=c(-10, 10, 40), T=c(0, 80, 40))
-diagram(a)
+diagram(a, fill="heat")
 # show a legend with input constraints
 db <- describe.basis(ibasis=5)
 legend("bottomright", db)
@@ -180,7 +180,7 @@ mtitle(c("CV of equilibrium activities of", expr))
 # calculate affinities in logfO2-logaH2O space
 a <- affinity(O2=c(-85,-65), H2O=c(-10,0), iprotein=ip)
 # show the predominances
-diagram(a, normalize=TRUE)
+diagram(a, normalize=TRUE, fill="heat")
 # calculate the equilibrium activities
 e <- equilibrate(a, loga.balance=0, normalize=TRUE)
 # show the coefficient of variation

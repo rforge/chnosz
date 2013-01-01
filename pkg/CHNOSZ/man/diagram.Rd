@@ -219,7 +219,7 @@ species(c("Al+3", "Al(OH)4-", "AlOH+2", "Al(OH)2+", "Al(OH)3",
   "AlF+2", "AlF2+", "AlF3", "AlF4-", "Al(OH)2F2-", "Al(OH)2F",
   "AlOHF2"), "aq")
 a <- affinity(pH=c(0, 10), "F-"=c(-1, -9), T=200)
-diagram(a)
+diagram(a, fill="heat")
 title(main=paste("Aqueous aluminium species, T=200 C, P=Psat\n",
   "after Tagirov and Schott, 2001"))
 # restore thermodynamic database to default
@@ -260,7 +260,7 @@ add.obigt()
 species(c("oxaloacetate-2", "malate-2", "fumarate-2",
   "a-ketoglutarate-2", "citrate-3"))
 a <- affinity(O2=c(-80, -60), H2O=c(-5, 5))
-diagram(a, dotted=1)
+diagram(a, dotted=1, fill="heat")
 e <- equilibrate(a)
 diagram(e, add=TRUE, names=NULL, col="purple")
 e <- equilibrate(a, normalize=TRUE)

@@ -3803,7 +3803,7 @@ findit
 findit()
 \family default
  performs a gridded search, on successively smaller hypercubes, for the
- conditions that maximize one of the statistics returned by 
+ conditions that optimize one of the statistics returned by 
 \family typewriter
 revisit()
 \family default
@@ -4014,8 +4014,8 @@ findit()
 \family default
 .
  Note that the results of a high-dimensional optimization such as this one
- may be bogus if the resolution is not high enough, or the initial hypercube
- is too small.
+ may be misleading if the resolution is not high enough, or the initial
+ hypercube is too small.
  Even after a successful simulation, it remains a matter of discussion what
  the optimized chemical activities of the basis species and the amino acids
  signify.

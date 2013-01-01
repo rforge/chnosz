@@ -90,8 +90,8 @@ entropy <- function(formula) {
   # calculate the standard molal entropy at Tref of elements in chemical formulas
   formula <- i2A(get.formula(formula))
   ielem <- match(colnames(formula), thermo$element$element)
-  if(any(is.na(ielem))) stop(paste("element(s)",
-    colnames(formula)[is.na(ielem)], "not available in thermo$element"))
+  if(any(is.na(ielem))) warning(paste("element(s)",
+    paste(colnames(formula)[is.na(ielem)], collapse=" "), "not available in thermo$element"))
   entropy <- as.numeric( formula %*% (thermo$element$s[ielem] / thermo$element$n[ielem]) )
   return(entropy)
 }

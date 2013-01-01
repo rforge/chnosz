@@ -40,12 +40,6 @@
 \author{Jeffrey M. Dick}
 
 \maketitle
-\begin{abstract}
-The purpose of this document is to describe using a specific example
-the theoretical basis for the calculations of equilibrium activities
-of species in the CHNOSZ software package.\end{abstract}
-
-
 
 \section{Background; terminology}
 
@@ -579,7 +573,8 @@ dE <- diagram(e, main="equilibrium activities")
 
 Take-home: when making predominance diagrams, confidently use the
 maximum affinity method when \texttt{normalize=TRUE} (as done here
-for proteins) otherwise it is at your own risk.
+for proteins); otherwise it is advisable to compute the equilibrium
+distribution.
 
 
 \section{Document Information}

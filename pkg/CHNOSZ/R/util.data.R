@@ -181,7 +181,9 @@ browse.refs <- function(key=NULL) {
     npr <- sapply(x$key, function(x) length(which(thermo$protein$ref==x)) )
     npr[npr==0] <- ""
     # count the times each source is listed in stress.csv
-    nst <- sapply(x$key, function(x) length(which(thermo$stress[2,]==x)) )
+    stressfile <- system.file("extdata/abundance/stress.csv", package="CHNOSZ")
+    stressdat <- read.csv(stressfile, check.names=FALSE, as.is=TRUE)
+    nst <- sapply(x$key, function(x) length(which(stressdat[2,]==x)) )
     nst[nst==0] <- ""
     # append the counts to the table to be shown
     x <- c(x,list(ns1=ns1,ns2=ns2,npr=npr,nst=nst))
@@ -357,8 +359,9 @@ checkGHS <- function(ghs, ret.diff=FALSE) {
   # or NA if the difference is within the tolerance
   # 20110808 jmd
   # get calculated value based on H and S
-  if(is.na(ghs$formula)) {
-    msgout("checkGHS: formula of ", ghs$name, "(", ghs$state, ") is NA\n")
+  ina <- is.na(ghs$formula)
+  if(any(ina)) {
+    msgout("checkGHS: formula of ", ghs$name[ina], "(", ghs$state[ina], ") is NA\n")
     Se <- NA
   } else Se <- entropy(as.character(ghs$formula))
   refval <- ghs[,8]
@@ -430,9 +433,9 @@ check.obigt <- function() {
   out2 <- checkfun("OBIGT-2")
   out <- rbind(out1,out2)
   # set differences within a tolerance to NA
-  out$DCp[out$DCp < 1] <- NA
-  out$DV[out$DV < 1] <- NA
-  out$DG[out$DG < 500] <- NA
+  out$DCp[abs(out$DCp) < 1] <- NA
+  out$DV[abs(out$DV) < 1] <- NA
+  out$DG[abs(out$DG) < 500] <- NA
   # take out species where all reported differences are NA
   ina <- is.na(out$DCp) & is.na(out$DV) & is.na(out$DG)
   out <- out[!ina,]

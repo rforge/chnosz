@@ -52,7 +52,7 @@ some examples of its usage. The help page for \texttt{wjd()} in the
 CHNOSZ documentation has details of the implementation that are not
 covered in this vignette. The functions demonstrated here are not
 intended for aqueous solutions or heterogeneous phase equilibria,
-which have been the subject of other reviews \citep[e.g.][]{NPW+79}.
+which are covered in some reviews \citep[e.g.][]{NPW+79}.
 
 The arguments of \texttt{wjd()} have default values to simulate the
 example problem given by \citealp{WJD58}. In their words, ``The
@@ -65,7 +65,7 @@ the arguments to \texttt{wjd()}. Instead, the standard Gibbs energies
 of the species, at the given temperature, are provided in dimensionless
 form, i.e. $\Delta G^{\circ}/RT$. Note that White et al., 1958 use
 the terminology ``free energy'' and the notation $F^{\circ}$. The
-term ``Gibbs energy'' and corresponding notation is used here.
+term ``Gibbs energy'' and corresponding notation are used here.
 
 <<libraryCHNOSZ, echo=FALSE>>=
 library(CHNOSZ)
@@ -347,9 +347,9 @@ sapply(iYs, function(i) {
   is.near.equil(wjd(Y=Ys[[i]], Gfrac=1e-9), tol=0.0001)
 })
 @
-We're back to passing all of the equilibrium tests (well, almost)
-based on uniformity of chemical potentials of the elements. What are
-the standard deviations of the resulting species abundances?
+We're back to passing all but one of the equilibrium tests based on
+uniformity of chemical potentials of the elements. What are the standard
+deviations of the resulting species abundances?
 
 <<sd.species>>=
 Xs <- sapply(iYs, function(i) wjd(Y=Ys[[i]], Gfrac=1e-9)$X)
@@ -431,14 +431,13 @@ text(7, log10(Xs[, 1]), dlen$formula, adj=1)
 
 
 We triggered a single ``not near equilibrium'' message, but overall
-it seems well behaved. And, as expected, it is strikingly similar
-to Fig. 2 of \citet{DLE64}, with a nearly asymptotic crossing of
-curves at about 28\% carbon, together with an increase in aromatic
-compounds (e.g. naphthalene, anthracene) going toward higher carbon
-content. Unlike the figure in \citet{DLE64}, there appears to be
-a second major crossing of curves at about 43\% carbon, corresponding
-to a rise in CO. (For a higher resolution, try setting \texttt{xCs
-<- seq(8, 47, 1)}.)
+it seems well behaved. And, as expected, it is similar to Fig. 2 of
+\citet{DLE64}, with a major crossing of curves at about 28\% carbon,
+together with an increase in aromatic compounds (e.g. naphthalene,
+anthracene) going toward higher carbon content. Unlike the figure
+in \citet{DLE64}, there appears to be a second major crossing of
+curves at about 43\% carbon, corresponding to a rise in CO. (For a
+higher resolution, try setting \texttt{xCs <- seq(8, 47, 1)}.)
 
 
 \section{Running Down: Using a Thermodynamic Database}

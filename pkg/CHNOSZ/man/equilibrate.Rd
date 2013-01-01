@@ -9,7 +9,8 @@ Calculate equilibrium chemical activities of species from the affinities of form
 }
 
 \usage{
-  equilibrate(aout, balance=NULL, loga.balance=NULL, normalize=FALSE, ispecies=1:length(aout$values))
+  equilibrate(aout, balance=NULL, loga.balance=NULL, normalize=FALSE,
+    ispecies=1:length(aout$values))
   balance(aout, balance=NULL)
   equil.boltzmann(Astar, n.balance, loga.balance)
   equil.reaction(Astar, n.balance, loga.balance)

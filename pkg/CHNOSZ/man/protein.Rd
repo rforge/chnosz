@@ -179,7 +179,7 @@ logact <- affinity(return.buffer=TRUE, T=25)
 basis(c("CO2", "NH3", "H2S", "O2"), as.numeric(logact))
 species(paste(proteins, "ECOLI", sep="_"))
 a <- affinity(pH=c(5, 10), T=c(10, 40))
-diagram(a, normalize=FALSE)
+diagram(a, normalize=FALSE, fill="heat")
 title(main="Relative stabilities of sigma factors in E. coli")
 ptext <- c(describe.property("T", 25), 
   describe.basis(ibasis=c(2, 6), oneline=TRUE))

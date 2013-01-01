@@ -1032,7 +1032,7 @@ of the amino acids have a more even distribution?
 \subsection{findit}
 
 \texttt{findit()} performs a gridded search, on successively smaller
-hypercubes, for the conditions that maximize one of the statistics
+hypercubes, for the conditions that optimize one of the statistics
 returned by \texttt{revisit()}. In this example containing five species,
 with \texttt{balance=1}, four compositional variables are the maximum
 that can be considered ($\mathrm{NH_{3}}$ is excluded because it
@@ -1081,7 +1081,7 @@ A more complete analysis might include more amino acids, different
 balancing constraints or chemical activity (or even temperature) limits,
 and would probably increase \texttt{niter} and/or \texttt{res} in
 \texttt{findit()}. Note that the results of a high-dimensional optimization
-such as this one may be bogus if the resolution is not high enough,
+such as this one may be misleading if the resolution is not high enough,
 or the initial hypercube is too small. Even after a successful simulation,
 it remains a matter of discussion what the optimized chemical activities
 of the basis species and the amino acids signify.

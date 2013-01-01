@@ -70,7 +70,7 @@ Simulate a mass transfer process such as mineral weathering or sequential format
 basis(c("Al+3", "H4SiO4", "K+", "H2O", "H+", "O2"), c(0, -6, -6, 0, 0, 0))
 species(c("k-feldspar", "muscovite", "pyrophyllite", "kaolinite", "gibbsite"))
 a <- affinity(H4SiO4=c(-6, -2), "K+"=c(-3, 8))
-diagram(a)
+diagram(a, fill="heat")
 basis("pH", 4)
 species(1:5, c(-4, rep(-999, 4)))
 tr <- transfer(550, dmode="coupled", plot=c(2, 3), devmax=0.2)

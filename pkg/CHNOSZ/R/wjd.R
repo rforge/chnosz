@@ -163,7 +163,7 @@ wjd <- function(
     # second constraint is that the derivative of free energy 
     # doesn't go positive ... Eq. 20
     d.f.Y <- function(lambda,Y,D,C) {
-      d.f.Y <- sum(D * C + log( (Y + lambda * D) / (sum(Y) + lambda * sum(D)) ))
+      d.f.Y <- sum(D * (C + log( (Y + lambda * D) / (sum(Y) + lambda * sum(D)) )))
       return(d.f.Y)
     }
     # what are the free energy derivatives

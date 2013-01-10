@@ -105,20 +105,21 @@ niter
 # dropping elements with zero stoichiometry
 f1 <- as.chemical.formula(w$A[oX[1],w$A[oX[1],]!=0])
 f2 <- as.chemical.formula(w$A[oX[2],w$A[oX[2],]!=0])
+f4 <- as.chemical.formula(w$A[oX[4],w$A[oX[4],]!=0])
 @
 We find that \Sexpr{f1} and \Sexpr{f2} are the most abundant species,
-after \Sexpr{niter} iterations. 
+after \Sexpr{niter} iterations. The fourth most-abundant species,
+\Sexpr{f4}, is discussed below.
 
 Let's track their mole fractions through the iterations. Write a function
-that returns the mole fractions of these two species, after a specified
-number of iterations.
+that returns the mole fractions of a species, after a specified number
+of iterations.
 
 <<iterfun>>=
-iterfun <- function(imax) {
+iterfun <- function(imax, i) {
   w <- wjd(imax=imax)
-  x1 <- w$X[oX[1]]/sum(w$X)
-  x2 <- w$X[oX[2]]/sum(w$X)
-  return(list(x1=x1, x2=x2))
+  x <- w$X[i]/sum(w$X)
+  return(x)
 }
 @
 Then apply the function over the different numbers of iterations,
@@ -126,26 +127,33 @@ from 0 (initial conditions) to \Sexpr{niter}, and plot the values.
 
 \setkeys{Gin}{width=1.0\textwidth}
 <<iterplot, fig=TRUE, height=3>>=
-sa <- sapply(0:niter, iterfun)
 par(mfrow=c(1, 2))
-plot(0:niter, sa[1, ], xlab="iteration", ylab=paste("x", f1))
-plot(0:niter, sa[2, ], xlab="iteration", ylab=paste("x", f2))
+sa <- sapply(0:niter, iterfun, i=oX[1])
+plot(0:niter, sa, xlab="iteration", ylab=paste("x", f1))
+sa <- sapply(0:niter, iterfun, i=oX[4])
+plot(0:niter, sa, xlab="iteration", ylab=paste("x", f4))
 @
 \setkeys{Gin}{width=1.0\textwidth}
 
 
-A bit of winding: the mole fractions of \Sexpr{f1} and \Sexpr{f2}
-increase up to the third iteration, but at the fourth (and less so
-for the fifth and sixth), their mole fractions decrease. This behavior
-is consistent with a decrease in Gibbs energy at \emph{every} iteration;
-that can be verified by inspecting the values in the \Sexpr{niter}-iteration
+A bit of winding: the mole fraction of \Sexpr{f1} generally increases
+(there is a very slight decrease at the fifth iteration), but the
+mole fraction of \Sexpr{f4} increases in the first two iterations,
+then decreases in following ones. This behavior is consistent with
+a decrease in Gibbs energy at \emph{every} iteration; that can be
+verified by inspecting the values in the \Sexpr{niter}-iteration
 result:
 
 <<Gdown>>=
-diff(w$F.Y)
+all(diff(w$F.Y) < 0)
 @
 The decrease in Gibbs energy becomes smaller with every iteration,
-as an equilibrium distribution of species is approached.
+as an equilibrium distribution of species is approached:
+
+<<Gdownslower>>=
+identical(diff(w$F.Y), sort(diff(w$F.Y)))
+@
+
 
 
 \section{Is it near the bottom? Testing for equilibrium}
@@ -215,13 +223,13 @@ potentials of the elements calculated from the different eligible
 species combinations. It returns TRUE if the maximum difference for
 any element is below $\mu/RT=0.01$, but this limit can be changed
 through the \texttt{tol} argument to the function. With the default
-setting, \texttt{is.near.equil()} does pass only 6-iteration result,
-but by reducing the tolerance, the tests can be made to fail:
+setting, \texttt{is.near.equil()} does pass the \Sexpr{niter}-iteration
+result, but by reducing the tolerance, the tests can be made to fail:
 
 <<w_ep_plot>>=
-is.near.equil(w3)
-is.near.equil(w)
-is.near.equil(w, tol=0.0001)
+is.near.equil(w3) # 3 iterations
+is.near.equil(w)  # 7 iterations
+is.near.equil(w, tol=0.00001)
 @
 
 

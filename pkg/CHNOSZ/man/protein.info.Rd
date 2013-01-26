@@ -55,23 +55,49 @@ If \code{normalize} is TRUE, the coefficients on the basis species are divided b
 }
 
 \seealso{
-  \code{\link{ionize.aa}} for an example that compares \code{MP90.cp} with heat capacities calculated in CHNOSZ at different temperatures and pHs. The primary function for interacting with the database of amino acid compositions of proteins is documented separately (\code{\link{iprotein}}) and examples of relative stability calculations can be found on the \code{\link{protein}} help page.
+  \code{\link{ionize.aa}} for an example that compares \code{MP90.cp} with heat capacities calculated in CHNOSZ at different temperatures and pHs. The functions for interacting with the database of amino acid compositions of proteins are documented at \code{\link{iprotein}}, and examples of relative stability calculations can be found on the \code{\link{protein}} help page.
 }
 
 \examples{\dontshow{data(thermo)}
-## protein length and formula
-# first ten proteins in thermo$protein
-protein.length(1:10)
-# these are all the same
+## example for chicken lysozyme C
+# index in thermo$protein
+ip <- iprotein("LYSC_CHICK")
+# amino acid composition
+ip2aa(ip)
+# length and chemical formula
+protein.length(ip)
+protein.formula(ip)
+# formula, Gibbs energy, average oxidation state of carbon
+protein.info(ip)
+# as above, now with charge and Gibbs energy of ionized protein at pH 7
+basis("CHNOS+")
+protein.info(ip)
+# group additivity for thermodynamic properties and HKF equation-of-state
+# parameters of non-ionized protein
+aa2eos(ip2aa(ip))
+# calculation of standard thermodynamic properties
+# (subcrt uses the species name, not ip)
+subcrt("LYSC_CHICK")
+# affinity calculation, protein identified by ip
+affinity(iprotein=ip)
+# affinity calculation, protein loaded as a species
+species("LYSC_CHICK")
+affinity()
+# NB: subcrt() only shows the properties of the non-ionized
+# protein, but affinity() uses the properties of the ionized
+# protein if the basis species have H+
+
+## these are all the same
 protein.formula("P53_PIG")
 protein.formula(iprotein("P53_PIG"))
 protein.formula(ip2aa(iprotein("P53_PIG")))
-# the formula of a pentapeptide, written in a line
-as.chemical.formula(protein.formula(seq2aa("a_test", "ANLSG")))
 
 ## steps in calculation of chemical activities of two proteins
 ## in metastable equilibrium, after Dick and Shock, 2011
 protein <- iprotein(c("CSG_METVO", "CSG_METJA"))
+# clear out amino acid residues loaded by the example above
+# ( in affinity(iprotein=ip) )
+data(thermo)
 # load supplemental database to use "old" [Met] sidechain group
 add.obigt()
 # set up the basis species to those used in DS11

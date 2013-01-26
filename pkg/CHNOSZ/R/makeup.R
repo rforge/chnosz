@@ -145,12 +145,7 @@ count.elements <- function(formula) {
   # stop if it doesn't look like a chemical formula 
   validateRegex <- paste("^(", elementRegex, ")+$", sep="")
   if(length(grep(validateRegex, formula)) == 0)
-    stop(paste("'",formula,"' is not a simple chemical formula; ",
-    "the formula must start with an elemental symbol, and ",
-    "all elemental symbols must start with an uppercase letter ",
-    "and be followed by another elemental symbol, a number ",
-    "(possibly fractional, possibly signed), or nothing. ",
-    sep="", collapse=""))
+    stop(paste("'",formula,"' is not a simple chemical formula", sep="", collapse="\n"))
   # where to put the output
   element <- character()
   count <- numeric()

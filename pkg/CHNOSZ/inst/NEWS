@@ -1,7 +1,16 @@
-CHANGES IN CHNOSZ 0.9-9.1 (2013-01-10)
+CHANGES IN CHNOSZ 0.9-9.2 (2013-01-26)
 --------------------------------------
 
 - Fix calculation of free energy derivative in wjd().
+
+- Add 'stay.normal' argument to equilibrate().
+
+- If obigt$G is available, hkf() returns this value, not NA, at Tr, Pr.
+
+- mod.obigt() defaults to taking chemical formula from the species name,
+  and checks for validity of formula.
+
+- Add example for LYSC_CHICK to protein.info.Rd.
 
 CHANGES IN CHNOSZ 0.9-9 (2013-01-01)
 ------------------------------------

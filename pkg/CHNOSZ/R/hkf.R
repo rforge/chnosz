@@ -105,6 +105,8 @@ hkf <- function(property=NULL,T=298.15,P=1,ghs=NULL,eos=NULL,contrib=c('n','s','
           p.a <- EOS$a1*(P-Pr) + EOS$a2*log((Psi+P)/(Psi+Pr)) + 
             (EOS$a3*(P-Pr) + EOS$a4*log((Psi+P)/(Psi+Pr)))/(T-Theta)
           p <- p.c + p.a
+          # at Tr,Pr, if the origination contribution is not NA, ensure the solvation contribution is 0, not NA
+          if(!is.na(GHS$G)) p[T==Tr & P==Pr] <- 0
         # nonsolvation cp v kt e equations
         } else if(prop=='cp') {
           p <- EOS$c1 + EOS$c2 * ( T - Theta ) ^ (-2)        
@@ -122,8 +124,11 @@ hkf <- function(property=NULL,T=298.15,P=1,ghs=NULL,eos=NULL,contrib=c('n','s','
       }
       if( icontrib=="s") {
         # solvation ghs equations
-        if(prop=="g") 
+        if(prop=="g") {
           p <- -omega.PT*(ZBorn+1) + omega*(ZBorn.PrTr+1) + omega*H2O.PrTr$Y*(T-Tr)
+          # at Tr,Pr, if the origination contribution is not NA, ensure the solvation contribution is 0, not NA
+          if(!is.na(GHS$G)) p[T==Tr & P==Pr] <- 0
+        }
         if(prop=="h") 
           p <- -omega.PT*(ZBorn+1) + omega.PT*T*H2O.PT$Y + T*(ZBorn+1)*dwdT +
                  omega*(ZBorn.PrTr+1) - omega*Tr*H2O.PrTr$Y
@@ -141,15 +146,18 @@ hkf <- function(property=NULL,T=298.15,P=1,ghs=NULL,eos=NULL,contrib=c('n','s','
       }
       if( icontrib=='o') {
         # origination ghs equations
-        if(prop=='g') p <- GHS$G - GHS$S * (T-Tr)
+        if(prop=='g') {
+          p <- GHS$G - GHS$S * (T-Tr)
+          # don't inherit NA from GHS$S at Tr
+          p[T==Tr] <- GHS$G
+        }
         else if(prop=='h') p <- GHS$H
         else if(prop=='s') p <- GHS$S
         # origination eos equations: senseless
         else if(prop %in% tolower(props)) p <- 0 * T
       }
-      p <- rep(p,length.out=length(hkf.p))
-      ip <- 1:length(p)
-      hkf.p[ip] <- hkf.p[ip] + p[ip]
+      # accumulate the contribution
+      hkf.p <- hkf.p + p
     }
     wnew <- data.frame(hkf.p)
     if(i>1) w <- cbind(w,wnew) else w <- wnew

@@ -56,8 +56,17 @@ mod.obigt <- function(...) {
     newrows[] <- NA
     # put in a default state
     newrows$state <- thermo$opt$state
+    # the formula defaults to the name
+    newrows$formula <- args$name[inew]
     # fill in the columns
     newrows[, icol] <- args[inew, ]
+    # now check the formulas
+    e <- tryCatch(makeup(newrows$formula), error=function(e) e)
+    if(inherits(e, "error")) {
+      warning("please supply a valid chemical formula as the species name or in the 'formula' argument")
+      # transmit the error from makeup
+      stop(e)
+    }
     # assign to thermo$obigt
     thermo$obigt <<- rbind(thermo$obigt, newrows)
     rownames(thermo$obigt) <<- NULL

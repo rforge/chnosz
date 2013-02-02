@@ -119,7 +119,7 @@ findit <- function(lims=list(), objective="CV", niter=NULL, iprotein=NULL, plot.
     a <- do.call(affinity,aargs)
     # then calculate the values of the objective function
     e <- equilibrate(a, balance=balance, loga.balance=loga.balance, normalize=normalize)
-    dd <- revisit(e$loga.equil, objective, loga2=loga2)$H
+    dd <- revisit(e, objective, loga2=loga2, plot.it=FALSE)$H
     # coordinates of the extreme value (take only the first set of coords)
     iopt <- optimal.index(dd, objective)[1,, drop=FALSE]
     # the extreme value

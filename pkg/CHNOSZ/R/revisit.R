@@ -120,11 +120,15 @@ revisit <- function(eout, objective = "CV", loga2 = NULL, ispecies = NULL,
   # construct array of values: Astar (for DGtr)
   if(any(grepl("Astar", objargs))) {
     Astar <- eout$Astar[ispecies]
+eout <<- eout
+    # one row for each condition
     Astar <- sapply(Astar, as.vector)
+    # for 0-D case we want a 1-row matrix (sapply simplifies to vector)
+    if(nd==0) Astar <- t(Astar)
   }
 
   # calculation of the objective function
-  # "H" is a remnant of the first target, shannon entropy
+  # the symbol "H" is reminiscent of the first implemented target, shannon entropy
   if(length(objargs) == 1) H <- objfun(a1)
   else if(length(objargs) == 2) H <- objfun(a1, a2)
   else if(length(objargs) == 3) H <- objfun(a1, a2, Astar)
@@ -161,7 +165,7 @@ revisit <- function(eout, objective = "CV", loga2 = NULL, ispecies = NULL,
         # add a 1:1 line
         lines(range(loga2), range(loga2), col="grey")
         # add a lowess line
-        ls <- loess.smooth(loga2, loga1)
+        ls <- loess.smooth(loga2, loga1, family="gaussian")
         lines(ls$x, ls$y, col="red")
       } else plot.it <- FALSE
       # add a title

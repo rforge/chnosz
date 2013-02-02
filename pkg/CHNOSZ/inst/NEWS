@@ -12,6 +12,8 @@ CHANGES IN CHNOSZ 0.9-9.2 (2013-01-26)
 
 - Add example for LYSC_CHICK to protein.info.Rd.
 
+- Enable DGtr in findit(), 1-D DGtr plot in revisit().
+
 CHANGES IN CHNOSZ 0.9-9 (2013-01-01)
 ------------------------------------
 

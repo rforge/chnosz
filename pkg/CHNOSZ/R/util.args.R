@@ -6,7 +6,6 @@ eos.args <- function(eos='',property=NULL,T=NULL,P=NULL) {
   props <- c('G','H','S','Cp','V','kT','E')
   if(eos=='water') {
     # things we also get with water
-    #props <- c(colnames(thermo$water)[4:length(colnames(thermo$water))])
     props <- c(props,'A','U','Cv','Psat','rho','Q','X','Y','epsilon','w')
     # they keep on coming: things we also get with SUPCRT92
     if(length(agrep(tolower(thermo$opt$water),'supcrt9',max.distance=0.3))>0)

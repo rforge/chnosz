@@ -180,6 +180,7 @@ subcrt <- function(species, coeff=1, state=NULL, property=c('logK','G','H','S','
   }
   if(length(P)==1) {
     if(can.be.numeric(P)) P.text <- paste(round(as.numeric(P),2),'bar')
+    else P.text <- "P"
   } else P.text <- 'P'
   #} else P.text <- paste(length(P),'values of P')
   if(identical(P[[1]],'Psat')) P.text <- P

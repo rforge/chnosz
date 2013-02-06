@@ -13,8 +13,6 @@ thermo <- list(
   groups = read.csv("groups.csv", row.names=1, check.names=FALSE),
   basis = NULL,
   species = NULL,
-  water = NULL,
-  water2 = NULL,
   Psat = NULL,
   opar = NULL
 )

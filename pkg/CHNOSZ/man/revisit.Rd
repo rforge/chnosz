@@ -130,13 +130,13 @@ t1 <- paste("minimum coeff of variation,", mincv, "at:")
 # the logfO2 that minimized the C.V.
 basis("O2", r$x)
 t2 <- describe.basis(ibasis=5)
-mtitle(c(t1, t2))
+mtitle(c(t1, as.expression(t2)))
 # chemical affinities as a function of two other variables
 a <- affinity(NH3=c(-10, 10, 40), T=c(0, 80, 40))
 diagram(a, fill="heat")
 # show a legend with input constraints
 db <- describe.basis(ibasis=5)
-legend("bottomright", db)
+legend("bottomright", as.expression(db))
 # contour plot of the CV
 e <- equilibrate(a)
 r <- revisit(e)

@@ -120,7 +120,7 @@ a <- affinity(O2=c(-90, -75))
 e <- equilibrate(a, normalize=TRUE)
 diagram(e, add=TRUE, col="blue")
 legend("bottomleft", col=c(NA, "green", "blue"), lty=1,
-  legend=c(axis.label("H2"), -3, -20))
+  legend=c(as.expression(axis.label("H2")), -3, -20))
 title(main="Equilibrium activities of human plasma proteins")
 
 

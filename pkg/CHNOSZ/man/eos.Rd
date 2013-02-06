@@ -49,7 +49,6 @@ For both \code{hkf} and \code{cgl}, if at least one equations-of-state parameter
 If all equations-of-state parameters are NA, but values of \samp{Cp} and/or \samp{V} are available, those values are used in the integration of \samp{G}, \samp{H} and \samp{S} as a function of temperature. 
 
 The \code{T} and \code{P} arguments (and \code{rhohat}, \code{Tc}, \code{alpha}, \code{daldT}, \code{beta} for \code{gfun}) should all be the same length; the functions perform no argument validating.
-
 }
 
 \section{Warning}{

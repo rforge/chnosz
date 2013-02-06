@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 0.9-9.2 (2013-01-26)
+CHANGES IN CHNOSZ 0.9-9.4 (2013-02-06)
 --------------------------------------
 
 - Fix calculation of free energy derivative in wjd().
@@ -13,6 +13,28 @@ CHANGES IN CHNOSZ 0.9-9.2 (2013-01-26)
 - Add example for LYSC_CHICK to protein.info.Rd.
 
 - Enable DGtr in findit(), 1-D DGtr plot in revisit().
+
+- Disable a check in valTP function of H2O92D.f to allow properties of
+  H2O to be calculated below 0.01 degrees C, to -20 degrees C.
+
+- Remove thermo$water and thermo$water2 storage of previous results;
+  they gave no significant speed gain in running examples.
+
+- Split IAPWS95.Rd out of water.Rd.
+
+- expr.* functions now do not wrap their values in as.expression()
+  (makes compounding expressions, e.g. with substitute(), easier).
+
+- Rename dl.aa() to uniprot.aa().
+
+- Add start and stop arguments to count.aa(), read.fasta(),
+  uniprot.aa().
+
+- add.protein() replaces amino acid compositions for existing
+  proteins with the same name.
+
+- Examples of calculation of affinity of formation of CSG_METVO
+  (following Dick and Shock, 2011) added to protein.info.Rd.
 
 CHANGES IN CHNOSZ 0.9-9 (2013-01-01)
 ------------------------------------

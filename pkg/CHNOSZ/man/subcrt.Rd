@@ -257,7 +257,7 @@ title(main=paste("Reduction of NAD coupled to oxidation of glucose",
 # uncomment the following to try IAPWS95 instead of SUPCRT92
 #thermo$opt$water <<- "IAPWS95"
 # the limit for H2O92D.f (from SUPCRT92) is currently -20 deg C
-# but we go to -30 knowning properties will become NA
+# but we go to -30 knowing properties will become NA
 sb <- subcrt(c("H2O", "Na+"), T=seq(-30, 10), P=1)$out
 # start plot with extra room on right
 par(mar=c(5, 4, 4, 4))

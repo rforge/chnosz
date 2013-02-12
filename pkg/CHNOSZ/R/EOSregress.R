@@ -3,11 +3,11 @@
 # 20091105 first version
 # 20110429 revise and merge with CHNOSZ package
 
-EOSvar <- function(var,T,P) {
+EOSvar <- function(var, T, P) {
   # get the variables of a term in a regression equation
   # T (K), P (bar)
   out <- switch(EXPR = var,
-    "(Intercept)" = rep(1,length(T)),
+    "(Intercept)" = rep(1, length(T)),
     "T" = T,
     "P" = P,
     "TTheta" = T-thermo$opt$Theta,                 # T-Theta
@@ -16,17 +16,12 @@ EOSvar <- function(var,T,P) {
     "invTTheta2" = (T-thermo$opt$Theta)^-2,        # 1/(T-Theta)^2
     "invPPsi" = (P+thermo$opt$Psi)^-1,             # 1/(P-Psi)
     "invPPsiTTheta" = (P+thermo$opt$Psi)^-1 * (T-thermo$opt$Theta)^-1,  # 1/[(P-Psi)(T-Theta)]
-    "V" = water(var,T=T,P=P)[,1],
-    "E" = water(var,T=T,P=P)[,1],
-    "kT" = water(var,T=T,P=P)[,1],
-    "alpha" = water(var,T=T,P=P)[,1],
-    "beta" = water(var,T=T,P=P)[,1],
-    "X" = water(var,T=T,P=P)[,1],
-    "Q" = water(var,T=T,P=P)[,1],
-    "TX" = T*water("X",T=T,P=P)[,1],
-    "drho.dT" = -water("rho",T=T,P=P)[,1]*water("E",T=T,P=P)[,1],
-    "V.kT" = water("V",T=T,P=P)[,1]*water("kT",T=T,P=P)[,1],
-    NA
+    "TXBorn" = T*water("XBorn", T=T, P=P)[, 1],
+    "drho.dT" = -water("rho", T=T, P=P)[, 1]*water("E", T=T, P=P)[, 1],
+    "V.kT" = water("V", T=T, P=P)[, 1]*water("kT", T=T, P=P)[, 1],
+    # the "default": get a variable that is a property of water
+    (if(var %in% water.props()) water(var, T, P)[, 1]
+    else stop(paste("can't find a variable named", var)))
   )
   return(out)
 }
@@ -43,9 +38,9 @@ EOSlab <- function(var,coeff="") {
     "P" = substitute(YYY%*%italic(XXX),list(XXX=var,YYY=coeff)),
     "V" = substitute(YYY%*%italic(XXX),list(XXX=var,YYY=coeff)),
     "E" = substitute(YYY%*%italic(XXX),list(XXX=var,YYY=coeff)),
-    "X" = substitute(YYY%*%italic(XXX),list(XXX=var,YYY=coeff)),
-    "Q" = substitute(YYY%*%italic(XXX),list(XXX=var,YYY=coeff)),
-    "TX" = substitute(YYY%*%italic(XXX),list(XXX=var,YYY=coeff)),
+    "XBorn" = substitute(YYY%*%italic(XXX),list(XXX=var,YYY=coeff)),
+    "QBorn" = substitute(YYY%*%italic(XXX),list(XXX=var,YYY=coeff)),
+    "TXBorn" = substitute(YYY%*%italic(XXX),list(XXX=var,YYY=coeff)),
     "kT" = substitute(YYY%*%kappa[italic(T)],list(YYY=coeff)),
     "alpha" = substitute(YYY%*%alpha,list(YYY=coeff)),
     "beta" = substitute(YYY%*%beta,list(YYY=coeff)),
@@ -95,8 +90,8 @@ EOSplot <- function(exptdata,var=NULL,T.max=9999,T.plot=NULL,
   prop <- colnames(exptdata)[3]
   # if var is NULL use HKF equations
   if(is.null(var)) {
-    if(prop=="Cp") var <- c("invTTheta2","TX")
-    if(prop=="V") var <- c("invTTheta","Q")
+    if(prop=="Cp") var <- c("invTTheta2","TXBorn")
+    if(prop=="V") var <- c("invTTheta","QBorn")
   }
   expt <- exptdata
   # perform the regression, only using temperatures up to T.max
@@ -165,19 +160,19 @@ EOSplot <- function(exptdata,var=NULL,T.max=9999,T.plot=NULL,
   return(invisible(list(xlim=range(expt$T[iexpt]))))
 }
 
-EOScoeffs <- function(species,property) {
+EOScoeffs <- function(species, property) {
   # get the HKF coefficients for species in the database
-  iis <- info(info(species,"aq"))
+  iis <- info(info(species, "aq"))
   if(property=="Cp") {
-    out <- iis[,c("c1","c2","omega")]
-    names(out) <- c("(Intercept)","invTTheta2","TX")
+    out <- iis[,c("c1", "c2", "omega")]
+    names(out) <- c("(Intercept)", "invTTheta2", "TXBorn")
   } else if(property=="V") {
-    iis <- iis[,c("a1","a2","a3","a4","omega")]
+    iis <- iis[,c("a1", "a2", "a3", "a4", "omega")]
     sigma <- ( iis$a1 + iis$a2 / (2600 + 1) ) * 41.84
     xi <- ( iis$a3 + iis$a4 / (2600 + 1) ) * 41.84
     # watch for the negative sign on omega here!
-    out <- data.frame(sigma,xi,-iis$omega)
-    names(out) <- c("(Intercept)","invTTheta","Q")
+    out <- data.frame(sigma, xi, -iis$omega)
+    names(out) <- c("(Intercept)", "invTTheta", "QBorn")
   }
   return(out)
 }

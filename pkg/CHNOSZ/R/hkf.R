@@ -24,20 +24,20 @@ hkf <- function(property=NULL,T=298.15,P=1,ghs=NULL,eos=NULL,contrib=c('n','s','
     stop(paste('argument',c2s(contrib[notcontrib]),'not in',c2s(contribs),'n'))
   # get water properties, if they weren't supplied in arguments (and we want solvation props)
   if('s' %in% contrib) {
-    H2O.props <- c('Q','X','Y','epsilon')
+    H2O.props <- c("QBorn", "XBorn", "YBorn", "diel")
     # only take these ones if we're in SUPCRT92 compatibility mode
-    dosupcrt <- length(agrep(tolower(thermo$opt$water),'supcrt9',max.distance=0.3))!=0
+    dosupcrt <- thermo$opt$water != "IAPWS95"
     if(dosupcrt) {
       # (E, daldT, V - for partial derivatives of omega (g function))
-      H2O.props <- c(H2O.props,'E','daldT','kT','Z')
+      H2O.props <- c(H2O.props,'E','daldT','kT','ZBorn')
     } else {
-      # (N, UBorn - for compressibility, expansibility)
-      H2O.props <- c(H2O.props,'N','UBorn')
+      # (NBorn, UBorn - for compressibility, expansibility)
+      H2O.props <- c(H2O.props,'NBorn','UBorn')
     }
     if(is.null(H2O.PT)) H2O.PT <- water(H2O.props,T=T,P=P)
     if(is.null(H2O.PrTr)) H2O.PrTr <- water(H2O.props,T=thermo$opt$Tr,P=thermo$opt$Pr)
-    ZBorn <- -1/H2O.PT$epsilon
-    ZBorn.PrTr <- -1/H2O.PrTr$epsilon
+    ZBorn <- -1/H2O.PT$diel
+    ZBorn.PrTr <- -1/H2O.PrTr$diel
   }
  # a list to store the result
  x <- list()
@@ -125,20 +125,20 @@ hkf <- function(property=NULL,T=298.15,P=1,ghs=NULL,eos=NULL,contrib=c('n','s','
       if( icontrib=="s") {
         # solvation ghs equations
         if(prop=="g") {
-          p <- -omega.PT*(ZBorn+1) + omega*(ZBorn.PrTr+1) + omega*H2O.PrTr$Y*(T-Tr)
+          p <- -omega.PT*(ZBorn+1) + omega*(ZBorn.PrTr+1) + omega*H2O.PrTr$YBorn*(T-Tr)
           # at Tr,Pr, if the origination contribution is not NA, ensure the solvation contribution is 0, not NA
           if(!is.na(GHS$G)) p[T==Tr & P==Pr] <- 0
         }
         if(prop=="h") 
-          p <- -omega.PT*(ZBorn+1) + omega.PT*T*H2O.PT$Y + T*(ZBorn+1)*dwdT +
-                 omega*(ZBorn.PrTr+1) - omega*Tr*H2O.PrTr$Y
+          p <- -omega.PT*(ZBorn+1) + omega.PT*T*H2O.PT$YBorn + T*(ZBorn+1)*dwdT +
+                 omega*(ZBorn.PrTr+1) - omega*Tr*H2O.PrTr$YBorn
         if(prop=="s") 
-          p <- omega.PT*H2O.PT$Y + (ZBorn+1)*dwdT - omega*H2O.PrTr$Y 
+          p <- omega.PT*H2O.PT$YBorn + (ZBorn+1)*dwdT - omega*H2O.PrTr$YBorn
         # solvation cp v kt e equations
-        if(prop=='cp') p <- omega.PT*T*H2O.PT$X + 2*T*H2O.PT$Y*dwdT + 
+        if(prop=='cp') p <- omega.PT*T*H2O.PT$XBorn + 2*T*H2O.PT$YBorn*dwdT + 
           T*(ZBorn+1)*d2wdT2
         if(prop=='v') p <- -convert(omega.PT,'cm3bar') * 
-          H2O.PT$Q + convert(dwdP,'cm3bar') * (-ZBorn - 1)
+          H2O.PT$QBorn + convert(dwdP,'cm3bar') * (-ZBorn - 1)
         # WARNING: the partial derivatives of omega are not included here here for kt and e
         # (to do it, see p. 820 of SOJ+92 ... but kt requires d2wdP2 which we don't have yet)
         if(prop=='kt') p <- convert(omega,'cm3bar') * H2O.PT$N

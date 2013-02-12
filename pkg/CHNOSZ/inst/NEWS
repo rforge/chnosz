@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 0.9-9.4 (2013-02-06)
+CHANGES IN CHNOSZ 0.9-9.5 (2013-02-13)
 --------------------------------------
 
 - Fix calculation of free energy derivative in wjd().
@@ -35,6 +35,18 @@ CHANGES IN CHNOSZ 0.9-9.4 (2013-02-06)
 
 - Examples of calculation of affinity of formation of CSG_METVO
   (following Dick and Shock, 2011) added to protein.info.Rd.
+
+- Use consistent names for water properties (Speed, diel, QBorn, ...).
+
+- Add water.props() to get names of properties of water.
+
+- Remove 'isat' argument from water.SUPCRT92(); function now accepts
+  'Psat' as value for 'P' argument.
+
+- Separate rho.IAPWS95() from water.IAPWS95().
+
+- Any property of water can be used as a variable in EOSvar().
+
 
 CHANGES IN CHNOSZ 0.9-9 (2013-01-01)
 ------------------------------------

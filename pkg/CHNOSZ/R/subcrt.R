@@ -267,16 +267,16 @@ subcrt <- function(species, coeff=1, state=NULL, property=c('logK','G','H','S','
     # than possible many times in hkf()).
     wprop.PT <- character()
     wprop.PrTr <- 'rho'
-    dosupcrt <- length(agrep(tolower(thermo$opt$water),'supcrt9',max.distance=0.3))!=0
-    if(TRUE %in% (prop %in% c('logk','g','h','s'))) wprop.PrTr <- c(wprop.PrTr,'Y')
-    if(dosupcrt | TRUE %in% (prop %in% c('logk','g','h'))) wprop.PrTr <- c(wprop.PrTr,'epsilon')
+    dosupcrt <- thermo$opt$water != "IAPWS95"
+    if(TRUE %in% (prop %in% c('logk','g','h','s'))) wprop.PrTr <- c(wprop.PrTr,'YBorn')
+    if(dosupcrt | TRUE %in% (prop %in% c('logk','g','h'))) wprop.PrTr <- c(wprop.PrTr,'diel')
     H2O.PrTr <- water(wprop.PrTr,T=thermo$opt$Tr,P=thermo$opt$Pr)
-    if(TRUE %in% (prop %in% c('cp'))) {wprop.PT <- c(wprop.PT,'X','Y')}
-    if(TRUE %in% (prop %in% c('v'))) {wprop.PT <- c(wprop.PT,'Q')}
-    if(TRUE %in% (prop %in% c('kt'))) {wprop.PT <- c(wprop.PT,'N')}
+    if(TRUE %in% (prop %in% c('cp'))) {wprop.PT <- c(wprop.PT,'XBorn','YBorn')}
+    if(TRUE %in% (prop %in% c('v'))) {wprop.PT <- c(wprop.PT,'QBorn')}
+    if(TRUE %in% (prop %in% c('kt'))) {wprop.PT <- c(wprop.PT,'NBorn')}
     if(TRUE %in% (prop %in% c('e'))) {wprop.PT <- c(wprop.PT,'UBorn')}
     # get additional properties required for omega derivatives
-    if(dosupcrt) wprop.PT <- c(wprop.PT,'alpha','daldT','beta','epsilon')
+    if(dosupcrt) wprop.PT <- c(wprop.PT,'alpha','daldT','beta','diel')
     H2O.PT <- water(c(wprop.PrTr,wprop.PT),T=T,P=P)
     if(TRUE %in% isaq) {
       # now the species stuff

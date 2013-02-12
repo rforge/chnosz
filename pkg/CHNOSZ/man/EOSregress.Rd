@@ -96,12 +96,12 @@ P <- seq(200, 1000, 100)
 # convert=FALSE means that temperature has units of K
 CH4.prop <- subcrt("CH4", T=T, P=P, grid="T", convert=FALSE)$out[[1]]
 # terms in the HKF equations for Cp
-Cp.var <- c("invTTheta2", "TX")
+Cp.var <- c("invTTheta2", "TXBorn")
 # get coefficients in Cp regression
 Cp.lm <- EOSregress(CH4.prop[, c("T", "P", "Cp")], Cp.var)
 Cp.coeff <- Cp.lm$coefficients
 # terms in the HKF equations for V
-V.var <- c("invPPsi", "invTTheta", "invPPsiTTheta", "Q")
+V.var <- c("invPPsi", "invTTheta", "invPPsiTTheta", "QBorn")
 # get coefficients in V regression
 V.lm <- EOSregress(CH4.prop[, c("T", "P", "V")], V.var)
 # use same units as HKF: convert from cm3.bar to calories (divide by 41.84)
@@ -130,7 +130,7 @@ d <- read.csv(f)
 d$Cp <- convert(d$Cp, "cal")
 d$P <- convert(d$P, "bar")
 # specify the terms in the HKF equations
-var <- c("invTTheta2", "TX")
+var <- c("invTTheta2", "TXBorn")
 # perform regression, with a temperature limit
 EOSlm <- EOSregress(d, var, T.max=600)
 # the result is within 10% of the accepted
@@ -157,7 +157,7 @@ f <- system.file("extdata/cpetc/V.CH4.HWM96.csv", package="CHNOSZ")
 d <- read.csv(f)
 d$P <- convert(d$P, "bar")
 # the HKF equation
-varHKF <- c("invTTheta", "Q")
+varHKF <- c("invTTheta", "QBorn")
 # alpha is the expansivity coefficient of water
 varal <- c("invTTheta", "alpha")
 par(mfrow=c(2,2))

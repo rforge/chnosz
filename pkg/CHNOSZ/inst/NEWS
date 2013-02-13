@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 0.9-9.5 (2013-02-13)
+CHANGES IN CHNOSZ 0.9-9.6 (2013-02-13)
 --------------------------------------
 
 - Fix calculation of free energy derivative in wjd().
@@ -45,7 +45,14 @@ CHANGES IN CHNOSZ 0.9-9.5 (2013-02-13)
 
 - Separate rho.IAPWS95() from water.IAPWS95().
 
-- Any property of water can be used as a variable in EOSvar().
+- In addition to the original regression variables, EOSvar() recognizes
+  names for available properties in water(), or can use the name to
+  get a user-defined function of temperature and pressure.
+
+- Simplify EOSplot() somewhat (don't group data by pressure ranges).
+
+- [temporary] Deactivate code using 'central' method in guess()
+  (wjd.Rnw) as limSolve package on not available on R-Forge for windows.
 
 
 CHANGES IN CHNOSZ 0.9-9 (2013-01-01)

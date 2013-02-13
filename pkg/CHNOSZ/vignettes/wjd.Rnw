@@ -265,8 +265,8 @@ with the default (from \citealp{WJD58}) initial composition in \texttt{wjd()}
 as.list(args(wjd))$Y
 Y1 <- guess(method="stoich")
 Y1
-Y2 <- guess(method="central")
-Y2
+#Y2 <- guess(method="central")
+#Y2
 @
 
 
@@ -285,22 +285,7 @@ Using the first guess generated using the ``stoich'' method there
 were \Sexpr{niterY1-niter} more iterations than using the default
 initial solution in \texttt{wjd()}.
 
-\setkeys{Gin}{width=0.6\textwidth}
-<<central_guess>>=
-wY2 <- wjd(Y=Y2)
-niterY2 <- length(wY2$lambda)
-niterY2
-is.near.equil(wY2, tol=0.0001)
-@
-\setkeys{Gin}{width=0.6\textwidth}
-The initial guess generated using the ``central'' method lead to
-\Sexpr{niterY2-niter} more iterations than encountered using the
-argument defaults in \texttt{wjd()}, and the algorithm converged to
-an even lower variability in chemical potentials of the elements than
-using the ``stoich'' method. The differences in convergence could
-be coincidental, and the ``stoich'' method might be preferable for
-general usage because it allows multiple guesses to be tested automatically
-(see below).
+
 
 Do the different initial guesses actually give similar results?
 
@@ -308,7 +293,7 @@ Do the different initial guesses actually give similar results?
 <<compare_guesses, fig=TRUE>>=
 plot(1:10, w$X, xlab="species", ylab="mole fraction")
 points(1:10, wY1$X, pch=0)
-points(1:10, wY2$X, pch=2)
+#points(1:10, wY2$X, pch=2)
 @
 \setkeys{Gin}{width=0.6\textwidth}
 

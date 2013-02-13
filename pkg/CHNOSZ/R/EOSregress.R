@@ -19,9 +19,18 @@ EOSvar <- function(var, T, P) {
     "TXBorn" = T*water("XBorn", T=T, P=P)[, 1],
     "drho.dT" = -water("rho", T=T, P=P)[, 1]*water("E", T=T, P=P)[, 1],
     "V.kT" = water("V", T=T, P=P)[, 1]*water("kT", T=T, P=P)[, 1],
-    # the "default": get a variable that is a property of water
-    (if(var %in% water.props()) water(var, T, P)[, 1]
-    else stop(paste("can't find a variable named", var)))
+    # fallback: get a variable that is a property of water, or
+    # is any other function by name (possibly a user-defined function)
+    (  if(var %in% water.props()) water(var, T, P)[, 1]
+       else if(exists(var)) {
+         if(is.function(get(var))) {
+           if(identical(names(formals(get(var))), c("T", "P"))) get(var)(T, P)
+           else stop(paste("the arguments of ", var, "() are not T, P", sep=""))
+         }
+         else stop(paste("an object named", var, "is not a function"))
+       }
+       else stop(paste("can't find a variable named", var))
+    )
   )
   return(out)
 }
@@ -29,24 +38,27 @@ EOSvar <- function(var, T, P) {
 EOSlab <- function(var,coeff="") {
   # make pretty labels for the variables
   lab <- switch(EXPR = var,
-    "(Intercept)" = substitute(YYY*" ",list(YYY=coeff)),
-    "TTheta" = substitute(YYY%*%(italic(T)-Theta),list(YYY=coeff)),
-    "invTTheta" = substitute(YYY/(italic(T)-Theta),list(YYY=coeff)),
-    "TTheta2" = substitute(YYY%*%(italic(T)-Theta)^2,list(YYY=coeff)),
-    "invTTheta2" = substitute(YYY/(italic(T)-Theta)^2,list(YYY=coeff)),
-    "T" = substitute(YYY%*%italic(XXX),list(XXX=var,YYY=coeff)),
-    "P" = substitute(YYY%*%italic(XXX),list(XXX=var,YYY=coeff)),
-    "V" = substitute(YYY%*%italic(XXX),list(XXX=var,YYY=coeff)),
-    "E" = substitute(YYY%*%italic(XXX),list(XXX=var,YYY=coeff)),
-    "XBorn" = substitute(YYY%*%italic(XXX),list(XXX=var,YYY=coeff)),
-    "QBorn" = substitute(YYY%*%italic(XXX),list(XXX=var,YYY=coeff)),
-    "TXBorn" = substitute(YYY%*%italic(XXX),list(XXX=var,YYY=coeff)),
-    "kT" = substitute(YYY%*%kappa[italic(T)],list(YYY=coeff)),
-    "alpha" = substitute(YYY%*%alpha,list(YYY=coeff)),
-    "beta" = substitute(YYY%*%beta,list(YYY=coeff)),
-    "drho.dT" = substitute(YYY%*%(d~rho/dT),list(YYY=coeff)),
-    "V.kT" = substitute(YYY%*%V~kappa[italic(T)],list(YYY=coeff)),
-    NA
+    # these are regression variables listed in EOSregress.Rd
+    "(Intercept)" = substitute(YYY*" ", list(YYY=coeff)),
+    "T" = substitute(YYY%*%italic(T), list(YYY=coeff)),
+    "P" = substitute(YYY%*%italic(P), list(YYY=coeff)),
+    "TTheta" = substitute(YYY%*%(italic(T)-Theta), list(YYY=coeff)),
+    "invTTheta" = substitute(YYY/(italic(T)-Theta), list(YYY=coeff)),
+    "TTheta2" = substitute(YYY%*%(italic(T)-Theta)^2, list(YYY=coeff)),
+    "invTTheta2" = substitute(YYY/(italic(T)-Theta)^2, list(YYY=coeff)),
+    "TXBorn" = substitute(YYY%*%italic(TX), list(YYY=coeff)),
+    "drho.dT" = substitute(YYY%*%(d~rho/dT), list(YYY=coeff)),
+    "V.kT" = substitute(YYY%*%V~kappa[italic(T)], list(YYY=coeff)),
+    # the rest are properties of water listed in water.Rd
+    "V" = substitute(YYY%*%italic(V), list(YYY=coeff)),
+    "E" = substitute(YYY%*%italic(E), list(YYY=coeff)),
+    "kT" = substitute(YYY%*%kappa[italic(T)], list(YYY=coeff)),
+    "alpha" = substitute(YYY%*%alpha, list(YYY=coeff)),
+    "beta" = substitute(YYY%*%beta, list(YYY=coeff)),
+    "XBorn" = substitute(YYY%*%italic(X), list(YYY=coeff)),
+    "QBorn" = substitute(YYY%*%italic(Q), list(YYY=coeff)),
+    # fallback, use the name of the variable (may be the name of a user-defined function)
+    substitute(YYY%*%italic(XXX), list(YYY=coeff, XXX=var))
   )
   return(lab)
 }
@@ -84,7 +96,7 @@ EOScalc <- function(coefficients,T,P) {
 }
 
 EOSplot <- function(exptdata,var=NULL,T.max=9999,T.plot=NULL,
-  P=NULL,fun.legend="topleft",coefficients=NULL) {
+  fun.legend="topleft",coefficients=NULL) {
   # plot experimental and modelled volumes and heat capacities
   # first figure out the property (Cp or V) from the exptdata
   prop <- colnames(exptdata)[3]
@@ -93,71 +105,52 @@ EOSplot <- function(exptdata,var=NULL,T.max=9999,T.plot=NULL,
     if(prop=="Cp") var <- c("invTTheta2","TXBorn")
     if(prop=="V") var <- c("invTTheta","QBorn")
   }
-  expt <- exptdata
   # perform the regression, only using temperatures up to T.max
   if(is.null(coefficients)) {
-    EOSlm <- EOSregress(expt,var,T.max)
+    EOSlm <- EOSregress(exptdata, var, T.max)
     coefficients <- EOSlm$coefficients
   }
   # only plot points below a certain temperature
-  iexpt <- 1:nrow(expt)
-  if(!is.null(T.plot)) iexpt <- which(expt$T < T.plot)
-  iX <- match(prop,colnames(expt))
-  ylim <- extendrange(expt[iexpt,iX],f=0.1)
-  xlim <- extendrange(expt$T[iexpt],f=0.1)
+  iexpt <- 1:nrow(exptdata)
+  if(!is.null(T.plot)) iexpt <- which(exptdata$T < T.plot)
+  iX <- match(prop, colnames(exptdata))
+  ylim <- extendrange(exptdata[iexpt, iX], f=0.1)
+  xlim <- extendrange(exptdata$T[iexpt], f=0.1)
   # start plot
-  thermo.plot.new(xlim=xlim,ylim=ylim,xlab=axis.label("T", units="K"),
-    ylab=axis.label(paste(prop,"0",sep="")),yline=2,mar=NULL)
-  # we group the data by pressure ranges;
-  # assume increasing temperatures are in the
-  # same pressure range but a decrease in temperature
-  # signals the next pressure range
-  idrop <- c(1,which(diff(expt$T)<0)+1,length(expt$T)+1)
-  Plab <- character()
-  pch.open <- c(1,0,2)
-  pch.filled <- c(16,15,17)
-  for(i in 1:(length(idrop)-1)) {
-    ip <- idrop[i]:(idrop[i+1]-1)
-    # find the calculated values at these conditions
-    myT <- expt$T[ip]
-    myP <- expt$P[ip]
-    calc.X <- EOScalc(coefficients,myT,myP)
-    expt.X <- expt[ip,iX]
-    # are we within 10% of the values
-    in10 <- which(abs((calc.X-expt.X)/expt.X) < 0.1)
-    pch <- rep(pch.open[i],length(myT))
-    pch[in10] <- pch.filled[i]
-    points(myT,expt[ip,iX],pch=pch)
-    # if we calculate lines at a constant P, do that
-    xs <- seq(xlim[1],xlim[2],length.out=200)
-    if(!is.null(P)) {
-      myT <- xs
-      myP <- P
-      calc.X <- EOScalc(coefficients,myT,myP)
-    } 
-    # take out NAs and Infinite values
-    iNA <- is.na(calc.X) | is.infinite(calc.X)
-    xs <- xs[!iNA]
-    calc.X <- calc.X[!iNA]
-    myT <- myT[!iNA]
-    # plot regression line
-    lines(xs,splinefun(myT,calc.X,method="monoH.FC")(xs))
-    Plim <- range(expt$P[ip])
-    Plab <- c(Plab,paste(Plim[1],"-",Plim[2],"bar"))
-  }
+  thermo.plot.new(xlim=xlim, ylim=ylim, xlab=axis.label("T", units="K"),
+    ylab=axis.label(paste(prop, "0", sep="")), yline=2, mar=NULL)
+  # different plot symbols to represent size of residuals
+  pch.open <- 1
+  pch.filled <- 16
+  # find the calculated values at these conditions
+  calc.X <- EOScalc(coefficients, exptdata$T, exptdata$P)
+  expt.X <- exptdata[, iX]
+  # are we within 10% of the values
+  in10 <- which(abs((calc.X-expt.X)/expt.X) < 0.1)
+  pch <- rep(pch.open, length(exptdata$T))
+  pch[in10] <- pch.filled
+  points(exptdata$T, exptdata[, iX], pch=pch)
+  # take out NAs and Infinite values
+  iNA <- is.na(calc.X) | is.infinite(calc.X)
+  # plot regression line at a single P
+  P <- mean(exptdata$P)
+  msgout("EOSplot: plotting line for P=", P, " bar\n")
+  xs <- seq(xlim[1], xlim[2], length.out=200)
+  calc.X <- EOScalc(coefficients, xs, P)
+  lines(xs, calc.X)
   # make legend
   if(!is.null(fun.legend)) {
-    coeffs <- as.character(round(as.numeric(coefficients),4))
+    coeffs <- as.character(round(as.numeric(coefficients), 4))
     # so that positive ones appear with a plus sign
     ipos <- which(coeffs >= 0)
-    coeffs[ipos] <- paste("+",coeffs[ipos],sep="")
+    coeffs[ipos] <- paste("+", coeffs[ipos], sep="")
     # make labels for the functions
     fun.lab <- as.expression(lapply(1:length(coeffs),
       function(x) {EOSlab(names(coefficients)[x],coeffs[x])} ))
     #fun.lab <- paste(names(coeffs),round(as.numeric(coeffs),4))
-    legend(fun.legend,legend=fun.lab,pt.cex=0.1)
+    legend(fun.legend, legend=fun.lab, pt.cex=0.1)
   }
-  return(invisible(list(xlim=range(expt$T[iexpt]))))
+  return(invisible(list(xlim=range(exptdata$T[iexpt]))))
 }
 
 EOScoeffs <- function(species, property) {

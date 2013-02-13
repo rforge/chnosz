@@ -79,6 +79,11 @@ sweave
 \filename_suffix 0
 \color #000000
 \end_branch
+\branch inactive
+\selected 0
+\filename_suffix 0
+\color #000000
+\end_branch
 \index Index
 \shortcut idx
 \color #008000
@@ -1063,12 +1068,12 @@ Y1
 
 \begin_layout Chunk
 
-Y2 <- guess(method="central")
+#Y2 <- guess(method="central")
 \end_layout
 
 \begin_layout Chunk
 
-Y2
+#Y2
 \end_layout
 
 \begin_layout Chunk
@@ -1167,6 +1172,10 @@ wjd()
 \family default
 .
 \end_layout
+
+\begin_layout Standard
+\begin_inset Branch inactive
+status collapsed
 
 \begin_layout Standard
 \begin_inset Branch short
@@ -1269,13 +1278,18 @@ stoich
  guesses to be tested automatically (see below).
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 Do the different initial guesses actually give similar results?
 \end_layout
 
 \begin_layout Standard
 \begin_inset Branch short
-status open
+status collapsed
 
 \begin_layout Chunk
 
@@ -1303,7 +1317,7 @@ points(1:10, wY1$X, pch=0)
 
 \begin_layout Chunk
 
-points(1:10, wY2$X, pch=2)
+#points(1:10, wY2$X, pch=2)
 \end_layout
 
 \begin_layout Chunk

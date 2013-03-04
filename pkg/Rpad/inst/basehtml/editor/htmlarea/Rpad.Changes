@@ -1,6 +1,0 @@
-Rpad Changes
-
-
-Changed HTMLArea to always use ContentEditable, even in Mozilla. Now,
-you have to use Mozile to get editability.
-

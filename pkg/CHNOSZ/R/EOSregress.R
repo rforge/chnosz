@@ -35,7 +35,7 @@ EOSvar <- function(var, T, P) {
   return(out)
 }
 
-EOSlab <- function(var,coeff="") {
+EOSlab <- function(var, coeff="") {
   # make pretty labels for the variables
   lab <- switch(EXPR = var,
     # these are regression variables listed in EOSregress.Rd
@@ -46,19 +46,34 @@ EOSlab <- function(var,coeff="") {
     "invTTheta" = substitute(YYY/(italic(T)-Theta), list(YYY=coeff)),
     "TTheta2" = substitute(YYY%*%(italic(T)-Theta)^2, list(YYY=coeff)),
     "invTTheta2" = substitute(YYY/(italic(T)-Theta)^2, list(YYY=coeff)),
+    "invPPsi" = substitute(YYY/(italic(P)+Psi),list(YYY=coeff)),
+    "invPPsiTTheta" = substitute(YYY/((italic(P)+Psi)(italic(T)-Theta)), list(YYY=coeff)),
     "TXBorn" = substitute(YYY%*%italic(TX), list(YYY=coeff)),
     "drho.dT" = substitute(YYY%*%(d~rho/dT), list(YYY=coeff)),
     "V.kT" = substitute(YYY%*%V~kappa[italic(T)], list(YYY=coeff)),
-    # the rest are properties of water listed in water.Rd
-    "V" = substitute(YYY%*%italic(V), list(YYY=coeff)),
-    "E" = substitute(YYY%*%italic(E), list(YYY=coeff)),
+    # these are non-single-letter properties of water as listed in water.Rd
     "kT" = substitute(YYY%*%kappa[italic(T)], list(YYY=coeff)),
     "alpha" = substitute(YYY%*%alpha, list(YYY=coeff)),
     "beta" = substitute(YYY%*%beta, list(YYY=coeff)),
-    "XBorn" = substitute(YYY%*%italic(X), list(YYY=coeff)),
+    "diel" = substitute(YYY%*%epsilon, list(YYY=coeff)),
+    "rho" = substitute(YYY%*%rho, list(YYY=coeff)),
+    "NBorn" = substitute(YYY%*%italic(N), list(YYY=coeff)),
     "QBorn" = substitute(YYY%*%italic(Q), list(YYY=coeff)),
-    # fallback, use the name of the variable (may be the name of a user-defined function)
-    substitute(YYY%*%italic(XXX), list(YYY=coeff, XXX=var))
+    "XBorn" = substitute(YYY%*%italic(X), list(YYY=coeff)),
+    "YBorn" = substitute(YYY%*%italic(Y), list(YYY=coeff)),
+    "ZBorn" = substitute(YYY%*%italic(Z), list(YYY=coeff)),
+    (
+      # if var is a function, does have an attribute named "label"?
+      if(exists(var)) {
+        if(is.function(get(var))) {
+          if(!is.null(attr(get(var), "label"))) {
+            return(substitute(YYY*XXX, list(YYY=coeff, XXX=attr(get(var), "label"))))
+            # fallback, use the name of the variable
+            # (e.g. for a property of water such as A, G, S, U, H, or name of a user-defined function)
+          } else substitute(YYY%*%italic(XXX), list(YYY=coeff, XXX=var))
+        } else substitute(YYY%*%italic(XXX), list(YYY=coeff, XXX=var))
+      } else substitute(YYY%*%italic(XXX), list(YYY=coeff, XXX=var))
+    )
   )
   return(lab)
 }

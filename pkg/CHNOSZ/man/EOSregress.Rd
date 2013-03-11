@@ -67,7 +67,9 @@ The experimental data are plotted as points, and the calculated values as a smoo
 The point symbols are filled circles where the calculated value is within 10\% of the experimental value; open circles otherwise.
 
 \code{EOSlab} produces labels for the variables listed above that can be used \code{\link{as.expression}}s in plots.
-The value of \code{coeff} is prefixed (using \code{\link{substitute}}) to the name of the variable.
+The value of \code{coeff} is prefixed to the name of the variable (using \code{\link{substitute}}, with a multiplication symbol).
+For the properties listed in the table above, and selected properties listed in \code{\link{water}}, the label is formatted using \code{\link{plotmath}} expressions (e.g., with italicized symbols and Greek letters).
+If \code{var} is a user-defined function, the function can be given a \samp{label} attribute to provide \code{\link{plotmath}}-style formatting; in this case the appropriate multiplication or division symbol should be specified (see example below).
 
 \code{EOScoeffs} retrieves coefficients in the Helgeson-Kirkham-Flowers equations from the thermodynamic database (\code{\link{thermo}$obigt}) for the given aqueous \code{species}.
 If the \code{property} is \samp{Cp}, the resulting data frame has column names of \samp{(Intercept)}, \samp{invTTheta2} and \samp{TX}, respectively holding the coefficients \eqn{c_1}{c1}, \eqn{c_2}{c2} and \eqn{\omega}{omega} in the equation \eqn{Cp^\circ = c_1 + c_2/(T-\Theta)^2 + {\omega}TX}{Cp = c1 + c2/(T-Theta)^2 + omega*TX}.
@@ -123,15 +125,19 @@ title("Cp fit to 600 K, plot to 600 K")
 EOSplot(d, coefficients=CH4coeffs, T.plot=600)
 title("Cp from EOS parameters in database")
 
-# following from above, with user-defined variables
+# continuing from above, with user-defined variables
 invTTTheta3 <- function(T, P) (2*T)/(T-T*thermo$opt$Theta)^3
 invTX <- function(T, P) 1/T*water("XBorn", T=T, P=P)[,1]
+# print the calculated values of invTTTheta3
 EOSvar("invTTTheta3", d$T, d$P)
+# use invTTTheta and invTX in a regression
 var <- c("invTTTheta3", "invTX")
 EOSregress(d, var)
-# the plot is commented for this toy example
+# give them a "label" attribute for use in the legend
+attr(invTTTheta3, "label") <- quote(phantom()\%*\%2*italic(T)/(italic(T)-italic(T)*Theta)^3)
+attr(invTX, "label") <- quote(phantom()/italic(T*X))
+# uncomment the following to make the plot
 #EOSplot(d, var)
-
 
 ## model experimental volumes of CH4
 ## using HKF equation and an exploratory one

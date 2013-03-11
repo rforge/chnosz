@@ -79,14 +79,15 @@ mod.obigt <- function(...) {
   if(length(iold) > 0) {
     # loop over species
     for(i in 1:length(iold)) {
-      # the old values
+      # the old values and the state
       oldprop <- thermo$obigt[ispecies[iold[i]], icol]
+      state <- thermo$obigt$state[ispecies[iold[i]]]
       # tell user if they're the same, otherwise update the data entry
       if(isTRUE(all.equal(oldprop, args[iold[i], ], check.attributes=FALSE))) 
-        msgout("mod.obigt: no change for ", args$name[iold[i]], "(", args$state[iold[i]], ")\n")
+        msgout("mod.obigt: no change for ", args$name[iold[i]], "(", state, ")\n")
       else {
         thermo$obigt[ispecies[iold[i]], icol] <<- args[iold[i], ]
-        msgout("mod.obigt: updated ", args$name[iold[i]], "(", args$state[iold[i]], ")\n")
+        msgout("mod.obigt: updated ", args$name[iold[i]], "(", state, ")\n")
       }
     }
   }

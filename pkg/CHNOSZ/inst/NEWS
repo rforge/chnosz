@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 0.9-9.6 (2013-02-13)
+CHANGES IN CHNOSZ 0.9-9.7 (2013-03-11)
 --------------------------------------
 
 - Fix calculation of free energy derivative in wjd().
@@ -53,6 +53,9 @@ CHANGES IN CHNOSZ 0.9-9.6 (2013-02-13)
 
 - [temporary] Deactivate code using 'central' method in guess()
   (wjd.Rnw) as limSolve package on not available on R-Forge for windows.
+
+- EOSlab() gets label from attribute (if present) of user-defined
+  function.
 
 
 CHANGES IN CHNOSZ 0.9-9 (2013-01-01)

@@ -29,3 +29,5 @@ release checklist for CHNOSZ
 - ensure all Rd files have \keyword{...}
 
 - test read.supcrt(), write.supcrt() on e.g. slop98.dat
+
+- update .Rinstignore with any new/deleted files

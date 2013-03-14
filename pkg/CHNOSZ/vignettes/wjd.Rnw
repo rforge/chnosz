@@ -472,10 +472,12 @@ in the Gibbs energy minimization was $\mathrm{C_{84}H_{106}}$ (H/C
 = 1.261905). That FALSE means the chemical potentials of the elements
 calculated from different combinations of species differ by more than
 0.01, the default setting of \texttt{tol} in \texttt{is.near.equil()}.
-We can make it TRUE by running more iterations:
+We can make it TRUE by running more iterations and increasing the
+number of intervals tested for fractional distance change at each
+step (\texttt{nlambda}):
 
 <<run_aa_equil>>=
-waa <- run.wjd(c(ialk, iaro), Y=rep(1, 8), imax=12, Gfrac=1e-14)
+waa <- run.wjd(c(ialk, iaro), Y=rep(1, 8), imax=20, Gfrac=1e-14, nlambda=501)
 is.near.equil(waa)
 @
 

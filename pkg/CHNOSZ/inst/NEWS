@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 0.9-9.7 (2013-03-11)
+CHANGES IN CHNOSZ 0.9-9.8 (2013-03-14)
 --------------------------------------
 
 - Fix calculation of free energy derivative in wjd().
@@ -56,6 +56,9 @@ CHANGES IN CHNOSZ 0.9-9.7 (2013-03-11)
 
 - EOSlab() gets label from attribute (if present) of user-defined
   function.
+
+- Modify test-util.data.R and wjd.Rd to pass R CMD check using R
+  configured with --disable-long-double .
 
 
 CHANGES IN CHNOSZ 0.9-9 (2013-01-01)

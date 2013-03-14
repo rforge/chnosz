@@ -31,3 +31,6 @@ release checklist for CHNOSZ
 - test read.supcrt(), write.supcrt() on e.g. slop98.dat
 
 - update .Rinstignore with any new/deleted files
+
+- run R CMD check using R compiled without long doubles (as in Solaris checks on CRAN)
+  (CFLAGS=-ffloat-store ./configure --disable-long-double)

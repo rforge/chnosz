@@ -120,7 +120,6 @@ revisit <- function(eout, objective = "CV", loga2 = NULL, ispecies = NULL,
   # construct array of values: Astar (for DGtr)
   if(any(grepl("Astar", objargs))) {
     Astar <- eout$Astar[ispecies]
-eout <<- eout
     # one row for each condition
     Astar <- sapply(Astar, as.vector)
     # for 0-D case we want a 1-row matrix (sapply simplifies to vector)
@@ -161,12 +160,14 @@ eout <<- eout
         # plot the points for a referenced objective
         ylab <- "loga1"
         xlab <- "loga2"
-        plot(loga2, loga1, xlab=xlab, ylab=ylab, pch=pch, col=col)
+        plot(loga2, loga1, xlab=xlab, ylab=ylab, pch=pch, col=col, xlim=xlim, ylim=ylim)
         # add a 1:1 line
         lines(range(loga2), range(loga2), col="grey")
         # add a lowess line
-        ls <- loess.smooth(loga2, loga1, family="gaussian")
-        lines(ls$x, ls$y, col="red")
+        if(!is.null(lwd)) {
+          ls <- loess.smooth(loga2, loga1, family="gaussian")
+          lines(ls$x, ls$y, col="red", lwd=lwd)
+        }
       } else plot.it <- FALSE
       # add a title
       if(missing(main)) main <- paste(objective, "=", round(H,3)) 

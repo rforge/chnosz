@@ -67,22 +67,22 @@ sweave
 \branch short
 \selected 1
 \filename_suffix 0
-\color #000000
+\color #faf0e6
 \end_branch
 \branch long
 \selected 1
 \filename_suffix 0
-\color #101010
+\color #faf0e6
 \end_branch
 \branch stuff
 \selected 1
 \filename_suffix 0
-\color #000000
+\color #faf0e6
 \end_branch
 \branch inactive
 \selected 0
 \filename_suffix 0
-\color #000000
+\color #faf0e6
 \end_branch
 \index Index
 \shortcut idx
@@ -1289,7 +1289,7 @@ Do the different initial guesses actually give similar results?
 
 \begin_layout Standard
 \begin_inset Branch short
-status collapsed
+status open
 
 \begin_layout Chunk
 
@@ -2066,7 +2066,12 @@ tol
 is.near.equil()
 \family default
 .
- We can make it TRUE by running more iterations:
+ We can make it TRUE by running more iterations and increasing the number
+ of intervals tested for fractional distance change at each step (
+\family typewriter
+nlambda
+\family default
+):
 \end_layout
 
 \begin_layout Standard
@@ -2080,7 +2085,7 @@ status open
 
 \begin_layout Chunk
 
-waa <- run.wjd(c(ialk, iaro), Y=rep(1, 8), imax=12, Gfrac=1e-14)
+waa <- run.wjd(c(ialk, iaro), Y=rep(1, 8), imax=20, Gfrac=1e-14, nlambda=501)
 \end_layout
 
 \begin_layout Chunk

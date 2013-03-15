@@ -6,16 +6,17 @@
 EOSvar <- function(var, T, P) {
   # get the variables of a term in a regression equation
   # T (K), P (bar)
+  opt <- get("thermo")$opt
   out <- switch(EXPR = var,
     "(Intercept)" = rep(1, length(T)),
     "T" = T,
     "P" = P,
-    "TTheta" = T-thermo$opt$Theta,                 # T-Theta
-    "invTTheta" = (T-thermo$opt$Theta)^-1,         # 1/(T-Theta)
-    "TTheta2" = (T-thermo$opt$Theta)^2,            # (T-Theta)^2
-    "invTTheta2" = (T-thermo$opt$Theta)^-2,        # 1/(T-Theta)^2
-    "invPPsi" = (P+thermo$opt$Psi)^-1,             # 1/(P-Psi)
-    "invPPsiTTheta" = (P+thermo$opt$Psi)^-1 * (T-thermo$opt$Theta)^-1,  # 1/[(P-Psi)(T-Theta)]
+    "TTheta" = T-opt$Theta,                 # T-Theta
+    "invTTheta" = (T-opt$Theta)^-1,         # 1/(T-Theta)
+    "TTheta2" = (T-opt$Theta)^2,            # (T-Theta)^2
+    "invTTheta2" = (T-opt$Theta)^-2,        # 1/(T-Theta)^2
+    "invPPsi" = (P+opt$Psi)^-1,             # 1/(P-Psi)
+    "invPPsiTTheta" = (P+opt$Psi)^-1 * (T-opt$Theta)^-1,  # 1/[(P-Psi)(T-Theta)]
     "TXBorn" = T*water("XBorn", T=T, P=P)[, 1],
     "drho.dT" = -water("rho", T=T, P=P)[, 1]*water("E", T=T, P=P)[, 1],
     "V.kT" = water("V", T=T, P=P)[, 1]*water("kT", T=T, P=P)[, 1],

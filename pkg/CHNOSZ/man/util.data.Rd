@@ -92,8 +92,7 @@ The values provided should be in the units specifed in the documentation for the
   \code{\link{mod.buffer}} for updating the list of available buffers.
 }
 
-\examples{
-\dontshow{data(thermo)}
+\examples{\dontshow{data(thermo)}
 ## modify an existing species with fake properties
 ialanine <- mod.obigt("alanine", state="cr", G=0, H=0, S=0)
 # we have made the values of G, H, and S inconsistent

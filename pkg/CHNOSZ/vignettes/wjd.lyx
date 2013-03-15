@@ -245,6 +245,11 @@ library(CHNOSZ)
 
 \begin_layout Chunk
 
+data(thermo)
+\end_layout
+
+\begin_layout Chunk
+
 @
 \end_layout
 

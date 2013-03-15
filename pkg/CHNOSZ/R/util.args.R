@@ -8,7 +8,7 @@ eos.args <- function(eos='',property=NULL,T=NULL,P=NULL) {
     # things we also get with water
     props <- c(props,'A','U','Cv','Psat','rho','Q','X','Y','epsilon','w')
     # they keep on coming: things we also get with SUPCRT92
-    if(length(agrep(tolower(thermo$opt$water),'supcrt9',max.distance=0.3))>0)
+    if(get("thermo")$opt$water == "SUPCRT92")
       props <- c(props,'Z','visc','tcond','tdiff','Prndtl','visck','albe','daldT','alpha','beta')
     else 
       props <- c(props,'P','N','UBorn','de.dT','de.dP')
@@ -37,7 +37,7 @@ TP.args <- function(T=NULL, P=NULL) {
     P <- water("Psat", T, P="Psat")[, 1]
     # water.SUPCRT92 issues its own warnings about 
     # exceeding Psat's temperature limit
-    if(thermo$opt$water == "IAPWS95")
+    if(get("thermo")$opt$water == "IAPWS95")
       if(length(which(is.na(P)))>0) 
         warning('TP.args: NAs in Psat (likely T > Tc where Tc = 647.096 K)',call.=FALSE)
   }

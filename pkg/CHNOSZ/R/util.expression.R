@@ -136,7 +136,7 @@ expr.units <- function(property, prefix="", per="mol") {
   return(expr)
 }
 
-axis.label <- function(label, units=NULL, basis=thermo$basis, prefix="") {
+axis.label <- function(label, units=NULL, basis=get("thermo")$basis, prefix="") {
   # make a formatted axis label from a generic description
   # it can be a chemical property, condition, or chemical activity in the system
   # if the label matches one of the basis species
@@ -162,7 +162,7 @@ axis.label <- function(label, units=NULL, basis=thermo$basis, prefix="") {
   return(desc)
 }
 
-describe.basis <- function(basis=thermo$basis, ibasis=1:nrow(basis), digits=1, oneline=FALSE) {
+describe.basis <- function(basis=get("thermo")$basis, ibasis=1:nrow(basis), digits=1, oneline=FALSE) {
   # make expressions for the chemical activities/fugacities of the basis species
   propexpr <- valexpr <- character()
   for(i in ibasis) {

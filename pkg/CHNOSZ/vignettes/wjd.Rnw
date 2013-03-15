@@ -69,6 +69,7 @@ term ``Gibbs energy'' and corresponding notation are used here.
 
 <<libraryCHNOSZ, echo=FALSE>>=
 library(CHNOSZ)
+data(thermo)
 @
 
 

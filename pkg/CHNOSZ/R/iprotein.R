@@ -15,6 +15,7 @@ iprotein <- function(protein, organism=NULL) {
   # 'protein' numeric (the rownumber itself)
   # 'protein' character, e.g. LYSC_CHICK
   # 'protein' and 'organism', e.g. 'LYSC', 'CHICK'
+  thermo <- get("thermo")
   if(is.numeric(protein)) {
     iproteins <- 1:nrow(thermo$protein)
     protein[!protein %in% iproteins] <- NA
@@ -42,13 +43,13 @@ ip2aa <- function(protein, organism=NULL, residue=FALSE) {
   iprotein <- iprotein(protein, organism)
   # drop NA matches
   iprotein <- iprotein[!is.na(iprotein)]
-  out <- thermo$protein[iprotein, ]
+  out <- get("thermo")$protein[iprotein, ]
   # compute per-residue counts
   if(residue) out[, 5:25] <- out[, 5:25]/rowSums(out[, 6:25])
   return(out)
 }
 
-aa2eos <- function(aa, state=thermo$opt$state) {
+aa2eos <- function(aa, state=get("thermo")$opt$state) {
   # display and return the properties of
   # proteins calculated from amino acid composition
   # the names of the protein backbone groups depend on the state
@@ -60,10 +61,11 @@ aa2eos <- function(aa, state=thermo$opt$state) {
   groups <- paste("[", groups, "]", sep="")
   # the rownumbers of the groups in thermo$obigt
   groups_state <- paste(groups, state)
-  obigt_state <- paste(thermo$obigt$name, thermo$obigt$state)
+  obigt <- get("thermo")$obigt
+  obigt_state <- paste(obigt$name, obigt$state)
   igroup <- match(groups_state, obigt_state)
   # the properties are in columns 8-20 of thermo$obigt
-  groupprops <- thermo$obigt[igroup, 8:20]
+  groupprops <- obigt[igroup, 8:20]
   # the elements in each of the groups
   groupelements <- i2A(igroup)
   # a function to work on a single row of aa
@@ -150,7 +152,7 @@ aasum <- function(aa, abundance=1, average=FALSE, protein=NULL, organism=NULL) {
 read.aa <- function(file="protein.csv") {
   # 20090428 added colClasses here
   aa <- read.csv(file,colClasses=c(rep("character",4),rep("numeric",21)))
-  if(!identical(colnames(aa), colnames(thermo$protein))) 
+  if(!identical(colnames(aa), colnames(get("thermo")$protein)))
     stop(paste("format of", file, "is incompatible with thermo$protein"))
   return(aa)
 }
@@ -158,16 +160,20 @@ read.aa <- function(file="protein.csv") {
 add.protein <- function(aa) {
   # add a properly constructed data frame of 
   # amino acid counts to thermo$protein
-  if(!identical(colnames(aa), colnames(thermo$protein))) 
+  thermo <- get("thermo")
+  if(!identical(colnames(aa), colnames(thermo$protein)))
     stop("the value of 'aa' is not a data frame with the same columns as thermo$protein")
   # find any protein IDs that are duplicated
   po <- paste(aa$protein, aa$organism, sep="_")
   ip <- suppressMessages(iprotein(po))
   ipdup <- !is.na(ip)
   # now we're ready to go
-  if(!all(ipdup)) thermo$protein <<- rbind(thermo$protein, aa[!ipdup, ])
-  if(any(ipdup)) thermo$protein[ip[ipdup], ] <<- aa[ipdup, ]
-  rownames(thermo$protein) <<- NULL
+  tp.new <- thermo$protein
+  if(!all(ipdup)) tp.new <- rbind(tp.new, aa[!ipdup, ])
+  if(any(ipdup)) tp.new[ip[ipdup], ] <- aa[ipdup, ]
+  rownames(tp.new) <- NULL
+  thermo$protein <- tp.new
+  assign("thermo", thermo, "CHNOSZ")
   # return the new rownumbers
   ip <- iprotein(po)
   # make some noise

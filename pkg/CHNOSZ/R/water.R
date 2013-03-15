@@ -51,7 +51,7 @@ water.AW90 <- function(T=298.15,rho=1000,P=0.1) {
   return(t)
 }
 
-water <- function(property = NULL, T = thermo$opt$Tr, P = "Psat") {
+water <- function(property = NULL, T = get("thermo")$opt$Tr, P = "Psat") {
   # calculate the properties of liquid H2O as a function of T and P
   # T in Kelvin, P in bar
   if(is.null(property)) stop('property was NULL')
@@ -63,7 +63,7 @@ water <- function(property = NULL, T = thermo$opt$Tr, P = "Psat") {
   # turn 273.15 K to 273.16 K (needed for water.SUPCRT92 at Psat)
   T[T == 273.15] <- 273.16
   # this tells us to do the calculations using code taken from SUPCRT
-  do.supcrt <- thermo$opt$water != "IAPWS95"
+  do.supcrt <- get("thermo")$opt$water != "IAPWS95"
   if(do.supcrt) {
     # get the values of the properties using SUPCRT92
     w.out <- water.SUPCRT92(property, T, P)
@@ -76,7 +76,7 @@ water <- function(property = NULL, T = thermo$opt$Tr, P = "Psat") {
   }
 }
 
-water.props <- function(formulation=thermo$opt$water) {
+water.props <- function(formulation=get("thermo")$opt$water) {
   # return the names of properties that are available in SUPCRT92 or IAPWS95
   # added 20130212 jmd
   if(formulation=="SUPCRT92")
@@ -235,10 +235,10 @@ water.IAPWS95 <- function(property, T=298.15, P=1) {
   # I2S = SUPCRT - IAPWS ( + entropy in G )
   dH <- -68316.76 - 451.75437
   dS <- 16.7123 - 1.581072
-  dG <- -56687.71 + 19.64228 - dS * (T - thermo$opt$Tr)
+  dG <- -56687.71 + 19.64228 - dS * (T - get("thermo")$opt$Tr)
   # does the reference state used for GHS also go here?
   dU <- -67434.5 - 451.3229
-  dA <- -55814.06 + 20.07376 - dS * (T - thermo$opt$Tr)
+  dA <- -55814.06 + 20.07376 - dS * (T - get("thermo")$opt$Tr)
   # calculate pressure from the given T and estimated rho
   p <- function() return(convert(IAPWS95("p", T=T, rho=my.rho), "bar"))
   # convert IAPWS95() (specific, joule) to (molar, cal) 

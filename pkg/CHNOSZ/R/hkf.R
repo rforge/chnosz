@@ -6,6 +6,7 @@ hkf <- function(property=NULL,T=298.15,P=1,ghs=NULL,eos=NULL,contrib=c('n','s','
   H2O.PT=NULL,H2O.PrTr=NULL,domega=TRUE) {
   # calculate G, H, S, Cp, V, kT, and/or E using
   # the revised HKF equations of state
+  thermo <- get("thermo")
   # constants
   Tr <- thermo$opt$Tr
   Pr <- thermo$opt$Pr

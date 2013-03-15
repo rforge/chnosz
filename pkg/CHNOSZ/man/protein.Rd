@@ -16,7 +16,6 @@ species(prot4)
 a <- affinity(T=c(0, 200), O2=c(-80, -40))
 diagram(a)
 
-
 ## one way to calculate the standard Gibbs energy of a 
 ## reaction to form an ionized protein at 100 degrees and pH 8
 basis("CHNOS+")   # do this to auto-balance the formation reaction

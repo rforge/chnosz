@@ -222,6 +222,7 @@ makeup <- function(formula, multiplier=1, sum=FALSE, count.zero=FALSE) {
   }
   # if the formula argument is numeric, get the formula
   # of that species number in thermo$obigt
+  thermo <- get("thermo")
   if(is.numeric(formula)) formula <- thermo$obigt$formula[formula]
   # first deal with charge
   cc <- count.charge(formula)

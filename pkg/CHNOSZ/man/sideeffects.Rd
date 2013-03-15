@@ -7,7 +7,10 @@
 }
 
 \details{
-  When the package is loaded, \code{\link{sys.source}} is used to create a \code{\link{list}} object named \code{\link{thermo}} that is placed in an \code{\link{environment}} named \samp{CHNOSZ:thermo}. Because that environment is \code{\link{attach}ed}, the \code{thermo} object, including all of its components, is accessible in the \code{\link{search}} path. Some functions in CHNOSZ have side effects that modify the contents of \code{thermo}; all such changes can be reverted, and the object restored to its original state, by calling \code{\link{data}(thermo)}.
+When the package is loaded, \code{\link{.onAttach}} creates a \code{\link{list}} object named \code{\link{thermo}} that is placed in an \code{\link{environment}} named \samp{CHNOSZ}.
+Some functions in CHNOSZ have side effects that modify the contents of \code{thermo}; all such changes can be reverted, and the object restored to its original state, by calling \code{\link{data}(thermo)}.
+
+The \samp{CHNOSZ} environment is \emph{not} (as of CHNOSZ 1.0.0) \code{\link{attach}ed}, rather the \code{thermo} object is accessed in functions using \code{\link{get}} (as in \code{get("thermo")}), \code{\link{assign}} (\code{assign("thermo", thermo, "CHNOSZ")}) and occasionally \code{\link{with}} (\code{with(as.environment("CHNOSZ"), ...)}).
 
   In the functions in the package, the greatest number of accessions are to the thermodynamic database (\code{thermo$obigt}), followed by the basis and species definitions (\code{thermo$basis} and \code{thermo$species}). For example, \code{\link{info}} can be used to look up thermodynamic data in \code{thermo$obigt} by the name or chemical formula of a species. As another example, \code{\link{subcrt}} attempts to balance unbalanced chemical reactions with the user-defined basis species in \code{thermo$basis}.
 

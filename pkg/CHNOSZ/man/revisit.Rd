@@ -91,7 +91,7 @@ The \samp{optimum} attribute of the \code{objective} function indicates whether 
 
 }
 
-\examples{
+\examples{\dontshow{data(thermo)}
 ## example of defining a new objective function
 # count the species with logarithms of activity greater than loga2
 count <- function(loga1, loga2) rowSums(loga1 > loga2)

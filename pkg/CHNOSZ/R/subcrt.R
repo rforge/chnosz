@@ -96,6 +96,7 @@ subcrt <- function(species, coeff=1, state=NULL, property=c('logK','G','H','S','
   }
 
   # get species information
+  thermo <- get("thermo")
   # pre-20110808, we sent numeric species argument through info() to
   # get species name and state(s)
   # but why slow things down if we already have a species index?
@@ -115,6 +116,8 @@ subcrt <- function(species, coeff=1, state=NULL, property=c('logK','G','H','S','
       mysearch <- species[i]
       if(can.be.numeric(mysearch)) mysearch <- thermo$obigt$name[as.numeric(mysearch)]
       si <- info.character(mysearch, state[i])
+      # that could have the side-effect of adding a protein; re-read thermo
+      thermo <- get("thermo", "CHNOSZ")
       if(is.na(si[1])) stop('no info found for ',species[i],' ',state[i])
       if(!is.null(state[i])) is.cr <- state[i]=='cr' else is.cr <- FALSE
       if(thermo$obigt$state[si[1]]=='cr1' & (is.null(state[i]) | is.cr)) {

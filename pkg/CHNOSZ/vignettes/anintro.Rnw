@@ -136,15 +136,24 @@ install.packages("CHNOSZ")
 @
 
 
-Then load the CHNOSZ package to make its functions and data available
-in your working session.
+Then load the CHNOSZ package to make its functions available in your
+working session.
 
 <<library_CHNOSZ>>=
 library(CHNOSZ)
 @
 
 
-The rest of this document assumes that the CHNOSZ package is loaded.
+Then load the \texttt{thermo} object, which contains the thermodynamic
+database and is also where your system settings will be stored.
+
+<<data_thermo>>=
+data(thermo)
+@
+
+
+The rest of this document assumes that the CHNOSZ package and data
+are loaded.
 
 
 \section{Thermodynamic database}

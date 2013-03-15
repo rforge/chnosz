@@ -14,7 +14,7 @@
 \usage{
   iprotein(protein, organism=NULL)
   ip2aa(protein, organism=NULL, residue=FALSE)
-  aa2eos(aa, state=thermo$opt$state)
+  aa2eos(aa, state=get("thermo")$opt$state)
   seq2aa(protein, sequence)
   aasum(aa, abundance = 1, average = FALSE, protein = NULL, organism = NULL)
   read.aa(file = "protein.csv")
@@ -61,6 +61,7 @@ The value returned by this function is the rownumbers of \code{thermo$protein} t
 }
 
 \examples{
+\dontshow{data(thermo)}
 # search by name in thermo$protein
 ip1 <- iprotein("LYSC_CHICK")
 ip2 <- iprotein("LYSC", "CHICK")

@@ -12,8 +12,8 @@
 }
 
 \usage{
-  water(property = NULL, T = thermo$opt$Tr, P = "Psat")
-  water.props(formulation = thermo$opt$water)
+  water(property = NULL, T = get("thermo")$opt$Tr, P = "Psat")
+  water.props(formulation = get("thermo")$opt$water)
   water.SUPCRT92(property, T = 298.15, P = 1)
   water.IAPWS95(property, T = 298.15, P = 1)
   rho.IAPWS95(T = 298.15, P = 1)
@@ -115,8 +115,7 @@ For \code{water} and \code{water.SUPCRT92} a data frame the number of rows of wh
 Equations of state for species other than water are coded in \code{\link{hkf}} and \code{\link{cgl}}.
 }
 
-\examples{
-\dontshow{data(thermo)}
+\examples{\dontshow{data(thermo)}
 ## calculations along saturation curve
 T <- seq(273.15, 623.15, 25)
 # liquid density, from SUPCRT92

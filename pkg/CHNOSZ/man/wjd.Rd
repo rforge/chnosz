@@ -125,8 +125,7 @@ The output of this function can be used as the \code{emu} argument for \code{\li
   \code{\link{invertible.combs}}, used by \code{element.potentials} to find combinations of species that are compositionally independent.
 }
 
-\examples{
-\dontshow{opar <- par(no.readonly=TRUE)}
+\examples{\dontshow{data(thermo)}
 ## run the function with default settings to reproduce
 ## the example problem in White et al., 1958
 w <- wjd()

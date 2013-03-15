@@ -34,8 +34,7 @@
 
 }
 
-\examples{
-\dontshow{data(thermo)}
+\examples{\dontshow{data(thermo)}
 ## count nucleobases in a sequence
 nucleicacids("ACCGGGTTT")
 # the DNA complement of that sequence

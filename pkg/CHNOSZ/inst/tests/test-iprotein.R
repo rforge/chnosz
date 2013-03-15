@@ -1,7 +1,7 @@
 context("iprotein")
 
 # clear out any prior database alterations
-suppressPackageStartupMessages(data(thermo))
+suppressMessages(data(thermo))
 
 test_that("basic searches and conversions work as expected", {
   expect_equal(iprotein(c("LYSC_CHICK", "MYGPHYCA")), c(6, NA))

@@ -77,23 +77,19 @@ of the metagenome that share keywords in the annotations.
 
 \section{General Setup}
 
-Load CHNOSZ. The thermodynamic data for the methionine sidechain group
-used in the paper has been superseded in CHNOSZ\_0.9-9 \citep{LD12},
-but the older dataset is still available using \texttt{add.obigt()}:
+Load CHNOSZ and the thermodynamic database.
 
 \begin{small}
 <<libraryCHNOSZ>>=
 library(CHNOSZ)
+data(thermo)
 @
 \end{small}
 
 
-<<datathermo,echo=FALSE>>=
-# there might be a stale version of thermo from running
-# previous vignettes during package build. reset it to be safe.
-data(thermo)
-@
-
+The thermodynamic data for the methionine sidechain group used in
+the paper has been superseded in CHNOSZ\_0.9-9 \citep{LD12}, but
+the older dataset is still available using \texttt{add.obigt()}:
 
 \begin{small}
 <<add_obigt>>=

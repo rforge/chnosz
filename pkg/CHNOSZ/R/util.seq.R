@@ -51,7 +51,7 @@ nucleicacids <- function(seq=NULL,type="DNA",comp=NULL,comp2=NULL) {
       stop(paste("requested type is",type,"but",nabases,"is/are not in the colnames of supplied dataframe"))
     }
     # the formulas of each of the bases
-    f.base <- thermo$obigt$formula[info(na.NA[match(colnames(seq),na)])]
+    f.base <- get("thermo")$obigt$formula[info(na.NA[match(colnames(seq),na)])]
     # loop over the base counts
     f.out <- character()
     for(i in 1:nrow(seq)) {

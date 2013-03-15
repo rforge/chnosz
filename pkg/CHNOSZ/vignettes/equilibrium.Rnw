@@ -123,6 +123,7 @@ database provided with CHNOSZ:
 
 <<add_obigt>>=
 library(CHNOSZ)
+data(thermo)
 add.obigt()
 @
 

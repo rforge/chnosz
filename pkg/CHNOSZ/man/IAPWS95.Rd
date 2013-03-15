@@ -53,7 +53,6 @@ The present functions do not check these limits and will attempt calculations fo
 }
 
 \examples{
-\dontshow{data(thermo)}
 ## calculate pressure for given temperature, density
 P <- as.numeric(IAPWS95("P", T=500, rho=838.0235))
 

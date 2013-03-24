@@ -1,11 +1,11 @@
-Date: 2013-03-15
+Date: 2013-03-24
 Package: CHNOSZ
-Version: 0.9-9.9
+Version: 0.9-9.10
 Title: Chemical Thermodynamics and Activity Diagrams
 Author: Jeffrey M. Dick
-Maintainer: Jeffrey M. Dick <jmdick@asu.edu>
+Maintainer: Jeffrey M. Dick <j3ffdick@gmail.com>
 Depends: R (>= 2.12.0), utils
-Suggests: testthat, parallel, limSolve
+Suggests: limSolve, parallel, testthat
 Description: This package includes functions and data sets to support chemical thermodynamic 
   modeling in biochemistry and low-temperature geochemistry. The features include calculation
   of the standard molal thermodynamic properties and chemical affinities of reactions involving 

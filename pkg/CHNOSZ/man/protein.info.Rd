@@ -133,11 +133,11 @@ pf <- protein.formula(thermo$protein[ip, ])
 zc <- ZC(pf)
 # the organism names we search for
 # "" matches all organisms
-terms <- c("Halo", "Streptomyces", "Pseudomonas", "Salmonella",
-  "Escherichia", "Bacteroides", "Lactobacillus", "Staphylococcus",
-  "Streptococcus", "Methano", "Bacillus", "Thermo", "")
+terms <- c("Natr", "Halo", "Rhodo", "Acido", "Methylo",
+  "Nitro", "Desulfo", "Chloro", "Geo", "Methano",
+  "Thermo", "Pyro", "Sulfo", "Buchner", "")
 tps <- thermo$protein$ref[ip]
-plot(0, 0, xlim=c(1, 13), ylim=c(-0.3, -0.05), pch="",
+plot(0, 0, xlim=c(1, 15), ylim=c(-0.3, -0.05), pch="",
   ylab="average oxidation state of carbon in proteins",
   xlab="", xaxt="n", mar=c(6, 3, 1, 1))
 for(i in 1:length(terms)) {
@@ -145,8 +145,8 @@ for(i in 1:length(terms)) {
   zct <- zc[it]
   points(jitter(rep(i, length(zct))), zct, pch=20)
 }
-terms[13] <- paste("all microbial")
-axis(1, 1:13, terms, las=2)
+terms[15] <- paste("all", length(ip))
+axis(1, 1:15, terms, las=2)
 title(main=paste("Average Oxidation State of Carbon:",
   "Total Protein per taxID in NCBI RefSeq", sep="\n"))
 }

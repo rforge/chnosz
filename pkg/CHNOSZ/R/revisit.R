@@ -41,6 +41,9 @@ extremes <- function(z, objective) {
     for(i in 1:xres) y <- c(y, which.max(z[i,]))
     for(i in 1:yres) x <- c(x, which.max(z[,i]))
   }
+  # stop if we missed some
+  if(length(x)!=xres) stop("optima not found for all y")
+  if(length(y)!=yres) stop("optima not found for all x")
   return(list(x=x, y=y))
 }
 

@@ -88,7 +88,8 @@ mod.obigt <- function(...) {
       if(isTRUE(all.equal(oldprop, args[iold[i], ], check.attributes=FALSE))) 
         msgout("mod.obigt: no change for ", args$name[iold[i]], "(", state, ")\n")
       else {
-        thermo$obigt[ispecies[iold[i]], icol] <<- args[iold[i], ]
+        thermo$obigt[ispecies[iold[i]], icol] <- args[iold[i], ]
+        assign("thermo", thermo, "CHNOSZ")
         msgout("mod.obigt: updated ", args$name[iold[i]], "(", state, ")\n")
       }
     }

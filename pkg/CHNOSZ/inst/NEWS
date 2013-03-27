@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 0.9-9.10 (2013-03-24)
+CHANGES IN CHNOSZ 0.9-9.11 (2013-03-26)
 ---------------------------------------
 
 MAJOR USER-VISIBLE CHANGE:
@@ -72,6 +72,8 @@ OTHER CHANGES:
   functions, is changed from CHNOSZ:thermo to CHNOSZ.
 
 - Remove read.supcrt() and write.supcrt().
+
+- guess() now defaults to "stoich" method, not "central".
 
 
 CHANGES IN CHNOSZ 0.9-9 (2013-01-01)

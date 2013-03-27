@@ -424,14 +424,16 @@ text(7, log10(Xs[, 1]), dlen$formula, adj=1)
 @
 
 
-We triggered a single ``not near equilibrium'' message, but overall
-it seems well behaved. And, as expected, it is similar to Fig. 2 of
-\citet{DLE64}, with a major crossing of curves at about 28\% carbon,
-together with an increase in aromatic compounds (e.g. naphthalene,
-anthracene) going toward higher carbon content. Unlike the figure
-in \citet{DLE64}, there appears to be a second major crossing of
-curves at about 43\% carbon, corresponding to a rise in CO. (For a
-higher resolution, try setting \texttt{xCs <- seq(8, 47, 1)}.)
+We triggered some ``not near equilibrium'' messages, but overall
+it seems well behaved (note that using the ``central'' method in
+\texttt{guess()} is one way that leads to fewer of these messages).
+And, as expected, it is similar to Fig. 2 of \citet{DLE64}, with
+a major crossing of curves at about 28\% carbon, together with an
+increase in aromatic compounds (e.g. naphthalene, anthracene) going
+toward higher carbon content. Unlike the figure in \citet{DLE64},
+there appears to be a second major crossing of curves at about 43\%
+carbon, corresponding to a rise in CO. (For a higher resolution, try
+setting \texttt{xCs <- seq(8, 47, 1)}.)
 
 
 \section{Running Down: Using a Thermodynamic Database}

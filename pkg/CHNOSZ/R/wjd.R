@@ -249,7 +249,7 @@ guess <- function(
     0,0,0,1,2,1,1,0,0,0,
     0,0,1,0,0,0,1,1,2,1),ncol=3,
     dimnames=list(NULL,c("H","N","O"))),
-  B = c(2,1,1), method=c("central", "stoich"), minX=0.001, iguess=1, ic=NULL
+  B = c(2,1,1), method="stoich", minX=0.001, iguess=1, ic=NULL
 ){
   # given the elemental stoichiometries of a set of species (A)
   # and the number of moles of elements (B)
@@ -260,7 +260,7 @@ guess <- function(
   if(all(B==0)) stop("there are zero moles of all elements")
 
   # if method="central" get central solution using limSolve package  20120919
-  if("central" %in% method) {
+  if(identical(method, "central")) {
     if(!"limSolve" %in% row.names(installed.packages())) {
       msgout("guess: skipping 'central' method as limSolve package is not available\n")
     } else {
@@ -275,7 +275,7 @@ guess <- function(
     }
   }
 
-  if("stoich" %in% method) {
+  if(identical(method, "stoich")) {
     # if method="stoich" use a stoichiometric approach: 20111231 jmd
     # - select one of the (many) species combinations (ic) that
     #   make a square, invertible stoichiometric matrix (the "variable" species)

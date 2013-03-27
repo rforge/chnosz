@@ -1895,7 +1895,7 @@ text(7, log10(Xs[, 1]), dlen$formula, adj=1)
 \end_layout
 
 \begin_layout Standard
-We triggered a single 
+We triggered some 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1903,7 +1903,19 @@ not near equilibrium
 \begin_inset Quotes erd
 \end_inset
 
- message, but overall it seems well behaved.
+ messages, but overall it seems well behaved (note that using the 
+\begin_inset Quotes eld
+\end_inset
+
+central
+\begin_inset Quotes erd
+\end_inset
+
+ method in 
+\family typewriter
+guess()
+\family default
+ is one way that leads to fewer of these messages).
  And, as expected, it is similar to Fig.
  2 of 
 \begin_inset CommandInset citation

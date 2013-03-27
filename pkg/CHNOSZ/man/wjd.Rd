@@ -36,7 +36,7 @@
       0,0,0,1,2,1,1,0,0,0,
       0,0,1,0,0,0,1,1,2,1),ncol=3,
       dimnames=list(NULL,c("H","N","O"))),
-    B = c(2,1,1), method=c("central", "stoich"), minX = 0.001, iguess = 1, ic = NULL
+    B = c(2,1,1), method="stoich", minX = 0.001, iguess = 1, ic = NULL
   )
   run.wjd(ispecies, B = NULL, method = "stoich", Y = run.guess(ispecies, B, method),
     P=1, T=25, nlambda=101, imax = 10, Gfrac = 1e-7, tol = 0.01)

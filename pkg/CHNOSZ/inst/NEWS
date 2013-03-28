@@ -1,11 +1,12 @@
-CHANGES IN CHNOSZ 0.9-9.11 (2013-03-26)
----------------------------------------
+CHANGES IN CHNOSZ 1.0.0 (2013-03-28)
+------------------------------------
 
 MAJOR USER-VISIBLE CHANGE:
 
 - On attaching the package, the user is asked to load the 'thermo'
-  object using data(thermo). This is required because packages are not
-  permitted to alter the search path (but the user may).
+  object, containing thermodynamic data and system settings, using
+  data(thermo). This is required because packages are not permitted to
+  alter the search path (but the user may).
 
 OTHER CHANGES:
 
@@ -59,9 +60,6 @@ OTHER CHANGES:
 
 - Simplify EOSplot() somewhat (don't group data by pressure ranges).
 
-- [temporary] Deactivate code using 'central' method in guess()
-  (wjd.Rnw) as limSolve package on not available on R-Forge for windows.
-
 - EOSlab() gets label from attribute (if present) of user-defined
   function.
 
@@ -73,7 +71,8 @@ OTHER CHANGES:
 
 - Remove read.supcrt() and write.supcrt().
 
-- guess() now defaults to "stoich" method, not "central".
+- guess() now defaults to "stoich" method, not "central". (Needed since
+  limSolve package is not found during R-Forge checks on Windows.)
 
 
 CHANGES IN CHNOSZ 0.9-9 (2013-01-01)

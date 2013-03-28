@@ -37,8 +37,6 @@ release checklist for CHNOSZ
   (CFLAGS=-ffloat-store ./configure --disable-long-double)
 
 - build the package on the source directory:
-  R CMD build --compact-vignettes chnosz
+  R CMD build --compact-vignettes chnosz/
     don't use --no-vignettes, that keeps the Rnw files from being copied to inst/doc,
       causing vignettes to disappear from CRAN webpage
-    don't use --compact-vignettes=both, that results in smaller PDFs (using ghostscript),
-      but erases some metadata

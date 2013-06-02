@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.0-1 (2013-05-06)
+CHANGES IN CHNOSZ 1.0.0-2 (2013-06-02)
 --------------------------------------
 
 - Fix IAPWS-95 calculations for subcrt(): in water.IAPWS95(), rename
@@ -10,6 +10,11 @@ CHANGES IN CHNOSZ 1.0.0-1 (2013-05-06)
 
 - In water.AW90(), analytical solution to polynomial equation is
   now used to calculate dielectric constant. Thanks to Marc Neveu.
+
+- count.aa() and read.fasta() handle DNA sequences, with new argument
+  'type' (protein or DNA).
+
+- nucleicacids() split into nucleic.formula() and nucleic.complement().
 
 CHANGES IN CHNOSZ 1.0.0 (2013-03-28)
 ------------------------------------

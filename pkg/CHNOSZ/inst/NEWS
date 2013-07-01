@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.0-2 (2013-06-02)
+CHANGES IN CHNOSZ 1.0.0-3 (2013-07-01)
 --------------------------------------
 
 - Fix IAPWS-95 calculations for subcrt(): in water.IAPWS95(), rename

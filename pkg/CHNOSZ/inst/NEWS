@@ -1,9 +1,9 @@
-CHANGES IN CHNOSZ 1.0.0-3 (2013-07-01)
---------------------------------------
+CHANGES IN CHNOSZ 1.0.1 (2013-07-04)
+------------------------------------
 
-- Fix IAPWS-95 calculations for subcrt(): in water.IAPWS95(), rename
-  internal function from 'epsilon' to 'diel'; in water(), return
-  upper-case versions of names of properties.
+- Allow IAPWS-95 calculations to be used in subcrt(): in 
+  water.IAPWS95(), rename internal function from 'epsilon' to 'diel';
+  in water(), return upper-case versions of names of properties.
 
 - rho.IAPWS95() has modified search interval to give results at
   T < 250 K and P < 300 bar. Thanks to Marc Neveu.

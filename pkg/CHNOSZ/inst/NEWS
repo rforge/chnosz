@@ -1,3 +1,11 @@
+CHANGES IN CHNOSZ 1.0.1-1 (2013-09-22)
+--------------------------------------
+
+- Updated extdata/protein/Sce.csv.xz using Saccharomyces Genome Database
+  protein_properties.tab and SGD_features.tab dated 2013-08-24.
+
+- more.aa() includes SGDID and gene name in the abbrv and ref columns.
+
 CHANGES IN CHNOSZ 1.0.1 (2013-07-04)
 ------------------------------------
 

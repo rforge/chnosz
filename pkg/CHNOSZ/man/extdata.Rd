@@ -57,17 +57,20 @@
   }
 
 
-  Files in \code{refseq} contain code and results of processing NCBI Reference Sequences (RefSeq) for microbial proteins, using RefSeq release 57 of 2013-01-08:
+  Files in \code{refseq} contain code and results of processing NCBI Reference Sequences (RefSeq) for microbial proteins, using RefSeq release 61 of 2013-09-09:
   \itemize{
     \item \code{README.txt} Instructions for producing the data files.
     \item \code{gencat.sh} Bash script to extract microbial protein records from the RefSeq catalog.
-    \item \code{gi.taxid.txt} Output from above. The complete file is too large to distribute with CHNOSZ, but a portion is included in \code{extdata/bison} to support processing example BLAST files for the Bison Pool metagenome.
+    \item \code{gi.taxid.txt} Output from above. The complete file is too large to distribute with CHNOSZ, but a portion is included in \code{extdata/bison} to support processing example BLAST files for the Bison Pool metagenome (based on RefSeq 57, 2013-01-08).
     \item \code{mkfaa.sh} Combine the contents of .faa.gz files into a single FASTA file (to use e.g. for making a BLAST database).
     \item \code{protein.refseq.R} Calculate average amino acid composition of all proteins for each organism identified by a taxonomic ID.
-    \item \code{trim_refseq.R} Remove some entries with commonly occurring names (e.g. many different strains of Escherichia coli) to reduce size of \code{protein_refseq.csv} (to keep package size down).
-    \item \code{protein_refseq.csv.xz} Output from above. See example for \code{\link{ZC}}.
+    \item \code{trim_refseq.R} Keep only selected organism names (reduces number of taxa from 6758 to 779, helps to control package size).
+    \item \code{protein_refseq.csv.xz} Output from above. See example in \code{\link{protein.info}}.
     \item \code{taxid.names.R} Generate a table of scientific names for the provided taxids. Requires the complete \code{names.dmp} and \code{nodes.dmp} from NCBI taxonomy files.
-    \item \code{taxid_names.csv.xz} Output from above. See example for \code{\link{id.blast}}.
+    \item \code{taxid_names.csv.xz} Output from above.
+      NOTE: For backward compatibility with the example BLAST files for the Bison Pool metagenome, the packaged file merges records for taxids found in either RefSeq 57 or 61.
+      Certain taxids in release 57 were not located in the current RefSeq catalog, probably related to the transition to the \dQuote{WP} multispecies accessions (\url{ftp://ftp.ncbi.nlm.nih.gov/refseq/release/announcements/WP-proteins-06.10.2013.pdf}).
+      See example for \code{\link{id.blast}}.
   }
 
   Files in \code{taxonomy} contain example taxonomic data files:

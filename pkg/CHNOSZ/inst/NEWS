@@ -1,10 +1,18 @@
-CHANGES IN CHNOSZ 1.0.1-1 (2013-09-22)
+CHANGES IN CHNOSZ 1.0.1-2 (2013-10-05)
 --------------------------------------
 
 - Updated extdata/protein/Sce.csv.xz using Saccharomyces Genome Database
   protein_properties.tab and SGD_features.tab dated 2013-08-24.
 
 - more.aa() includes SGDID and gene name in the abbrv and ref columns.
+
+- In extdata/refseq, scripts and data files were updated for NCBI
+  Reference Sequence (RefSeq) release 61 (2013-09-09). Code was adapted
+  to deal with WP multispecies accessions.
+
+- read.fasta() gets new argument 'id'; when supplied, it skips reading
+  the protein names from the FASTA headers.
+
 
 CHANGES IN CHNOSZ 1.0.1 (2013-07-04)
 ------------------------------------

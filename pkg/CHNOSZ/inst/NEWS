@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.1-2 (2013-10-05)
+CHANGES IN CHNOSZ 1.0.2 (2013-11-24)
 --------------------------------------
 
 - Updated extdata/protein/Sce.csv.xz using Saccharomyces Genome Database
@@ -12,6 +12,13 @@ CHANGES IN CHNOSZ 1.0.1-2 (2013-10-05)
 
 - read.fasta() gets new argument 'id'; when supplied, it skips reading
   the protein names from the FASTA headers.
+
+- info() no longer specially sets state of "O2" or "oxygen" to gas.
+
+- In thermo$obigt, names of gases (e.g. "oxygen") are used only for the
+  gaseous species; names were removed from dissolved species in rows
+  63-79. Both gases and aqueous species can continue to be referenced by
+  their chemical formula.
 
 
 CHANGES IN CHNOSZ 1.0.1 (2013-07-04)

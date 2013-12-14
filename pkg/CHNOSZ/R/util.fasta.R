@@ -107,7 +107,7 @@ read.fasta <- function(file, i=NULL, ret="count", lines=NULL, ihead=NULL,
   bnf <- strsplit(basename(file),split=".",fixed=TRUE)[[1]][1]
   organism <- bnf
   # protein/gene name is from header line for entry
-  # (strip the ">" and go to the first space or underscore)
+  # (strip the ">" and go to the first space)
   if(is.null(id)) id <- as.character(palply(1:length(i), function(j) {
     # get the text of the line
     f1 <- linefun(i[j],i[j])
@@ -118,9 +118,7 @@ read.fasta <- function(file, i=NULL, ret="count", lines=NULL, ihead=NULL,
     # discard the leading '>'
     f2 <- substr(f1, 2, nchar(f1))
     # keep everything before the first space
-    f3 <- strsplit(f2," ")[[1]][1]
-    # then before or after the first underscore
-    return(strsplit(f3,"_")[[1]][1])
+    return(strsplit(f2," ")[[1]][1])
   } ))
   if(ret=="count") {
     counts <- count.aa(sequences, start, stop, type)

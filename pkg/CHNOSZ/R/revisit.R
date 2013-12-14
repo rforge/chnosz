@@ -163,6 +163,8 @@ revisit <- function(eout, objective = "CV", loga2 = NULL, ispecies = NULL,
         # plot the points for a referenced objective
         ylab <- "loga1"
         xlab <- "loga2"
+        if(is.null(xlim)) xlim <- extendrange(loga2)
+        if(is.null(ylim)) ylim <- extendrange(loga1)
         plot(loga2, loga1, xlab=xlab, ylab=ylab, pch=pch, col=col, xlim=xlim, ylim=ylim)
         # add a 1:1 line
         lines(range(loga2), range(loga2), col="grey")

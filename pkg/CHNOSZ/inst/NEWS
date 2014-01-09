@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.2-1 (2013-12-15)
+CHANGES IN CHNOSZ 1.0.2-2 (2013-12-17)
 --------------------------------------
 
 - Updated extdata/protein/Sce.csv.xz using Saccharomyces Genome Database
@@ -26,6 +26,9 @@ CHANGES IN CHNOSZ 1.0.2-1 (2013-12-15)
 - In read.expr(), allow multiple filter specifications.
 
 - In revisit(), extend ranges of axes of scatter plots.
+
+- revisit() has new argument loga0, a single vector of base-10 logarithms of
+  species activities used to calculate the base-2 log ratio ( log2(a1/a0) ).
 
 
 CHANGES IN CHNOSZ 1.0.1 (2013-07-04)

@@ -77,10 +77,6 @@
   \code{\link{diagram}} causes an error while plotting stability field boundaries if the x and y resolutions are not identical.
 }
 
-\seealso{
-  The \code{TODO} file in the package installation directory contains a list of changes anticipated or considered for future releases.
-}
-
 \examples{
 ### Getting Started
 ## the 'thermo' object contains thermodynamic data and is also where

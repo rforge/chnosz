@@ -98,8 +98,8 @@ test_that("'iprotein' gives consistent results on a transect", {
   basis(c("HCO3-", "H2O", "NH3", "HS-", "H2", "H+"),
     "aq", c(-3, 0, -4, -7, 999, 999))
   sites <- c("N", "S", "R", "Q", "P")
-  proteins <- paste("overall_bison", sites, sep="")
-  ip <- iprotein(proteins)
+  aa <- read.aa(system.file("extdata/protein/DS11.csv", package="CHNOSZ"))
+  ip <- add.protein(aa[1:5, ])
   # to reproduce, we need use the "old" parameters for [Met]
   add.obigt()
   a <- affinity(T=T, pH=pH, H2=H2, iprotein=ip)

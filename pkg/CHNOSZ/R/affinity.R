@@ -43,6 +43,8 @@ affinity <- function(...,property=NULL,sout=NULL,exceed.Ttr=FALSE,
     # to ionization calculations in energy() so no explicit accounting
     # is needed here
     if(!is.null(iprotein)) {
+      # check all proteins are available
+      if(!all(iprotein %in% 1:nrow(thermo$protein))) stop("some value(s) in iprotein not in rownumbers of thermo$protein")
       # add protein residues to the species list
       resnames <- c("H2O",aminoacids(3))
       # residue activities set to zero;

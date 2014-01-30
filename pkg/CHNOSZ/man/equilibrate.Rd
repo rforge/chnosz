@@ -114,7 +114,7 @@ pKa.equil <- seq(0, 14, length.out=res)[ipKa]
 # calculate logK directly
 logK <- subcrt(c("CO2","H2O","HCO3-","H+"), c(-1, -1, 1, 1), T=25)$out$logK
 # we could decrease tolerance here by increasing res
-stopifnot(all.equal(pKa.equil, -logK, tol=1e-2))
+stopifnot(all.equal(pKa.equil, -logK, tolerance=1e-2))
 }
 
 \references{

@@ -1,3 +1,13 @@
+CHANGES IN CHNOSZ 1.0.3-1 (2014-01-30)
+--------------------------------------
+
+- Add files with average amino acid compositions of proteins from Bison
+  Pool grouped according to annotation keyword (DS11.csv) (moved here
+  from main protein.csv) or phylum assignment (DS13.csv).
+
+- Convert hotspring.Rnw to use knitr, and add example calculations of
+  relative abundances of microbial phyla from Dick and Shock, 2013.
+
 CHANGES IN CHNOSZ 1.0.3 (2014-01-12)
 ------------------------------------
 

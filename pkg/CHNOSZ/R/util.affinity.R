@@ -119,7 +119,7 @@ energy <- function(what,vars,vals,lims,T=get("thermo")$opt$Tr,P="Psat",IS=0,sout
       species <- c(mybasis$ispecies,myspecies$ispecies)
       if("T" %in% vars) T <- vals[[which(vars=="T")]]
       if("P" %in% vars) P <- vals[[which(vars=="P")]]
-      s.args <- list(species=species,property=property,T=T,P=P,grid=grid,convert=FALSE,exceed.Ttr=exceed.Ttr)
+      s.args <- list(species=species,property=property,T=T,P=P,IS=IS,grid=grid,convert=FALSE,exceed.Ttr=exceed.Ttr)
       if("IS" %in% vars) {
         IS <- vals[[which(vars=="IS")]]
         # do the calculation in parts: basis species (IS=0)

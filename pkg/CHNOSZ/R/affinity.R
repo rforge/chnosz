@@ -213,7 +213,7 @@ affinity <- function(...,property=NULL,sout=NULL,exceed.Ttr=FALSE,
     else if(length(Eharg) == 2) Ehvals <- seq(Eharg[1], Eharg[2], length.out=128)
     vals[[iEh]] <- Ehvals
   }
-  # get pe and pH and Eh
+  # get pe and pH
   ipe <- match("pe", names(args.orig))
   if(!is.na(ipe)) {
     ie <- match("e-", names(args$lims))

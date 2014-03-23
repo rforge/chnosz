@@ -72,7 +72,7 @@ An alternative source for the \code{eout} argument is any list of numeric values
 In this case, plotting is disabled, since the names of the variables are not in the input.
 
 \samp{revisit} is a partial anagram of \samp{diversity}, which was the provisional name of the function but was changed in CHNOSZ-0.9.
-While the \code{\link[vegan]{diversity}} function (in \pkg{vegan}) operates on a matrix with (biological) species on the columns, \code{revisit} operates on a list with (chemical) species as the elements of the list.
+While the \code{diversity} function (in \pkg{vegan}) operates on a matrix with (biological) species on the columns, \code{revisit} operates on a list with (chemical) species as the elements of the list.
 The name of the \samp{H} output value is the conventional symbol for the Shannon diversity index, which was the first target statistic to be implemented in \code{revisit}.
 
 }

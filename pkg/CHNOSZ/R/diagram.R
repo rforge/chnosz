@@ -189,6 +189,8 @@ diagram <- function(
       }
     }
 
+    out2D <- list()
+
     if(nd==0) {
 
       ### 0-D diagram - bar graph of properties of species or reactions
@@ -345,7 +347,7 @@ diagram <- function(
       }
       ## label plot function
       # calculate coordinates for field labels
-      plot.names <- function(out,xs,ys,names) {
+      plot.names <- function(out, xs, ys, names) {
         ll <- ngroups
         lx <- numeric(ll); ly <- numeric(ll); n <- numeric(ll)
         for(j in nrow(out):1) {
@@ -367,7 +369,8 @@ diagram <- function(
         # plot field labels
         # the cex argument in this function specifies the character 
         # expansion of the labels relative to the current
-        text(lx,ly,labels=names[is],cex=cex.names,col=col.names[is])
+        if(!is.null(names)) text(lx, ly, labels=names[is], cex=cex.names, col=col.names[is])
+        return(list(lx=lx, ly=ly, is=which(is)))
       }
 
       ### done with predominance diagram functions
@@ -407,13 +410,14 @@ diagram <- function(
         # put predominance matrix in the right order for image() etc
         zs <- t(predominant[, ncol(predominant):1])
         if(!is.null(fill)) fill.color(xs, ys, zs, fill, ngroups)
-        if(!is.null(names)) plot.names(zs, xs, ys, names)
+        pn <- plot.names(zs, xs, ys, names)
         if(!is.null(dotted)) plot.line(zs, xlim, ylim, dotted, col, lwd, xrange=xrange)
       } # done with the 2D plot!
+      out2D <- list(lx=pn$lx, ly=pn$ly, is=pn$is)
     } # end if(nd==2)
   } # end if(plot.it)
 
-  out <- c(eout, list(plotvar=plotvar, plotvals=plotvals, names=names, predominant=predominant))
+  out <- c(eout, list(plotvar=plotvar, plotvals=plotvals, names=names, predominant=predominant), out2D)
   return(invisible(out))
 }
 

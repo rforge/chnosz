@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.3-4 (2014-03-23)
+CHANGES IN CHNOSZ 1.0.3-5 (2014-11-20)
 --------------------------------------
 
 - Add files with average amino acid compositions of proteins from Bison
@@ -10,6 +10,10 @@ CHANGES IN CHNOSZ 1.0.3-4 (2014-03-23)
 
 - In energy(), add missing 'IS' argument in call to subcrt(). Thanks to
   Grayson Boyer for the bug report.
+
+- diagram() returns 'lx', 'ly' and 'is' for calculated positions of
+  labels and indices of those species in predominance diagrams,
+  including when the labels aren't plotted (by setting names=FALSE).
 
 CHANGES IN CHNOSZ 1.0.3 (2014-01-12)
 ------------------------------------

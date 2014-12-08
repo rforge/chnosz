@@ -270,7 +270,7 @@ guess <- function(
       # minX is the minimum mole number we will accept
       H <- rep(minX, nrow(A))
       # get a solution
-      X <- xranges(E=t(A), F=B, G=G, H=H, central=TRUE, full=TRUE)[, "central"]
+      X <- limSolve::xranges(E=t(A), F=B, G=G, H=H, central=TRUE, full=TRUE)[, "central"]
       return(X)
     }
   }

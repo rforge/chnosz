@@ -144,6 +144,9 @@ diagram <- function(
     dim(predominant) <- dim(pv[[1]])
   }
 
+  ## where we'll put extra output for predominance diagrams (lx, ly, is)
+  out2D <- list()
+
   ### now on to the plotting ###
 
   if(plot.it) {
@@ -188,8 +191,6 @@ diagram <- function(
           " (", eout$species$state[isdup], ")", sep="")
       }
     }
-
-    out2D <- list()
 
     if(nd==0) {
 
@@ -406,6 +407,7 @@ diagram <- function(
         zs <- plotvals[[1]]
         if(length(plotvals) > 1) warning("showing only first species in 2-D property diagram")
         contour(xs, ys, zs, add=TRUE, col=col, lty=lty, lwd=lwd, labcex=cex)
+        pn <- list(lx=NULL, ly=NULL, is=NULL)
       } else {
         # put predominance matrix in the right order for image() etc
         zs <- t(predominant[, ncol(predominant):1])

@@ -807,7 +807,8 @@ feldspar <- function(which="closed",plot.it=FALSE) {
   # setup conditions for feldspar reaction
   #basis(c('Al+3','SiO2','K+','H2O','H+','O2'))
   basis(delete=TRUE)
-  # SLS89 use H4SiO4 instead of SiO2
+  # SLS89 use H4SiO4 instead of SiO2 - use the secondary database
+  add.obigt()
   basis(c('Al+3','H4SiO4','K+','H2O','H+','O2'))
   # some of SLS89's initial conditions
   basis(c('K+','H4SiO4'),c(-6,-6))

@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.3-6 (2014-12-08)
+CHANGES IN CHNOSZ 1.0.3-7 (2014-12-09)
 --------------------------------------
 
 - Add files with average amino acid compositions of proteins from Bison
@@ -14,6 +14,10 @@ CHANGES IN CHNOSZ 1.0.3-6 (2014-12-08)
 - diagram() returns 'lx', 'ly' and 'is' for calculated positions of
   labels and indices of those species in predominance diagrams,
   including when the labels aren't plotted (by setting names=FALSE).
+
+- Move aqueous Ti(OH)4 and H4SiO4 to OBIGT-2.csv.
+
+- Add warning about data and examples to CHNOSZ-package.Rd.
 
 CHANGES IN CHNOSZ 1.0.3 (2014-01-12)
 ------------------------------------

@@ -59,6 +59,10 @@ Simulate a mass transfer process such as mineral weathering or sequential format
 
 }
 
+\section{Warning}{
+  \code{feldspar} loads the secondary database (using \code{\link{add.obigt}}); after using this function use \code{data(thermo)} to restore the primary database.
+}
+
 \value{
   \code{transfer} returns a list containing information about the conditions at each step: \code{basis}, data frame of the logarithms of activities of basis species, \code{species}, data frame of the logarithms of activities (moles for solids) of species, \code{alphas}, numeric vector of the values of the destruction exponent, \code{dmodes}, character vector of the destruction mode, \code{istables}, numeric vector of the index of the most stable product, \code{myaffs}, list of the affinities of the formation reactions of species, \code{didwork}, logical vector indicating whether the steps succeeded or failed.
 }
@@ -67,6 +71,8 @@ Simulate a mass transfer process such as mineral weathering or sequential format
 \examples{\dontshow{data(thermo)}
 \donttest{## react potassium feldspar in a closed system
 ## after Steinmann et al., 1994 and Helgeson et al., 1969
+# load the secondary database to use H4SiO4
+add.obigt()
 basis(c("Al+3", "H4SiO4", "K+", "H2O", "H+", "O2"), c(0, -6, -6, 0, 0, 0))
 species(c("k-feldspar", "muscovite", "pyrophyllite", "kaolinite", "gibbsite"))
 a <- affinity(H4SiO4=c(-6, -2), "K+"=c(-3, 8))
@@ -78,6 +84,8 @@ tr <- transfer(550, dmode="coupled", plot=c(2, 3), devmax=0.2)
 draw.transfer(tr)
 # reset the plot layout
 layout(matrix(1))
+# restore the primary database
+data(thermo)
 
 ## can also run the calculation above with
 #feldspar("closed")

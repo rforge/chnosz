@@ -10,6 +10,8 @@
 \alias{buffers}
 \title{Thermodynamic Database and System Definition}
 \description{
+
+  Please read the important Warning at \code{\link{CHNOSZ-package}}.
  
   The core data files provided with CHNOSZ are in the \code{data} directory of the package. These \code{*.csv} files are used to build the \code{thermo} data object on loading the package. Additional (extra) data files, supporting the examples and vignettes, are documented separately at \code{\link{extdata}}. 
 

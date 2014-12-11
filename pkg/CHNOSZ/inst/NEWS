@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.3-7 (2014-12-09)
+CHANGES IN CHNOSZ 1.0.3-8 (2014-12-11)
 --------------------------------------
 
 - Add files with average amino acid compositions of proteins from Bison
@@ -11,6 +11,9 @@ CHANGES IN CHNOSZ 1.0.3-7 (2014-12-09)
 - In energy(), add missing 'IS' argument in call to subcrt(). Thanks to
   Grayson Boyer for the bug report.
 
+- In nonideal(), skip proton and electron. Add test for calculations
+  at constant and variable IS to test-util.affinity.R.
+
 - diagram() returns 'lx', 'ly' and 'is' for calculated positions of
   labels and indices of those species in predominance diagrams,
   including when the labels aren't plotted (by setting names=FALSE).
@@ -18,6 +21,7 @@ CHANGES IN CHNOSZ 1.0.3-7 (2014-12-09)
 - Move aqueous Ti(OH)4 and H4SiO4 to OBIGT-2.csv.
 
 - Add warning about data and examples to CHNOSZ-package.Rd.
+
 
 CHANGES IN CHNOSZ 1.0.3 (2014-01-12)
 ------------------------------------

@@ -144,3 +144,18 @@ test_that("affinity() for proteins keeps track of pH on 2-D calculations", {
   a2 <- affinity(pH=c(6, 8, 3), T=c(0, 75, 4))
   expect_equal(as.numeric(a1$values[[1]]), a2$values[[1]][, 2])
 })
+
+test_that("IS can be constant or variable", {
+  # inspired by an error from demo("phosphate")
+  # > a25 <- affinity(IS=c(0, 0.14), T=T[1])
+  # ...
+  # Error in subcrt(species = c(1017L, 20L, 19L), property = "logK", T = 298.15,  : 
+  #   formal argument "IS" matched by multiple actual arguments
+  basis("CHNOPS+")
+  species(c("PO4-3", "HPO4-2", "H2PO4-"))
+  a0 <- affinity()
+  a1 <- affinity(IS=0.14)
+  a2 <- affinity(IS=c(0, 0.14))
+  expect_equal(unlist(lapply(a2$values, head, 1)), unlist(a0$values))
+  expect_equal(unlist(lapply(a2$values, tail, 1)), unlist(a1$values))
+})

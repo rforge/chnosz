@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.3-8 (2014-12-11)
+CHANGES IN CHNOSZ 1.0.3-9 (2014-12-15)
 --------------------------------------
 
 - Add files with average amino acid compositions of proteins from Bison
@@ -22,6 +22,7 @@ CHANGES IN CHNOSZ 1.0.3-8 (2014-12-11)
 
 - Add warning about data and examples to CHNOSZ-package.Rd.
 
+- water.lines() gets 'O2state' argument for state of O2.
 
 CHANGES IN CHNOSZ 1.0.3 (2014-01-12)
 ------------------------------------

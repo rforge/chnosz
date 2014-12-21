@@ -8,14 +8,14 @@
 
 \arguments{
   \item{do.png}{logical, generate PNG files for the plots?}
-  \item{which}{character, which example to run.}
+  \item{which}{character, which example to run}
 }
 
 \usage{
   examples(do.png = FALSE)
   demos(which = c("sources", "NaCl", "cordierite",
     "phosphate", "nucleobase", "orp", "findit", 
-    "CO2Ac", "nonideal"))
+    "CO2Ac", "nonideal", "TPX", "mosaic"))
 }
 
 \details{
@@ -39,12 +39,16 @@ See the comments in the source code for more information about each demo.
     \code{findit} \tab detailed example of usage of \code{\link{findit}} using log-normal distribution as an objective \cr
     \code{CO2Ac} \tab activity of CO2 buffered by acetic acid; comparing \code{\link{affinity}(return.buffer=TRUE)} with \code{\link{diagram}(what="CO2")} \cr
     \code{nonideal} \tab activity coefficient of charged species (Alberty, 2003), using the \code{IS} argument of \code{subcrt} \cr
+    \code{TPX} \tab metastablilities of selected ionized bacterial thiol peroxidases as a chemical activity buffer \cr
+    \code{mosaic} \tab Eh-pH diagram for iron oxides, sulfides and carbonate with two sets of changing basis species (Garrels and Christ, 1965) \cr
   }
 
 }
 
 \references{
   Alberty, R. A. (2003) \emph{Thermodynamics of Biochemical Reactions}, John Wiley & Sons, Hoboken, New Jersey, 397 p. \url{http://www.worldcat.org/oclc/51242181}
+
+  Garrels, R. M. and Christ, C. L. (1965) \emph{Solutions, Minerals, and Equilibria}, Harper & Row, New York, 450 p. \url{http://www.worldcat.org/oclc/517586}
   
   Shock, E. L., Oelkers, E. H., Johnson, J. W., Sverjensky, D. A. and Helgeson, H. C. (1992) Calculation of the thermodynamic properties of aqueous species at high pressures and temperatures: Effective electrostatic radii, dissociation constants and standard partial molal properties to 1000 \eqn{^{\circ}}{°}C and 5 kbar. \emph{J. Chem. Soc. Faraday Trans.} \bold{88}, 803--826. \url{http://dx.doi.org/10.1039/FT9928800803}
 }

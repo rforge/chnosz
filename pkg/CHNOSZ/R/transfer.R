@@ -25,7 +25,7 @@ transfer <- function(nsteps=500,dmode='coupled',devmax=0.1,
   istables <- character()
   myaffs <- list()
   sout <- NULL
-  # logarithm of zero (approx.)
+  # logarithm of a very small number (approaching zero)
   log0 <- -999
   # logarithm of molality above which something
   # is considered possible for reaction (is present)

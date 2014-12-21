@@ -7,4 +7,5 @@ orp             oxidation-reduction potential of redox standards as a function o
 findit          example of findit() using log-normal distribution as an objective
 CO2Ac           activity of CO2 buffered by acetic acid; comparing affinity(return.buffer=TRUE) with diagram(what="CO2")
 nonideal        activity coefficient of charged species, using the IS argument of subcrt
-TPX             Metastablilities of selected ionized bacterial thiol peroxidases as a chemical activity buffer
+TPX             metastablilities of selected ionized bacterial thiol peroxidases as a chemical activity buffer
+mosaic          Eh-pH diagram for iron oxides, sulfides and carbonate with two sets of changing basis species

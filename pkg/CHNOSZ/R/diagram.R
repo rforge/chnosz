@@ -274,7 +274,7 @@ diagram <- function(
         for(i in 1:nrow(zs)) zs[i,] <- out[nrow(zs)+1-i,]
         zs <- t(zs)
         breaks <- c(0,1:nspecies) + 0.5
-        image(x=xs,y=ys,z=zs,col=fill,add=TRUE,breaks=breaks)
+        image(x=xs, y=ys, z=zs, col=fill, add=TRUE, breaks=breaks, useRaster=TRUE)
       }
       ## curve plot function
       # 20091116 replaced plot.curve with plot.line; different
@@ -296,7 +296,7 @@ diagram <- function(
           return(list(xs=xs, ys=ys))
         }
         hline <- function(out, iy) {
-          nx <- nrow(out)
+          nx <- ncol(out)
           ys <- rep(iy, nx*2+1)
           xs <- c(0, rep(1:nx, each=2))
           x1 <- out[iy, ]

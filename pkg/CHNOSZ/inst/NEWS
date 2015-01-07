@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.3-11 (2014-12-21)
+CHANGES IN CHNOSZ 1.0.3-12 (2015-01-07)
 ---------------------------------------
 
 - Add files with average amino acid compositions of proteins from Bison
@@ -26,6 +26,11 @@ CHANGES IN CHNOSZ 1.0.3-11 (2014-12-21)
 
 - Add mosaic() function for affinity calculations with changing basis
   species.
+
+- When making filled color diagrams, diagram() calls image() with
+  useRaster=TRUE. This speeds up plotting, eliminates artifacts at
+  some resolutions (i.e. blank lines), and greatly reduces the size
+  of PDF files.
 
 CHANGES IN CHNOSZ 1.0.3 (2014-01-12)
 ------------------------------------

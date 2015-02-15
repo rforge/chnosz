@@ -9,7 +9,7 @@ diagram <- function(
   # primary input
   eout, 
   # what to plot
-  what="loga.equil", alpha=FALSE, normalize=FALSE, balance=NULL,
+  what="loga.equil", alpha=FALSE, normalize=FALSE, as.residue=FALSE, balance=NULL,
   groups=as.list(1:length(eout$values)), xrange=NULL,
   # plot dimensions
   mar=NULL, yline=par("mgp")[1]+0.7, side=1:4,
@@ -24,7 +24,7 @@ diagram <- function(
   # labels
   names=NULL, main=NULL, legend.x="topright",
   # plotting controls
-  add=FALSE, plot.it=TRUE
+  add=FALSE, plot.it=TRUE, tplot=TRUE
 ) {
 
   ### argument handling ###
@@ -52,12 +52,6 @@ diagram <- function(
   } else if(what=="loga.equil" & !"loga.equil" %in% names(eout)) stop("'eout' is not the output from equil()") 
   else if(what!="loga.equil") stop(what, " is not a basis species or 'loga.equil'")
 
-  ## we only normalize if eout.is.aout
-  if(normalize) {
-    if(!eout.is.aout) stop("normalizing formulas is only possible if 'eout' is the output from affinity()")
-    else msgout("diagram: normalizing formulas in calculation of predominant species\n")
-  }
-
   ## consider a different number of species if we're grouping them together
   ngroups <- length(groups)
 
@@ -79,6 +73,20 @@ diagram <- function(
     # we change 'A' to 'A/2.303RT' so the axis label is made correctly
     if(plotvar=="A") plotvar <- "A/2.303RT"
     msgout(paste("diagram: plotting", plotvar, "from affinity(), divided by balancing coefficients\n"))
+  }
+
+  ## number of dimensions (T, P or chemical potentials that are varied)
+  # length(eout$vars) - the number of variables = the maximum number of dimensions
+  # length(dim(eout$values[[1]])) - nd=1 if it was a transect along multiple variables
+  nd <- min(length(eout$vars), length(dim(eout$values[[1]])))
+
+  ## when can normalize and as.residue be used
+  if(normalize | as.residue) {
+    if(normalize & as.residue) stop("'normalize' and 'as.residue' can not both be TRUE")
+    if(!eout.is.aout) stop("'normalize' or 'as.residue' can be TRUE only if 'eout' is the output from affinity()")
+    if(nd!=2) stop("'normalize' or 'as.residue' can be TRUE only for a 2-D (predominance) diagram")
+    if(normalize) msgout("diagram: using 'normalize' in calculation of predominant species\n")
+    else msgout("diagram: using 'as.residue' in calculation of predominant species\n")
   }
 
   ## sum activities of species together in groups 20090524
@@ -139,6 +147,7 @@ diagram <- function(
       # TODO: see vignette for an explanation for how this is normalizing
       # the formulas in a predominance calculation
       if(normalize & eout.is.aout) pv[[i]] <- (pv[[i]] + eout$species$logact[i] / n.balance[i]) - log10(n.balance[i])
+      else if(as.residue & eout.is.aout) pv[[i]] <- pv[[i]] + eout$species$logact[i] / n.balance[i]
     }
     predominant <- which.pmax(pv)
     dim(predominant) <- dim(pv[[1]])
@@ -152,11 +161,6 @@ diagram <- function(
   if(plot.it) {
 
     ### general plot parameters ###
-
-    ## number of dimensions (T, P or chemical potentials that are varied)
-    # length(eout$vars) - the number of variables = the maximum number of dimensions
-    # length(dim(eout$values[[1]])) - nd=1 if it was a transect along multiple variables
-    nd <- min(length(eout$vars), length(dim(eout$values[[1]])))
 
     ## handle line type/width/color arguments
     if(is.null(lty)) lty <- 1:ngroups
@@ -216,7 +220,8 @@ diagram <- function(
           myval <- sapply(plotvals, xfun)
           ylim <- extendrange(myval)
         }
-        thermo.plot.new(xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab, cex=cex, mar=mar, yline=yline, side=side)
+        if(tplot) thermo.plot.new(xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab, cex=cex, mar=mar, yline=yline, side=side)
+        else plot(0, 0, type="n", xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab)
       }
       # draw the lines
       for(i in 1:length(plotvals)) lines(xvalues, plotvals[[i]], col=col[i], lty=lty[i], lwd=lwd[i])
@@ -397,8 +402,9 @@ diagram <- function(
       if(!add) {
         if(is.null(xlab)) xlab <- axis.label(eout$vars[1], basis=eout$basis)
         if(is.null(ylab)) ylab <- axis.label(eout$vars[2], basis=eout$basis)
-        thermo.plot.new(xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab,
+        if(tplot) thermo.plot.new(xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab,
           cex=cex, cex.axis=cex.axis, mar=mar, yline=yline, side=side)
+        else plot(0, 0, type="n", xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab)
         # add a title
         if(!is.null(main)) title(main=main)
       }

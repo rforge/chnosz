@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.3-12 (2015-01-07)
+CHANGES IN CHNOSZ 1.0.3-13 (2015-02-15)
 ---------------------------------------
 
 - Add files with average amino acid compositions of proteins from Bison
@@ -31,6 +31,19 @@ CHANGES IN CHNOSZ 1.0.3-12 (2015-01-07)
   useRaster=TRUE. This speeds up plotting, eliminates artifacts at
   some resolutions (i.e. blank lines), and greatly reduces the size
   of PDF files.
+
+- Add 'as.residue' argument to diagram(), to divide reactions by
+  balance coefficients without rescaling to whole species formulas
+  (cf. 'normalize' argument which uses rescaling).
+
+- In equilibrate(), change name of 'stay.normal' argument to
+  'as.residue'.
+
+- In test-diagram.R, test that same diagrams are produced using
+  'normalize' in equilibrate() or diagram().
+
+- In test-diagram.R, test that same diagrams are produced using
+  'as.residue' in equilibrate() or diagram().
 
 CHANGES IN CHNOSZ 1.0.3 (2014-01-12)
 ------------------------------------

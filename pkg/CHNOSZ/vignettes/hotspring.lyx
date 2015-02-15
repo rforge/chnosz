@@ -1550,6 +1550,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
+
 \backslash
 clearpage
 \end_layout
@@ -1690,6 +1691,7 @@ target "http://dx.doi.org/10.1371/journal.pone.0022782.g007"
 status collapsed
 
 \begin_layout Plain Layout
+
 
 \backslash
 clearpage
@@ -1994,7 +1996,7 @@ alpha.equil <- function(i=1) {
 
 \begin_layout Plain Layout
 
-  e <- equilibrate(a, loga.balance=0, normalize=TRUE, stay.normal=TRUE)
+  e <- equilibrate(a, loga.balance=0, as.residue=TRUE)
 \end_layout
 
 \begin_layout Plain Layout
@@ -2267,6 +2269,7 @@ target "http://dx.doi.org/10.1371/journal.pone.0072395.g003"
 status collapsed
 
 \begin_layout Plain Layout
+
 
 \backslash
 clearpage
@@ -2952,6 +2955,7 @@ target "http://dx.doi.org/10.1371/journal.pone.0072395.g005"
 status collapsed
 
 \begin_layout Plain Layout
+
 
 \backslash
 clearpage

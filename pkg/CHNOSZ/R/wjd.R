@@ -264,7 +264,6 @@ guess <- function(
     if(!"limSolve" %in% row.names(installed.packages())) {
       msgout("guess: skipping 'central' method as limSolve package is not available\n")
     } else {
-      require(limSolve)
       # the inequality constraints for moles of species
       G <- diag(nrow(A))
       # minX is the minimum mole number we will accept

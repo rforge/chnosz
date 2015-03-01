@@ -72,8 +72,10 @@ The informative messages produced by \code{SUPCRT92} when temperature or pressur
 However, \code{NA}s may be produced in the output of \code{subcrt} if the requisite thermodynamic or electrostatic properties of water can not be calculated at given conditions.
 Specifically, \code{NA}s are produced for calculations at \samp{Psat} when the temperature exceeds the critical temperature of H2O.
 
-
 For calculations below 273.16 K, the pressure should be set to 1, as Psat is not defined in these conditions.
+
+If \code{thermo$opt$varP} is \code{TRUE}, standard Gibbs energies of gases will be converted from a standard state at 1 bar (as used in SUPCRT) to a variable pressure standard state (see chapter 12 in Anderson and Crerar, 1993).
+This is useful for constructing e.g. boiling curves for organic compounds.
 
 }
 
@@ -269,6 +271,8 @@ title(main=substitute(H2O~and~Na~to~-20~degC, list(H2O=H2O, Na=Na, degC=degC)))
 }
 
 \references{
+  Anderson, G. M. and Crerar, D. A. (1993) \emph{Thermodynamics in Geochemistry: The Equilibrium Model}, Oxford University Press. \url{http://www.worldcat.org/oclc/803272549}
+
   Johnson, J. W., Oelkers, E. H. and Helgeson, H. C. (1992) SUPCRT92: A software package for calculating the standard molal thermodynamic properties of minerals, gases, aqueous species, and reactions from 1 to 5000 bar and 0 to 1000\eqn{^{\circ}}{°}C. \emph{Comp. Geosci.} \bold{18}, 899--947. \url{http://dx.doi.org/10.1016/0098-3004(92)90029-Q}
 
   LaRowe, D. E. and Helgeson, H. C. (2007) Quantifying the energetics of metabolic reactions in diverse biogeochemical systems: electron flow and ATP synthesis. \emph{Geobiology} \bold{5}, 153--168. \url{http://dx.doi.org/10.1111/j.1472-4669.2007.00099.x}

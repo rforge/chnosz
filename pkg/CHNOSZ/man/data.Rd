@@ -54,6 +54,7 @@ This is sometimes a useful command to use during an interactive session, when pr
       \code{G.tol} \tab numeric \tab Absolute difference between tabulated and calculated value of G above which \code{\link{checkGHS}} produces a message (cal mol\eqn{^{-1}}{^-1}).\cr
       \code{Cp.tol} \tab numeric \tab Absolute difference between tabulated and calculated value of Cp above which \code{\link{checkEOS}} produces a message (cal K\eqn{^{-1}}{-1} mol\eqn{^{-1}}{^-1}).\cr
       \code{V.tol} \tab numeric \tab Absolute difference between tabulated and calculated value of V above which \code{\link{checkEOS}} produces a message (cm\eqn{^{3}}{3} mol\eqn{^{-1}}{^-1}).\cr
+      \code{varP} \tab logical \tab Use variable-pressure standard state for gases (default \code{FALSE})? See \code{\link{subcrt}}.\cr
 }
 
     \item \code{thermo$element}

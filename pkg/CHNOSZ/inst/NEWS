@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.3-13 (2015-02-15)
+CHANGES IN CHNOSZ 1.0.3-14 (2015-03-01)
 ---------------------------------------
 
 - Add files with average amino acid compositions of proteins from Bison
@@ -44,6 +44,11 @@ CHANGES IN CHNOSZ 1.0.3-13 (2015-02-15)
 
 - In test-diagram.R, test that same diagrams are produced using
   'as.residue' in equilibrate() or diagram().
+
+- Add 'tplot' argument to diagram().
+
+- Add thermo$opt$varP option as a flag for subcrt() to calculate Gibbs
+  energies of gases using a variable-pressure standard state.
 
 CHANGES IN CHNOSZ 1.0.3 (2014-01-12)
 ------------------------------------

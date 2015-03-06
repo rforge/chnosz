@@ -9,3 +9,4 @@ CO2Ac           activity of CO2 buffered by acetic acid; comparing affinity(retu
 nonideal        activity coefficient of charged species, using the IS argument of subcrt
 TPX             metastablilities of selected ionized bacterial thiol peroxidases as a chemical activity buffer
 mosaic          Eh-pH diagram for iron oxides, sulfides and carbonate with two sets of changing basis species
+solubility      solubility of calicite or CO2(gas) as a function of pH

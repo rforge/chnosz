@@ -15,7 +15,7 @@
   examples(do.png = FALSE)
   demos(which = c("sources", "NaCl", "cordierite",
     "phosphate", "nucleobase", "orp", "findit", 
-    "CO2Ac", "nonideal", "TPX", "mosaic"))
+    "CO2Ac", "nonideal", "TPX", "mosaic", "solubility"))
 }
 
 \details{
@@ -41,6 +41,7 @@ See the comments in the source code for more information about each demo.
     \code{nonideal} \tab activity coefficient of charged species (Alberty, 2003), using the \code{IS} argument of \code{subcrt} \cr
     \code{TPX} \tab metastablilities of selected ionized bacterial thiol peroxidases as a chemical activity buffer \cr
     \code{mosaic} \tab Eh-pH diagram for iron oxides, sulfides and carbonate with two sets of changing basis species (Garrels and Christ, 1965) \cr
+    \code{solubility} \tab solubility of calcite (cf. Manning et al., 2013 Fig. 4A) or CO2(gas) (cf. Stumm and Morgan, 1996 Fig 4.5) as a function of pH \cr
   }
 
 }
@@ -50,7 +51,11 @@ See the comments in the source code for more information about each demo.
 
   Garrels, R. M. and Christ, C. L. (1965) \emph{Solutions, Minerals, and Equilibria}, Harper & Row, New York, 450 p. \url{http://www.worldcat.org/oclc/517586}
   
+  Manning, C. E., Shock, E. L. and Sverjensky, D. A. (2013) The chemistry of carbon in aqueous fluids at crustal and upper-mantle conditions: Experimental and theoretical constraints. \emph{Rev. Mineral. Geochem.} \bold{75}, 109--148. \url{http://dx.doi.org/10.2138/rmg.2013.75.5}
+
   Shock, E. L., Oelkers, E. H., Johnson, J. W., Sverjensky, D. A. and Helgeson, H. C. (1992) Calculation of the thermodynamic properties of aqueous species at high pressures and temperatures: Effective electrostatic radii, dissociation constants and standard partial molal properties to 1000 \eqn{^{\circ}}{°}C and 5 kbar. \emph{J. Chem. Soc. Faraday Trans.} \bold{88}, 803--826. \url{http://dx.doi.org/10.1039/FT9928800803}
+
+  Stumm, W. and Morgan, J. J. (1996) \emph{Aquatic Chemistry: Chemical Equilibria and Rates in Natural Waters}, John Wiley & Sons, New York, 1040 p. \url{http://www.worldcat.org/oclc/31754493}
 }
 
 

@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.3-16 (2015-03-06)
+CHANGES IN CHNOSZ 1.0.3-17 (2015-03-06)
 ---------------------------------------
 
 - Add files with average amino acid compositions of proteins from Bison
@@ -49,6 +49,8 @@ CHANGES IN CHNOSZ 1.0.3-16 (2015-03-06)
 
 - Add thermo$opt$varP option as a flag for subcrt() to calculate Gibbs
   energies of gases using a variable-pressure standard state.
+
+- Add 'solubility.R' demo.
 
 CHANGES IN CHNOSZ 1.0.3 (2014-01-12)
 ------------------------------------

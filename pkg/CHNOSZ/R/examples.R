@@ -31,7 +31,7 @@ examples <- function(do.png=FALSE) {
 
 demos <- function(which=c("sources", "NaCl", "cordierite", 
   "phosphate", "nucleobase", "orp",
-  "findit", "CO2Ac", "nonideal", "TPX", "mosaic")) {
+  "findit", "CO2Ac", "nonideal", "TPX", "mosaic", "solubility")) {
   # run one or more demos from CHNOSZ with ask=FALSE, and return the value of the last one
   for(i in 1:length(which)) {
     # say something so the user sees where we are

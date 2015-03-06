@@ -316,7 +316,7 @@ title(main=paste("Equilibrium degrees of formation of",
 
   Majzlan, J., Navrotsky, A., McClesky, R. B. and Alpers, C. N. (2006) Thermodynamic properties and crystal structure refinement of ferricopiapite, coquimbite, rhomboclase, and Fe2(SO4)3(H2O)5. \emph{Eur. J. Mineral.} \bold{18}, 175--186. \url{http://dx.doi.org/10.1127/0935-1221/2006/0018-0175}
 
-  Seewald, J. S. (1997) Mineral redox buffers and the stability of organic compounds under hydrothermal conditions. \emph{Mat. Res. Soc. Symp. Proc.} \bold{432}, 317--331. \url{http://lucy.mrs.org/meetings/spring96/Program/S.S96.html}
+  Seewald, J. S. (1997) Mineral redox buffers and the stability of organic compounds under hydrothermal conditions. \emph{Mat. Res. Soc. Symp. Proc.} \bold{432}, 317--331. \url{http://dx.doi.org/10.1557/PROC-432-317}
 
   Seewald, J. S. (2001) Aqueous geochemistry of low molecular weight hydrocarbons at elevated temperatures and pressures: Constraints from mineral buffered laboratory experiments \emph{Geochim. Cosmochim. Acta} \bold{65}, 1641--1664. \url{http://dx.doi.org/10.1016/S0016-7037(01)00544-0}
 

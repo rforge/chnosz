@@ -53,7 +53,7 @@
     \item \code{Eco.csv.xz}
       Amino acid compositions of 4407 proteins in \emph{Escherichia coli} strain K12.
       Format is the one used \code{\link{thermo}$protein}, with columns \samp{protein} holding the gene name, \samp{organism} set to \samp{ECOLI}, and \code{abbrv} holding the UniProt ID.
-      The source of data is the file \samp{ECOLI.fas} downloaded from the HAMAP (High-quality Automated and Manual Annotation of microbial Proteomes system) FTP site (Gattiker et al., 2003) (\url{ftp://ftp.expasy.org/databases/hamap/complete_proteomes/fasta/bacteria}) on 2010-09-25.
+      The source of data is the file \samp{ECOLI.fas} downloaded from the HAMAP (High-quality Automated and Manual Annotation of microbial Proteomes system) FTP site (Gattiker et al., 2003) on 2010-09-25 (old URL: \code{ftp://ftp.expasy.org/databases/hamap/complete_proteomes/fasta/bacteria}) .
   }
 
 
@@ -109,11 +109,11 @@
 
   Gattiker, A., Michoud, K., Rivoire, C., Auchincloss, A. H., Coudert, E., Lima, T., Kersey, P., Pagni, M., Sigrist, C. J. A., Lachaize, C., Veuthey, A.-L., Gasteiger, E. and Bairoch, A. (2003) Automatic annotation of microbial proteomes in Swiss-Prot. \emph{Comput. Biol. Chem.} \bold{27}, 49--58. \url{http://dx.doi.org/10.1016/S1476-9271(02)00094-4}
 
-  Gaucher, E. A., Thomson, J. M., Burgan, M. F. and Benner, S. A (2003) Inferring the palaeoenvironment of ancient bacteria on the basis of resurrected proteins. \emph{Nature} \bold{425}(6955), 285--288. \url{http://dx.doi.org/10.1038/nature01977}
+  Gaucher, E. A., Thomson, J. M., Burgan, M. F. and Benner, S. A (2003) Inferring the palaeoenvironment of ancient bacteria on the basis of resurrected proteins. \emph{Nature} \bold{425}(6955), 285--288. \code{http://dx.doi.org/10.1038/nature01977}
 
-  Ghaemmaghami, S., Huh, W., Bower, K., Howson, R. W., Belle, A., Dephoure, N., O'Shea, E. K. and Weissman, J. S. (2003) Global analysis of protein expression in yeast. \emph{Nature} \bold{425}(6959), 737--741. \url{http://dx.doi.org/10.1038/nature02046}
+  Ghaemmaghami, S., Huh, W., Bower, K., Howson, R. W., Belle, A., Dephoure, N., O'Shea, E. K. and Weissman, J. S. (2003) Global analysis of protein expression in yeast. \emph{Nature} \bold{425}(6959), 737--741. \code{http://dx.doi.org/10.1038/nature02046}
 
-  Huh, W. K., Falvo, J. V., Gerke, L. C., Carroll, A. S., Howson, R. W., Weissman, J. S. and O'Shea, E. K. (2003) Global analysis of protein localization in budding yeast. \emph{Nature} \bold{425}(6959), 686--691. \url{http://dx.doi.org/10.1038/nature02026}
+  Huh, W. K., Falvo, J. V., Gerke, L. C., Carroll, A. S., Howson, R. W., Weissman, J. S. and O'Shea, E. K. (2003) Global analysis of protein localization in budding yeast. \emph{Nature} \bold{425}(6959), 686--691. \code{http://dx.doi.org/10.1038/nature02026}
 
   HAMAP system. HAMAP FTP directory, \url{ftp://ftp.expasy.org/databases/hamap/}
 

@@ -110,7 +110,7 @@ test_that("'iprotein' gives consistent results on a transect", {
   A.2303RT_max <- apply(A.2303RT, 2, max)
   # we're off a bit in the second decimal ... 
   # maybe becuase of rounding of the aa composition?
-  expect_equal(A.2303RT_max, A.2303RT_ref, 1e-3)
+  expect_equal(A.2303RT_max, A.2303RT_ref, tolerance=1e-3)
   # todo: add comparison with results from loading proteins via species()
 })
 
@@ -125,15 +125,15 @@ test_that("affinity() for proteins (with/without 'iprotein') returns same value 
   basis("CHNOS")
   # try it with iprotein
   ip <- iprotein("CSG_HALJP")
-  expect_equal(affinity(iprotein=ip)$values[[1]][1], A.2303RT.nonionized, 1e-6)
+  expect_equal(affinity(iprotein=ip)$values[[1]][1], A.2303RT.nonionized, tolerance=1e-6)
   # then with the protein loaded as a species
   species("CSG_HALJP")
-  expect_equal(affinity()$values[[1]][1], A.2303RT.nonionized, 1e-6)
+  expect_equal(affinity()$values[[1]][1], A.2303RT.nonionized, tolerance=1e-6)
   # now for ionized protein
   basis("CHNOS+")
-  expect_equal(affinity(iprotein=ip)$values[[1]][1], A.2303RT.ionized, 1e-6)
+  expect_equal(affinity(iprotein=ip)$values[[1]][1], A.2303RT.ionized, tolerance=1e-6)
   species("CSG_HALJP")
-  expect_equal(affinity()$values[[1]][1], A.2303RT.ionized, 1e-6)
+  expect_equal(affinity()$values[[1]][1], A.2303RT.ionized, tolerance=1e-6)
 })
 
 test_that("affinity() for proteins keeps track of pH on 2-D calculations", {

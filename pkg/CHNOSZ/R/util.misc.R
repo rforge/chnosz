@@ -84,7 +84,7 @@ nonideal <- function(species,proptable,IS,T) {
     proptable[[i]] <- myprops
     if(didit) ndid <- ndid + 1
   }
-  if(ndid > 0) cat(paste('nonideal:',ndid,'species were nonideal\n'))
+  if(ndid > 0) msgout(paste('nonideal:',ndid,'species were nonideal\n'))
   return(proptable)
 }
 

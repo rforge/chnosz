@@ -122,13 +122,14 @@ log(10) * Astar.residue  # 0.4359, after Eq. 23
 
 \donttest{## using protein.formula: average oxidation state of 
 ## carbon of proteins from different organisms
+# after Dick, 2014 (see Supporting Information to make plot with more groups)
 # get amino acid compositions of microbial proteins 
 # generated from the RefSeq database 
 file <- system.file("extdata/refseq/protein_refseq.csv.xz", package="CHNOSZ")
 ip <- add.protein(read.aa(file))
 # only use those organisms with a certain
 # number of sequenced bases
-ip <- ip[as.numeric(thermo$protein$abbrv[ip]) > 100000]
+ip <- ip[as.numeric(thermo$protein$abbrv[ip]) > 50000]
 pf <- protein.formula(thermo$protein[ip, ])
 zc <- ZC(pf)
 # the organism names we search for
@@ -153,6 +154,8 @@ title(main=paste("Average Oxidation State of Carbon:",
 }
 
 \references{
+  Dick, J. M. (2014) Average oxidation state of carbon in proteins. \emph{J. R. Soc. Interface} \bold{11}, 20131095. \url{http://dx.doi.org/10.1098/rsif.2013.1095}
+
   Dick, J. M. and Shock, E. L. (2011) Calculation of the relative chemical stabilities of proteins as a function of temperature and redox chemistry in a hot spring. \emph{PLoS ONE} \bold{6}, e22782. \url{http://dx.doi.org/10.1371/journal.pone.0022782}
 
   Makhatadze, G. I. and Privalov, P. L. (1990) Heat capacity of proteins. 1. Partial molar heat capacity of individual amino acid residues in aqueous solution: Hydration effect \emph{J. Mol. Biol.} \bold{213}, 375--384. \url{http://dx.doi.org/10.1016/S0022-2836(05)80197-4}

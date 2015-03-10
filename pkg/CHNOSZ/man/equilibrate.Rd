@@ -58,7 +58,7 @@ After normalization and equilibration, the equilibrium activities are then re-sc
 
 \code{ispecies} can be supplied to identify a subset of the species to include in the calculation.
 
-\code{equil.boltzmann} is used to calculation the equilibrium activities if \code{balance} is \samp{1} (including the normalized result when \code{normalize} is TRUE), otherwise \code{equil.reaction} is called.
+\code{equil.boltzmann} is used to calculate the equilibrium activities if \code{balance} is \samp{1} (including the normalized result when \code{normalize} is TRUE), otherwise \code{equil.reaction} is called.
 
 }
 

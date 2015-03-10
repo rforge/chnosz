@@ -233,7 +233,8 @@ balance <- function(aout, balance=NULL) {
   #   "length"                   - balanced on sequence length of proteins 
   #                             (default if balance is missing and all species are proteins)
   #   1                       - balanced on one mole of species
-  #   numeric vector          - uesr-defined n.balance
+  #   numeric vector          - user-defined n.balance
+  #   "volume"                - standard-state volume listed in thermo$obigt
   # the index of the basis species that might be balanced
   ibalance <- numeric()
   # deal with proteins
@@ -258,6 +259,10 @@ balance <- function(aout, balance=NULL) {
       if(!all(isprotein)) stop("length was the requested balance, but some species are not proteins")
       n.balance <- protein.length(aout$species$name)
       balance.description <- "protein length"
+      msgout(paste("balance: coefficients are", balance.description, "\n"))
+    } else if(identical(balance, "volume")) {
+      n.balance <- info(aout$species$ispecies, check.it=FALSE)$V
+      balance.description <- "volume"
       msgout(paste("balance: coefficients are", balance.description, "\n"))
     } else {
       # is the balance the name of a basis species?

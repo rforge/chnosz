@@ -11,7 +11,7 @@
     plot.it = TRUE, T = 25, P = "Psat", res = NULL, labcex = 0.6, 
     loga2 = NULL, loga.balance = 0, rat = NULL,
     balance = NULL, normalize = FALSE)
-  \method{plot}{findit}(x, which=NULL, mar=c(3.5,5,2,2), xlab="iteration", \dots)
+  plot_findit(x, which=NULL, mar=c(3.5,5,2,2), xlab="iteration", \dots)
 }
 
 \arguments{

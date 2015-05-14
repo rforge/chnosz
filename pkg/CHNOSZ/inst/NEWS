@@ -1,12 +1,33 @@
-CHANGES IN CHNOSZ 1.0.3-18 (2015-03-10)
+CHANGES IN CHNOSZ 1.0.3-19 (2015-05-14)
 ---------------------------------------
 
-- Add files with average amino acid compositions of proteins from Bison
-  Pool grouped according to annotation keyword (DS11.csv) (moved here
-  from main protein.csv) or phylum assignment (DS13.csv).
+NEW FEATURES:
 
-- Convert hotspring.Rnw to use knitr, and add example calculations of
-  relative abundances of microbial phyla from Dick and Shock, 2013.
+- Add mosaic() function for affinity calculations with changing basis
+  species. See also new 'mosaic.R' demo.
+
+- Add thermo$opt$varP option as a flag for subcrt() to calculate Gibbs
+  energies of gases using a variable-pressure standard state.
+
+- Add 'solubility.R' demo, and calcite solubility plot to anintro.Rnw.
+
+DATA CONSISTENCY:
+
+- Move aqueous Ti(OH)4 and H4SiO4 to OBIGT-2.csv.
+
+- Add warning about data consistency and use of examples to
+  CHNOSZ-package.Rd and anintro.Rnw.
+
+OTHER CHANGES:
+
+- When making filled color diagrams, diagram() calls image() with
+  useRaster=TRUE. This speeds up plotting, eliminates artifacts at
+  some resolutions (i.e. blank lines), and greatly reduces the size
+  of PDF files.
+
+- diagram() returns 'lx', 'ly' and 'is' for calculated positions of
+  labels and indices of those species in predominance diagrams,
+  including when the labels aren't plotted (by setting names=FALSE).
 
 - In energy(), add missing 'IS' argument in call to subcrt(). Thanks to
   Grayson Boyer for the bug report.
@@ -14,23 +35,14 @@ CHANGES IN CHNOSZ 1.0.3-18 (2015-03-10)
 - In nonideal(), skip proton and electron. Add test for calculations
   at constant and variable IS to test-util.affinity.R.
 
-- diagram() returns 'lx', 'ly' and 'is' for calculated positions of
-  labels and indices of those species in predominance diagrams,
-  including when the labels aren't plotted (by setting names=FALSE).
+- Modify hotspring.Rnw to use knitr, and add example calculations of
+  relative abundances of microbial phyla from Dick and Shock, 2013.
 
-- Move aqueous Ti(OH)4 and H4SiO4 to OBIGT-2.csv.
+- Add files with average amino acid compositions of proteins from Bison
+  Pool grouped according to annotation keyword (DS11.csv) (moved here
+  from protein.csv) or phylum assignment (DS13.csv).
 
-- Add warning about data and examples to CHNOSZ-package.Rd.
-
-- water.lines() gets 'O2state' argument for state of O2.
-
-- Add mosaic() function for affinity calculations with changing basis
-  species.
-
-- When making filled color diagrams, diagram() calls image() with
-  useRaster=TRUE. This speeds up plotting, eliminates artifacts at
-  some resolutions (i.e. blank lines), and greatly reduces the size
-  of PDF files.
+- water.lines() gets 'O2state' argument to specify state of O2.
 
 - Add 'as.residue' argument to diagram(), to divide reactions by
   balance coefficients without rescaling to whole species formulas
@@ -45,12 +57,8 @@ CHANGES IN CHNOSZ 1.0.3-18 (2015-03-10)
 - In test-diagram.R, test that same diagrams are produced using
   'as.residue' in equilibrate() or diagram().
 
-- Add 'tplot' argument to diagram().
-
-- Add thermo$opt$varP option as a flag for subcrt() to calculate Gibbs
-  energies of gases using a variable-pressure standard state.
-
-- Add 'solubility.R' demo and calcite solubility plot to anintro.Rnw.
+- Add 'tplot' argument to diagram() (set to FALSE to use R's default
+  plot set-up).
 
 CHANGES IN CHNOSZ 1.0.3 (2014-01-12)
 ------------------------------------

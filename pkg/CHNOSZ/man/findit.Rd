@@ -1,6 +1,6 @@
 \name{findit}
 \alias{findit}
-\alias{plot.findit}
+\alias{plot_findit}
 \title{Gridded Search to Optimize Objective Functions}
 \description{
   Use a gridded search to find a combination of one or more of chemical activities of basis species, temperature and/or pressure that maximize or minimize a objective function of the metastable equilibrium chemical activities of the species of interest.
@@ -62,7 +62,7 @@ Detailed studies of a system might have to use more iterations and/or higher res
 
   The function performs \code{niter} iterations. At first, the limits of the parameters given in \code{lims} define the extent of a \eqn{nd}-dimensional box around the space of interest. The value of \code{objective} is calculated at each of the \eqn{res^{nd}}{res^nd} grid points and and optimum value located (see \code{\link{revisit}} and \code{\link{optimal.index}}). In the next iteration the new search box is centered on the location of the optimum value, and the edges are shrunk so their length is \code{rat} * the length in the previous step. If the limits of any of the parameters extend beyond those in \code{lims}, they are pushed in to fit (preserving the difference between them).
 
-  \code{plot.findit} plots the values of the parameters and the objective function as a function of the number of iterations.
+  \code{plot_findit} plots the values of the parameters and the objective function as a function of the number of iterations.
 
 }
 

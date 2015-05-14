@@ -193,7 +193,7 @@ The database and functions are flexible in their use, allowing one to model
 
 \end_layout
 
-\begin_layout Section
+\begin_layout Subsection
 Outline of workflow
 \end_layout
 
@@ -328,7 +328,7 @@ The functions are designed with an interactive setting in mind; you can
 
 \end_layout
 
-\begin_layout Section
+\begin_layout Subsection
 Installing and loading CHNOSZ
 \end_layout
 
@@ -473,6 +473,64 @@ The rest of this document assumes that the CHNOSZ package and data are loaded.
 
 \begin_layout Section
 Thermodynamic database
+\end_layout
+
+\begin_layout Standard
+\begin_inset Branch stuff
+status open
+
+\begin_layout Subsection
+Warning about internal consistency of thermodynamic data
+\end_layout
+
+\begin_layout Standard
+All thermodynamic data and examples are provided on an as-is basis.
+ It is up to you to check not only the accuracy of the data, but also 
+\emph on
+the suitability of the data AND computational techniques
+\emph default
+ for your problem.
+ By combining data taken from different sources, it is possible to build
+ an inconsistent and/or nonsensical calculation.
+ An attempt has been made to provide a primary database (OBIGT.csv) that
+ is internally consistent, but no guarantee can be made.
+ Where possible, data with known or suspected inconsistencies have been
+ placed into a secondary database (OBIGT-2.csv) that should be regarded as
+ experimental.
+ If there is any doubt about the accuracy or suitability of data for a particula
+r problem, please 
+\emph on
+consult the primary sources
+\emph default
+ (which can be located using 
+\family typewriter
+browse.refs()
+\family default
+; see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:thermo_refs"
+
+\end_inset
+
+).
+ Do not assume that by adding any species to your calculation (or to any
+ of the examples), you will necessarily obtain a reasonable answer.
+ Do not assume that the examples are correct, or that they can be applied
+ to your problem.
+ As with the data, please 
+\emph on
+compare the construction and output of the examples to the primary sources
+\emph default
+, cited in the reference list in each help page.
+ Examples without a reference (and some with references) demonstrate experimenta
+l features of CHNOSZ.
+ 
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -678,6 +736,12 @@ status open
 \begin_layout Subsection
 
 \family typewriter
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:thermo_refs"
+
+\end_inset
+
 thermo$refs
 \end_layout
 
@@ -2245,7 +2309,6 @@ This just shows the speciation (relative abundances) of the aqueous carbonate
 status open
 
 \begin_layout Standard
-
 \begin_inset ERT
 status collapsed
 
@@ -2520,7 +2583,6 @@ normalize=TRUE
 status open
 
 \begin_layout Standard
-
 \begin_inset ERT
 status collapsed
 
@@ -2631,7 +2693,6 @@ equilibrate()
 status open
 
 \begin_layout Standard
-
 \begin_inset ERT
 status open
 
@@ -2816,7 +2877,6 @@ C and 1000 bar.
 status open
 
 \begin_layout Standard
-
 \begin_inset ERT
 status open
 
@@ -3360,7 +3420,7 @@ key "DLH06"
 \end_inset
 
 .
- Finally legends are draws to identify the lines and symbols.
+ Finally legends are drawn to identify the lines and symbols.
  The 
 \family typewriter
 describe.property()
@@ -3378,7 +3438,6 @@ describe.property()
 status open
 
 \begin_layout Standard
-
 \begin_inset ERT
 status open
 
@@ -3592,7 +3651,6 @@ key "LD12"
 status open
 
 \begin_layout Standard
-
 \begin_inset ERT
 status open
 
@@ -4227,7 +4285,6 @@ equilibrate()
 status open
 
 \begin_layout Standard
-
 \begin_inset ERT
 status open
 
@@ -4406,7 +4463,6 @@ balance=1
 status open
 
 \begin_layout Standard
-
 \begin_inset ERT
 status open
 
@@ -4516,7 +4572,6 @@ findit()
 status open
 
 \begin_layout Standard
-
 \begin_inset ERT
 status open
 
@@ -4690,6 +4745,10 @@ More activity diagrams
 \end_inset
 
 
+\end_layout
+
+\begin_layout Itemize
+2015-05-14 Add warning about internal consistency of thermodynamic data
 \end_layout
 
 \begin_layout Standard

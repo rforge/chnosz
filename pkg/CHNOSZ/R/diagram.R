@@ -153,6 +153,9 @@ diagram <- function(
     dim(predominant) <- dim(pv[[1]])
   }
 
+  # a warning about that we can only show properties of the first species on a 2-D diagram
+  if(nd==2 & length(plotvals) > 1 & identical(predominant, NA)) warning("showing only first species in 2-D property diagram")
+
   ## where we'll put extra output for predominance diagrams (lx, ly, is)
   out2D <- list()
 
@@ -411,7 +414,6 @@ diagram <- function(
       # colors and curves (predominance), or contours (properties)
       if(identical(predominant, NA)) {
         zs <- plotvals[[1]]
-        if(length(plotvals) > 1) warning("showing only first species in 2-D property diagram")
         contour(xs, ys, zs, add=TRUE, col=col, lty=lty, lwd=lwd, labcex=cex)
         pn <- list(lx=NULL, ly=NULL, is=NULL)
       } else {

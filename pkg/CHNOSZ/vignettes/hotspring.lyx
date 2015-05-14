@@ -95,7 +95,7 @@ knitr
 
 \begin_layout Standard
 \begin_inset ERT
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -120,12 +120,22 @@ opts_chunk$set(fig.path='figure/hotspring-', cache.path='cache/hotspring-',
 
 \begin_layout Plain Layout
 
-## set code/output width to be 60
+## set code/output width
 \end_layout
 
 \begin_layout Plain Layout
 
-options(width=80)
+options(width=85)
+\end_layout
+
+\begin_layout Plain Layout
+
+## set number of digits
+\end_layout
+
+\begin_layout Plain Layout
+
+options(digits=5)
 \end_layout
 
 \begin_layout Plain Layout
@@ -161,6 +171,12 @@ p=c(2,.7,0),tcl=-.3)
 
 \begin_layout Title
 Hot-spring proteins in CHNOSZ
+\end_layout
+
+\begin_layout Author
+Jeffrey M.
+ Dick and Everett L.
+ Shock
 \end_layout
 
 \begin_layout Section
@@ -202,7 +218,7 @@ There is no hidden code in this document; all code used to make the figures
  In order to keep the code here as short and efficient as possible, some
  aspects of the published figures including manual labeling and higher resolutio
 n are not all reproduced; these changes are noted where possible.
- Also, some tricks (e.g.
+ Also, some shortcuts (e.g.
  using 
 \family typewriter
 xtabs()
@@ -417,7 +433,7 @@ target "http://dx.doi.org/10.1371/journal.pone.0022782.g005"
 
 \end_inset
 
- to original figure (panels A and B).
+ to published figure (panels A and B).
  The length of 
 \family typewriter
 xpoints
@@ -574,7 +590,8 @@ status collapsed
 
 \begin_layout Plain Layout
 
-# the names of the phyla in alphabetical order (Deinococcus-Thermus at end)
+# the names of the phyla in alphabetical order (except Deinococcus-Thermus
+ at end)
 \end_layout
 
 \begin_layout Plain Layout
@@ -1244,7 +1261,7 @@ target "http://dx.doi.org/10.1371/journal.pone.0022782.t005"
 
 \end_inset
 
- to original table.
+ to published table.
 \end_layout
 
 \begin_layout Standard
@@ -1341,8 +1358,8 @@ apply(a.res, 2, which.max)
 \end_layout
 
 \begin_layout Standard
-This 1-2-4 progression of stabilities is visualized below, and for some
- groups of proteins, an update to the thermodynamic properties of the methionine
+This 1-2-4 progression of stabilities is visualized below; for some groups
+ of proteins, an update to the thermodynamic properties of the methionine
  sidechain causes site 3 also to become stable.
 \end_layout
 
@@ -1541,7 +1558,7 @@ target "http://dx.doi.org/10.1371/journal.pone.0022782.g005"
 
 \end_inset
 
- to original figure (panels B and F).
+ to published figure (panels B and F).
 \end_layout
 
 \begin_layout Standard
@@ -1683,7 +1700,7 @@ target "http://dx.doi.org/10.1371/journal.pone.0022782.g007"
 
 \end_inset
 
- to original figure.
+ to published figure.
 \end_layout
 
 \begin_layout Standard
@@ -1711,14 +1728,14 @@ Make some
 \begin_inset Formula $T-\log a_{\mathrm{H_{2}}}$
 \end_inset
 
- protein metastable equilibrium predominance diagrams using old and new
- methionine sidechain [Met] parameters.
- When this is run, the old [Met] is in the database (since 
+ metastable equilibrium predominance diagrams using different values for
+ the thermodynamic properties of the methionine sidechain group [Met].
+ The first row shows the results using the old values (since 
 \family typewriter
 add.obigt()
 \family default
- was called above), so in the second row (j=2), we reset the database to
- use the new [Met].
+ was called above); for the second row (j=2), we reset the database to use
+ the current (revised) parameters.
 \end_layout
 
 \begin_layout Standard
@@ -1845,13 +1862,12 @@ for(j in 1:2) {
 \begin_inset CommandInset href
 LatexCommand href
 name "DOI link"
-target "10.1371/journal.pone.0072395.g002"
+target "http://dx.doi.org/10.1371/journal.pone.0072395.g002"
 
 \end_inset
 
- to original figure.
- The original was made with higher resolution (256) and some labels were
- manually placed.
+ to published figure, which was made with higher resolution (256) and manual
+ placement of some labels.
 \end_layout
 
 \begin_layout Section
@@ -1873,7 +1889,7 @@ aa.phyla
 
 \begin_layout Standard
 \begin_inset ERT
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -1907,7 +1923,7 @@ alpha.blast <- function() {
 
 \begin_layout Plain Layout
 
-  return(as.data.frame(out))
+  return(out)
 \end_layout
 
 \begin_layout Plain Layout
@@ -1942,7 +1958,7 @@ affinity()
 
 \begin_layout Standard
 \begin_inset ERT
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -2082,7 +2098,7 @@ Now we're ready to make a plot! We start by adding the proteins with amino
 
 \begin_layout Standard
 \begin_inset ERT
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -2753,7 +2769,7 @@ nphylum abundances", adj=0)
 \end_layout
 
 \begin_layout Standard
-DOI links to original versions: 
+DOI links to published versions: 
 \begin_inset CommandInset href
 LatexCommand href
 name "plot 1"
@@ -2783,7 +2799,7 @@ Let's make some plots comparing the relative abundances calculated above
 equil.results
 \family default
 ) with the abundances from BLAST counts.
- We'll also store the optimal models in 
+ We'll also store the results of the optimized models in 
 \family typewriter
 equil.opt
 \family default
@@ -2947,7 +2963,7 @@ target "http://dx.doi.org/10.1371/journal.pone.0072395.g005"
 
 \end_inset
 
- to original figure.
+ to published figure.
 \end_layout
 
 \begin_layout Standard
@@ -3092,7 +3108,7 @@ target "http://dx.doi.org/10.1371/journal.pone.0072395.g006"
 
 \end_inset
 
- to original figure.
+ to published figure.
 \end_layout
 
 \begin_layout Section
@@ -3112,7 +3128,8 @@ add.obigt()
 \end_layout
 
 \begin_layout Itemize
-2014-02-01 Include results from 2013 paper and use knitr instead of Sweave.
+2014-02-01 Include results from 2013 paper and change VignetteEngine to
+ knitr.
 \end_layout
 
 \begin_layout Standard

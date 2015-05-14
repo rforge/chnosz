@@ -82,5 +82,5 @@ test_that("diagram() handles 2D plots with different x and y resolution and warn
   a <- affinity(T=c(0, 200, 6), O2=c(-90, -60, 5))
   # TODO: fix plot.line() function in diagram() so that the plot can be made
   #expect_equal(diagram(a), diagram(a, plot.it=FALSE))
-  expect_warning(diagram(a, what="CO2"), "showing only first species in 2-D property diagram")
+  expect_warning(diagram(a, what="CO2", plot.it=FALSE), "showing only first species in 2-D property diagram")
 })

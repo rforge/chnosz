@@ -2073,7 +2073,10 @@ subcrt()
 \begin_layout Standard
 If the protein is not available in CHNOSZ's own database, the amino acid
  composition of the protein can be retrieved from the UniProtKB (if the
- computer is connected to the Internet).
+ computer is connected to the internet).
+ N.B.
+ The following example is not evaluated when compiling this vignette in
+ case the R package checks are run without internet access.
 \end_layout
 
 \begin_layout Standard
@@ -2090,7 +2093,7 @@ status open
 status open
 
 \begin_layout Plain Layout
-subcrt_ALAT1
+subcrt_ALAT1,eval=FALSE
 \end_layout
 
 \end_inset

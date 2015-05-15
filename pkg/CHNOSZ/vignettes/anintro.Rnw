@@ -527,9 +527,11 @@ for calculating the relative stabilities of the species of interest.
 
 If the protein is not available in CHNOSZ's own database, the amino
 acid composition of the protein can be retrieved from the UniProtKB
-(if the computer is connected to the Internet).
+(if the computer is connected to the internet). N.B. The following
+example is not evaluated when compiling this vignette in case the
+R package checks are run without internet access.
 
-<<subcrt_ALAT1>>=
+<<subcrt_ALAT1,eval=FALSE>>=
 aa <- uniprot.aa("ALAT1_HUMAN")
 add.protein(aa)
 subcrt("ALAT1_HUMAN",1,T=25)

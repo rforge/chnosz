@@ -121,8 +121,7 @@ Aref.residue <- Astar.residue - loga.residue  # 0.446, after Eq. 16
 log(10) * Astar.residue  # 0.4359, after Eq. 23
 
 \donttest{## using protein.formula: average oxidation state of 
-## carbon of proteins from different organisms
-# after Dick, 2014 (see Supporting Information to make plot with more groups)
+## carbon of proteins from different organisms (Dick, 2014)
 # get amino acid compositions of microbial proteins 
 # generated from the RefSeq database 
 file <- system.file("extdata/refseq/protein_refseq.csv.xz", package="CHNOSZ")
@@ -135,11 +134,11 @@ zc <- ZC(pf)
 # the organism names we search for
 # "" matches all organisms
 terms <- c("Natr", "Halo", "Rhodo", "Acido", "Methylo",
-  "Nitro", "Desulfo", "Chloro", "Geo", "Methano",
+  "Chloro", "Nitro", "Desulfo", "Geo", "Methano",
   "Thermo", "Pyro", "Sulfo", "Buchner", "")
 tps <- thermo$protein$ref[ip]
 plot(0, 0, xlim=c(1, 15), ylim=c(-0.3, -0.05), pch="",
-  ylab="average oxidation state of carbon in proteins",
+  ylab=expression(italic(Z)[C]),
   xlab="", xaxt="n", mar=c(6, 3, 1, 1))
 for(i in 1:length(terms)) {
   it <- grep(terms[i], tps)
@@ -148,8 +147,8 @@ for(i in 1:length(terms)) {
 }
 terms[15] <- paste("all", length(ip))
 axis(1, 1:15, terms, las=2)
-title(main=paste("Average Oxidation State of Carbon:",
-  "Total Protein per taxID in NCBI RefSeq", sep="\n"))
+title(main=paste("Average oxidation state of carbon in proteins",
+  "by taxID in NCBI RefSeq (after Dick, 2014)", sep="\n"))
 }
 }
 

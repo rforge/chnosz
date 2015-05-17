@@ -168,7 +168,7 @@ plot.new()
 rxnexpr <- describe.reaction(subcrt("H2O", 1)$reaction, states="all")
 # also in the title is the property with its units
 E.units("J")
-Gexpr <- axis.label("DGr", prefix="k")[[1]]
+Gexpr <- axis.label("DGr", prefix="k")[[2]]
 text(0.5, 0.6, substitute(paste(G~~"for"~~r), list(G=Gexpr, r=rxnexpr)), cex=2)
 text(0.5, 0.2, "after Amend and Shock, 2001 Figure 7", cex=2)
 # now make the plots

@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.3-22 (2015-05-17)
+CHANGES IN CHNOSZ 1.0.3-23 (2015-05-17)
 ---------------------------------------
 
 NEW FEATURES:
@@ -9,7 +9,8 @@ NEW FEATURES:
 - Add thermo$opt$varP option as a flag for subcrt() to calculate Gibbs
   energies of gases using a variable-pressure standard state.
 
-- Add 'solubility.R' demo, and calcite solubility plot to anintro.Rnw.
+- Add 'solubility.R' demo, and add calcite solubility plot to
+  anintro.Rnw.
 
 DATA CONSISTENCY:
 
@@ -21,8 +22,8 @@ DATA CONSISTENCY:
 OTHER CHANGES:
 
 - When making filled color diagrams, diagram() calls image() with
-  useRaster=TRUE. This speeds up plotting, eliminates artifacts at
-  some resolutions (i.e. blank lines), and greatly reduces the size
+  useRaster=TRUE. This speeds up plotting, eliminates artifacts (i.e.
+  blank lines) at some resolutions, and greatly reduces the size
   of PDF files.
 
 - diagram() returns 'lx', 'ly' and 'is' for calculated positions of
@@ -39,8 +40,8 @@ OTHER CHANGES:
   relative abundances of microbial phyla from Dick and Shock, 2013.
 
 - Add files with average amino acid compositions of proteins from Bison
-  Pool grouped according to annotation keyword (DS11.csv) (moved here
-  from protein.csv) or phylum assignment (DS13.csv).
+  Pool hot spring grouped according to annotation keyword (DS11.csv)
+  (moved here from protein.csv) or phylum assignment (DS13.csv).
 
 - water.lines() gets 'O2state' argument to specify state of O2.
 
@@ -57,7 +58,7 @@ OTHER CHANGES:
 - In test-diagram.R, test that same diagrams are produced using
   'as.residue' in equilibrate() or diagram().
 
-- Add 'tplot' argument to diagram() (set to FALSE to use R's default
+- Add 'tplot' argument to diagram() (change to FALSE to use R's default
   plot set-up).
 
 CHANGES IN CHNOSZ 1.0.3 (2014-01-12)

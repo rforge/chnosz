@@ -37,11 +37,11 @@ See the comments in the source code for more information about each demo.
     \code{nucleobase} \tab relative stabilities of nucleobases and some amino acids \cr
     \code{orp} \tab oxidation-reduction potential of redox standards as a function of temperature \cr
     \code{findit} \tab detailed example of usage of \code{\link{findit}} using log-normal distribution as an objective \cr
-    \code{CO2Ac} \tab activity of CO2 buffered by acetic acid; comparing \code{\link{affinity}(return.buffer=TRUE)} with \code{\link{diagram}(what="CO2")} \cr
+    \code{CO2Ac} \tab activity of CO2 buffered by acetic acid; comparing \code{\link{affinity}} with \code{\link{diagram}} \cr
     \code{nonideal} \tab activity coefficient of charged species (Alberty, 2003), using the \code{IS} argument of \code{subcrt} \cr
     \code{TPX} \tab metastablilities of selected ionized bacterial thiol peroxidases as a chemical activity buffer \cr
-    \code{mosaic} \tab Eh-pH diagram for iron oxides, sulfides and carbonate with two sets of changing basis species (Garrels and Christ, 1965) \cr
-    \code{solubility} \tab solubility of calcite (cf. Manning et al., 2013 Fig. 4A) or CO2(gas) (cf. Stumm and Morgan, 1996 Fig 4.5) as a function of pH \cr
+    \code{mosaic} \tab Eh-pH diagram with two sets of changing basis species (Garrels and Christ, 1965) \cr
+    \code{solubility} \tab solubility of calcite (cf. Manning et al., 2013) or CO2(gas) (cf. Stumm and Morgan, 1996) \cr
   }
 
 }

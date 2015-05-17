@@ -51,9 +51,9 @@ This is sometimes a useful command to use during an interactive session, when pr
       \code{state} \tab character \tab The default physical state for searching species (\samp{aq} by default)\cr
       \code{water} \tab character \tab Computational option for properties of water (\samp{SUPCRT} (default) or \samp{IAPWS})\cr
       \code{online} \tab logical \tab Allow online searches of protein composition? Default (\code{NA}) is to ask the user.\cr
-      \code{G.tol} \tab numeric \tab Absolute difference between tabulated and calculated value of G above which \code{\link{checkGHS}} produces a message (cal mol\eqn{^{-1}}{^-1}).\cr
-      \code{Cp.tol} \tab numeric \tab Absolute difference between tabulated and calculated value of Cp above which \code{\link{checkEOS}} produces a message (cal K\eqn{^{-1}}{-1} mol\eqn{^{-1}}{^-1}).\cr
-      \code{V.tol} \tab numeric \tab Absolute difference between tabulated and calculated value of V above which \code{\link{checkEOS}} produces a message (cm\eqn{^{3}}{3} mol\eqn{^{-1}}{^-1}).\cr
+      \code{G.tol} \tab numeric \tab Difference in value of G above which \code{\link{checkGHS}} produces a message (cal mol\eqn{^{-1}}{^-1}).\cr
+      \code{Cp.tol} \tab numeric \tab Difference in value of Cp above which \code{\link{checkEOS}} produces a message (cal K\eqn{^{-1}}{-1} mol\eqn{^{-1}}{^-1}).\cr
+      \code{V.tol} \tab numeric \tab Difference in value of V above which \code{\link{checkEOS}} produces a message (cm\eqn{^{3}}{3} mol\eqn{^{-1}}{^-1}).\cr
       \code{varP} \tab logical \tab Use variable-pressure standard state for gases (default \code{FALSE})? See \code{\link{subcrt}}.\cr
 }
 

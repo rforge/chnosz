@@ -184,8 +184,8 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-The intention of this document is to demonstrate the calculations described
- in two recent papers 
+This document is intended to demonstrate the calculations described in two
+ recent papers 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "DS11,DS13"
@@ -736,8 +736,13 @@ textwidth'>>=
 
 \begin_layout Plain Layout
 
+ylab <- expression(bar(italic(Z))[C])
+\end_layout
+
+\begin_layout Plain Layout
+
 plot(0, 0, xlim=c(-0.5, 5), ylim=c(-0.27, -0.11), xlab="location", xaxt="n",
- ylab=expression(bar(italic(Z))[C]))
+ ylab=ylab)
 \end_layout
 
 \begin_layout Plain Layout
@@ -822,8 +827,7 @@ ZC.phyla <- ZC(pf.phyla)
 
 \begin_layout Plain Layout
 
-plot(0, 0, xlim=c(1, 5), ylim=c(-0.27, -0.11), xlab="location", ylab=as.expression(
-quote(bar(italic(Z))[C])))
+plot(0, 0, xlim=c(1, 5), ylim=c(-0.27, -0.11), xlab="location", ylab=ylab)
 \end_layout
 
 \begin_layout Plain Layout
@@ -2667,12 +2671,22 @@ textwidth', cache=TRUE>>=
 
 \begin_layout Plain Layout
 
+xlab <- axis.label("T")
+\end_layout
+
+\begin_layout Plain Layout
+
+ylab <- axis.label("H2")
+\end_layout
+
+\begin_layout Plain Layout
+
 plot(Tlim, get.logaH2(Tlim), xlim=Tlim, ylim=c(-45,0),
 \end_layout
 
 \begin_layout Plain Layout
 
-  xlab=axis.label("T"), ylab=axis.label("H2"), type="l", lty=3)
+  xlab=xlab, ylab=ylab, type="l", lty=3)
 \end_layout
 
 \begin_layout Plain Layout
@@ -2731,7 +2745,7 @@ plot(Tlim, get.logaH2(Tlim), xlim=Tlim, ylim=c(-11,-2),
 
 \begin_layout Plain Layout
 
-  xlab=axis.label("T"), ylab=axis.label("H2"), type="l", lty=3)
+  xlab=xlab, ylab=ylab, type="l", lty=3)
 \end_layout
 
 \begin_layout Plain Layout

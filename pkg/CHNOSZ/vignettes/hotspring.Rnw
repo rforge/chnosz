@@ -56,15 +56,15 @@ if (before && options$fig.show!='none') par(mar=c(4,4,1,1),cex.lab=.95,cex.axis=
 
 \section{Introduction}
 
-The intention of this document is to demonstrate the calculations
-described in two recent papers \citep{DS11,DS13} dealing with the
-distribution and abundances of proteins in ``Bison Pool'', a hot
-spring in Yellowstone National Park. The calculations use metastable
-equilibrium to interrelate the compositions of proteins (from metagenomic
-data) with environmental conditions, particularly pH, temperature,
-and redox chemistry. This document is focused on the details of the
-calculations and has little in the way of introduction of concepts
-or interpretation and discussion; please see the papers for more details.
+This document is intended to demonstrate the calculations described
+in two recent papers \citep{DS11,DS13} dealing with the distribution
+and abundances of proteins in ``Bison Pool'', a hot spring in Yellowstone
+National Park. The calculations use metastable equilibrium to interrelate
+the compositions of proteins (from metagenomic data) with environmental
+conditions, particularly pH, temperature, and redox chemistry. This
+document is focused on the details of the calculations and has little
+in the way of introduction of concepts or interpretation and discussion;
+please see the papers for more details.
 
 There is no hidden code in this document; all code used to make the
 figures is shown in the blocks, but much of the text output (particularly
@@ -187,7 +187,8 @@ and $Z$ is the net charge of the chemical species.
 
 <<ZCplot, fig.width=5, fig.height=5, out.width='.49\\textwidth'>>=
 # 2011 plot
-plot(0, 0, xlim=c(-0.5, 5), ylim=c(-0.27, -0.11), xlab="location", xaxt="n", ylab=expression(bar(italic(Z))[C]))
+ylab <- expression(bar(italic(Z))[C])
+plot(0, 0, xlim=c(-0.5, 5), ylim=c(-0.27, -0.11), xlab="location", xaxt="n", ylab=ylab)
 axis(1, at=1:5)
 col <- c("green", rep("black", 20))
 lwd <- c(3, rep(1, 20))
@@ -204,7 +205,7 @@ title(main="annotations")
 pf.phyla <- protein.formula(aa.phyla)
 ZC.phyla <- ZC(pf.phyla)
 # set up plot
-plot(0, 0, xlim=c(1, 5), ylim=c(-0.27, -0.11), xlab="location", ylab=as.expression(quote(bar(italic(Z))[C])))
+plot(0, 0, xlim=c(1, 5), ylim=c(-0.27, -0.11), xlab="location", ylab=ylab)
 for(i in 1:length(phyla.abc)) {
   # which of the model proteins correspond to this phylum
   iphy <- which(aa.phyla$organism==phyla.abc[i])
@@ -641,8 +642,10 @@ The dotted line in both plots portrays Equation (\ref{eq:logaH2}).
 
 <<logaH2plot, fig.width=4, fig.height=4, out.width='.45\\textwidth', cache=TRUE>>=
 # 2011 plot
+xlab <- axis.label("T")
+ylab <- axis.label("H2")
 plot(Tlim, get.logaH2(Tlim), xlim=Tlim, ylim=c(-45,0),
-  xlab=axis.label("T"), ylab=axis.label("H2"), type="l", lty=3)
+  xlab=xlab, ylab=ylab, type="l", lty=3)
 points(T.ORP, logaH2.ORP, pch=15)
 lines(T.ORP, logaH2.ORP, lty=2)
 points(bison.T, logaH2.O, pch=16)
@@ -654,7 +657,7 @@ text(c(65, 80, 80, 74), c(-4, -25, -40, -11), llab)
 
 # 2013 plot
 plot(Tlim, get.logaH2(Tlim), xlim=Tlim, ylim=c(-11,-2),
-  xlab=axis.label("T"), ylab=axis.label("H2"), type="l", lty=3)
+  xlab=xlab, ylab=ylab, type="l", lty=3)
 lines(bison.T, sapply(equil.results, "[", "logaH2.opt"), lty=2)
 points(bison.T, sapply(equil.results, "[", "logaH2.opt"), pch=21, bg="white")
 text(90, -5.3, "Equation 2")

@@ -253,7 +253,8 @@ sb <- subcrt(c("H2O", "Na+"), T=seq(-30, 10), P=1)$out
 # start plot with extra room on right
 par(mar=c(5, 4, 4, 4))
 # plot G
-plot(sb$water$T, sb$water$G, ylim=c(-63000, -56000), xlab=axis.label("T"), ylab=axis.label("DG0"))
+plot(sb$water$T, sb$water$G, ylim=c(-63000, -56000), xlab=axis.label("T"),
+  ylab=axis.label("DG0"))
 points(sb$`Na+`$T, sb$`Na+`$G, pch=2)
 # add Cp
 # change y-axis

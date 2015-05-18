@@ -1364,7 +1364,7 @@ apply(a.res, 2, which.max)
 \begin_layout Standard
 This 1-2-4 progression of stabilities is visualized below; for some groups
  of proteins, an update to the thermodynamic properties of the methionine
- sidechain causes site 3 also to become stable.
+ sidechain causes proteins from site 3 also to become stable.
 \end_layout
 
 \begin_layout Subsection

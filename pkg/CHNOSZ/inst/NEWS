@@ -1,13 +1,13 @@
-CHANGES IN CHNOSZ 1.0.3-23 (2015-05-17)
----------------------------------------
+CHANGES IN CHNOSZ 1.0.4 (2015-05-18)
+------------------------------------
 
 NEW FEATURES:
 
 - Add mosaic() function for affinity calculations with changing basis
   species. See also new 'mosaic.R' demo.
 
-- Add thermo$opt$varP option as a flag for subcrt() to calculate Gibbs
-  energies of gases using a variable-pressure standard state.
+- Add thermo$opt$varP option for subcrt() to calculate Gibbs energies
+  of gases using a variable-pressure standard state.
 
 - Add 'solubility.R' demo, and add calcite solubility plot to
   anintro.Rnw.
@@ -60,6 +60,8 @@ OTHER CHANGES:
 
 - Add 'tplot' argument to diagram() (change to FALSE to use R's default
   plot set-up).
+
+- R version dependency changed to (>= 3.0.0).
 
 CHANGES IN CHNOSZ 1.0.3 (2014-01-12)
 ------------------------------------

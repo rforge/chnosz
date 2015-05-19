@@ -41,7 +41,13 @@ OTHER THINGS TO CHECK:
 
 - clean up all TODO, XXX, etc. in Rd files (and hopefully R files too)
 
-- ensure all Rd files have \keyword{...}
-
 - update .Rinstignore with any new/deleted files
 
+- ensure all Rd files have \keyword{...} or \concept{...}
+  - keywords used are standard R keywords: package, utilities
+  - concepts are as follows:
+    - Thermodynamic data (thermo, extdata)
+    - Primary thermodynamic modeling (commonly used functions e.g. subcrt)
+    - Secondary thermodynamic modeling (less often-used functions e.g. revisit)
+    - Extra thermodynamic modeling (out-of-workflow functions e.g. transfer)
+    - Protein thermodynamic modeling (protein-specific functions e.g. ionize.aa)

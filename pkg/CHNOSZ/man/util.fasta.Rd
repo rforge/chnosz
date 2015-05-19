@@ -120,4 +120,4 @@ stopifnot(atest[, "A"]==3)
   The UniProt Consortium (2012) Reorganizing the protein space at the Universal Protein Resource (UniProt). \emph{Nucleic Acids Res.} \bold{40}, D71--D75. \url{http://dx.doi.org/10.1093/nar/gkr981}
 }
 
-\keyword{util}
+\keyword{utilities}

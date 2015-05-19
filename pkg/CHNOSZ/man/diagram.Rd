@@ -139,6 +139,7 @@ However, if aqueous species are present with different balancing coefficients, t
 
 \seealso{ 
 Other examples are present in the help for \code{\link{protein}} and \code{\link{buffer}}, and even more can be found in \code{\link{demos}}.
+See the vignette hotspring.Rnw for an example of the \code{strip} charts.
 }
 
 \examples{
@@ -158,7 +159,7 @@ title(main=paste("Aqueous sulfur speciation, 325 degC, 350 bar\n",
 # try it with and without the loga.balance argument (total activity of 
 # the balanced quantity, in this case H2S aka sulfur) 
 
-\donttest{## Degrees of formation of ionized forms of glycine
+## Degrees of formation of ionized forms of glycine
 ## After Fig. 1 of Aksu and Doyle, 2001 
 basis("CHNOS+")
 species(ispecies <- info(c("glycinium", "glycine", "glycinate")))
@@ -256,26 +257,6 @@ stopifnot(species()$name[d$predominant[1, 1]]=="andalusite")
 stopifnot(species()$name[d$predominant[1, 101]]=="kyanite")
 stopifnot(species()$name[d$predominant[99, 101]]=="sillimanite")
 
-### other examples
-
-## a case where the maximum affinity method doesn't
-## reproduce an equilibrium predominance diagram
-basis("CHNOS+")
-# this adds data for some metabolites in the TCA cycle
-# from Dalla-Betta and Schulte, 2010
-add.obigt()
-species(c("oxaloacetate-2", "malate-2", "fumarate-2",
-  "a-ketoglutarate-2", "citrate-3"))
-a <- affinity(O2=c(-80, -60), H2O=c(-5, 5))
-diagram(a, dotted=1, fill="heat")
-e <- equilibrate(a)
-diagram(e, add=TRUE, names=NULL, col="purple")
-e <- equilibrate(a, normalize=TRUE)
-diagram(e, add=TRUE, names=NULL)
-title(main=paste("maximum affinity method (fields)\n",
-  "equilibrium calculations (lines)"))
-data(thermo)
-
 ## calculate the equilibrium logarithm of activity of a 
 ## basis species in different reactions
 basis("CHNOS")
@@ -283,25 +264,6 @@ species(c("ethanol", "lactic acid", "deoxyribose", "ribose"))
 a <- affinity(T=c(0, 150))
 diagram(a, what="O2", legend.x="topleft", col=rev(rainbow(4)), lwd=2)
 title(main="equilibrium logfO2 for 1e-3 mol/kg of CO2 and ... ")
-
-## using strip()
-## proteins from different mammals
-organisms <- c("BOVIN", "CANFA", "HUMAN", "MOUSE", "PIG")
-proteins <- c("AQP1", "MYG", "P53")
-basis("CHNOS+")
-species(rep(proteins, each=5), organisms)
-a <- affinity(O2=c(-85, -65, 128))
-ispecies <- list(1:5, 6:10, 11:15)
-desc <- c("(Aquaporin-1)", "(Myoglobin)",
-  "(Cellular tumor antigen p53)")
-names(ispecies) <- paste(proteins, desc)
-col <- rainbow(5)
-strip(a, ispecies=ispecies, ymin=-0.7, col=col)
-legend("bottomright", legend=organisms, col=col,
-  lty=1, lwd=4, bty="n")
-title(main=paste("Equilibrium degrees of formation of",
-  "proteins from different mammals", sep="\n"))
-}
 }
 
 \references{
@@ -324,4 +286,4 @@ title(main=paste("Equilibrium degrees of formation of",
 
 }
 
-\keyword{primary}
+\concept{Primary thermodynamic modeling}

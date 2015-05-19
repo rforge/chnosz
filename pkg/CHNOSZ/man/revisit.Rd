@@ -91,7 +91,7 @@ The \samp{optimum} attribute of the \code{objective} function indicates whether 
 
 \seealso{
 
-\code{\link{findit}} for gridded search of chemical activities, temperature and/or pressure that optimize the objective function.
+\code{demo("revisit")} shows calculations for a system of proteins. \code{\link{findit}} is a related function implementing a gridded search of chemical activities, temperature and/or pressure that optimize the objective function.
 
 }
 
@@ -110,8 +110,8 @@ e <- equilibrate(a)
 r <- revisit(e, "count", -5)
 title(main="amino acids with metastable log activities > -5")
 
-\donttest{# can also make a 2-D plot
-a <- affinity(O2=c(-74, -60), H2O=c(-3, 3))
+# can also make a 2-D plot
+a <- affinity(O2=c(-74, -60, 64), H2O=c(-3, 3, 64))
 e <- equilibrate(a)
 r <- revisit(e, "count", -5, style.2D="image", plot.optval=FALSE)
 title(main="amino acids with metastable log activities > -5")
@@ -158,46 +158,6 @@ dp <- describe.property("T", r$y)
 t2 <- substitute(list(dp, db), list(dp=dp[[1]], db=db[[1]]))
 mtitle(c(t1, as.expression(t2)))
 par(opar)
-
-## calculations for proteins in Pelagibacter ubique
-## using grep.file, read.fasta, add.protein
-f <- system.file("extdata/fasta/HTCC1062.faa.xz", package="CHNOSZ")
-# what proteins to select (set to "" for all proteins)
-w <- "ribosomal"
-# locate entries whose names contain w
-j <- grep.file(f, w)
-# get the amino acid compositions of these proteins
-aa <- read.fasta(f, j)
-# add these proteins to CHNOSZ's inventory
-ip <- add.protein(aa)
-# set up a the chemical system
-basis("CHNOS+")
-# calculate affinities of formation in logfO2 space
-a <- affinity(O2=c(-85, -60), iprotein=ip)
-# show the equilibrium activities
-opar <- par(mfrow=c(2, 2))
-e <- equilibrate(a, loga.balance=0, normalize=TRUE)
-diagram(e, names=NULL)
-# make a title
-expr <- as.expression(substitute(x~y~"proteins in"~
-  italic("P. ubique"), list(x=length(j), y=w)))
-mtitle(c("Equilibrium activities of", expr))
-# show the coefficient of variation
-revisit(e, "CV")
-mtitle(c("CV of equilibrium activities of", expr))
-# calculate affinities in logfO2-logaH2O space
-a <- affinity(O2=c(-85,-65), H2O=c(-10,0), iprotein=ip)
-# show the predominances
-diagram(a, normalize=TRUE, fill="heat")
-# calculate the equilibrium activities
-e <- equilibrate(a, loga.balance=0, normalize=TRUE)
-# show the coefficient of variation
-r <- revisit(e, "CV")
-stopifnot(r$ix==37)
-stopifnot(r$iy==53)
-mtitle(c("CV of equilibrium activities of", expr))
-par(opar)
-}
 }
 
-\keyword{primary}
+\concept{Secondary thermodynamic modeling}

@@ -69,7 +69,7 @@ Simulate a mass transfer process such as mineral weathering or sequential format
 
 
 \examples{\dontshow{data(thermo)}
-\donttest{## react potassium feldspar in a closed system
+## react potassium feldspar in a closed system
 ## after Steinmann et al., 1994 and Helgeson et al., 1969
 # load the secondary database to use H4SiO4
 add.obigt()
@@ -79,7 +79,7 @@ a <- affinity(H4SiO4=c(-6, -2), "K+"=c(-3, 8))
 diagram(a, fill="heat")
 basis("pH", 4)
 species(1:5, c(-4, rep(-999, 4)))
-tr <- transfer(550, dmode="coupled", plot=c(2, 3), devmax=0.2)
+tr <- transfer(190, dmode="coupled", plot=c(2, 3), devmax=1, alphamax=-1.5)
 # plot the output from transfer
 draw.transfer(tr)
 # reset the plot layout
@@ -87,11 +87,10 @@ layout(matrix(1))
 # restore the primary database
 data(thermo)
 
-## can also run the calculation above with
+## can also run the calculation above (at higher resolution) with
 #feldspar("closed")
 ## or an example for proteins with
 #apc("closed")
-}
 }
 
 \references{
@@ -100,4 +99,4 @@ data(thermo)
   Steinmann, P., Lichtner, P. C. and Shotyk, W. (1994) Reaction path approach to mineral weathering reactions. \emph{Clay Clay Min.} \bold{42}, 197--206. \url{http://ccm.geoscienceworld.org/cgi/content/abstract/42/2/197}
 }
 
-\keyword{extra}
+\concept{Extra thermodynamic modeling}

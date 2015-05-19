@@ -97,4 +97,4 @@ stopifnot(isTRUE(all.equal(sum(10^loga * length),1)))
   Alberty, R. A. (2003) \emph{Thermodynamics of Biochemical Reactions}, John Wiley & Sons, Hoboken, New Jersey, 397 p. \url{http://www.worldcat.org/oclc/51242181}
 }
 
-\keyword{util}
+\keyword{utilities}

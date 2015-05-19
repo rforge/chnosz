@@ -3,7 +3,19 @@
 \docType{package}
 \title{Chemical Thermodynamics and Activity Diagrams}
 \description{
-  CHNOSZ is a package for thermodynamic calculations, primarily with applications in geochemistry and biochemistry. It can be used to calculate the standard molal thermodynamic properties and chemical affinities of reactions relevant to geobiochemical processes, and to visualize the equilibrium activities of species on chemical speciation and predominance diagrams. The package can be used interactively and in batch mode, through the use of R source files containing a sequence of commands. The major features of the package are outlined below, with links to specific help topics in this document, which constitutes the primary technical description of the package. If you are a new user, the \sQuote{anintro} vignette (An introduction to CHNOSZ) may offer a more comfortable way to get started with using the package.
+CHNOSZ is a package for thermodynamic calculations, primarily with applications in geochemistry and biochemistry.
+It can be used to calculate the standard molal thermodynamic properties and chemical affinities of reactions relevant to geobiochemical processes, and to visualize the equilibrium activities of species on chemical speciation and predominance diagrams.
+The package can be used interactively and in batch mode, through the use of R source files containing a sequence of commands.
+}
+
+\section{Getting Help}{
+The major features of the package are outlined in the Overview given below, with links to specific help topics.
+If you are a new user, the \sQuote{anintro} vignette (An introduction to CHNOSZ) may offer a more comfortable way to get started with using the package.
+The help pages have been given either keywords or \dQuote{concept index entries} which are visible to \code{\link{help.search}} (aka \code{??}).
+Use \code{??primary} to browse the most commonly used functions and \code{??secondary} to see other high-level, but less often-used functions.
+\code{??protein} shows functions for working with proteins, and \code{??extra} lists functions with extra functionality (beyond the main workflow).
+For help on the thermodynamic database, use \code{??"thermodynamic data"}.
+Finally, \code{??utilities} (one of the standard \R keywords) can be used to locate utility functions in the package; these include useful tools for modifying the database, converting units, reading protein sequence files, parsing chemical formulas, etc.
 }
 
 \section{Warning}{
@@ -31,7 +43,7 @@ Examples without a reference (and some with references) demonstrate experimental
 
   \item File and internet access - read protein sequences from FASTA files, and download sequence information from UniProt (\code{\link{read.fasta}}, \code{\link{protein}}).
 
-  \item Equations of state - calculate the standard thermodynamic properties of proteins or other species in the database, and reactions between them, as a function of temperature and pressure (\code{\link{hkf}}, \code{\link{cgl}}), \code{\link{subcrt}}.
+  \item Equations of state - calculate the standard thermodynamic properties of proteins or other species in the database, and reactions between them, as a function of temperature and pressure (\code{\link{hkf}}, \code{\link{cgl}}, \code{\link{subcrt}}).
 
   \item Stoichiometry - count elements in chemical formulas of species, check and optionally correct mass balance of chemical reactions (\code{\link{makeup}}).
 
@@ -41,15 +53,15 @@ Examples without a reference (and some with references) demonstrate experimental
 
   \item Chemical activity - calculate the equilibrium activities of the species of interest as a function of the same variables used in the affinity calculation, using a reference state transformation (either the Boltzmann distribution or a reaction matrix approach). (\code{\link{diagram}}, \code{\link{equil.reaction}}, \code{\link{equil.boltzmann}}).
 
-  \item Buffer calculations - compute activities of basis species that are determined by a buffer of one or more species (e.g., pyrite-pyrrhotite-magnetite; acetic acid-CO2) (\code{\link{buffer}}).
-
   \item Activity diagrams - plot the equilibrium activities at a single point (as barplots), or as a function of one (species activity diagrams) or two (predominance diagrams) variables (\code{\link{diagram}}).
 
-  \item Activity statistics - calculate summary statistics for equilibrium activities of species (\code{\link{revisit}}).
+  \item Buffer calculations (\bold{experimental}) - compute activities of basis species that are determined by a buffer of one or more species (e.g., pyrite-pyrrhotite-magnetite; acetic acid-CO2) (\code{\link{buffer}}).
 
-  \item Multidimensional optimization (new in 0.9-3) - using an iterative gridded optimization, find a combination of chemical activities of basis species, temperature and/or pressure that maximize or minimize the value of a target statistic (\code{\link{findit}}).
+  \item Activity statistics (\bold{experimental}) - calculate summary statistics for equilibrium activities of species (\code{\link{revisit}}).
 
-  \item Mass transfer calculations (experimental) - calculate changes in solution composition and formation of secondary species as a function of incremental reaction of a mineral (or protein) (\code{\link{transfer}}).
+  \item Multidimensional optimization (new in 0.9-3) (\bold{experimental}) - using an iterative gridded optimization, find a combination of chemical activities of basis species, temperature and/or pressure that maximize or minimize the value of a target statistic (\code{\link{findit}}).
+
+  \item Mass transfer calculations (\bold{experimental}) - calculate changes in solution composition and formation of secondary species as a function of incremental reaction of a mineral (or protein) (\code{\link{transfer}}).
 
 }
 
@@ -59,9 +71,10 @@ Examples without a reference (and some with references) demonstrate experimental
     \item Install the package from CRAN using \code{\link{install.packages}} or its GUI menu equivalent. 
     \item To begin working with the package after installation, type \code{\link{library}(CHNOSZ)} at the command line (or select the name of the package from the GUI menu).
     \item Running the examples shown in the various help topics is a great way to become more familiar with the usage of the functions. From \code{\link{help.start}}, select \sQuote{Packages} then \sQuote{CHNOSZ} and then select a function of interest. Individual examples can be run by pasting the example block directly into the R console.
-    \item Type the command \code{\link{examples}()} to run all of the examples provided in CHNOSZ. This takes about five to ten minutes depending on your system. If things go as expected, the entire set will run without any warnings or errors.
-    \item Some of the examples require internet or file access or user intervention, or are intentionally written to demonstrate conditions that lead to errors. This offensive code is hidden from \R's package checking mechanism using the \code{dontrun} tag. You can experiment with \code{dontrun} examples by pasting the code to the R console.
+    \item Type the command \code{\link{examples}()} to run all of the examples provided in CHNOSZ. This takes a few minutes depending on your system. If things go as expected, the entire set will run without any warnings or errors.
+    \item Some of the examples require internet or file access or user intervention, or are intentionally written to demonstrate conditions that lead to errors. This code is hidden from \R's package checking mechanism using the \code{dontrun} tag. You can experiment with \code{dontrun} examples by pasting the code to the R console.
     \item A couple of other things to note about the examples: 1) There are some \code{\link{stopifnot}} statements that represent expected outcomes of the calculations; if the expectation is not met, the \code{stopifnot} statement causes an error. These tests are useful for checking the code during package development cycles, but are usually not of critical importance for the set-up of the problem (though they do sometimes employ useful programming tricks). 2) Commands written with an enclosing pair of parentheses \code{(z <- "like this one")} are used to display the result of an assignment operation (\code{\link{<-}}), the value of which is needed later in the calculation. In interactive use, the outermost pair of enclosing parentheses is generally not needed.
+    \item Also try out \code{\link{demos}()} to run the demos (some of these are longer running examples that are not part of the main help pages).
     \item To learn how to update the thermodynamic database, look at its documentation in \code{\link{thermo}}.
   }
 
@@ -84,11 +97,11 @@ Examples without a reference (and some with references) demonstrate experimental
 }
 
 \section{Known Bugs}{
-  The values generated by \code{\link{buffer}} may not be applied correctly by \code{\link{affinity}} in calculating the affinities of the formation reactions. (The values returned by \code{affinity(..., return.buffer=TRUE)} do appear to be correct in the examples).
-
   \code{\link{subcrt}} does not correctly identify the stable polymorph of some minerals at high temperature.
 
-  \code{\link{diagram}} causes an error while plotting stability field boundaries if the x and y resolutions are not identical.
+  The values generated by \code{\link{buffer}} may not be applied correctly by \code{\link{affinity}} in calculating the affinities of the formation reactions. (The values returned by \code{affinity(..., return.buffer=TRUE)} do appear to be correct in the examples).
+
+  There is an unidentified inconsistency in \code{\link{transfer}} causing the reaction boundaries in one of the examples (\code{apc("closed")}) to be offset from the stability diagram. OTOH, \code{feldspar("closed")} appears to work correctly.
 }
 
 \examples{

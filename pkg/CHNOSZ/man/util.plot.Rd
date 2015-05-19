@@ -96,4 +96,4 @@ Change this to \samp{aq} to plot the logarithm of oxygen activity (do not change
   These functions create or modify a plot.
 }
 
-\keyword{util}
+\keyword{utilities}

@@ -155,7 +155,7 @@ subcrt("alanine", T=seq(0, 5000, by=1000))
 # above the T, P limits for the H2O equations of state
 subcrt("alanine", T=c(2250, 2251), P=c(30000, 30001), grid="T")
 
-\donttest{## heat capacity of Fe(cr)
+## heat capacity of Fe(cr)
 # compare calculated values of heat capacity with
 # values from Robie and Hemingway, 1995, (from which 
 # the parameters in the database were derived)
@@ -269,7 +269,6 @@ Na <- expr.species("Na+")
 degC <- expr.units("T")
 title(main=substitute(H2O~and~Na~to~-20~degC, list(H2O=H2O, Na=Na, degC=degC)))
 }
-}
 
 \references{
   Anderson, G. M. and Crerar, D. A. (1993) \emph{Thermodynamics in Geochemistry: The Equilibrium Model}, Oxford University Press. \url{http://www.worldcat.org/oclc/803272549}
@@ -285,4 +284,4 @@ title(main=substitute(H2O~and~Na~to~-20~degC, list(H2O=H2O, Na=Na, degC=degC)))
   Shock, E. L. et al. (1998) \emph{SLOP98.dat} (computer data file). \url{http://geopig.asu.edu/sites/default/files/slop98.dat}, accessed on 2005-11-05 (updated URL on 2012-01-08).
 }
 
-\keyword{primary}
+\concept{Primary thermodynamic modeling}

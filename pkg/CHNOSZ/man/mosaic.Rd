@@ -79,4 +79,4 @@ title(main=paste("Iron oxides and sulfides in water, log(total S) = -6",
   Garrels, R. M. and Christ, C. L. (1965) \emph{Solutions, Minerals, and Equilibria}, Harper & Row, New York, 450 p. \url{http://www.worldcat.org/oclc/517586}
 }
 
-\keyword{secondary}
+\concept{Secondary thermodynamic modeling}

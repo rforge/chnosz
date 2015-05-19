@@ -1,3 +1,19 @@
+CHANGES IN CHNOSZ 1.0.5 (2015-05-19)
+------------------------------------
+
+- Following "Writing R Extensions", remove uncommented \donttest{} code
+  from Rd files. Some examples have had \donttest{} markup removed
+  without other modification, some non-representative examples have
+  been deleted, and some longer examples have been moved to demo files.
+
+- Some previous \donttest{} examples have been moved to demos 'findit.R'
+  (replaces old demo), and to new demos 'revisit.R', 'ionize.R',
+  'buffer.R', 'wjd.R', 'yeastgfp.R', 'diagram.R'.
+
+- Rd files now use standard R \keyword{}s ('package' and 'utilities');
+  non-standard keywords have been changed to \concept{}s (see CHECKLIST
+  for description, and CHNOSZ-package.Rd for overview).
+
 CHANGES IN CHNOSZ 1.0.4 (2015-05-18)
 ------------------------------------
 

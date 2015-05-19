@@ -120,7 +120,7 @@ Aref.residue <- Astar.residue - loga.residue  # 0.446, after Eq. 16
 # A-star of the residue in natural log units (A/RT)
 log(10) * Astar.residue  # 0.4359, after Eq. 23
 
-\donttest{## using protein.formula: average oxidation state of 
+## using protein.formula: average oxidation state of 
 ## carbon of proteins from different organisms (Dick, 2014)
 # get amino acid compositions of microbial proteins 
 # generated from the RefSeq database 
@@ -150,7 +150,6 @@ axis(1, 1:15, terms, las=2)
 title(main=paste("Average oxidation state of carbon in proteins",
   "by taxID in NCBI RefSeq (after Dick, 2014)", sep="\n"))
 }
-}
 
 \references{
   Dick, J. M. (2014) Average oxidation state of carbon in proteins. \emph{J. R. Soc. Interface} \bold{11}, 20131095. \url{http://dx.doi.org/10.1098/rsif.2013.1095}
@@ -160,4 +159,4 @@ title(main=paste("Average oxidation state of carbon in proteins",
   Makhatadze, G. I. and Privalov, P. L. (1990) Heat capacity of proteins. 1. Partial molar heat capacity of individual amino acid residues in aqueous solution: Hydration effect \emph{J. Mol. Biol.} \bold{213}, 375--384. \url{http://dx.doi.org/10.1016/S0022-2836(05)80197-4}
 }
 
-\keyword{protein}
+\concept{Protein thermodynamic modeling}

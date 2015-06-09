@@ -13,10 +13,10 @@
 
 \usage{
   examples(do.png = FALSE)
-  demos(which = c("sources", "NaCl", "cordierite",
+  demos(which = c("sources", "NaCl", "density",
     "phosphate", "nucleobase", "orp", "diagram", "revisit", "findit", 
     "CO2Ac", "nonideal", "ionize", "buffer", "yeastgfp", "mosaic",
-    "solubility", "wjd"))
+    "solubility", "wjd"), do.png=FALSE)
 }
 
 \details{
@@ -33,7 +33,7 @@ See the comments in the source code for more information about each demo.
   \tabular{ll}{
     \code{sources} \tab cross-check the reference list with the thermodynamic database \cr
     \code{NaCl} \tab equilibrium constant for aqueous NaCl dissociation (Shock et al., 1992) \cr
-    \code{cordierite} \tab equilibrium constant of hydrous cordierite dehydration \cr
+    \code{density} \tab density of H2O, inverted from IAPWS-95 equations (\code{\link{rho.IAPWS95}}) \cr
     \code{phosphate} \tab phosphate speciation with pH, temperature and ionic strength \cr
     \code{nucleobase} \tab relative stabilities of nucleobases and some amino acids \cr
     \code{orp} \tab oxidation-reduction potential of redox standards as a function of temperature \cr

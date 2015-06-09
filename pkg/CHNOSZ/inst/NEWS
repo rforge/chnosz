@@ -1,3 +1,28 @@
+CHANGES IN CHNOSZ 1.0.5-1 (2015-06-09)
+--------------------------------------
+
+- Rewrite rho.IAPWS95() to be able to invert density from IAPWS-95
+  equations for a more extensive range of T,P values.
+
+- Update R dependency to R-3.1.0, needed for 'extendInt' argument
+  of uniroot() (used by rho.IAPWS95()).
+
+- Add demo/density.R to show density of H2O calculated using
+  rho.IAPWS95() (optionally using water.SUPCRT92()).
+
+- Remove the relatively trivial demo/cordierite.R.
+
+- Update wrapper function for parallel calculations palply() (export of
+  variables, used in demo/density.R) and add tests in
+  test-util.program.R.
+
+- Tests that initiate calls to palply() (and therefore makeCluster())
+  failed with 'cannot open file 'startup.Rs': No such file or directory'
+  Fixed by adding Sys.setenv("R_TESTS" = "") to test-all.R.
+  Issue discussed here:
+  https://github.com/hadley/testthat/issues/129
+  https://github.com/hadley/testthat/issues/144
+
 CHANGES IN CHNOSZ 1.0.5 (2015-05-19)
 ------------------------------------
 

@@ -1,11 +1,11 @@
-Date: 2015-05-19
+Date: 2015-06-09
 Package: CHNOSZ
-Version: 1.0.5
+Version: 1.0.5-1
 Title: Chemical Thermodynamics and Activity Diagrams
 Author: Jeffrey Dick
 Maintainer: Jeffrey Dick <j3ffdick@gmail.com>
-Depends: R (>= 3.0.0)
-Suggests: limSolve, parallel, testthat, knitr
+Depends: R (>= 3.1.0)
+Suggests: limSolve, testthat, knitr
 Description: Functions and data sets to support chemical thermodynamic modeling in biochemistry
   and low-temperature geochemistry. The features include calculation of the standard molal
   thermodynamic properties and chemical affinities of reactions involving minerals and/or

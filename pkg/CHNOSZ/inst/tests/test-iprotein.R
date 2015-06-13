@@ -5,7 +5,14 @@ suppressMessages(data(thermo))
 
 test_that("basic searches and conversions work as expected", {
   expect_equal(iprotein(c("LYSC_CHICK", "MYGPHYCA")), c(6, NA))
-
+  # factors causing problems again ...
+  f <- system.file("extdata/protein/DS11.csv", package="CHNOSZ")
+  aa <- read.csv(f)
+  # this adds the proteins
+  ip <- add.protein(aa)
+  # the replaces the proteins (with the same ones)
+  expect_error(ip <- add.protein(aa), "converting factors causes problems replacing protein data")
+  # ... should use read.csv(file, stringsAsFactors=FALSE)
 })
 
 test_that("errors and messages occur in some circumstances", {

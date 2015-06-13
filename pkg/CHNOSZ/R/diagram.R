@@ -150,7 +150,6 @@ diagram <- function(
       else if(as.residue & eout.is.aout) pv[[i]] <- pv[[i]] + eout$species$logact[i] / n.balance[i]
     }
     predominant <- which.pmax(pv)
-    dim(predominant) <- dim(pv[[1]])
   }
 
   # a warning about that we can only show properties of the first species on a 2-D diagram

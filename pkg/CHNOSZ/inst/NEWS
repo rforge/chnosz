@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.5-3 (2015-07-04)
+CHANGES IN CHNOSZ 1.0.5-4 (2015-07-10)
 --------------------------------------
 
 - Rewrite rho.IAPWS95() to be able to invert density from IAPWS-95
@@ -32,6 +32,9 @@ CHANGES IN CHNOSZ 1.0.5-3 (2015-07-04)
 
 - Add grDevices, graphics, stats, utils to Imports: in DESCRIPTION, and
   add specific importsFrom lines in NAMESPACE.
+
+- Fix incorrect entry for entropy of aqueous methionine and [Met] in
+  OBIGT.csv. Thanks to Apar Prasad for spotting this.
 
 CHANGES IN CHNOSZ 1.0.5 (2015-05-19)
 ------------------------------------

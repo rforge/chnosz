@@ -391,8 +391,8 @@ diagram <- function(
         else if(any(grepl(names(dev.cur()), c("X11cairo", "quartz", "windows")))) fill <- "heat"
       }
       if(is.null(fill)) fill <- "transparent"
-      else if(fill[1]=="rainbow") fill <- rainbow(ngroups)
-      else if(fill[1]=="heat") fill <- heat.colors(ngroups)
+      else if(isTRUE(fill[1]=="rainbow")) fill <- rainbow(ngroups)
+      else if(isTRUE(fill[1]=="heat")) fill <- heat.colors(ngroups)
       fill <- rep(fill, length.out=ngroups)
       # the x and y values 
       xs <- eout$vals[[1]]

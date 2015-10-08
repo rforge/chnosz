@@ -5,4 +5,4 @@ library(CHNOSZ)
 # (since we use makeCluster() etc via palply)
 Sys.setenv("R_TESTS" = "") 
 
-test_package("CHNOSZ")
+test_check("CHNOSZ")

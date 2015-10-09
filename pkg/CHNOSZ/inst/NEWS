@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.5-8 (2015-10-08)
+CHANGES IN CHNOSZ 1.0.5-6 (2015-10-09)
 --------------------------------------
 
 - Rewrite rho.IAPWS95() to be able to invert density from IAPWS-95
@@ -26,9 +26,10 @@ CHANGES IN CHNOSZ 1.0.5-8 (2015-10-08)
 - Fix bugs in which.pmax() that prevented proper assignment of
   attributes in output, and functionality for lists of length 1.
 
-- mosaic() now correctly multiplies affinities by _relative_ abundances
-  of basis species when blend=TRUE. Thanks to Grayson Boyer for the bug
-  report that led to this fix.
+- mosaic() now multiplies affinities by _relative_ abundances of basis
+  species when blend=TRUE. Also, fix bug where using blend=TRUE gave
+  wrong results due to incorrect calculation of total activity of basis
+  species. Thanks to Grayson Boyer for the bug reports.
 
 - Add grDevices, graphics, stats, utils to Imports: in DESCRIPTION, and
   add specific importsFrom lines in NAMESPACE.

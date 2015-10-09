@@ -59,13 +59,13 @@ mosaic <- function(bases, bases2=NULL, blend=FALSE, ...) {
     # calculate affinities using relative abundances of basis species
     e <- equilibrate(A.bases)
     # what is the total activity of the basis species?
-    loga.tot <- sum(10^unlist(e$loga.equil))
+    a.tot <- Reduce("+", lapply(e$loga.equil, function(x) 10^x))
     for(j in seq_along(affs)) {
       for(i in seq_along(A.species$values)) {
         # start with zero affinity
         if(j==1) A.species$values[[i]][] <- 0
         # add affinity scaled by __relative__ abundance of this basis species
-        A.species$values[[i]] <- A.species$values[[i]] + affs[[j]]$values[[i]] * 10^e$loga.equil[[j]]/loga.tot
+        A.species$values[[i]] <- A.species$values[[i]] + affs[[j]]$values[[i]] * 10^e$loga.equil[[j]]/a.tot
       }
     }
   } else {

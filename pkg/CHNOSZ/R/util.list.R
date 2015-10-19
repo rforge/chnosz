@@ -4,6 +4,7 @@
 which.pmax <- function (elts, na.rm = FALSE, pmin=FALSE) {
   # adapted from R's pmax. elts is a list of numeric vectors
   keepattr <- attributes(elts[[1]])
+  keepdim <- dim(elts[[1]])
   if(!is.numeric(elts[[1]])[1]) {
     if(is.data.frame(elts[[1]])) elts[[1]] <- as.matrix(elts[[1]])
     if(is.list(elts[[1]])) elts[[1]] <- elts[[1]][[1]]
@@ -35,6 +36,10 @@ which.pmax <- function (elts, na.rm = FALSE, pmin=FALSE) {
       }
       mmm <- work[, 1]
     }
+  }
+  if(identical(keepattr$class, "data.frame")) {
+    dim(which.mmm) <- keepdim
+    which.mmm <- as.data.frame(which.mmm)
   }
   mostattributes(which.mmm) <- keepattr
   which.mmm

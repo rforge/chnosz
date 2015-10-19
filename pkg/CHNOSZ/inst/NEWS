@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.5-6 (2015-10-09)
+CHANGES IN CHNOSZ 1.0.6 (2015-10-19)
 --------------------------------------
 
 - Rewrite rho.IAPWS95() to be able to invert density from IAPWS-95
@@ -37,8 +37,8 @@ CHANGES IN CHNOSZ 1.0.5-6 (2015-10-09)
 - Fix incorrect entry for entropy of aqueous methionine and [Met] in
   OBIGT.csv. Thanks to Apar Prasad for spotting this.
 
-- Some fixes to tests for compatibility with new version of testthat
-  (increase tolerance for one test in test-eos.R because of swapping
+- Some fixes for compatibility with new version of testthat (increase
+  tolerance for one test in test-eos.R because of corrected alignment
   actual/expected values in equals(); move inst/tests to
   inst/test/testthat; use test_check instead of test_package in
   test-all.R (for R CMD check)).

@@ -64,7 +64,8 @@ equilibrate <- function(aout, balance=NULL, loga.balance=NULL,
     })
   }
   ## put together the output
-  out <- c(aout, list(balance=balance, m.balance=m.balance, n.balance=n.balance, Astar=Astar, loga.equil=loga.equil))
+  out <- c(aout, list(balance=balance, m.balance=m.balance, n.balance=n.balance,
+    loga.balance=loga.balance, Astar=Astar, loga.equil=loga.equil))
   # done!
   return(out)
 }

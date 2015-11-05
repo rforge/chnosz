@@ -103,15 +103,40 @@ thermo.axis <- function(lab='x-axis',side=1,line=1.5,cex=par('cex'),lwd=par('lwd
   if(!is.null(T)) par(opar)
 }
 
-label.plot <- function(x,xfrac=0.95,yfrac=0.9,cex=1,paren=TRUE,adj=1) {
+label.plot <- function(x, xfrac=0.05, yfrac=0.95, paren=FALSE, italic=FALSE, ...) {
   # make a text label e.g., "(a)" in the corner of a plot
   # xfrac, yfrac: fraction of axis where to put label (default top right)
   # paren: put a parenthesis around the text, and italicize it?
-  if(paren) x <- as.expression(substitute(group('(',italic(a),')'),list(a=x)))
+  if(italic) x <- substitute(italic(a), list(a=x))
+  if(paren) x <- substitute(group('(',a,')'), list(a=x))
+  if(italic | paren) x <- as.expression(x)
   pu <- par('usr')
-  text( pu[1]+xfrac*(pu[2]-pu[1]), pu[3]+yfrac*(pu[4]-pu[3]), labels=x, cex=cex , adj=adj)
+  text(pu[1]+xfrac*(pu[2]-pu[1]), pu[3]+yfrac*(pu[4]-pu[3]), labels=x, ...)
 }
 
+usrfig <- function() {
+  # function to get the figure limits in user coordinates
+  # get plot limits in user coordinates (usr) and as fraction [0,1] of figure region (plt)
+  xusr <- par('usr')[1:2]; yusr <- par('usr')[3:4]
+  xplt <- par('plt')[1:2]; yplt <- par('plt')[3:4]
+  # linear model to calculate figure limits in user coordinates
+  xlm <- lm(xusr ~ xplt); ylm <- lm(yusr ~ yplt)
+  xfig <- predict.lm(xlm, data.frame(xplt=c(0, 1)))
+  yfig <- predict.lm(ylm, data.frame(yplt=c(0, 1)))
+  return(list(x=xfig, y=yfig))
+}
+
+label.figure <- function(x, xfrac=0.05, yfrac=0.95, paren=FALSE, italic=FALSE, ...) {
+  # function to add labels outside of the plot region  20151020
+  f <- usrfig()
+  # similar to label.plot(), except we have to set xpd=TRUE here
+  opar <- par(xpd=NA)
+  if(italic) x <- substitute(italic(a), list(a=x))
+  if(paren) x <- substitute(group('(',a,')'), list(a=x))
+  if(italic | paren) x <- as.expression(x)
+  text(f$x[1]+xfrac*(f$x[2]-f$x[1]), f$y[1]+yfrac*(f$y[2]-f$y[1]), labels=x, ...)
+  par(opar)
+}
 
 water.lines <- function(xaxis='pH', yaxis='Eh', T=298.15, P='Psat', which=c('oxidation','reduction'),
   logaH2O=0, lty=2, lwd=1, col=par('fg'), xpoints=NULL, O2state="gas") {

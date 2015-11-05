@@ -24,7 +24,7 @@ diagram <- function(
   # labels
   names=NULL, main=NULL, legend.x="topright",
   # plotting controls
-  add=FALSE, plot.it=TRUE, tplot=TRUE
+  add=FALSE, plot.it=TRUE, tplot=TRUE, ...
 ) {
 
   ### argument handling ###
@@ -203,7 +203,7 @@ diagram <- function(
       ### 0-D diagram - bar graph of properties of species or reactions
       # plot setup
       if(missing(ylab)) ylab <- axis.label(plotvar, units="")
-      barplot(unlist(plotvals), names.arg=names, ylab=ylab, cex.names=cex.names, col=col)
+      barplot(unlist(plotvals), names.arg=names, ylab=ylab, cex.names=cex.names, col=col, ...)
       if(!is.null(main)) title(main=main)
 
     } else if(nd==1) {
@@ -223,7 +223,7 @@ diagram <- function(
           ylim <- extendrange(myval)
         }
         if(tplot) thermo.plot.new(xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab, cex=cex, mar=mar, yline=yline, side=side)
-        else plot(0, 0, type="n", xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab)
+        else plot(0, 0, type="n", xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab, ...)
       }
       # draw the lines
       for(i in 1:length(plotvals)) lines(xvalues, plotvals[[i]], col=col[i], lty=lty[i], lwd=lwd[i])
@@ -406,7 +406,7 @@ diagram <- function(
         if(is.null(ylab)) ylab <- axis.label(eout$vars[2], basis=eout$basis)
         if(tplot) thermo.plot.new(xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab,
           cex=cex, cex.axis=cex.axis, mar=mar, yline=yline, side=side)
-        else plot(0, 0, type="n", xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab)
+        else plot(0, 0, type="n", xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab, ...)
         # add a title
         if(!is.null(main)) title(main=main)
       }

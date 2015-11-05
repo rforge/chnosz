@@ -47,6 +47,19 @@ basis.logact <- function(emu, basis = get("thermo")$basis, T = 25) {
   return(basis.logact)
 }
 
+ibasis <- function(species) {
+  # get the index of a basis species from a species index, name or formula
+  basis <- basis()
+  if(is.numeric(species)) ib <- match(species, basis$ispecies)
+  else {
+    # character: first look for formula of basis species
+    ib <- match(species, rownames(basis))
+    # if that doesn't work, look for name of basis species
+    if(is.na(ib)) ib <- match(species, get("thermo")$obigt$name[basis$ispecies])
+  }
+  return(ib)
+}
+
 # swap in one basis species for another
 swap.basis <- function(species, species2, T = 25) {
   # before we do anything, remember the old basis definition
@@ -63,8 +76,7 @@ swap.basis <- function(species, species2, T = 25) {
   if(length(species) > 1 | length(species2) > 2)
     stop("can only swap one species for one species")
   # arguments are good, now find the basis species to swap out
-  if(is.numeric(species)) ib <- match(species, oldbasis$ispecies)
-  else ib <- match(species, rownames(oldbasis))
+  ib <- ibasis(species)
   if(is.na(ib)) stop(paste("basis species '",species,"' is not defined",sep=""))
   # find species2 in the thermodynamic database
   if(is.numeric(species2)) ispecies2 <- species2

@@ -1,5 +1,24 @@
-CHANGES IN CHNOSZ 1.0.6 (2015-10-19)
+CHANGES IN CHNOSZ 1.0.6-1 (2015-11-05)
 --------------------------------------
+
+- Add functions usrfig() (get figure limits in user coordinates) and
+  label.figure() (add label to figure outside of plot region).
+
+- Add copper.R demo (complexation of copper with glycine, uses
+  mosaic()).
+
+- Using new supporting function ibasis(), swap.basis() and mosaic()
+  now allow basis species to be specified by name, not just formula.
+
+- diagram() now has '...' argument to pass additional options to
+  plot() (useful with diagram(tplot=FALSE, ...)).
+
+- TODO: Update vignette 'equilibrium.Rnw' with better definitions of
+  concepts, organization of functions, and amino acid and protein
+  examples.
+
+CHANGES IN CHNOSZ 1.0.6 (2015-10-19)
+------------------------------------
 
 - Rewrite rho.IAPWS95() to be able to invert density from IAPWS-95
   equations for a more extensive range of T,P values.

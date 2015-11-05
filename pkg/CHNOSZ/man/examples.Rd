@@ -16,7 +16,7 @@
   demos(which = c("sources", "NaCl", "density",
     "phosphate", "nucleobase", "ORP", "diagram", "revisit", "findit", 
     "CO2Ac", "nonideal", "ionize", "buffer", "yeastgfp", "mosaic",
-    "solubility", "wjd"), do.png=FALSE)
+    "copper", "solubility", "wjd"), do.png=FALSE)
 }
 
 \details{
@@ -46,6 +46,7 @@ See the comments in the source code for more information about each demo.
     \code{buffer} \tab ionized proteins as a chemical activity buffer (1. thiol peroxidases 2. sigma factors) \cr
     \code{yeastgfp} \tab logfO2-logaH2O diagrams for model proteins based on YeastGFP localizations (Dick, 2009) \cr
     \code{mosaic} \tab Eh-pH diagram with two sets of changing basis species (Garrels and Christ, 1965) \cr
+    \code{copper} \tab another example of \code{\link{mosaic}}: complexation of Cu with glycine (Aksu and Doyle, 2001) \cr
     \code{solubility} \tab solubility of calcite (cf. Manning et al., 2013) or CO2(gas) (cf. Stumm and Morgan, 1996) \cr
     \code{wjd} \tab run.wjd() with proteins: cell periphery of yeast \cr
   }
@@ -53,6 +54,8 @@ See the comments in the source code for more information about each demo.
 }
 
 \references{
+  Aksu, S. and Doyle, F. M. (2001) Electrochemistry of copper in aqueous glycine solutions. \emph{J. Electrochem. Soc.} \bold{148}, B51--B57. \url{http://dx.doi.org/10.1149/1.1344532}
+
   Alberty, R. A. (2003) \emph{Thermodynamics of Biochemical Reactions}, John Wiley & Sons, Hoboken, New Jersey, 397 p. \url{http://www.worldcat.org/oclc/51242181}
 
   Dick, J. M. (2009) Calculation of the relative metastabilities of proteins in subcellular compartments of \emph{Saccharomyces cerevisiae}. \emph{BMC Syst. Biol.} \bold{3}:75. \url{http://dx.doi.org/10.1186/1752-0509-3-75}

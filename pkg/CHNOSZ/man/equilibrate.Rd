@@ -86,7 +86,7 @@ This calculation is faster than the algorithm of \code{equil.reaction}, but is l
 
 \value{
 \code{equil.reaction} and \code{equil.boltzmann} each return a list with dimensions and length equal to those of \code{Astar}, giving the \code{\link{log10}} of the equilibrium activities of the species of interest.
-\code{equilibrate} returns a list, containing first the values in \code{aout}, to which are appended \code{m.balance} (the balancing coefficients if \code{normalize} is TRUE, a vector of \samp{1}s otherwise), \code{n.balance} (the balancing coefficients if \code{normalize} is FALSE, a vector of \samp{1}s otherwise) and \code{loga.equil} (the calculated equilibrium activities of the species).
+\code{equilibrate} returns a list, containing first the values in \code{aout}, to which are appended \code{m.balance} (the balancing coefficients if \code{normalize} is TRUE, a vector of \samp{1}s otherwise), \code{n.balance} (the balancing coefficients if \code{normalize} is FALSE, a vector of \samp{1}s otherwise), \code{loga.balance}, \code{Astar}, and \code{loga.equil} (the calculated equilibrium activities of the species).
 \code{balance} returns a list containing the balancing coefficients (\code{n}) and a textual description (\code{description}).
 }
 

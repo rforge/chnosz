@@ -222,7 +222,7 @@ diagram <- function(
           myval <- sapply(plotvals, xfun)
           ylim <- extendrange(myval)
         }
-        if(tplot) thermo.plot.new(xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab, cex=cex, mar=mar, yline=yline, side=side)
+        if(tplot) thermo.plot.new(xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab, cex=cex, mar=mar, yline=yline, side=side, ...)
         else plot(0, 0, type="n", xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab, ...)
       }
       # draw the lines

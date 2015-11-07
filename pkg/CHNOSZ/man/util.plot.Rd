@@ -31,7 +31,7 @@
   water.lines(xaxis = "pH", yaxis = "Eh", T = 298.15, P = "Psat", 
     which = c("oxidation","reduction"), logaH2O = 0, lty = 2, lwd=1,
     col = par("fg"), xpoints = NULL, O2state="gas")
-  mtitle(main, ...)
+  mtitle(main, line=0, ...)
   residualsplot(residuals, property = "Cp", model = "big")
 }
 
@@ -96,7 +96,10 @@ It is a supporting function for \code{label.figure} but is also useful for other
 
   \code{thermo.axis} is used to add axes and axis labels to plots, with some default style settings (rotation of numeric labels) and conversions between oxidation-reduction scales (called by \code{thermo.plot.new}). It also adds minor tick marks.
 
-  \code{mtitle} can be used to add a multi-line title to a plot. It loops over each element of \code{main} and places it on a separate margin line using \code{\link{mtext}}. This function exists to facilitate using \code{\link{expression}}s in multiline titles (see \code{\link{revisit}} for an example.) 
+\code{mtitle} can be used to add a multi-line title to a plot.
+It loops over each element of \code{main} and places it on a separate margin line using \code{\link{mtext}}.
+The spacing of the last (bottom) line from the edge of the plot is specified by \code{line}.
+This function exists to facilitate using \code{\link{expression}}s in multiline titles (see \code{\link{revisit}} for an example.) 
 
   \code{residualsplot} produces a \code{\link{barchart}} with options useful for plotting residuals of group contribution models for thermodynamic properties. It plots horizontal bars stacked with largest on top. The names of the \code{residuals} argument (i.e., the names of model species) are plotted across from each respective bar. The axis title is taken from the \code{property} (probably \samp{Cp} or \samp{V}), and the plot title includes the \code{model} name. See the \sQuote{xadditivity} vignette for examples of these plots.
 

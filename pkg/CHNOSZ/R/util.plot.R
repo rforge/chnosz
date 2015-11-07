@@ -200,11 +200,12 @@ water.lines <- function(xaxis='pH', yaxis='Eh', T=298.15, P='Psat', which=c('oxi
   }
 }
 
-mtitle <- function(main,...) {
+mtitle <- function(main, line=0, ...) {
   # make a possibly multi-line plot title 
   # useful for including expressions on multiple lines 
+  # 'line' is the margin line of the last (bottom) line of the title
   l <- length(main)
-  for(i in 1:l) mtext(main[i],line=l-i,...)
+  for(i in 1:l) mtext(main[i], line=line+l-i, ...)
 }
 
 

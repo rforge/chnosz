@@ -2,8 +2,8 @@
 # functions related to swapping basis species
 # extracted from basis() 20120114 jmd
 
-# return the current basis matrix
-basis.matrix <- function(basis = get("thermo")$basis) {
+# return the current basis elements
+basis.elements <- function(basis = get("thermo")$basis) {
   if(is.null(basis)) stop("basis species are not defined")
   return(as.matrix(basis[, 1:nrow(basis), drop=FALSE]))
 }
@@ -11,7 +11,7 @@ basis.matrix <- function(basis = get("thermo")$basis) {
 # calculate chemical potentials of elements from logarithms of activity of basis species
 element.mu <- function(basis = get("thermo")$basis, T = 25) {
   # matrix part of the basis definition
-  basis.mat <- basis.matrix(basis)
+  basis.mat <- basis.elements(basis)
   # the standard Gibbs energies of the basis species
   if(T==25) G <- get("thermo")$obigt$G[basis$ispecies]
   else G <- unlist(subcrt(basis$ispecies, T=T, property="G")$out)
@@ -27,7 +27,7 @@ element.mu <- function(basis = get("thermo")$basis, T = 25) {
 # calculate logarithms of activity of basis species from chemical potentials of elements
 basis.logact <- function(emu, basis = get("thermo")$basis, T = 25) {
   # matrix part of the basis definition
-  basis.mat <- basis.matrix(basis)
+  basis.mat <- basis.elements(basis)
   # elements in emu can't be less than the number in the basis
   if(length(emu) < ncol(basis.mat)) stop("number of elements in 'emu' is less than those in basis")
   # sort names of emu in order of those in basis.mat

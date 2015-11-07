@@ -1,10 +1,10 @@
-CHANGES IN CHNOSZ 1.0.6-1 (2015-11-05)
+CHANGES IN CHNOSZ 1.0.6-2 (2015-11-07)
 --------------------------------------
 
 - Add functions usrfig() (get figure limits in user coordinates) and
   label.figure() (add label to figure outside of plot region).
 
-- Add copper.R demo (complexation of copper with glycine, uses
+- Add demo copper.R (complexation of copper with glycine, uses
   mosaic()).
 
 - Using new supporting function ibasis(), swap.basis() and mosaic()
@@ -16,6 +16,20 @@ CHANGES IN CHNOSZ 1.0.6-1 (2015-11-05)
 - TODO: Update vignette 'equilibrium.Rnw' with better definitions of
   concepts, organization of functions, and amino acid and protein
   examples.
+
+- Remove demo diagram.R (concepts better shown in equilibrium.Rnw).
+
+- Rename basis.matrix() to basis.elements().
+
+- Argument of species.basis() defaults to current species indices.
+  ( species.basis() %*% basis.elements() returns elemental composition
+  of currently defined species.)
+
+- Move demos phosphate.R and nonideal.R to help page nonideal.Rd.
+
+- Add options to thermo$opt: 'ideal.H' and 'ideal.e'. Default TRUE tells
+  nonideal() to set activity coefficients of proton and electron to
+  zero.
 
 CHANGES IN CHNOSZ 1.0.6 (2015-10-19)
 ------------------------------------
@@ -54,7 +68,7 @@ CHANGES IN CHNOSZ 1.0.6 (2015-10-19)
   add specific importsFrom lines in NAMESPACE.
 
 - Fix incorrect entry for entropy of aqueous methionine and [Met] in
-  OBIGT.csv. Thanks to Apar Prasad for spotting this.
+  OBIGT.csv. Thanks to Apar Prasad for reporting this.
 
 - Some fixes for compatibility with new version of testthat (increase
   tolerance for one test in test-eos.R because of corrected alignment

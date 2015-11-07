@@ -61,8 +61,8 @@ text(d$lx, -0.5, Gly, col="darkblue")
 # because the filling of fields masks it
 water.lines()
 box()
-title(main=paste("Aqueous Copper + Glycine, 25 deg C, 1 bar",
-  "After Aksu and Doyle, 2001 Fig. 2b",sep="\n"))
+mtitle(expression("Copper-water-glycine at 25"~degree*"C and 1 bar",
+  "After Aksu and Doyle, 2001 (Fig. 2b)"), line=0.5)
 
 # done!
 data(thermo)

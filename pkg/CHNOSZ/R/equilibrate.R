@@ -172,28 +172,24 @@ equil.reaction <- function(Astar, n.balance, loga.balance) {
       logadiff.max <- logadiff(Abar.range[2], i)
       if(is.infinite(logadiff.max)) stop("FIXME: the second initial guess for Abar.max failed")
     }
-    # the change of logadiff with Abar
-    # it's a weighted mean of the n.balance
-    dlogadiff.dAbar <- (logadiff.max - logadiff.min) / diff(Abar.range)
-    # change Abar to center logadiff (min/max) on zero
-    logadiff.mean <- mean(c(logadiff.min, logadiff.max))
-    Abar.range <- Abar.range - logadiff.mean / dlogadiff.dAbar
-    # one iteration is enough for the examples in the package
-    # but there might be a case where the range of logadiff doesn't cross zero
-    # (e.g. for the carboxylic acid example in revisit.Rd)
-    logadiff.min <- logadiff(Abar.range[1], i)
-    logadiff.max <- logadiff(Abar.range[2], i)
-    if(logadiff.min > 0 | logadiff.max < 0) {
-      # do again what we did above
+    iter <- 0
+    while(logadiff.min > 0 | logadiff.max < 0) {
+      # the change of logadiff with Abar
+      # it's a weighted mean of the n.balance
       dlogadiff.dAbar <- (logadiff.max - logadiff.min) / diff(Abar.range)
+      # change Abar to center logadiff (min/max) on zero
       logadiff.mean <- mean(c(logadiff.min, logadiff.max))
       Abar.range <- Abar.range - logadiff.mean / dlogadiff.dAbar
+      # one iteration is enough for the examples in the package
+      # but there might be a case where the range of logadiff doesn't cross zero
+      # (e.g. for the carboxylic acid example in revisit.Rd)
       logadiff.min <- logadiff(Abar.range[1], i)
       logadiff.max <- logadiff(Abar.range[2], i)
-      if(logadiff.min > 0 | logadiff.max < 0) {
-        stop("FIXME: make this function (Abarrange() in equil.reaction()) 
-          iterate again to find a range of Abar such that the differences in 
-          logarithm of activity of the conserved component cross zero")
+      iter <- 1
+      if(iter > 5) {
+        stop("FIXME: we seem to be stuck! This function (Abarrange() in
+          equil.reaction()) can't find a range of Abar such that the differences
+          in logarithm of activity of the conserved component cross zero")
       }
     }
     return(Abar.range)

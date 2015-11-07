@@ -174,7 +174,7 @@ protein.equil <- function(protein, T=25, loga.protein=0) {
   thermo <- get("thermo")
   ionize.it <- FALSE
   iword <- "nonionized"
-  bmat <- basis.matrix()
+  bmat <- basis.elements()
   if("H+" %in% rownames(bmat)) {
     ionize.it <- TRUE
     iword <- "ionized"

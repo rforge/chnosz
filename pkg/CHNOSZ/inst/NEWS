@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.6-2 (2015-11-07)
+CHANGES IN CHNOSZ 1.0.6-3 (2015-11-08)
 --------------------------------------
 
 - Add functions usrfig() (get figure limits in user coordinates) and
@@ -13,9 +13,9 @@ CHANGES IN CHNOSZ 1.0.6-2 (2015-11-07)
 - diagram() now has '...' argument to pass additional options to
   plot() (useful with diagram(tplot=FALSE, ...)).
 
-- TODO: Update vignette 'equilibrium.Rnw' with better definitions of
-  concepts, organization of functions, and amino acid and protein
-  examples.
+- Update vignette 'equilibrium.Rnw' with better definitions of concepts,
+  organization of functions, and examples and applications. Now uses
+  knitr.
 
 - Remove demo diagram.R (concepts better shown in equilibrium.Rnw).
 

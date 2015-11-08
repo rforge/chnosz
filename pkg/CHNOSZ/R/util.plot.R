@@ -152,13 +152,14 @@ water.lines <- function(xaxis='pH', yaxis='Eh', T=298.15, P='Psat', which=c('oxi
   ylim <- pu[3:4]
   # exact lines
   # warning: Eh calculations are reliable only at a single T
-  if(xaxis=='pH' & (yaxis=='Eh' | yaxis=='O2' | yaxis=="pe")) {
+  if(xaxis=="O2" | (xaxis=='pH' & (yaxis=='Eh' | yaxis=='O2' | yaxis=="pe"))) {
     if('reduction' %in% which) {
       logfH2 <- 0
       logK <- subcrt(c("H2O", "O2", "H2"), c(-1, 0.5, 1), c("liq", O2state, "gas"), T=T, P=P, convert=FALSE)$out$logK 
       # this is logfO2 if O2state=="gas", or logaO2 if O2state=="aq"
       logfO2 <- 2 * logK - logfH2 + 2 * logaH2O
-      if(yaxis=='O2') abline(h=logfO2,lty=lty,lwd=lwd,col=col) 
+      if(xaxis=='O2') abline(v=logfO2,lty=lty,lwd=lwd,col=col) 
+      else if(yaxis=='O2') abline(h=logfO2,lty=lty,lwd=lwd,col=col) 
       else if(yaxis=="Eh") lines(xlim,convert(logfO2,'E0',T=T,P=P,pH=xlim),lty=lty,lwd=lwd,col=col)
       else if(yaxis=="pe") lines(xlim,convert(convert(logfO2,'E0',T=T,P=P,pH=xlim),"pe",T=T),lty=lty,lwd=lwd,col=col)
     }
@@ -167,6 +168,7 @@ water.lines <- function(xaxis='pH', yaxis='Eh', T=298.15, P='Psat', which=c('oxi
       logK <- subcrt(c("O2", "O2"), c(-1, 1), c("gas", O2state), T=T, P=P, convert=FALSE)$out$logK 
       # this is logfO2 if O2state=="gas", or logaO2 if O2state=="aq"
       logfO2 <- logfO2 + logK
+      if(xaxis=='O2') abline(v=logfO2,lty=lty,lwd=lwd,col=col) 
       if(yaxis=='O2') abline(h=logfO2,lty=lty,lwd=lwd,col=col) 
       else if(yaxis=="Eh") lines(xlim,convert(logfO2,'E0',T=T,P=P,pH=xlim),lty=lty,lwd=lwd,col=col)
       else if(yaxis=="pe") lines(xlim,convert(convert(logfO2,'E0',T=T,P=P,pH=xlim),"pe",T=T),lty=lty,lwd=lwd,col=col)

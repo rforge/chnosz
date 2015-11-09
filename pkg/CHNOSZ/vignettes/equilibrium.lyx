@@ -2638,8 +2638,8 @@ for(loga in c(-1, 0, -2, -3)) {
 
 \begin_layout Plain Layout
 
-  text(a$vals[[1]][max(iCu[, 1])] - 0.2, a$vals[[2]][min(iCu[, 2])] + 0.2,
- loga)
+  text(a$vals[[1]][max(iCu[, 1])] - 0.03, a$vals[[2]][min(iCu[, 2])] + 0.2,
+ adj=1, loga)
 \end_layout
 
 \begin_layout Plain Layout
@@ -2919,15 +2919,7 @@ See the examples in
 \family default
  and 
 \family typewriter
-demo(
-\begin_inset Quotes eld
-\end_inset
-
-mosaic
-\begin_inset Quotes erd
-\end_inset
-
-)
+demo("mosaic")
 \family default
  for calculations of mineral stabilities in the Fe-S-O-
 \begin_inset Formula $\mathrm{H_{2}O}$

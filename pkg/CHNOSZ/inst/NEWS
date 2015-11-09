@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.6-3 (2015-11-08)
+CHANGES IN CHNOSZ 1.0.6-4 (2015-11-09)
 --------------------------------------
 
 - Add functions usrfig() (get figure limits in user coordinates) and
@@ -30,6 +30,8 @@ CHANGES IN CHNOSZ 1.0.6-3 (2015-11-08)
 - Add options to thermo$opt: 'ideal.H' and 'ideal.e'. Default TRUE tells
   nonideal() to set activity coefficients of proton and electron to
   zero.
+
+- Add 'method' argument to equilibrate().
 
 CHANGES IN CHNOSZ 1.0.6 (2015-10-19)
 ------------------------------------

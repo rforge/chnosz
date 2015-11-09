@@ -610,7 +610,7 @@ for(loga in c(-1, 0, -2, -3)) {
   if(loga==-1) d <- diagram(a)
   else d <- diagram(a, add=TRUE, names=NULL)
   iCu <- which(d$predominant == 1, arr.ind=TRUE)
-  text(a$vals[[1]][max(iCu[, 1])] - 0.2, a$vals[[2]][min(iCu[, 2])] + 0.2, loga)
+  text(a$vals[[1]][max(iCu[, 1])] - 0.03, a$vals[[2]][min(iCu[, 2])] + 0.2, adj=1, loga)
 }
 water.lines()
 
@@ -679,7 +679,7 @@ here; see also the \texttt{blend} argument of \texttt{mosaic()} to
 equilibrate the basis species rather than compose the diagram using
 the predominant basis species).
 \begin{itemize}
-\item See the examples in \texttt{?mosaic} and \texttt{demo(``mosaic'')}
+\item See the examples in \texttt{?mosaic} and \texttt{demo(\textquotedbl{}mosaic\textquotedbl{})}
 for calculations of mineral stabilities in the Fe-S-O-$\mathrm{H_{2}O}$
 system (after \citealp{GC65}).
 \item A calculation of copper solubility limits and speciation with aqueous

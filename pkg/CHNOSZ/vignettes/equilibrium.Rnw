@@ -64,12 +64,14 @@ calculate relative stabilities.
 \item [{Basis~species}] Species in terms of which you want to write all
 formation reactions of species of interest.
 \item [{Formation~reactions}] Stoichiometric chemical reactions showing
-the mass requirements for formation of 1 mole of each species of interest
-from the basis species.
-\item [{Chemical~affinity}] Change in Gibbs energy per increment of reaction
-progress; the negative of the overall Gibbs energy of reaction; $\boldsymbol{A}=2.303RT\log(K/Q)$,
-where $K$ is the equilibrium constant and $Q$ is the reaction activity
-quotient ($\log$ here is used for base-10 logarithms).
+the mass balance requirements for formation of 1 mole of each species
+of interest from the basis species.
+\item [{Chemical~affinity}] Negative of the differential of Gibbs energy
+of a system with respect to reaction progress. For a given reaction,
+chemical affinity is the negative of Gibbs energy of reaction; $\boldsymbol{A}=2.303RT\log(K/Q)$,
+where $K$ is the equilibrium constant and $Q$ is the activity quotient
+of species in the reaction ($\log$ in this text denotes base-10 logarithms,
+i.e. \texttt{log10} in R).
 \item [{(1)~Reference~activity}] User-defined (usually equal) activities
 of species of interest.
 \item [{(1)~Reference~affinity}] ($\boldsymbol{A}_{{\it ref}}$) Chemical
@@ -104,10 +106,10 @@ method when the balance coefficients are 1.
 \item [{Reaction~matrix}] Algorithm used for the equilibration method
 when the balance coefficients are not all 1.
 \item [{Normalization}] Algorithm used for large molecules such as proteins;
-chemical formulas and affinities are scaled to an equal size (e.g.
-a single residue; ``residue equivalent'' in Appendix), activities
-are calculated using balance = 1, and formulas and activities are
-rescaled to the original size of the molecule.
+chemical formulas and affinities are scaled to a similar molecular
+size (e.g. a single residue; ``residue equivalent'' in Appendix),
+activities are calculated using balance = 1, and formulas and activities
+are rescaled to the original size of the molecule.
 \item [{Mosaic}] Calculations of chemical affinities for making diagrams
 where the speciation of basis species depends on the variables.
 \end{description}
@@ -172,7 +174,7 @@ are temporarily set to 1.
 \item Typical use: simple aqueous species activity comparisons
 \item Function sequence:\\
 \texttt{a <- affinity(...)}\\
-\texttt{e <- equilibrate(e, balance = 1)}\\
+\texttt{e <- equilibrate(a, balance = 1)}\\
 \texttt{diagram(e)}
 \item Algorithm: Boltzmann distribution
 \end{enumerate}
@@ -575,11 +577,11 @@ which is why the stability field of the larger protein from BACLI
 disappears while that of the smaller protein from METJA grows. Because
 of the drastic activity changes at the stability transitions (see
 Figure \textcolor{blue}{B} above), a large change in equal activities
-(to an infinitesimally small activity = $10^{-111}$) is used here
-to demonstrate this effect, and even then the visual impact on the
-predominance diagram is subtle. Therefore, naturally occurring relative
-abundances of proteins are better modeled using the \texttt{normalize}
-or \texttt{as.residue} approaches.
+(to a minuscule activity = $10^{-111}$) is used here to demonstrate
+this effect, and even then the visual impact on the predominance diagram
+is subtle. Therefore, naturally occurring relative abundances of proteins
+are better modeled using the \texttt{normalize} or \texttt{as.residue}
+approaches.
 
 \clearpage
 
@@ -588,7 +590,7 @@ or \texttt{as.residue} approaches.
 
 Many of the help-page examples and demos in CHNOSZ use these methods
 to reproduce (or closely emulate) published figures. Below is not
-a comprehensive list, but just some highlights:
+a comprehensive list, but just some highlights.
 
 
 \subsection{Maximum affinity method}
@@ -1048,9 +1050,9 @@ can be multiplied by $\ln10$ to get the values shown above in Eqs.
 
 \subsection{Visualizing the effects of normalization}
 
-A comparison of the outcomes of equilibrium calculations that do and
-do not use the normalized formulas for proteins was given in a publication
-\citet{Dic08}. A diagram like Figure 5 in that paper is shown below.
+A comparison of equilibrium calculations that do and do not use normalized
+formulas for proteins was presented by \citet{Dic08}. A diagram like
+Figure 5 in that paper is shown below.
 
 <<ProteinSpeciation, results="hide", message=FALSE, fig.height=5.5, cache=TRUE>>=
 organisms <- c("METSC", "METJA", "METFE", "HALJP",  "METVO", "METBU", "ACEKI", "GEOSE", "BACLI", "AERSA")
@@ -1071,8 +1073,8 @@ title(main="Equilibrium activities of proteins, normalize = TRUE")
 
 Although it is well below the stability limit of $\mathrm{H_{2}O}$
 (vertical dashed line), there is an interesting convergence of the
-activities of some proteins at low $\log f_{\mathrm{O_{2}}}$; this
-is likely a consequence of compositional similarities.
+activities of some proteins at low $\log f_{\mathrm{O_{2}}}$, due
+most likely to compositional similarity of the amino acid sequences.
 
 The reaction-matrix approach can also be applied to systems having
 conservation coefficients that differ from unity, such as many mineral

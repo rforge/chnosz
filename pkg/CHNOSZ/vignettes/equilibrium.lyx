@@ -200,8 +200,8 @@ Formation
 \begin_inset space ~
 \end_inset
 
-reactions Stoichiometric chemical reactions showing the mass requirements
- for formation of 1 mole of each species of interest from the basis species.
+reactions Stoichiometric chemical reactions showing the mass balance requirement
+s for formation of 1 mole of each species of interest from the basis species.
 \end_layout
 
 \begin_layout Description
@@ -209,8 +209,10 @@ Chemical
 \begin_inset space ~
 \end_inset
 
-affinity Change in Gibbs energy per increment of reaction progress; the
- negative of the overall Gibbs energy of reaction; 
+affinity Negative of the differential of Gibbs energy of a system with respect
+ to reaction progress.
+ For a given reaction, chemical affinity is the negative of Gibbs energy
+ of reaction; 
 \begin_inset Formula $\boldsymbol{A}=2.303RT\log(K/Q)$
 \end_inset
 
@@ -222,11 +224,16 @@ affinity Change in Gibbs energy per increment of reaction progress; the
 \begin_inset Formula $Q$
 \end_inset
 
- is the reaction activity quotient (
+ is the activity quotient of species in the reaction (
 \begin_inset Formula $\log$
 \end_inset
 
- here is used for base-10 logarithms).
+ in this text denotes base-10 logarithms, i.e.
+ 
+\family typewriter
+log10
+\family default
+ in R).
 \end_layout
 
 \begin_layout Description
@@ -403,7 +410,7 @@ matrix Algorithm used for the equilibration method when the balance coefficients
 
 \begin_layout Description
 Normalization Algorithm used for large molecules such as proteins; chemical
- formulas and affinities are scaled to an equal size (e.g.
+ formulas and affinities are scaled to a similar molecular size (e.g.
  a single residue; 
 \begin_inset Quotes eld
 \end_inset
@@ -608,7 +615,7 @@ a <- affinity(...)
 
 
 \family typewriter
-e <- equilibrate(e, balance = 1)
+e <- equilibrate(a, balance = 1)
 \family default
 
 \begin_inset Newline newline
@@ -2470,8 +2477,7 @@ smaller proteins
 \color blue
 B
 \color inherit
- above), a large change in equal activities (to an infinitesimally small
- activity = 
+ above), a large change in equal activities (to a minuscule activity = 
 \begin_inset Formula $10^{-111}$
 \end_inset
 
@@ -2512,7 +2518,7 @@ Applications
 \begin_layout Standard
 Many of the help-page examples and demos in CHNOSZ use these methods to
  reproduce (or closely emulate) published figures.
- Below is not a comprehensive list, but just some highlights:
+ Below is not a comprehensive list, but just some highlights.
 \end_layout
 
 \begin_layout Subsection
@@ -4261,9 +4267,8 @@ Visualizing the effects of normalization
 \end_layout
 
 \begin_layout Standard
-A comparison of the outcomes of equilibrium calculations that do and do
- not use the normalized formulas for proteins was given in a publication
- 
+A comparison of equilibrium calculations that do and do not use normalized
+ formulas for proteins was presented by 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Dic08"
@@ -4374,7 +4379,7 @@ Although it is well below the stability limit of
 \begin_inset Formula $\log f_{\mathrm{O_{2}}}$
 \end_inset
 
-; this is likely a consequence of compositional similarities.
+, due most likely to compositional similarity of the amino acid sequences.
 \end_layout
 
 \begin_layout Standard

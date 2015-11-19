@@ -2580,9 +2580,9 @@ Next is an example of using
 \emph on
 unequal activities
 \emph default
- of species (mineral activity = 1; variable aqueous species activity) to
- plot aqueous species -- mineral stability boundaries (balance = 1, after
- Figure 14 of 
+ of species (mineral activity = 1; variable aqueous species activity indicated
+ by the contours (logarithm of activity)) to plot aqueous species -- mineral
+ stability boundaries (balance = 1, after Figure 14 of 
 \begin_inset CommandInset citation
 LatexCommand citealp
 key "Pou49"
@@ -2704,8 +2704,8 @@ equilibrate()
  among GSH and GSSG.
  If the aqueous species have equal concentrations (or activities), the fraction
  of GSH that has been oxidized is actually 2/3, because the formation of
- GSSG takes two moles of GSH.
- This is why the blue lines (fraction of starting GSH that is oxidized)
+ one mole of GSSG consumes two moles of GSH.
+ That is why the blue lines (fraction of starting GSH that is oxidized)
  are higher than the black lines (aqueous species distribution).
  Although the caption to Fig.
  3 of 
@@ -3740,7 +3740,7 @@ reference "eq:a_residue_i"
 \end_inset
 
 .
- Metastable equilibrium is implied by the identity of 
+ Metastable equilibrium is implied by the equality of 
 \begin_inset Formula $\boldsymbol{A}$
 \end_inset
 
@@ -4389,7 +4389,7 @@ The reaction-matrix approach can also be applied to systems having conservation
  in the formulas.
  For example, consider a system like one described by 
 \begin_inset CommandInset citation
-LatexCommand citealp
+LatexCommand citet
 key "See96"
 
 \end_inset

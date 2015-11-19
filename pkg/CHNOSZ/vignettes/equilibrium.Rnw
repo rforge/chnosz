@@ -600,8 +600,9 @@ fields for aqueous species (balance = 1, after \citealp{TS01})
 \item The ``Fe-S-O'' example in \texttt{?diagram} shows stability fields
 for minerals (balance $\ne$ 1, after \citealp{Hel70c}).
 \item Next is an example of using \emph{unequal activities} of species (mineral
-activity = 1; variable aqueous species activity) to plot aqueous species
--- mineral stability boundaries (balance = 1, after Figure 14 of \citealp{Pou49}).
+activity = 1; variable aqueous species activity indicated by the contours
+(logarithm of activity)) to plot aqueous species -- mineral stability
+boundaries (balance = 1, after Figure 14 of \citealp{Pou49}).
 \end{itemize}
 <<Pourbaix, message=FALSE, results="hide", fig.width=4, fig.height=3, cache=TRUE>>=
 basis(c("Cu+2", "H2O", "H+", "e-"))
@@ -633,12 +634,12 @@ basis species, so we can set its total activity in the call to \texttt{equilibra
 This total activity is the initial concentration of GSH that will
 be speciated among GSH and GSSG. If the aqueous species have equal
 concentrations (or activities), the fraction of GSH that has been
-oxidized is actually 2/3, because the formation of GSSG takes two
-moles of GSH. This is why the blue lines (fraction of starting GSH
-that is oxidized) are higher than the black lines (aqueous species
-distribution). Although the caption to Fig. 3 of \citet{SB01} reads
-``percent GSH that has been oxidized to GSSG'', the lines in their
-figure are closer to the black lines in the figure below.
+oxidized is actually 2/3, because the formation of one mole of GSSG
+consumes two moles of GSH. That is why the blue lines (fraction of
+starting GSH that is oxidized) are higher than the black lines (aqueous
+species distribution). Although the caption to Fig. 3 of \citet{SB01}
+reads ``percent GSH that has been oxidized to GSSG'', the lines
+in their figure are closer to the black lines in the figure below.
 \end{itemize}
 <<glutathione, results="hide", message=FALSE, fig.width=5, fig.height=3.5>>=
 basis(c("GSH", "NH3", "H2S", "H2O", "H+", "e-"))
@@ -905,7 +906,7 @@ component that react in the formation of one mole of the $i$th species.
 (e.g., for systems of proteins where the backbone group is conserved,
 $n_{\mathrm{ic},i}$ is the same as $n_{i}$ in Eq. \ref{eq:a_residue_i}).
 Calculate values for each of the $\boldsymbol{A}_{i}^{*}$. Metastable
-equilibrium is implied by the identity of $\boldsymbol{A}$ in all
+equilibrium is implied by the equality of $\boldsymbol{A}$ in all
 of the equations.
 \item Write a function for the total activity of the immobile component:
 $a_{\mathrm{ic}}^{'}=\sum n_{\mathrm{ic},i}a_{i}$.
@@ -1080,7 +1081,7 @@ The reaction-matrix approach can also be applied to systems having
 conservation coefficients that differ from unity, such as many mineral
 and inorganic systems, where the immobile component has different
 molar coefficients in the formulas. For example, consider a system
-like one described by \citealp{See96}:
+like one described by \citet{See96}:
 
 <<SulfurSpeciation, results="hide", message=FALSE, fig.width=6, fig.height=5.5>>=
 basis("CHNOS+")

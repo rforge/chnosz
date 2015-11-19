@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.6-5 (2015-11-10)
+CHANGES IN CHNOSZ 1.0.6-6 (2015-11-19)
 --------------------------------------
 
 - Add functions usrfig() (get figure limits in user coordinates) and
@@ -8,7 +8,7 @@ CHANGES IN CHNOSZ 1.0.6-5 (2015-11-10)
   mosaic()).
 
 - Using new supporting function ibasis(), swap.basis() and mosaic()
-  now allow basis species to be specified by name, not just formula.
+  now allow basis species to be specified by name, not only formula.
 
 - diagram() now has '...' argument to pass additional options to
   plot() (useful with diagram(tplot=FALSE, ...)).
@@ -31,7 +31,13 @@ CHANGES IN CHNOSZ 1.0.6-5 (2015-11-10)
   nonideal() to set activity coefficients of proton and electron to
   zero.
 
-- Add 'method' argument to equilibrate().
+- Add 'method' argument to equilibrate() (can be 'reaction' or
+  'boltzmann').
+
+- For compatibility with a change in R-devel ("aperm(a, *) now preserves
+  names(dim(a))"), modify slice.affinity() to preserve names of
+  dimensions, and use check.attributes=FALSE or check.names=FALSE in
+  some tests.
 
 CHANGES IN CHNOSZ 1.0.6 (2015-10-19)
 ------------------------------------

@@ -54,7 +54,7 @@ test_that("'groups' and 'alpha' work as expected", {
   # ask for degrees of formation instead of logarithms of activities
   d <- diagram(e, alpha=TRUE, plot.it=FALSE)
   # we should find that the sum of alphas is one
-  expect_equal(Reduce("+", d$plotvals), array(rep(1, 128)))
+  expect_equal(Reduce("+", d$plotvals), array(rep(1, 128)), check.attributes=FALSE)
 })
 
 test_that("'normalize' and 'as.residue' work as expected", {

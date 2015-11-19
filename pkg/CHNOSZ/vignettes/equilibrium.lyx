@@ -842,8 +842,8 @@ species(aminoacids(""))[1:5, ]
 \end_layout
 
 \begin_layout Standard
-Code for figures.
- Function names are keyed to the subfigures.
+Code for making the diagrams.
+ Function names refer to the subfigure labels.
 \end_layout
 
 \begin_layout Standard
@@ -2619,7 +2619,7 @@ for(loga in c(-1, 0, -2, -3)) {
 
 \begin_layout Plain Layout
 
-  species(c("Cu+2"), loga) 
+  species("Cu+2", loga) 
 \end_layout
 
 \begin_layout Plain Layout

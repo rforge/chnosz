@@ -236,7 +236,8 @@ basis("CHNOS")
 species(aminoacids(""))[1:5, ]
 @
 
-Code for figures. Function names are keyed to the subfigures.
+Code for making the diagrams. Function names refer to the subfigure
+labels.
 
 <<AAfigures>>=
 res <- 200
@@ -608,7 +609,7 @@ boundaries (balance = 1, after Figure 14 of \citealp{Pou49}).
 basis(c("Cu+2", "H2O", "H+", "e-"))
 species(c("Cu+2", "copper", "cuprite", "tenorite"))
 for(loga in c(-1, 0, -2, -3)) {
-  species(c("Cu+2"), loga) 
+  species("Cu+2", loga) 
   a <- affinity(pH=c(1.6, 7.6, 400), Eh=c(-0.2, 1, 400))
   if(loga==-1) d <- diagram(a)
   else d <- diagram(a, add=TRUE, names=NULL)

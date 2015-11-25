@@ -12,3 +12,4 @@ mosaic          Eh-pH diagram for iron oxides, sulfides and carbonate with two s
 copper          another example of mosaic(): complexation of copper with glycine species
 solubility      solubility of calicite or CO2(gas) as a function of pH
 wjd             run.wjd() with proteins: cell periphery of yeast
+dehydration     log K of dehydration reactions; SVG file contains tooltips and links

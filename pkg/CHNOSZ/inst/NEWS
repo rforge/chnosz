@@ -1,5 +1,17 @@
-CHANGES IN CHNOSZ 1.0.7 (2015-11-19)
+CHANGES IN CHNOSZ 1.0.7-1 (2015-11-25)
 --------------------------------------
+
+- Add gypsum to OBIGT.csv.
+
+- Add MgSO4 and hydrated Mg sulfate minerals to OBIGT-2.csv (kieserite,
+  starkeyite, hexahydrite and epsomite from Grevel and Majzlan, 2009).
+
+- Add demo dehydration.R. This demo requires the RSVGTipsDevice package,
+  which is currently unavailable on Windows.
+
+
+CHANGES IN CHNOSZ 1.0.7 (2015-11-19)
+------------------------------------
 
 - Add functions usrfig() (get figure limits in user coordinates) and
   label.figure() (add label to figure outside of plot region).

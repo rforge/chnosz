@@ -1,6 +1,6 @@
 # plot temperature dependence of log K for some dehydration reactions
 
-# the RSVGTipsDevice packages allows us to create an SVG file with
+# the RSVGTipsDevice package allows us to create an SVG file with
 # tooltips and hyperlinks
 if(require("RSVGTipsDevice")) {
 
@@ -14,7 +14,7 @@ T <- seq(1, 175)
 plot(range(T), c(-2, 1), type="n", xlab="T, &#176;C", ylab="log K")
 title(main="Dehydration reactions")
 
-# add.obigt is needed to add malate and fumarate,
+# add.obigt is used to add malate and fumarate,
 # and epsomite and hexahydrite to thermo$obigt
 add.obigt()
 reactants <- c("[AABB]", "[AABB]", "malate-2", "goethite", "gypsum", "epsomite", "ethanol")

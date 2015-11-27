@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.7-1 (2015-11-25)
+CHANGES IN CHNOSZ 1.0.7-2 (2015-11-27)
 --------------------------------------
 
 - Add gypsum to OBIGT.csv.
@@ -9,6 +9,13 @@ CHANGES IN CHNOSZ 1.0.7-1 (2015-11-25)
 - Add demo dehydration.R. This demo requires the RSVGTipsDevice package,
   which is currently unavailable on Windows.
 
+- Add ... argument to EOSvar() and EOSregress(). Allows specifying new
+  variables that are written as a function of arbitrary properties
+  (regression variables still must be a function of at least T and P).
+
+- EOSvar() now returns the negative of the 'QBorn' variable so that
+  values of omega obtained from regressions of volume data have the
+  correct sign in the HKF equations.
 
 CHANGES IN CHNOSZ 1.0.7 (2015-11-19)
 ------------------------------------

@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.7-2 (2015-11-27)
+CHANGES IN CHNOSZ 1.0.7-3 (2016-01-09)
 --------------------------------------
 
 - Add gypsum to OBIGT.csv.
@@ -16,6 +16,8 @@ CHANGES IN CHNOSZ 1.0.7-2 (2015-11-27)
 - EOSvar() now returns the negative of the 'QBorn' variable so that
   values of omega obtained from regressions of volume data have the
   correct sign in the HKF equations.
+
+- Use given/family naming scheme in inst/CITATION.
 
 CHANGES IN CHNOSZ 1.0.7 (2015-11-19)
 ------------------------------------

@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.7-3 (2016-01-09)
+CHANGES IN CHNOSZ 1.0.7-4 (2016-02-17)
 --------------------------------------
 
 - Add gypsum to OBIGT.csv.
@@ -18,6 +18,9 @@ CHANGES IN CHNOSZ 1.0.7-3 (2016-01-09)
   correct sign in the HKF equations.
 
 - Use given/family naming scheme in inst/CITATION.
+
+- makeup() now works even if 'thermo' object is not available (useful
+  for other packages importing this function).
 
 CHANGES IN CHNOSZ 1.0.7 (2015-11-19)
 ------------------------------------

@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.7-7 (2016-05-03)
+CHANGES IN CHNOSZ 1.0.7-8 (2016-05-21)
 --------------------------------------
 
 - Add gypsum to OBIGT.csv.
@@ -20,7 +20,14 @@ CHANGES IN CHNOSZ 1.0.7-7 (2016-05-03)
 - Use given/family naming scheme in inst/CITATION.
 
 - makeup() now works even if 'thermo' object is not available (useful
-  for other packages importing this function).
+  for other packages importing this function). Thanks to Nir Shahaf for
+  the suggestion.
+
+- So that byte-compiled package code works, subcrt() no longer uses
+  caller.name() for flow control. In its place, a new argument
+  'check.Ttr' has been added, used to bypass the checks of transition
+  temperature in calls from dPdTtr(). Thanks to Tomas Kalibera for the
+  suggestion.
 
 CHANGES IN CHNOSZ 1.0.7 (2015-11-19)
 ------------------------------------

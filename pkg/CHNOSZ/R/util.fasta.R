@@ -147,11 +147,16 @@ uniprot.aa <- function(protein, start=NULL, stop=NULL) {
   URLstuff <- try(readLines(proteinURL),TRUE)
   options(oldopt)
   if(class(URLstuff)=="try-error") {
-    msgout(" failed\n")
+    msgout(" ::: FAILED :::\n")
     return(NA)
   }
   # 20091102: look for a link to a fasta file
-  linkline <- URLstuff[[grep("/uniprot/.*fasta", URLstuff)[1]]]
+  link <- grep("/uniprot/.*fasta", URLstuff)
+  if(length(link) > 0) linkline <- URLstuff[[link[1]]]
+  else {
+    msgout(" ::: FAILED :::\n")
+    return(NA)
+  }
   # extract accession number from the link
   linkhead <- strsplit(linkline, ".fasta", fixed=TRUE)[[1]][1]
   accession.number <- tail(strsplit(linkhead, "/uniprot/", fixed=TRUE)[[1]], 1)
@@ -159,21 +164,19 @@ uniprot.aa <- function(protein, start=NULL, stop=NULL) {
   # now download the fasta file
   fastaURL <- paste("http://www.uniprot.org/uniprot/", accession.number, ".fasta", sep="")
   URLstuff <- readLines(fastaURL)
-  # show the name of the protein to the user
+  # get the header information / show  the user
   header <- URLstuff[[1]]
-  header2 <- strsplit(header, paste(protein, ""))[[1]][2]
-  header3 <- strsplit(header2, " OS=")[[1]]
-  protein.name <- header3[1]
-  header4 <- strsplit(header3[2], " GN=")[[1]][1]
-  header5 <- strsplit(header4[1], " PE=")[[1]]
-  organism.name <- header5[1]
-  msgout("uniprot.aa: ", protein.name, " from ", organism.name)
+  header3 <- strsplit(header, "|", fixed=TRUE)[[1]][3]
+  headerP_O <- strsplit(header3, " ")[[1]][1]
+  header.id <- strsplit(header, headerP_O)[[1]][1]
+  header.id <- substr(header.id, 2, nchar(header.id)-1)
+  header.organism <- strsplit(headerP_O, "_")[[1]][2]
+  msgout(paste0(header))
   # 20130206 use read.fasta with lines, start, stop arguments
   aa <- read.fasta(file="", lines=URLstuff, start=start, stop=stop)
   msgout(" (length ", sum(aa[1, 6:25]), ")\n", sep="")
-  po <- strsplit(protein, "_")[[1]]
-  aa$protein <- po[1]
-  aa$organism <- po[2]
+  aa$protein <- header.id
+  aa$organism <- header.organism
   return(aa)
 }
 

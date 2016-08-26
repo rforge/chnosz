@@ -1,3 +1,10 @@
+CHANGES IN CHNOSZ 1.0.8-1 (2016-08-26)
+--------------------------------------
+
+- Add "AA" as a keyword for preset species in basis() (cysteine,
+  glutamic acid, glutamine, H2O, oxygen).
+
+
 CHANGES IN CHNOSZ 1.0.8 (2016-05-28)
 ------------------------------------
 

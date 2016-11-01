@@ -1,9 +1,10 @@
-CHANGES IN CHNOSZ 1.0.8-1 (2016-08-26)
+CHANGES IN CHNOSZ 1.0.8-2 (2016-11-01)
 --------------------------------------
 
 - Add "AA" as a keyword for preset species in basis() (cysteine,
   glutamic acid, glutamine, H2O, oxygen).
 
+- Add EOSregress.Rmd vignette; update related functions.
 
 CHANGES IN CHNOSZ 1.0.8 (2016-05-28)
 ------------------------------------

@@ -1,0 +1,304 @@
+---
+title: "Regressing Thermodynamic Data"
+subtitle: "EOSregress in [CHNOSZ](http://www.chnosz.net)"
+author: "Jeffrey M. Dick"
+date: "`r Sys.Date()`"
+output:
+  tufte::tufte_html: default
+  tufte::tufte_handout:
+    citation_package: natbib
+    latex_engine: xelatex
+  tufte::tufte_book:
+    citation_package: natbib
+    latex_engine: xelatex
+vignette: >
+  %\VignetteIndexEntry{Regressing thermodynamic data}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+bibliography: EOSregress.bib
+link-citations: yes
+---
+
+```{r setup, include=FALSE}
+# invalidate cache when the tufte version changes
+knitr::opts_chunk$set(tidy = FALSE, cache.extra = packageVersion('tufte'))
+options(htmltools.dir.version = FALSE)
+```
+
+
+This vignette demonstrates [`EOSregress`](http://www.chnosz.net/manual/EOSregress.html) and related functions for the regression of heat capacity and volumetric data to obtain "equations of state" coefficients.
+
+# A note on the equations
+
+The CHNOSZ thermodynamic database uses the revised Helgeson-Kirkham-Flowers equations of state (EOS) for aqueous species.
+Different terms in these equations give the "non-solvation" and "solvation" contributions to the standard molal heat capacity ($C_P^\circ$) and volume ($V^\circ$) as a function of temperature ($T$) and pressure ($P$).
+
+@HKF81 published the original description of the equations; for $C_P^\circ$ the equation is
+$$C_P^\circ = c_1 + \frac{c_2}{(T-\Theta)^2}  + {\omega}TX$$
+Here, $c_1$ and $c_2$ are the non-solvation parameters, and $\omega$ is the solvation parameter.
+$\Theta$ is equal to 228 K, and $X$ is one of the "Born functions" that relates the solvation process to the dielectric properties of water.
+For neutral species, all of the parameters, including the "effective" value of $\omega$, are constant.
+However, **for charged species, $\omega$ has derivatives, larger with higher temperature**, that depend on the charge and ionic radius.
+Revisions by @TH88 and @SOJSH92 refined the equations to improve their high-$T$ and $P$ behavior.
+
+# A note on the algorithms
+
+The regression functions are essentially a wrapper around the [`water`](http://www.chnosz.net/manual/water.html)-related functions in CHNOSZ and `lm` in R.
+The former provide values of the Born functions.
+Accordingly, numerical values for all of the *variables* in the equations (e.g. $\frac{1}{(T-\Theta)^2}$ and $TX$) can be calculated at each experimental $T$ and $P$.
+
+Applying a linear model (`lm`), the *coefficients* in the model can be obtained.
+In this case, they correspond to the HKF parameters, e.g. $c_1$ (the intercept), $c_2$ and $\omega$.
+The coefficients are constants, meaning that **the linear model is applicable only to neutral (uncharged) species**, for which the high-temperature derivatives of $\omega$ are 0.
+Further below, a procedure is described to iteratively solve the equations for charged species.
+
+# An example for neutral species
+
+```{r options, echo=FALSE}
+options(width = 90)
+```
+
+```{r chnosz, message=FALSE}
+library(CHNOSZ)
+data(thermo)
+```
+
+This is from the first example from `?EOSregress`.
+`r tufte::margin_note("The ? indicates a documentation topic in R. To view it, type ?EOSregress or help(EOSregress) at the command line.")`
+Here, we regress experimental heat capacities of aqueous methane ($\mathrm{CH_4}$) using the revised HKF equations.
+
+
+First, read the data from @HW97.
+We also convert J to cal and MPa to bar.
+
+```{r Cpdat}
+file <- system.file("extdata/cpetc/Cp.CH4.HW97.csv", package="CHNOSZ")
+Cpdat <- read.csv(file)
+Cpdat$Cp <- convert(Cpdat$Cp, "cal")
+Cpdat$P <- convert(Cpdat$P, "bar")
+```
+
+```{r EOSregress_hide, fig.margin = TRUE, fig.cap = "Heat Capacity of Aqueous Methane", fig.width=3.5, fig.height=3.5, cache=TRUE, results="hide", message=FALSE, echo=FALSE, dpi=50, out.width=672, out.height=336}
+var <- c("invTTheta2", "TXBorn")
+Cplm <- EOSregress(Cpdat, var, T.max=600)
+EOSplot(Cpdat, coefficients=round(Cplm$coefficients, 1))
+EOSplot(Cpdat, add=TRUE, lty=3)
+```
+
+Next, we specify the terms in the HKF equations and perform the regression, using data below 600 K.
+The terms in `Cplm` correspond to $c_1$, $c_2$ and $\omega$ in the HKF equations.
+We use `EOSplot` to plot the data and fitted line and show the coefficients in the legend.
+
+```{r EOSregress, eval=FALSE}
+var <- c("invTTheta2", "TXBorn")
+Cplm <- EOSregress(Cpdat, var, T.max=600)
+EOSplot(Cpdat, coefficients=round(Cplm$coefficients, 1))
+EOSplot(Cpdat, add=TRUE, lty=3)
+```
+
+`r tufte::margin_note("Be aware that the lines shown by EOSplot are calculated for a single pressure only, despite the temperature- and pressure-dependence of the data and regressions.")`
+
+Note the second call to `EOSplot`, where the coefficients are not provided.
+This causes the data to be re-regressed, this time without the $T$ < 600 K limitation.
+Although the overall fit, represented by the dotted line, is better, the fit to the low-temperature data is considerably worse.
+For nonelectroyltes, consider excluding extreme near-critical values from the regression (or modify the procedure to give them lower weight) in order to obtain more generally useful results.
+
+`EOScoeffs` is a small function to retrieve the HKF parameters from the database in CHNOSZ.
+The `stopifnot` expression tests that the regressed values are within 10% of the database values of $c_1$, $c_2$ and $\omega$ for $\mathrm{CH_4}$.
+
+```{r Cpcoeffs}
+Cpcoeffs_database <- EOScoeffs("CH4", "Cp")
+diff_coeffs <- Cplm$coefficients - Cpcoeffs_database
+stopifnot(all(abs(diff_coeffs/Cpcoeffs_database) < 0.1))
+Cpcoeffs_database
+```
+
+Compare the database values [from @SH90] with the regressed values in the legend of figure above.
+Some differences are expected as the values in the database are derived from earlier experimental data.
+
+## Setting the value of omega
+
+Given both high-temperature volumetric and calorimetric data for neutral species, the effective value of $\omega$ is most reliably regressed from the latter [@SSW01].
+Let's regress volumetric data using a value of omega taken from the heat capacity regression.
+First, read the data from @HWM96.
+
+```{r Vdat}
+file <- system.file("extdata/cpetc/V.CH4.HWM96.csv", package="CHNOSZ")
+Vdat <- read.csv(file)
+Vdat$P <- convert(Vdat$P, "bar")
+```
+
+Compressibilities of species (measured or estimated) are implied by the full set of HKF volumetric parameters ($a_1$, $a_2$, $a_3$, $a_4$).
+In this example we model volumes at nearly constant $P$.
+Therefore, we can use a simpler equation for $V^\circ$ written in terms of the "isobaric fit parameters" (Tanger and Helgeson 1988, p. 35) $\sigma$ and $\xi$, together with the solvation contribution that depends on the $Q$ Born function:
+$$V^\circ = \sigma + \frac{\xi}{T-\Theta}  - {\omega}Q$$
+
+`r tufte::margin_note("EOSvar actually returns the negative of $Q$, so the omega symbol here carries no negative sign.")`
+
+Now we calculate the $Q$ Born function using `EOSvar` and multiply by $\omega$ (from the heat capacity regression) to get the solvation volume at each experimental temperature and pressure.
+Subtract the solvation volume from the experimental volumes and create a new data frame holding the calculated "non-solvation" volume.
+
+`r tufte::margin_note("Because we are dealing with volumes, the units of $ω$ are converted according to 1 cal = 41.84 cm$^3$∙bar.")`
+
+```{r Vdat_non}
+QBorn <- EOSvar("QBorn", T=Vdat$T, P=Vdat$P)
+Vomega <- convert(Cplm$coefficients[["TXBorn"]], "cm3bar")
+V_sol <- Vomega * QBorn
+V_non <- Vdat$V - V_sol
+Vdat_non <- data.frame(T=Vdat$T, P=Vdat$P, V=V_non)
+```
+
+Next, regress the non-solvation volume using the non-solvation terms in the HKF model.
+As with $C_P^\circ$, also get the values of the parameters from the database for comparison with the regression results.
+
+
+```{r Vdat_non_regress}
+var <- "invTTheta"
+Vnonlm <- EOSregress(Vdat_non, var, T.max=450)
+Vcoeffs <- round(c(Vnonlm$coefficients, QBorn=Vomega), 1)
+Vcoeffs_database <- EOScoeffs("CH4", "V")
+```
+
+```{r Vplot_hide, fig.margin=TRUE, results="hide", message=FALSE, echo=FALSE, fig.width=3.5, fig.height=7, fig.cap="Volume of Aqueous Methane", dpi=50, out.width=672, out.height=672}
+par(mfrow=c(2, 1))
+# plot 1
+EOSplot(Vdat, coefficients=Vcoeffs)
+EOSplot(Vdat, coefficients=Vcoeffs_database, add=TRUE, lty=2)
+# plot 2
+EOSplot(Vdat, coefficients=Vcoeffs_database, T.plot=600, lty=2)
+EOSplot(Vdat, coefficients=Vcoeffs, add=TRUE)
+```
+
+Finally, plot the data and regressions.
+The first plot shows all the data, and the second the low-temperature subset ($T$ < 600 K).
+The solid line is the two-term fit for $\sigma$ and $\xi$ (using $\omega$ from the heat capacity regression), and the dashed line shows the volumes calculated using the parameters in the database.
+The plot legends give the parameters from the two-term fit (first plot), or from the database (second plot).
+
+```{r Vplot, eval=FALSE}
+par(mfrow=c(2, 1))
+# plot 1
+EOSplot(Vdat, coefficients=Vcoeffs)
+EOSplot(Vdat, coefficients=Vcoeffs_database, add=TRUE, lty=2)
+# plot 2
+EOSplot(Vdat, coefficients=Vcoeffs_database, T.plot=600, lty=2)
+EOSplot(Vdat, coefficients=Vcoeffs, add=TRUE)
+```
+
+The equation for $V^\circ$ provides a reasonable approximation of the trend of lowest-temperature data ($T$ < 450 K).
+However, the equation does not closely reproduce the trend of higher-temperature $V^\circ$ data ($T$ < 600 K), nor behavior in the critical region.
+Because of these issues, some researchers are exploring alternatives to the HKF model for aqueous nonelectrolytes.
+(See also an example in `?EOSregress`.)
+
+
+# An example for charged species
+
+For this example, let's generate synthetic data for Na$^+$ using its parameters in the database.
+In the call to `subcrt` below, `convert=FALSE` means to take $T$ in units of K.
+
+```{r Nadat}
+T <- convert(seq(0, 600, 50), "K")
+P <- 1000
+prop.PT <- subcrt("Na+", T=T, P=P, grid="T", convert=FALSE)$out[[1]]
+Nadat <- prop.PT[, c("T", "P", "Cp")]
+```
+
+As noted above, $\omega$ for electrolytes is not a constant.
+What happens if we apply the linear model anyway, knowing it's not applicable (especially at high temperature)?
+
+```{r Nalm, fig.margin=TRUE, fig.width=3.5, fig.height=3.5, fig.cap="Heat Capacity of Na$^+$ (Inapplicable: Constant $ω$)", dpi=50, out.width=672, out.height=336}
+var <- c("invTTheta2", "TXBorn")
+Nalm <- EOSregress(Nadat, var, T.max=600)
+EOSplot(Nadat, coefficients=Nalm$coefficients, fun.legend=NULL)
+EOSplot(Nadat, add=TRUE, lty=3)
+```
+
+As before, the solid line is a fit to relatively low-temperature ($T$ < 600 K) data, and the dotted line a fit to the entire temperature range of the data.
+The fits using constant $\omega$ are clearly not acceptable.
+
+There is, however, a way out.
+A different variable, `Cp_s_var`, can be used to specify the calculation of the "solvation" heat capacity in the HKF equations **using the temperature- and pressure-dependent corrections for charged species**. 
+To use this variable, the values of $\omega_{P_r,T_r}$ (omega at the reference temperature and pressure) and $Z$ (charge) must be given, in addition to $T$ and $P$.
+Of course, right now we **don't know** the value of $\omega_{P_r,T_r}$ -- it is the purpose of the regression to find it!
+But we can make a first guess using the value of $\omega$ found above.
+
+```{r Navars1}
+var1 <- c("invTTheta2", "Cp_s_var")
+omega.guess <- coef(Nalm)[3]
+```
+
+Then, we can use an iterative procedure that refines successive guesses of $\omega_{P_r,T_r}$.
+The convergence criterion is measured by the difference in sequential regressed values of $\omega$.
+
+```{r Nawhile, fig.margin=TRUE, fig.width=3.5, fig.height=3.5, fig.cap="Heat Capacity of Na$^+$ (Variable $ω$)", dpi=50, out.width=672, out.height=336}
+diff.omega <- 999
+while(abs(diff.omega) > 1) {
+  Nalm1 <- EOSregress(Nadat, var1, omega.PrTr=tail(omega.guess, 1), Z=1)
+  omega.guess <- c(omega.guess, coef(Nalm1)[3])
+  diff.omega <- tail(diff(omega.guess), 1)
+}
+EOSplot(Nadat, coefficients=signif(coef(Nalm1), 6),
+  omega.PrTr=tail(omega.guess, 1), Z=1)
+EOScoeffs("Na+", "Cp")
+```
+
+Alrighty! We managed to obtain EOS parameters from synthetic data for Na$^+$.
+The regressed values of the EOS parameters (shown in the plot legend) are very close to the database values (printed by the call to `EOScoeffs`) used to generate the synthetic data.
+
+## Doing it for volume
+
+Just like above, but using synthetic $V^\circ$ data.
+Note that the regressed value of $\omega$ has volumetric units (cm$^3$∙bar/mol), while `omega.PrTr` is in caloric units (cal/mol).
+Compared to $C_P^\circ$, the regression of $V^\circ$ is very finicky.
+Given a starting guess of $\omega_{P_r,T_r}$ of 1400000 cm$^3$∙bar/mol, the iteration converges on 1394890 instead of the "true" database value of 1383230 (represented by dashed line in the plot).
+
+```{r NaVolume_hide, fig.margin=TRUE, fig.width=3.5, fig.height=3.5, fig.cap="Volume of Na$^+$ (Variable $ω$)", results="hide", message=FALSE, echo=FALSE, dpi=50, out.width=672, out.height=336}
+T <- convert(seq(0, 600, 25), "K")
+P <- 1000
+prop.PT <- subcrt("Na+", T=T, P=P, grid="T", convert=FALSE)$out[[1]]
+NaVdat <- prop.PT[, c("T", "P", "V")]
+var1 <- c("invTTheta", "V_s_var")
+omega.guess <- 1400000
+diff.omega <- 999
+while(abs(diff.omega) > 1) {
+  NaVlm1 <- EOSregress(NaVdat, var1,
+    omega.PrTr=tail(convert(omega.guess, "calories"), 1), Z=1)
+  omega.guess <- c(omega.guess, coef(NaVlm1)[3])
+  diff.omega <- tail(diff(omega.guess), 1)
+}
+EOSplot(NaVdat, coefficients=signif(coef(NaVlm1), 6),
+  omega.PrTr=tail(convert(omega.guess, "calories"), 1), Z=1,
+  fun.legend="bottomleft")
+coefficients <- EOScoeffs("Na+", "V", P=1000)
+names(coefficients)[3] <- "V_s_var"
+EOSplot(NaVdat, coefficients=coefficients, Z=1, add=TRUE, lty=2,
+  omega.PrTr=convert(coefficients["V_s_var"], "calories"))
+```
+
+```{r NaVolume, eval=FALSE}
+T <- convert(seq(0, 600, 25), "K")
+P <- 1000
+prop.PT <- subcrt("Na+", T=T, P=P, grid="T", convert=FALSE)$out[[1]]
+NaVdat <- prop.PT[, c("T", "P", "V")]
+var1 <- c("invTTheta", "V_s_var")
+omega.guess <- 1400000
+diff.omega <- 999
+while(abs(diff.omega) > 1) {
+  NaVlm1 <- EOSregress(NaVdat, var1,
+    omega.PrTr=tail(convert(omega.guess, "calories"), 1), Z=1)
+  omega.guess <- c(omega.guess, coef(NaVlm1)[3])
+  diff.omega <- tail(diff(omega.guess), 1)
+}
+EOSplot(NaVdat, coefficients=signif(coef(NaVlm1), 6),
+  omega.PrTr=tail(convert(omega.guess, "calories"), 1), Z=1,
+  fun.legend="bottomleft")
+coefficients <- EOScoeffs("Na+", "V", P=1000)
+names(coefficients)[3] <- "V_s_var"
+EOSplot(NaVdat, coefficients=coefficients, Z=1, add=TRUE, lty=2,
+  omega.PrTr=convert(coefficients["V_s_var"], "calories"))
+```
+
+# Other possibilities
+
+These functions are limited to treatment of calorimetric and volumetric data.
+Other software tools have been described recently for deriving HKF parameters and other thermodynamic properties from different types of experimental data [@MKDW15; @Shv15].
+

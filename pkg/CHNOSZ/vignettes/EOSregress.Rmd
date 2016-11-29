@@ -43,7 +43,7 @@ Revisions by @TH88 and @SOJSH92 refined the equations to improve their high-$T$ 
 
 # A note on the algorithms
 
-The regression functions are essentially a wrapper around the [`water`](http://www.chnosz.net/manual/water.html)-related functions in CHNOSZ and `lm` in R.
+The regression functions are essentially a wrapper around the [`water`](http://www.chnosz.net/manual/water.html)-related functions in CHNOSZ and [`lm` in R](http://stat.ethz.ch/R-manual/R-patched/library/stats/html/lm.html).
 The former provide values of the Born functions.
 Accordingly, numerical values for all of the *variables* in the equations (e.g. $\frac{1}{(T-\Theta)^2}$ and $TX$) can be calculated at each experimental $T$ and $P$.
 
@@ -64,7 +64,7 @@ data(thermo)
 ```
 
 This is from the first example from `?EOSregress`.
-`r tufte::margin_note("The ? indicates a documentation topic in R. To view it, type ?EOSregress or help(EOSregress) at the command line.")`
+`r tufte::margin_note("The ? indicates a documentation topic in R. To view it, type ?EOSregress or help(EOSregress) at the R prompt.")`
 Here, we regress experimental heat capacities of aqueous methane ($\mathrm{CH_4}$) using the revised HKF equations.
 
 

@@ -2,8 +2,9 @@
 # functions to compute some properties of chemical formulas
 
 get.formula <- function(formula) {
-  # return the argument if it's a matrix
+  # return the argument if it's a matrix or named numeric
   if(is.matrix(formula)) return(formula)
+  if(is.numeric(formula) & !is.null(names(formula))) return(formula)
   # return the argument as matrix if it's a data frame
   if(is.data.frame(formula)) return(as.matrix(formula))
   # return the values in the argument, or chemical formula(s) 
@@ -29,6 +30,9 @@ i2A <- function(formula) {
   if(is.matrix(formula)) {
     # do nothing if the argument is already a matrix
     A <- formula
+  } else if(is.numeric(formula) & !is.null(names(formula))) {
+    # turn a named numeric object into a formula matrix
+    A <- t(as.matrix(formula))
   } else {
     # get the elemental makeup of each formula, counting
     # zero for elements that appear only in other formulas

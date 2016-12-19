@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-4 (2016-11-29)
+CHANGES IN CHNOSZ 1.0.8-5 (2016-12-19)
 --------------------------------------
 
 - Add "AA" as a keyword for preset species in basis() (cysteine,
@@ -8,6 +8,12 @@ CHANGES IN CHNOSZ 1.0.8-4 (2016-11-29)
 
 - More flexible parsing of chemical formulas for ZC() and other
   functions; e.g. ZC(colMeans(protein.formula(1:4))) now works.
+
+- supcrt() now returns 'loggam' using the common logarithm; add
+  test-nonideal.R to check for consistency between loggam and logK
+  values returned by supcrt(). Thanks to David T. Wang for the bug
+  report and test. (This also fixes the bug previously noted for the
+  first example in ?nonideal.)
 
 CHANGES IN CHNOSZ 1.0.8 (2016-05-28)
 ------------------------------------

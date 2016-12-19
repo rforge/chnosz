@@ -26,8 +26,9 @@ A column named \code{loggam} (logarithm of gamma, the activity coefficient) is a
 }
 
 \section{Warning}{
-The activity coefficients (gamma) in the first example below are lower than those shown on p. 274-276 of Alberty, 2003 (compare gamma near 0.75 in for charge = -1, IS = 0.25, T = 25 on p. 274 with gamma near 0.5 here).
-This may be due to an unidentified bug in the function.
+The logarithms of activity coefficients (\code{loggam}) returned by \code{nonideal} use the natural logarithm (cf. Alberty, 2003 Eq. 3.6-1).
+To maintain consistency with the conventions used elsewhere in the package (i.e. for logarithms of equilibrium constants and of chemical activities), the values of \code{loggam} returned by \code{\link{subcrt}} are expressed using the common (base 10) logarithm.
+Note that the first example below uses \code{loggam} returned by \code{subcrt}, therefore requiring a base of 10 for calculating gamma.
 }
 
 \examples{\dontshow{data(thermo)}
@@ -43,9 +44,10 @@ for(j in 1:3) {
   s <- subcrt(c("H2PO4-", "HADP-2", "HATP-3", "ATP-4"), IS=IS, grid="IS", T=T[j])
   for(i in 1:4) lines(IS, 10^s$out[[i]]$loggam, col=col[j])
 }
-text(0.1, 0.62, "Z = -1")
-text(0.075, 0.18, "Z = -2")
-text(0.05, 0.06, "Z = -3")
+text(0.125, 0.8, "Z = -1")
+text(0.1, 0.42, "Z = -2")
+text(0.075, 0.18, "Z = -3")
+text(0.05, 0.08, "Z = -4")
 title(main=paste("activity coefficient (gamma) of -1,-2,-3,-4",
   "charged species at 0, 25, 40 deg C, after Alberty, 2003",
   sep="\n"), cex.main=0.95)

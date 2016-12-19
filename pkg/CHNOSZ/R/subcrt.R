@@ -392,14 +392,10 @@ subcrt <- function(species, coeff=1, state=NULL, property=c('logK','G','H','S','
   isaq.new <- logical()
   iscgl.new <- logical()
   isH2O.new <- logical()
-  #print(sinfo)
-  #print(sinph)
-  #print(reaction)
   for(i in 1:length(sinfo)) {
     iphases <- which(sinfo[i]==sinph)
     # deal with repeated species here ... divide iphases 
     # by the number of duplicates
-    #print(iphases)
     if(TRUE %in% duplicated(inpho[iphases])) {
       iphases <- iphases[length(which(sinfo==sinfo[i]))]
     }
@@ -467,11 +463,8 @@ subcrt <- function(species, coeff=1, state=NULL, property=c('logK','G','H','S','
   iscgl <- iscgl.new
   isH2O <- isH2O.new
 
-  #print(out)
-
   newprop <- eprop[eprop!='rho']
   # the order of the properties
-  #if(ncol(out[[1]])>1) for(i in 1:length(out)) {
   if(length(newprop)>1) for(i in 1:length(out)) {
     # keep state/loggam columns if they exists
     ipp <- match(newprop,tolower(colnames(out[[i]])))
@@ -548,8 +541,14 @@ subcrt <- function(species, coeff=1, state=NULL, property=c('logK','G','H','S','
       }
     }
   }
+  # convert loggam to common logarithm and
   # put ionic strength next to any loggam columns
-  for(i in 2:length(out)) if('loggam' %in% colnames(out[[i]])) out[[i]] <- cbind(out[[i]],IS=newIS)
+  for(i in 2:length(out)) {
+    if('loggam' %in% colnames(out[[i]])) {
+      out[[i]] <- cbind(out[[i]],IS=newIS)
+      out[[i]][, "loggam"] <- out[[i]][, "loggam"]/log(10)
+    }
+  }
   # more fanagling for species
   if(!do.reaction) {
     out <- list(species=out$species,out=out[2:length(out)])

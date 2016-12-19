@@ -31,7 +31,7 @@ Afun <- function(loga.balance=-3, T=25) {
   species(1:3, unlist(e$loga.equil))
   a <- affinity(T=T)
   # check they're actually equal
-  stopifnot(all(abs(unlist(a$values) - a$values[[1]]) < 1e-10))
+  stopifnot(all(abs(unlist(a$values) - as.vector(a$values[[1]])) < 1e-10))
   return(a$values[[1]])
 }
 

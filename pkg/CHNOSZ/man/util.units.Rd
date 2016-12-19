@@ -33,7 +33,9 @@
 
 \details{
 
-   The units settings are used by \code{\link{subcrt}}, \code{\link{affinity}}, and \code{\link{diagram}} to accept input in or convert output to the units desired by the user. The settings, which can be queried or changed with \code{T.units}, \code{E.units} and \code{P.units}, refer to the units of temperature (\code{K} or \code{C}), energy (\code{cal} or \code{J}), and pressure (\code{bar}, \code{MPa}). (The first value in each of those pairs refers to the default units).
+The units settings are used by \code{\link{subcrt}}, \code{\link{affinity}}, and \code{\link{diagram}} to accept input in or convert output to the units desired by the user.
+The settings, which can be queried or changed with \code{T.units}, \code{E.units} and \code{P.units}, refer to the units of temperature (\code{C} or \code{K}), energy (\code{cal} or \code{J}), and pressure (\code{bar}, \code{MPa}).
+(The first value in each of those pairs refers to the default units).
 
 The actual units conversions are handled by \code{convert}, through which \code{values} are transformed into destination \code{units} (names not case sensitive).
 The possible conversions and settings for the \code{units} argument are shown in the following table.

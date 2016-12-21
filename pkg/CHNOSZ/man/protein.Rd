@@ -57,7 +57,7 @@ text(170, -3, dsr, cex=0.8)
 ## as a function of oxygen fugacity, after Dick, 2008, Fig. 5b
 # use old properties of [Met] to reproduce this example
 data(thermo)
-add.obigt()
+mod.obigt("[Met]", G=-35245, H=-59310)
 # make our protein list
 organisms <- c("METSC", "METJA", "METFE", "HALJP", "METVO",
   "METBU", "ACEKI", "GEOSE", "BACLI", "AERSA")

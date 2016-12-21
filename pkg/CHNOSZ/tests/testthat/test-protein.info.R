@@ -5,7 +5,7 @@ suppressMessages(data(thermo))
 
 # test_that somehow affects capture.output so we set up the problem here
 protein <- iprotein(c("CSG_METVO", "CSG_METJA"))
-suppressMessages(add.obigt())
+suppressMessages(mod.obigt("[Met]", G=-35245, H=-59310))
 basis("CHNOS+")
 swap.basis("O2", "H2")
 pequil <- capture.output(protein.equil(protein, loga.protein=-3))

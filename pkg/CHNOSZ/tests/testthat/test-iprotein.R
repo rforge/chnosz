@@ -29,10 +29,9 @@ test_that("group additivity for proteins gives expected values", {
   Cp <- 6415.5
   V <- 10421
   formula <- "C613H959N193O185S10"
-  # use add.obigt to load the parameters for [Met] sidechain group
-  # from above reference instead of the updated values
-  # from LaRowe and Dick, 2012 (Geochim Cosmochim Acta 80, 70-91)
-  add.obigt()
+  # use parameters for [Met] sidechain group from above reference
+  # (OBIGT.csv uses updated values from LaRowe and Dick, 2012 (Geochim Cosmochim Acta 80, 70-91))
+  mod.obigt("[Met]", G=-35245, H=-59310)
   lprop <- info(info("LYSC_CHICK"))
   expect_equal(G, lprop$G)
   expect_equal(Cp, lprop$Cp, tolerance=1e-5)

@@ -1,7 +1,9 @@
-#LyX 2.1 created this file. For more info see http://www.lyx.org/
-\lyxformat 474
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
 \begin_document
 \begin_header
+\save_transient_properties true
+\origin unavailable
 \textclass article
 \begin_preamble
 %\VignetteIndexEntry{Hot-spring proteins in CHNOSZ}
@@ -19,16 +21,16 @@ knitr
 \language_package default
 \inputencoding auto
 \fontencoding global
-\font_roman palatino
-\font_sans lmss
-\font_typewriter lmtt
-\font_math auto
+\font_roman "palatino" "default"
+\font_sans "lmss" "default"
+\font_typewriter "lmtt" "default"
+\font_math "auto" "auto"
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
-\font_sf_scale 100
-\font_tt_scale 100
+\font_sf_scale 100 100
+\font_tt_scale 100 100
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -236,31 +238,29 @@ revisit()
 
 \begin_layout Standard
 Load CHNOSZ and the thermodynamic database.
- The thermodynamic data for the methionine sidechain group used in the 2011
- paper 
+ In order to reproduce the calculations from the 2011 paper, we modify the
+ methionine sidechain group using old values of standard Gibbs energy and
+ enthalpy from 
 \begin_inset CommandInset citation
 LatexCommand citep
-key "DS11"
+key "DLH06"
 
 \end_inset
 
- was updated in CHNOSZ_0.9-9 
+; these are inaccurate values that were updated by 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "LD12"
 
 \end_inset
 
-, but the older dataset is still available using 
-\family typewriter
-add.obigt()
-\family default
-.
+ and are available starting in CHNOSZ_0.9-9 (the current values are used
+ further below).
 \end_layout
 
 \begin_layout Standard
 \begin_inset ERT
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -279,7 +279,7 @@ data(thermo)
 
 \begin_layout Plain Layout
 
-add.obigt()
+mod.obigt("[Met]", G=-35245, H=-59310)
 \end_layout
 
 \begin_layout Plain Layout
@@ -502,7 +502,7 @@ aa.phyla <- read.aa(system.file("extdata/protein/DS13.csv", package="CHNOSZ"))
 
 \begin_layout Standard
 Here are the site names for the sampling locations (also referred to as
- sites 1--5).
+ sites 1–5).
 \end_layout
 
 \begin_layout Standard
@@ -1734,12 +1734,9 @@ Make some
 
  metastable equilibrium predominance diagrams using different values for
  the thermodynamic properties of the methionine sidechain group [Met].
- The first row shows the results using the old values (since 
-\family typewriter
-add.obigt()
-\family default
- was called above); for the second row (j=2), we reset the database to use
- the current (revised) parameters.
+ The first row shows the results using the old values (defined on page 1);
+ for the second row (j=2), we reset the database to use the current (revised)
+ parameters.
 \end_layout
 
 \begin_layout Standard
@@ -3144,6 +3141,15 @@ add.obigt()
 \begin_layout Itemize
 2014-02-01 Include results from 2013 paper and change VignetteEngine to
  knitr.
+\end_layout
+
+\begin_layout Itemize
+2016-12-21 As superseded methionine sidechain group has been removed from
+ OBIGT-2.csv, use 
+\family typewriter
+mod.obigt()
+\family default
+ to reproduce the calculations.
 \end_layout
 
 \begin_layout Standard

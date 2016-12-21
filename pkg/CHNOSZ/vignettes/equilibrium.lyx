@@ -1,7 +1,9 @@
-#LyX 2.1 created this file. For more info see http://www.lyx.org/
-\lyxformat 474
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
 \begin_document
 \begin_header
+\save_transient_properties true
+\origin unavailable
 \textclass article
 \begin_preamble
 %\VignetteIndexEntry{Equilibrium in CHNOSZ}
@@ -20,16 +22,16 @@ knitr
 \language_package default
 \inputencoding auto
 \fontencoding global
-\font_roman palatino
-\font_sans lmss
-\font_typewriter lmtt
-\font_math auto
+\font_roman "palatino" "default"
+\font_sans "lmss" "default"
+\font_typewriter "lmtt" "default"
+\font_math "auto" "auto"
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
-\font_sf_scale 100
-\font_tt_scale 100
+\font_sf_scale 100 100
+\font_tt_scale 100 100
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -557,6 +559,10 @@ as.residue = TRUE
 
 \begin_layout Enumerate
 Maximum affinity method, balance = 1
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -593,6 +599,10 @@ Algorithm:
 \end_deeper
 \begin_layout Enumerate
 Equilibration method, balance = 1
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -637,6 +647,10 @@ Maximum affinity method, balance
 \end_inset
 
  1
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -673,6 +687,10 @@ Equilibration method, balance
 \end_inset
 
  1
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -705,6 +723,10 @@ Algorithm: Reaction matrix
 \end_deeper
 \begin_layout Enumerate
 Maximum affinity method, normalize = TRUE
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -737,6 +759,10 @@ Algorithm:
 \end_deeper
 \begin_layout Enumerate
 Equilibration method, normalize = TRUE
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -1659,6 +1685,10 @@ D
 \color inherit
  are all equal activity diagrams, but have different constraints on the
  activities:
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -2581,7 +2611,7 @@ Next is an example of using
 unequal activities
 \emph default
  of species (mineral activity = 1; variable aqueous species activity indicated
- by the contours (logarithm of activity)) to plot aqueous species -- mineral
+ by the contours (logarithm of activity)) to plot aqueous species – mineral
  stability boundaries (balance = 1, after Figure 14 of 
 \begin_inset CommandInset citation
 LatexCommand citealp
@@ -2834,6 +2864,10 @@ Protein examples (with
 normalize = TRUE
 \family default
 ): 
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -3132,14 +3166,14 @@ th species.
 For the CSG examples below, we would like to reproduce exactly the values
  appearing in publications.
  Because recent versions of CHNOSZ incorporate data updates for the methionine
- sidechain group, we should therefore revert to the previous values before
- proceeding.
- The 
-\family typewriter
-add.obigt()
-\family default
- function does just that, as well as adds other species from the supplemental
- database provided with CHNOSZ:
+ sidechain group, we should therefore revert to the previous values 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "DLH06"
+
+\end_inset
+
+ before proceeding.
 \end_layout
 
 \begin_layout Standard
@@ -3158,7 +3192,7 @@ data(thermo)
 
 \begin_layout Plain Layout
 
-add.obigt()
+mod.obigt("[Met]", G=-35245, H=-59310)
 \end_layout
 
 \begin_layout Plain Layout
@@ -3596,7 +3630,7 @@ reference "eq:a_residue"
 
 \end_inset
 
---
+–
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:A_METJA"

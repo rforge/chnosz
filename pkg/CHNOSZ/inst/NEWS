@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-5 (2016-12-19)
+CHANGES IN CHNOSZ 1.0.8-6 (2016-12-21)
 --------------------------------------
 
 - Add "AA" as a keyword for preset species in basis() (cysteine,
@@ -9,11 +9,18 @@ CHANGES IN CHNOSZ 1.0.8-5 (2016-12-19)
 - More flexible parsing of chemical formulas for ZC() and other
   functions; e.g. ZC(colMeans(protein.formula(1:4))) now works.
 
-- supcrt() now returns 'loggam' using the common logarithm; add
+- subcrt() now returns 'loggam' using the common logarithm; add
   test-nonideal.R to check for consistency between loggam and logK
-  values returned by supcrt(). Thanks to David T. Wang for the bug
-  report and test. (This also fixes the bug previously noted for the
-  first example in ?nonideal.)
+  values returned by subcrt(). This also fixes the issue previously
+  noted for the first example in ?nonideal. Thanks to David T. Wang for
+  the bug report and test.
+
+- OBIGT.csv: Add data for citric acid cycle metabolites from Canovas and
+  Shock, 2016.
+
+- Clean up OBIGT-2.csv: remove data from Dalla-Betta and Schulte, 2009
+  (citric acid cycle metabolites; thioester species have been kept) and
+  from Dick et al., 2006 (methionine and [Met]).
 
 CHANGES IN CHNOSZ 1.0.8 (2016-05-28)
 ------------------------------------

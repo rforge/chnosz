@@ -9,8 +9,6 @@ test_that("unbalanced reactions give a warning", {
 
 test_that("unbalanced reactions are balanced given sufficient basis species", {
   basis("CHNOS")
-  # since it doesn't alter the species indices of the basis species, this can come second ...
-  add.obigt()
   s <- subcrt(c("malic acid", "citric acid"), c(-1, 1))
   expect_equal(s$reaction$coeff, c(-1, 1, -2, -1, 1.5))
   expect_equal(s$reaction$name, c("malic acid", "citric acid", "CO2", "water", "oxygen"))

@@ -101,8 +101,8 @@ test_that("'iprotein' gives consistent results on a transect", {
   sites <- c("N", "S", "R", "Q", "P")
   aa <- read.aa(system.file("extdata/protein/DS11.csv", package="CHNOSZ"))
   ip <- add.protein(aa[1:5, ])
-  # to reproduce, we need use the "old" parameters for [Met]
-  add.obigt()
+  # to reproduce, we need use the "old" parameters for [Met] from Dick et al., 2006
+  mod.obigt("[Met]", G=-35245, H=-59310)
   a <- affinity(T=T, pH=pH, H2=H2, iprotein=ip)
   # divide A/2.303RT by protein length
   pl <- protein.length(ip)

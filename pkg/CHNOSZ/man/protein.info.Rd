@@ -99,8 +99,8 @@ protein <- iprotein(c("CSG_METVO", "CSG_METJA"))
 # clear out amino acid residues loaded by the example above
 # ( in affinity(iprotein=ip) )
 data(thermo)
-# load supplemental database to use "old" [Met] sidechain group
-add.obigt()
+# use properties of the "old" [Met] sidechain group (Dick et al., 2006)
+mod.obigt("[Met]", G=-35245, H=-59310)
 # set up the basis species to those used in DS11
 basis("CHNOS+")
 # note this yields logaH2 = -4.657486

@@ -32,7 +32,7 @@ examples <- function(do.png=FALSE) {
 demos <- function(which=c("sources", "NaCl", "density", 
   "nucleobase", "ORP", "revisit", "findit",
   "ionize", "buffer", "yeastgfp", "mosaic",
-  "copper", "solubility", "wjd", "dehydration"), to.file=FALSE) {
+  "copper", "solubility", "wjd", "dehydration", "bugstab"), to.file=FALSE) {
   # run one or more demos from CHNOSZ with ask=FALSE, and return the value of the last one
   for(i in 1:length(which)) {
     # say something so the user sees where we are
@@ -41,7 +41,10 @@ demos <- function(which=c("sources", "NaCl", "density",
       msgout("demos: skipping dehydration demo as to.file is FALSE\n")
       next 
     } else msgout(paste("demos: running '", which[i], "'\n", sep=""))
-    if(to.file & !which[i]=="dehydration") png(paste(which[i],"%d.png",sep=""),width=500,height=500,pointsize=12)
+    if(to.file & !which[i]=="dehydration") {
+      if(which[i]=="bugstab") png(paste(which[i], "%d.png", sep=""), width=700, height=500, pointsize=12)
+      else png(paste(which[i], "%d.png", sep=""), width=500, height=500, pointsize=12)
+    }
     out <- demo(which[i], package="CHNOSZ", character.only=TRUE, echo=FALSE, ask=FALSE)
     if(to.file & !which[i]=="dehydration") dev.off()
   }

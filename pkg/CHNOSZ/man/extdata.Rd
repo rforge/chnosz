@@ -10,13 +10,13 @@
 
 \details{
 
-  Files in \code{abundance} contain protein abundance data:
+  Files in \code{abundance} contain protein abundance and microbial occurrence data:
   \itemize{
     \item \code{stress} is a data frame listing proteins identified in selected proteomic stress response experiments. The names of proteins begin at row 3, and columns are all the same length (padded as necessary at the bottom by \code{NA}s). Names correspond to ordered locus names (for \samp{Sce}) or gene names (for \samp{Eco}). The column names identify the experiments, the first row contains the name of the organism (\samp{Sce} or \samp{Eco}) and the third row has the reference key for the source of the data (listed in \code{\link{thermo}$refs}).
     \item \code{AA03.csv} has reference abundances for 71 proteins taken from Fig. 3 of Anderson and Anderson, 2002 (as corrected in Anderson and Anderson, 2003). The columns with data taken from these sources are type (hemoglobin, plasma, tissue, or interleukin), description (name used in the original figure), log10(pg/ml) (\emph{upper limit} of abundance interval shown in Anderson and Anderson, 2003, log10 of concentration in pg/ml). The additional columns are data derived from a search of the SWISS-PROT/UniProtKB database based on the descriptions of the proteins: name (nominal UniProtKB name for this protein), name2 (other UniProtKB names(s) that could apply to the protein), and note (notes based on searching for a protein of this description). The amino acid compositions of all proteins whose names are not NA are included in \code{thermo$protein}. The \code{abbrv} column for the proteins contains the description given by Anderson and Anderson, 2003, followed by (in parentheses) the UniProtKB accession number. Annotated initiator methionines (e.g. for ferritin, myoglobin, ENOG), signal peptides or propeptides were removed from the proteins (except where they are not annotated in UniProtKB: IGHG1, IGHA1, IGHD, MBP). In cases were multiple isoforms are present in UniProtKB (e.g. Albumin) only the first isoform was taken. In the case of C4 Complement (CO4A) and C5 Complement (CO5), the amino acid composition of only the alpha chains are listed. In the case of the protein described as iC3b, the amino acid sequence is taken to be that of Complement C3c alpha' chain fragment 1 from CO3, and is given the name CO3.C3c. The non-membrane (soluble) chains of TNF-binding protein (TNR1A) and TNF-alpha (TNFA) were used. Rantes, MIP-1 beta and MIP-1 alpha were taken from C-C motif chemokines (CCL5, CCL4, CCL3 respectively). C-peptide was taken from the corresponding annotation for insulin and here is named INS.C. See \code{\link{protein}} and \code{\link{read.expr}} for examples that use this file.
     \item \code{ISR+08.csv} has columns excerpted from Additional File 2 of Ishihama et al. (2008) for protein abundances in \emph{E. coli} cytosol. The columns in this file are ID (Swiss-Prot ID), accession (Swiss-Prot accession), emPAI (exponentially modified protein abundance index), copynumber (emPAI-derived copy number/cell), GRAVY (Kyte-Doolittel), FunCat (FunCat class description), PSORT (PSORT localisation), ribosomal (yes/no). See \code{\link{read.expr}} for examples that use this file.
-%%      \item \code{GLL+98.csv} has columns "oln" for ordered locus name and "ratio" for change in expression of yeast proteins in response to H2O2 treatment, from Godon et al., 1998. One protein, YMR108W, was listed as both induced and repressed in the original data set and is not included in this table.
     \item \code{yeastgfp.csv.xz} Has 28 columns; the names of the first five are \code{yORF}, \code{gene name}, \code{GFP tagged?}, \code{GFP visualized?}, and \code{abundance}. The remaining columns correspond to the 23 subcellular localizations considered in the YeastGFP project (Huh et al., 2003 and Ghaemmaghami et al., 2003) and hold values of either \code{T} or \code{F} for each protein. \samp{yeastgfp.csv} was downloaded on 2007-02-01 from http://yeastgfp.ucsf.edu using the Advanced Search, setting options to download the entire dataset and to include localization table and abundance, sorted by orf number. See \code{\link{yeastgfp}} for examples that use this file.
+    \item \code{microbes.csv} has data for microbial occurrence (i.e. relative enrichement) in colorectal cancer and normal tissue. The file is from the Supporting Information of Dick (2016). This file is used by \code{\link{demos}("bugstab")}.
   }
 
   Files in \code{bison} contain BLAST results and taxonomic information for a metagenome:
@@ -54,6 +54,14 @@
       Amino acid compositions of 4407 proteins in \emph{Escherichia coli} strain K12.
       Format is the one used \code{\link{thermo}$protein}, with columns \samp{protein} holding the gene name, \samp{organism} set to \samp{ECOLI}, and \code{abbrv} holding the UniProt ID.
       The source of data is the file \samp{ECOLI.fas} downloaded from the HAMAP (High-quality Automated and Manual Annotation of microbial Proteomes system) FTP site (Gattiker et al., 2003) on 2010-09-25 (old URL: \code{ftp://ftp.expasy.org/databases/hamap/complete_proteomes/fasta/bacteria}) .
+    \item \code{DS11.csv}, \code{DS13.csv}
+      These two files contain amino acid compositions of metagenomically encoded proteins, averaged together according to functional annotation (DS11) or taxonomic affiliation (DS13).
+      The data are from Dick and Shock, 2011 and 2013.
+      They are used in the vignette \file{hotspring.Rnw}.
+    \item \code{microbial.aa.csv}
+      Overall protein compositions of microbial species reported to be positively or negatively enriched in colorectal cancer.
+      This file is taken from Dick, 2016.
+      It is used by \code{\link{demos}("bugstab")}.
   }
 
 
@@ -104,6 +112,12 @@
   Dayhoff, M. O. and Lippincott, E. R. and Eck, R. V. (1964) Thermodynamic Equilibria In Prebiological Atmospheres. \emph{Science} \bold{146}, 1461--1464. \url{http://dx.doi.org/10.1126/science.146.3650.1461}
 
   Dayhoff, M. O. and Lippincott, E. R., Eck, R. V. and Nagarajan (1967) Thermodynamic Equilibrium In Prebiological Atmospheres of C, H, O, N, P, S, and Cl. Report SP-3040, National Aeronautics and Space Administration. \url{http://ntrs.nasa.gov/search.jsp?R=19670017966}
+
+  Dick, J. M. (2016) Proteomic indicators of oxidation and hydration state in colorectal cancer. \emph{PeerJ} \bold{4}:e2238. \url{http://dx.doi.org/10.7717/peerj.2238}
+
+  Dick, J. M. and Shock, E. L. (2011) Calculation of the relative chemical stabilities of proteins as a function of temperature and redox chemistry in a hot spring. \emph{PLoS ONE} \bold{6}, e22782. \url{http://dx.doi.org/10.1371/journal.pone.0022782}
+
+  Dick, J. M. and Shock, E. L. (2013) A metastable equilibrium model for the relative abundance of microbial phyla in a hot spring. \emph{PLoS ONE} \bold{8}, e72395. \url{http://dx.doi.org/10.1371/journal.pone.0072395}
 
   Domalski, E. S. and Hearing, E. D. (1993) Estimation of the thermodynamic properties of C-H-N-O-S-Halogen compounds at 298.15 K \emph{J. Phys. Chem. Ref. Data} \bold{22}, 805--1159. \url{http://dx.doi.org/10.1063/1.555927}
 

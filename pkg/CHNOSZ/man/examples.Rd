@@ -17,7 +17,7 @@
   demos(which = c("sources", "NaCl", "density",
     "nucleobase", "ORP", "revisit", "findit", 
     "ionize", "buffer", "yeastgfp", "mosaic",
-    "copper", "solubility", "wjd", "dehydration"), to.file=FALSE)
+    "copper", "solubility", "wjd", "dehydration", "bugstab"), to.file=FALSE)
 }
 
 \details{
@@ -47,6 +47,7 @@ See the comments in the source code for more information about each demo.
     \code{solubility} \tab solubility of calcite (cf. Manning et al., 2013) or CO2(gas) (cf. Stumm and Morgan, 1996) \cr
     \code{wjd} \tab run.wjd() with proteins: cell periphery of yeast \cr
     \code{dehydration} \tab log K of dehydration reactions; SVG file contains tooltips and links \cr
+    \code{bugstab} \tab formation potential of microbial proteins in colorectal cancer (Dick, 2016) \cr
   }
 
 }
@@ -55,6 +56,8 @@ See the comments in the source code for more information about each demo.
   Aksu, S. and Doyle, F. M. (2001) Electrochemistry of copper in aqueous glycine solutions. \emph{J. Electrochem. Soc.} \bold{148}, B51--B57. \url{http://dx.doi.org/10.1149/1.1344532}
 
   Dick, J. M. (2009) Calculation of the relative metastabilities of proteins in subcellular compartments of \emph{Saccharomyces cerevisiae}. \emph{BMC Syst. Biol.} \bold{3}:75. \url{http://dx.doi.org/10.1186/1752-0509-3-75}
+
+  Dick, J. M. (2016) Proteomic indicators of oxidation and hydration state in colorectal cancer. \emph{PeerJ} \bold{4}:e2238. \url{http://dx.doi.org/10.7717/peerj.2238}
 
   Garrels, R. M. and Christ, C. L. (1965) \emph{Solutions, Minerals, and Equilibria}, Harper & Row, New York, 450 p. \url{http://www.worldcat.org/oclc/517586}
   

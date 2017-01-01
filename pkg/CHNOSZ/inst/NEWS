@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-6 (2016-12-21)
+CHANGES IN CHNOSZ 1.0.8-7 (2017-01-01)
 --------------------------------------
 
 - Add "AA" as a keyword for preset species in basis() (cysteine,
@@ -21,6 +21,8 @@ CHANGES IN CHNOSZ 1.0.8-6 (2016-12-21)
 - Clean up OBIGT-2.csv: remove data from Dalla-Betta and Schulte, 2009
   (citric acid cycle metabolites; thioester species have been kept) and
   from Dick et al., 2006 (methionine and [Met]).
+
+- Add demo bugstab.R.
 
 CHANGES IN CHNOSZ 1.0.8 (2016-05-28)
 ------------------------------------

@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-7 (2017-01-01)
+CHANGES IN CHNOSZ 1.0.8-8 (2017-01-07)
 --------------------------------------
 
 - Add "AA" as a keyword for preset species in basis() (cysteine,
@@ -23,6 +23,9 @@ CHANGES IN CHNOSZ 1.0.8-7 (2017-01-01)
   from Dick et al., 2006 (methionine and [Met]).
 
 - Add demo bugstab.R.
+
+- Correct charge (-2) of NAD(red)-2 in OBIGT.csv. Thanks to Peter
+  Canovas.
 
 CHANGES IN CHNOSZ 1.0.8 (2016-05-28)
 ------------------------------------

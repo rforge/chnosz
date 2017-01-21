@@ -108,6 +108,7 @@ read.fasta <- function(file, i=NULL, ret="count", lines=NULL, ihead=NULL,
   organism <- bnf
   # protein/gene name is from header line for entry
   # (strip the ">" and go to the first space)
+  missid <- missing(id)
   if(is.null(id)) id <- as.character(palply("", 1:length(i), function(j) {
     # get the text of the line
     f1 <- linefun(i[j],i[j])
@@ -129,8 +130,19 @@ read.fasta <- function(file, i=NULL, ret="count", lines=NULL, ihead=NULL,
       # 20090507 made stringsAsFactors FALSE
       out <- cbind(data.frame(protein=id, organism=organism,
         ref=ref, abbrv=abbrv, chains=chains, stringsAsFactors=FALSE), counts)
+      # 20170117 extra processing for files from UniProt
+      isUniProt <- grepl("\\|......\\|.*_", out$protein[1])
+      if(isUniProt & missid) {
+        p1 <- sapply(strsplit(out$protein, "\\|"), "[", 1)
+        p2 <- sapply(strsplit(out$protein, "\\|"), "[", 2)
+        p3 <- sapply(strsplit(out$protein, "\\|"), "[", 3)
+        out$abbrv <- sapply(strsplit(p3, "_"), "[", 1)
+        out$organism <- sapply(strsplit(p3, "_"), "[", 2)
+        out$protein <- paste0(p1, "|", p2)
+      }
+      out
     } else if(type %in% c("DNA", "RNA")) {
-      out <- cbind(data.frame(gene=id, organism=organism,
+      cbind(data.frame(gene=id, organism=organism,
         ref=ref, abbrv=abbrv, chains=chains, stringsAsFactors=FALSE), counts)
     }
   } else return(sequences)

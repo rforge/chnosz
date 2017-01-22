@@ -18,7 +18,7 @@ diagram <- function(
   # sizes
   cex=par("cex"), cex.names=1, cex.axis=par("cex"),
   # line styles
-  lty=NULL, lwd=par("lwd"), dotted=0, 
+  lty=NULL, lwd=par("lwd"), dotted=NULL, 
   # colors
   bg=par("bg"), col=par("col"), col.names=par("col"), fill=NULL, 
   # labels
@@ -353,6 +353,35 @@ diagram <- function(
         if(!is.null(xrange)) xs <- clipfun(xs, xrange)
         lines(xs, ys, col=col, lwd=lwd)
       }
+      ## new line plotting function 20170122
+      contour.lines <- function(predominant, xlim, ylim, lty, col, lwd) {
+        # the x and y values
+        xs <- seq(xlim[1], xlim[2], length.out=dim(predominant)[1])
+        ys <- seq(ylim[1], ylim[2], length.out=dim(predominant)[2])
+        # reverse any axis that has decreasing values
+        if(diff(xlim) < 0) {
+          predominant <- predominant[nrow(predominant):1, ]
+          xs <- rev(xs)
+        }
+        if(diff(ylim) < 0) {
+          predominant <- predominant[, ncol(predominant):1]
+          ys <- rev(ys)
+        }
+	# the categories (species/groups/etc) on the plot
+	zvals <- unique(as.vector(predominant))
+	# take each possible pair
+	for(i in 1:(length(zvals)-1)) {
+	  for(j in (i+1):length(zvals)) {
+	    z <- predominant
+	    # draw contours only for this pair
+	    z[!z %in% c(zvals[i], zvals[j])] <- NA
+	    # give them neighboring values (so we get one contour line)
+	    z[z==zvals[i]] <- 0
+	    z[z==zvals[j]] <- 1
+	    contour(xs, ys, z, levels=0.5, drawlabels=FALSE, add=TRUE, lty=lty, col=col, lwd=lwd)
+	  }
+	}
+      }
       ## label plot function
       # calculate coordinates for field labels
       plot.names <- function(out, xs, ys, names) {
@@ -421,6 +450,7 @@ diagram <- function(
         if(!is.null(fill)) fill.color(xs, ys, zs, fill, ngroups)
         pn <- plot.names(zs, xs, ys, names)
         if(!is.null(dotted)) plot.line(zs, xlim, ylim, dotted, col, lwd, xrange=xrange)
+        else contour.lines(predominant, xlim, ylim, lty=lty, col=col, lwd=lwd)
       } # done with the 2D plot!
       out2D <- list(lx=pn$lx, ly=pn$ly, is=pn$is)
     } # end if(nd==2)

@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-10 (2017-01-21)
+CHANGES IN CHNOSZ 1.0.8-11 (2017-01-22)
 ---------------------------------------
 
 - Add "AA" as a keyword for preset species in basis() (cysteine,
@@ -30,6 +30,10 @@ CHANGES IN CHNOSZ 1.0.8-10 (2017-01-21)
 - read.fasta() extracts information from UniProt FASTA headers
   (accession, name, organism) into columns of the output data frame
   (protein, abbrv, organism).
+
+- diagram() draws smoother boundary lines (with contour(); 'lty' is
+  usable), at the expense of not being precisely aligned with the grid
+  used for plotting colors. For the old behavior, use dotted=0.
 
 CHANGES IN CHNOSZ 1.0.8 (2016-05-28)
 ------------------------------------

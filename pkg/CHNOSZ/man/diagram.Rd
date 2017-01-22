@@ -13,7 +13,7 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
     xrange=NULL, mar=NULL, yline=par("mgp")[1]+0.7, side=1:4,
     ylog=TRUE, xlim=NULL, ylim=NULL, xlab=NULL, ylab=NULL,
     cex=par("cex"), cex.names=1, cex.axis=par("cex"),
-    lty=NULL, lwd=par("lwd"), dotted=0,
+    lty=NULL, lwd=par("lwd"), dotted=NULL,
     bg=par("bg"), col=par("col"), col.names=par("col"), fill=NULL,
     names=NULL, main=NULL, legend.x="topright", add=FALSE, plot.it=TRUE,
     tplot=TRUE, ...)
@@ -85,7 +85,12 @@ The line type and line width can be controlled with \code{lty} and \code{lwd}, r
 On 2-D diagrams, the fields represent the species with the highest equilibrium activity.
 \code{fill} determines the color of the predominance fields, \code{col} that of the boundary lines.
 By default, \code{\link{heat.colors}} are used to fill the predominance fields in diagrams on the screen plot device.
-The style of the boundary lines on 2-D diagrams can be altered by supplying one or more non-zero integers in \code{dotted}, which indicates the fraction of line segments to omit; a value of \samp{1} or NULL for \code{dotted} has the effect of not drawing the boundary lines.
+
+As of CHNOSZ 1.0.8-11, a new default line-drawing procedure has been implemented.
+This uses \code{\link{contour}} to draw smooth-looking diagonal and curved lines, at the expense of not coinciding exactly with the the rectangular grid (which is still used for drawing colors).
+\code{lty}, \code{col}, and \code{lwd} can be specified, but limiting the lines via \code{xrange} is not currently supported.
+To go back to the old behavior for drawing lines, set \code{dotted} to \samp{0}.
+The old behavior does not follow \code{lty}; instead, the style of the boundary lines on 2-D diagrams can be altered by supplying one or more non-zero integers in \code{dotted}, which indicates the fraction of line segments to omit; a value of \samp{1} or NULL for \code{dotted} has the effect of not drawing the boundary lines.
 
 \code{normalize} and \code{as.residue} apply only to the 2-D diagrams, and only when \code{eout} is the output from \code{affinity}.
 With \code{normalize}, the activity boundaries are calculated as between the residues of the species (the species divided by the balance coefficients), then the activities are rescaled to the whole species formulas.

@@ -54,7 +54,7 @@ for(i in 1:length(names)) {
 }
 
 # add glycine ionization lines
-d <- diagram(m$A.bases, add=TRUE, col="darkblue", dotted=c(2, 3), names=NULL)
+d <- diagram(m$A.bases, add=TRUE, col="darkblue", lty=3, names=NULL)
 text(d$lx, -0.5, Gly, col="darkblue")
 
 # add water lines and title and re-draw a box around the plot

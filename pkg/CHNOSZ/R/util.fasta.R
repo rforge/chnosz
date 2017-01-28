@@ -59,7 +59,7 @@ read.fasta <- function(file, i=NULL, ret="count", lines=NULL, ihead=NULL,
   #   otherwise ID is parsed from FASTA header (can take a while)
   is.nix <- Sys.info()[[1]]=="Linux"
   if(is.nix & is.null(lines)) {
-    msgout("read.fasta: reading ",basename(file),"\n")
+    message("read.fasta: reading ",basename(file))
     # figure out whether to use 'cat', 'zcat' or 'xzcat'
     suffix <- substr(file,nchar(file)-2,nchar(file))
     if(suffix==".gz") mycat <- "zcat"
@@ -73,7 +73,7 @@ read.fasta <- function(file, i=NULL, ret="count", lines=NULL, ihead=NULL,
   } else {
     if(is.null(lines)) {
       lines <- readLines(file)
-      msgout("read.fasta: reading ",basename(file),"\n")
+      message("read.fasta: reading ",basename(file))
     }
     nlines <- length(lines)
     if(is.null(ihead)) ihead <- which(substr(lines,1,1)==">")
@@ -153,26 +153,26 @@ uniprot.aa <- function(protein, start=NULL, stop=NULL) {
   iprotein <- numeric()
   # construct the initial URL
   proteinURL <- paste("http://www.uniprot.org/uniprot/", protein, sep="")
-  msgout("uniprot.aa: trying ", proteinURL, " ...")
+  message("uniprot.aa: trying ", proteinURL, " ...", appendLF=FALSE)
   # try loading the URL, hiding any warnings
   oldopt <- options(warn=-1)
   URLstuff <- try(readLines(proteinURL),TRUE)
   options(oldopt)
   if(class(URLstuff)=="try-error") {
-    msgout(" ::: FAILED :::\n")
+    message(" ::: FAILED :::")
     return(NA)
   }
   # 20091102: look for a link to a fasta file
   link <- grep("/uniprot/.*fasta", URLstuff)
   if(length(link) > 0) linkline <- URLstuff[[link[1]]]
   else {
-    msgout(" ::: FAILED :::\n")
+    message(" ::: FAILED :::")
     return(NA)
   }
   # extract accession number from the link
   linkhead <- strsplit(linkline, ".fasta", fixed=TRUE)[[1]][1]
   accession.number <- tail(strsplit(linkhead, "/uniprot/", fixed=TRUE)[[1]], 1)
-  msgout(" accession ", accession.number, " ...\n")
+  message(" accession ", accession.number, " ...")
   # now download the fasta file
   fastaURL <- paste("http://www.uniprot.org/uniprot/", accession.number, ".fasta", sep="")
   URLstuff <- readLines(fastaURL)
@@ -183,10 +183,10 @@ uniprot.aa <- function(protein, start=NULL, stop=NULL) {
   header.id <- strsplit(header, headerP_O)[[1]][1]
   header.id <- substr(header.id, 2, nchar(header.id)-1)
   header.organism <- strsplit(headerP_O, "_")[[1]][2]
-  msgout(paste0(header))
+  message(paste0(header), appendLF=FALSE)
   # 20130206 use read.fasta with lines, start, stop arguments
   aa <- read.fasta(file="", lines=URLstuff, start=start, stop=stop)
-  msgout(" (length ", sum(aa[1, 6:25]), ")\n", sep="")
+  message(" (length ", sum(aa[1, 6:25]), ")", sep="")
   aa$protein <- header.id
   aa$organism <- header.organism
   return(aa)
@@ -214,8 +214,8 @@ count.aa <- function(seq, start=NULL, stop=NULL, type="protein") {
     ilett <- match(names(nnn), letts)
     # in case any letters aren't in our alphabet
     ina <- is.na(ilett)
-    if(any(ina)) msgout(paste("count.aa: unrecognized letter(s) in", type, "sequence:",
-      paste(names(nnn)[ina], collapse=" "), "\n"))
+    if(any(ina)) message(paste("count.aa: unrecognized letter(s) in", type, "sequence:",
+      paste(names(nnn)[ina], collapse=" ")))
     count <- numeric(length(letts))
     count[ilett[!ina]] <- nnn[!ina]
     return(count)

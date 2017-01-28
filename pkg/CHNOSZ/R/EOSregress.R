@@ -167,7 +167,7 @@ EOSplot <- function(exptdata, var=NULL, T.max=9999, T.plot=NULL,
   }
   # plot regression line at a single P
   P <- mean(exptdata$P)
-  msgout("EOSplot: plotting line for P=", P, " bar\n")
+  message("EOSplot: plotting line for P=", P, " bar")
   xs <- seq(xlim[1], xlim[2], length.out=200)
   calc.X <- EOScalc(coefficients, xs, P, ...)
   lines(xs, calc.X, lty=lty)

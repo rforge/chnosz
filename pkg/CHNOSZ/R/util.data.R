@@ -76,7 +76,7 @@ mod.obigt <- function(...) {
     ntotal <- nrow(thermo$obigt)
     ispecies[inew] <- (ntotal-length(inew)+1):ntotal
     # inform user
-    msgout(paste("mod.obigt: added ", newrows$name, "(", newrows$state, ")", sep="", collapse="\n"), "\n")
+    message(paste("mod.obigt: added ", newrows$name, "(", newrows$state, ")", sep="", collapse="\n"))
   }
   if(length(iold) > 0) {
     # loop over species
@@ -86,11 +86,11 @@ mod.obigt <- function(...) {
       state <- thermo$obigt$state[ispecies[iold[i]]]
       # tell user if they're the same, otherwise update the data entry
       if(isTRUE(all.equal(oldprop, args[iold[i], ], check.attributes=FALSE))) 
-        msgout("mod.obigt: no change for ", args$name[iold[i]], "(", state, ")\n")
+        message("mod.obigt: no change for ", args$name[iold[i]], "(", state, ")")
       else {
         thermo$obigt[ispecies[iold[i]], icol] <- args[iold[i], ]
         assign("thermo", thermo, "CHNOSZ")
-        msgout("mod.obigt: updated ", args$name[iold[i]], "(", state, ")\n")
+        message("mod.obigt: updated ", args$name[iold[i]], "(", state, ")")
       }
     }
   }
@@ -156,12 +156,12 @@ add.obigt <- function(file=system.file("extdata/thermo/OBIGT-2.csv",package="CHN
   assign("thermo", thermo, "CHNOSZ")
   # message about file, if file argument is missing (default)
   if(missing(file)) {
-    msgout("add.obigt: using default file:\n") 
-    msgout(file, "\n")
+    message("add.obigt: using default file:") 
+    message(file)
   }
-  msgout("add.obigt: read ", length(does.exist), " rows; made ", 
-    nexist, " replacements, ", nrow(to2), " additions, units = ", E.units, "\n")
-  msgout("add.obigt: use data(thermo) to restore default database\n")
+  message("add.obigt: read ", length(does.exist), " rows; made ", 
+    nexist, " replacements, ", nrow(to2), " additions, units = ", E.units)
+  message("add.obigt: use data(thermo) to restore default database")
   return(invisible(inew))
 }
 
@@ -363,8 +363,8 @@ checkEOS <- function(eos, state, prop, ret.diff=FALSE) {
     if(!is.na(calcval)) {
       if(!is.na(refval)) {
         if(abs(diff) > tol) {
-          msgout(paste("checkEOS: ", prop, " of ", eos$name, " ", eos$state, " (", rownames(eos),
-            ") differs by ", round(diff,2), " ", units, " from tabulated value\n", sep=""))
+          message(paste("checkEOS: ", prop, " of ", eos$name, " ", eos$state, " (", rownames(eos),
+            ") differs by ", round(diff,2), " ", units, " from tabulated value", sep=""))
           return(calcval)
         }
       } else return(calcval)
@@ -383,7 +383,7 @@ checkGHS <- function(ghs, ret.diff=FALSE) {
   # get calculated value based on H and S
   ina <- is.na(ghs$formula)
   if(any(ina)) {
-    msgout("checkGHS: formula of ", ghs$name[ina], "(", ghs$state[ina], ") is NA\n")
+    message("checkGHS: formula of ", ghs$name[ina], "(", ghs$state[ina], ") is NA")
     Se <- NA
   } else Se <- entropy(as.character(ghs$formula))
   refval <- ghs[,8]
@@ -398,8 +398,8 @@ checkGHS <- function(ghs, ret.diff=FALSE) {
     if(!is.na(refval)) {
       diff <- calcval - refval
       if(abs(diff) > thermo$opt$G.tol) {
-        msgout(paste("checkGHS: G of ", ghs$name, " ", ghs$state, " (", rownames(ghs),
-          ") differs by ", round(diff), " cal mol-1 from tabulated value\n", sep=""))
+        message(paste("checkGHS: G of ", ghs$name, " ", ghs$state, " (", rownames(ghs),
+          ") differs by ", round(diff), " cal mol-1 from tabulated value", sep=""))
         return(calcval)
       }
     } else return(calcval)

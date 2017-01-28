@@ -87,7 +87,7 @@ On 2-D diagrams, the fields represent the species with the highest equilibrium a
 By default, \code{\link{heat.colors}} are used to fill the predominance fields in diagrams on the screen plot device.
 
 As of CHNOSZ 1.0.8-11, a new default line-drawing procedure has been implemented.
-This uses \code{\link{contour}} to draw smooth-looking diagonal and curved lines, at the expense of not coinciding exactly with the the rectangular grid (which is still used for drawing colors).
+This uses \code{\link{contour}} to draw smooth-looking diagonal and curved lines, at the expense of not coinciding exactly with the rectangular grid (which is still used for drawing colors).
 \code{lty}, \code{col}, and \code{lwd} can be specified, but limiting the lines via \code{xrange} is not currently supported.
 To go back to the old behavior for drawing lines, set \code{dotted} to \samp{0}.
 The old behavior does not follow \code{lty}; instead, the style of the boundary lines on 2-D diagrams can be altered by supplying one or more non-zero integers in \code{dotted}, which indicates the fraction of line segments to omit; a value of \samp{1} or NULL for \code{dotted} has the effect of not drawing the boundary lines.

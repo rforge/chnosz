@@ -72,7 +72,7 @@ diagram <- function(
     plotvar <- eout$property
     # we change 'A' to 'A/2.303RT' so the axis label is made correctly
     if(plotvar=="A") plotvar <- "A/2.303RT"
-    msgout(paste("diagram: plotting", plotvar, "from affinity(), divided by balancing coefficients\n"))
+    message(paste("diagram: plotting", plotvar, "from affinity(), divided by balancing coefficients"))
   }
 
   ## number of dimensions (T, P or chemical potentials that are varied)
@@ -85,8 +85,8 @@ diagram <- function(
     if(normalize & as.residue) stop("'normalize' and 'as.residue' can not both be TRUE")
     if(!eout.is.aout) stop("'normalize' or 'as.residue' can be TRUE only if 'eout' is the output from affinity()")
     if(nd!=2) stop("'normalize' or 'as.residue' can be TRUE only for a 2-D (predominance) diagram")
-    if(normalize) msgout("diagram: using 'normalize' in calculation of predominant species\n")
-    else msgout("diagram: using 'as.residue' in calculation of predominant species\n")
+    if(normalize) message("diagram: using 'normalize' in calculation of predominant species")
+    else message("diagram: using 'as.residue' in calculation of predominant species")
   }
 
   ## sum activities of species together in groups 20090524

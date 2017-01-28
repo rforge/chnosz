@@ -31,7 +31,7 @@ iprotein <- function(protein, organism=NULL) {
   if(any(is.na(iprotein))) {
     nNA <- sum(is.na(iprotein))
     if(nNA==1) ptext <- "" else ptext <- "s"
-    msgout("iprotein: ", sum(is.na(iprotein)), " protein", ptext, " not matched\n")
+    message("iprotein: ", sum(is.na(iprotein)), " protein", ptext, " not matched")
   }
   return(iprotein)
 }
@@ -88,9 +88,9 @@ aa2eos <- function(aa, state=get("thermo")$opt$state) {
     # now the species name
     name <- paste(aa$protein, aa$organism, sep="_")
     # make some noise for the user
-    msgout("aa2eos: found ")
-    msgout(name, " (", f, ", ")
-    msgout(round(length, 3), " residues)\n")
+    message("aa2eos: found ", appendLF=FALSE)
+    message(name, " (", f, ", ", appendLF=FALSE)
+    message(round(length, 3), " residues)")
     ref <- aa$ref
     header <- data.frame(name=name, abbrv=NA, formula=f, state=state, ref1=ref, ref2=NA, date=NA, stringsAsFactors=FALSE)
     eosout <- cbind(header, eos)
@@ -128,7 +128,7 @@ aasum <- function(aa, abundance=1, average=FALSE, protein=NULL, organism=NULL) {
   if(any(ina)) {
     aa <- aa[!ina, ]
     abundance <- abundance[!ina]
-    msgout("aasum: dropped ", sum(ina), " proteins with NA composition and/or abundance\n")
+    message("aasum: dropped ", sum(ina), " proteins with NA composition and/or abundance")
   }
   # we don't know how to deal with different numbers of polypeptide chains
   if(!all(aa$chains==aa$chains[1])) stop("different numbers of polypeptide chains")
@@ -183,7 +183,7 @@ add.protein <- function(aa) {
   # return the new rownumbers
   ip <- iprotein(po)
   # make some noise
-  if(!all(ipdup)) msgout("add.protein: added ", nrow(aa)-sum(ipdup), " new protein(s) to thermo$protein\n")
-  if(any(ipdup)) msgout("add.protein: replaced ", sum(ipdup), " existing protein(s) in thermo$protein\n")
+  if(!all(ipdup)) message("add.protein: added ", nrow(aa)-sum(ipdup), " new protein(s) to thermo$protein")
+  if(any(ipdup)) message("add.protein: replaced ", sum(ipdup), " existing protein(s) in thermo$protein")
   return(ip)
 }

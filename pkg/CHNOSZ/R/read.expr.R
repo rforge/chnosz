@@ -15,7 +15,7 @@ stress <- function(condition, organism) {
   protein <- stressdat[3:nrow(stressdat), imatch]
   protein <- protein[!is.na(protein)]
   # stressdat[2, ]: the literature source of the data
-  msgout("stress: found ", length(protein), " proteins for ", organism, " in ", condition, " from ", stressdat[2, imatch], "\n")
+  message("stress: found ", length(protein), " proteins for ", organism, " in ", condition, " from ", stressdat[2, imatch])
   out <- list(protein=protein, abundance=rep(1, length(protein)))
   return(out)
 }
@@ -35,8 +35,8 @@ yeastgfp <- function(location=NULL, exclusive=TRUE) {
   # if location is NULL, just report on the content of the file
   # and return the names of the locations
   if(is.null(location)) {
-    msgout("yeastgfp: ", ypath, " has ", nrow(ygfp), " localizations and ",
-      length(ygfp$abundance[!is.na(ygfp$abundance)]), " abundances\n")
+    message("yeastgfp: ", ypath, " has ", nrow(ygfp), " localizations and ",
+      length(ygfp$abundance[!is.na(ygfp$abundance)]), " abundances")
     return(invisible(colnames(ygfp)[6:28]))
   }
   # iterate over multiple locations
@@ -51,8 +51,8 @@ yeastgfp <- function(location=NULL, exclusive=TRUE) {
       # find the number of localizations of each ORF
       localizations <- numeric(nrow(ygfp))
       for(j in 6:28) localizations <- localizations + as.logical(ygfp[,j])
-      if(all(localizations[thisygfp] > 1)) msgout("yeastgfp: no exclusive localization found for ",location[i],
-        " ... using non-exclusive localizations\n",sep="")
+      if(all(localizations[thisygfp] > 1)) message("yeastgfp: no exclusive localization found for ",location[i],
+        " ... using non-exclusive localizations",sep="")
       else thisygfp <- thisygfp & ! localizations > 1
     }
     protein <- as.character(ygfp$yORF[thisygfp])

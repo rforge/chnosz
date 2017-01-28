@@ -65,7 +65,7 @@ affinity <- function(...,property=NULL,sout=NULL,exceed.Ttr=FALSE,
     ibufbasis <- which(!can.be.numeric(mybasis$logact))
     if(!is.null(mybasis) & length(ibufbasis) > 0) {
       buffer <- TRUE
-      msgout('affinity: loading buffer species\n')
+      message('affinity: loading buffer species')
       if(!is.null(thermo$species)) is.species <- 1:nrow(thermo$species) else is.species <- numeric()
       is.buffer <- buffer(logK=NULL)
       thermo <- get("thermo", "CHNOSZ")

@@ -248,12 +248,12 @@ energy.args <- function(args) {
   }
   # report non-variables to user
   if(!T.is.var)
-    msgout('energy.args: temperature is ',outvert(T,'K'),' ',T.units(),'\n')
+    message('energy.args: temperature is ',outvert(T,'K'),' ',T.units())
   if(!P.is.var) {
-    if(identical(P,"Psat")) msgout("energy.args: pressure is Psat\n")
-    else msgout('energy.args: pressure is ',outvert(P,'bar'),' ',P.units(),'\n')
+    if(identical(P,"Psat")) message("energy.args: pressure is Psat")
+    else message('energy.args: pressure is ',outvert(P,'bar'),' ',P.units())
   }
-  if(!IS.is.var & !identical(IS,0)) msgout('energy.args: ionic strength is ',IS,'\n')
+  if(!IS.is.var & !identical(IS,0)) message('energy.args: ionic strength is ',IS)
   # default values for resolution
   res <- 128
   # where we store the output
@@ -283,12 +283,12 @@ energy.args <- function(args) {
         if(transect) args[[i]] <- -args[[i]]
         else args[[i]][1:2] <- -args[[i]][1:2]
         if(!'H+' %in% rownames(thermo$basis)) 
-          msgout('energy.args: pH requested, but no H+ in the basis\n')
+          message('energy.args: pH requested, but no H+ in the basis')
       } 
       if(names(args)[i]=="pe") {
         names(args)[i] <- "e-"
         if(!'e-' %in% rownames(thermo$basis)) 
-          msgout('energy.args: pe requested, but no e- in the basis\n')
+          message('energy.args: pe requested, but no e- in the basis')
         if(transect) args[[i]] <- -args[[i]]
         else args[[i]][1:2] <- -args[[i]][1:2]
       }
@@ -316,8 +316,8 @@ energy.args <- function(args) {
       if(nametxt=="T") unittxt <- " K"
       if(nametxt=="P") unittxt <- " bar"
       if(nametxt=="Eh") unittxt <- " V"
-      msgout("energy.args: variable ", length(vars), " is ", nametxt, 
-        " at ", n, " values from ", lims.orig[1], " to ", lims.orig[2], unittxt, "\n")
+      message("energy.args: variable ", length(vars), " is ", nametxt, 
+        " at ", n, " values from ", lims.orig[1], " to ", lims.orig[2], unittxt)
     }
   }
   args <- list(what=what,vars=vars,vals=vals,lims=lims,T=T,P=P,IS=IS,transect=transect)

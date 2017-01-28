@@ -84,7 +84,7 @@ revisit <- function(eout, objective = "CV", loga2 = NULL, loga0 = NULL, ispecies
   dim1 <- dim(as.array(loga1[[1]]))
   # the number of dimensions
   nd <- ifelse(identical(dim1, 1L), 0, length(dim1))
-  msgout(paste("revisit: calculating", objective, "in", nd, "dimensions\n"))
+  message(paste("revisit: calculating", objective, "in", nd, "dimensions"))
 
   # get the objective function
   objfun <- get.objfun(objective)

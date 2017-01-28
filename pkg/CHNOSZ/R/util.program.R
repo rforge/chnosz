@@ -29,11 +29,11 @@ palply <- function(varlist, X, FUN, ...) {
     # export the variables and notify the user
     if(! "" %in% varlist) {
       parallel::clusterExport(cl, varlist)
-      msgout(paste("palply:", caller.name(4), "running", length(X), "calculations on",
-        nCores, "cores with variable(s)", paste(varlist, collapse=", "), "\n"))
+      message(paste("palply:", caller.name(4), "running", length(X), "calculations on",
+        nCores, "cores with variable(s)", paste(varlist, collapse=", ")))
     } else {
-      msgout(paste("palply:", caller.name(4), "running", length(X), "calculations on",
-        nCores, "cores\n"))
+      message(paste("palply:", caller.name(4), "running", length(X), "calculations on",
+        nCores, "cores"))
     }
     # run the calculations
     out <- parallel::parLapply(cl, X, FUN, ...)

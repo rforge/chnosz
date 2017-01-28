@@ -67,8 +67,8 @@ info.character <- function(species, state=NULL, check.protein=TRUE) {
       available.states <- thermo$obigt$state[matches.species]
       if(length(available.states)==1) a.s.verb <- "is" else a.s.verb <- "are"
       a.s.text <- paste("'", available.states, "'", sep="", collapse=" ")
-      msgout("info.character: requested state '", state, "' for ", species, 
-        " but only ", a.s.text, " ", a.s.verb, " available\n")
+      message("info.character: requested state '", state, "' for ", species, 
+        " but only ", a.s.text, " ", a.s.verb, " available")
       return(NA)
     }
     matches.species <- matches.state
@@ -83,8 +83,8 @@ info.character <- function(species, state=NULL, check.protein=TRUE) {
   if(length(ispecies) > length(ispecies.out)) {
     ispecies.other <- ispecies[!ispecies %in% ispecies.out]
     othertext <- paste(thermo$obigt$state[ispecies.other], collapse=", ")
-    msgout("info.character: found ", species, "(", thermo$obigt$state[ispecies.out], 
-      "), also available in ", othertext, "\n")
+    message("info.character: found ", species, "(", thermo$obigt$state[ispecies.out], 
+      "), also available in ", othertext)
   }
   return(ispecies.out)
 }
@@ -113,8 +113,8 @@ info.numeric <- function(ispecies, check.it=TRUE) {
   if(length(naGHS)==1) {
     # calculate a single missing one of G, H, or S from the others
     GHS <- as.numeric(GHS(as.character(this$formula), G=this[,8], H=this[,9], S=this[,10]))
-    msgout("info.numeric: ", colnames(this)[8:10][naGHS], " of ",
-      this$name, "(", this$state, ") is NA; set to ", round(GHS[naGHS],2), "\n")
+    message("info.numeric: ", colnames(this)[8:10][naGHS], " of ",
+      this$name, "(", this$state, ") is NA; set to ", round(GHS[naGHS],2))
     this[, naGHS+7] <- GHS[naGHS]
   } 
   # now perform consistency checks for GHS and EOS parameters if check.it=TRUE
@@ -125,7 +125,7 @@ info.numeric <- function(ispecies, check.it=TRUE) {
     calcCp <- checkEOS(this, this$state, "Cp")
     # fill in NA heat capacity
     if(!is.na(calcCp) & is.na(this$Cp)) {
-      msgout("info.numeric: Cp of ", this$name, "(", this$state, ") is NA; set by EOS parameters to ", round(calcCp, 2), "\n")
+      message("info.numeric: Cp of ", this$name, "(", this$state, ") is NA; set by EOS parameters to ", round(calcCp, 2))
       this$Cp <- as.numeric(calcCp)
     }
     # check tabulated volumes - only for aq (HKF equation)
@@ -133,7 +133,7 @@ info.numeric <- function(ispecies, check.it=TRUE) {
       calcV <- checkEOS(this, this$state, "V")
       # fill in NA volume
       if(!is.na(calcV) & is.na(this$V)) {
-        msgout("info.numeric: V of ", this$name, "(", this$state, ") is NA; set by EOS parameters to ", round(calcV, 2), "\n")
+        message("info.numeric: V of ", this$name, "(", this$state, ") is NA; set by EOS parameters to ", round(calcV, 2))
         this$V <- as.numeric(calcV)
       }
     }
@@ -158,20 +158,20 @@ info.approx <- function(species, state=NULL) {
   if(!is.na(approx.species[1])) {
     # show the names of the species
     if(length(approx.species)==1) {
-      msgout("info.approx: '", species, "' is similar to ", info.text(approx.species), "\n")
+      message("info.approx: '", species, "' is similar to ", info.text(approx.species))
     } else {
       napprox.max <- 25
       exttext <- ":"
       if(length(approx.species) > napprox.max) exttext <- paste(" (showing first ", napprox.max, ")", sep="")
-      msgout("info.approx: '", species, "' is ambiguous; has approximate matches to ", 
-        length(approx.species), " species", exttext, "\n")
+      message("info.approx: '", species, "' is ambiguous; has approximate matches to ", 
+        length(approx.species), " species", exttext)
       printout <- capture.output(print(thermo$obigt$name[head(approx.species, napprox.max)]))
-      msgout(paste(printout, collapse="\n"), "\n")
+      message(paste(printout, collapse="\n"))
     }
     return(approx.species)
   }
   # if we got here there were no approximate matches
-  msgout("info.approx: '", species, "' has no approximate matches\n")
+  message("info.approx: '", species, "' has no approximate matches")
   return(NA)
 }
 
@@ -180,13 +180,13 @@ info <- function(species=NULL, state=NULL, check.it=TRUE) {
   ## if no species are requested, summarize the available data  20101129
   thermo <- get("thermo")
   if(is.null(species)) {
-    msgout("info: 'species' is NULL; summarizing information about thermodynamic data...\n")
-    msgout(paste("thermo$obigt has", nrow(thermo$obigt[thermo$obigt$state=="aq", ]), "aqueous,",
-      nrow(thermo$obigt), "total species\n"))
-    msgout(paste("number of literature sources: ", nrow(thermo$refs), ", elements: ",
-      nrow(thermo$element), ", buffers: ", length(unique(thermo$buffers$name)), "\n", sep=""))
-    msgout(paste("number of proteins in thermo$protein is", nrow(thermo$protein), "from",
-      length(unique(thermo$protein$organism)), "organisms\n"))
+    message("info: 'species' is NULL; summarizing information about thermodynamic data...")
+    message(paste("thermo$obigt has", nrow(thermo$obigt[thermo$obigt$state=="aq", ]), "aqueous,",
+      nrow(thermo$obigt), "total species"))
+    message(paste("number of literature sources: ", nrow(thermo$refs), ", elements: ",
+      nrow(thermo$element), ", buffers: ", length(unique(thermo$buffers$name)), sep=""))
+    message(paste("number of proteins in thermo$protein is", nrow(thermo$protein), "from",
+      length(unique(thermo$protein$organism)), "organisms"))
     # print information about SGD.csv, ECO.csv, HUM.csv
     more.aa(organism="Sce")
     more.aa(organism="Eco")

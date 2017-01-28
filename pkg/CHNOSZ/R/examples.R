@@ -36,11 +36,11 @@ demos <- function(which=c("sources", "NaCl", "density",
   # run one or more demos from CHNOSZ with ask=FALSE, and return the value of the last one
   for(i in 1:length(which)) {
     # say something so the user sees where we are
-    msgout("------------\n")
+    message("------------")
     if(which[i]=="dehydration" & !to.file) {
-      msgout("demos: skipping dehydration demo as to.file is FALSE\n")
+      message("demos: skipping dehydration demo as to.file is FALSE")
       next 
-    } else msgout(paste("demos: running '", which[i], "'\n", sep=""))
+    } else message(paste("demos: running '", which[i], "'", sep=""))
     if(to.file & !which[i]=="dehydration") {
       if(which[i]=="bugstab") png(paste(which[i], "%d.png", sep=""), width=700, height=500, pointsize=12)
       else png(paste(which[i], "%d.png", sep=""), width=500, height=500, pointsize=12)

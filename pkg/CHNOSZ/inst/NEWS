@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-11 (2017-01-22)
+CHANGES IN CHNOSZ 1.0.8-13 (2017-01-28)
 ---------------------------------------
 
 - Add "AA" as a keyword for preset species in basis() (cysteine,
@@ -34,6 +34,10 @@ CHANGES IN CHNOSZ 1.0.8-11 (2017-01-22)
 - diagram() draws smoother boundary lines (with contour(); 'lty' is
   usable), at the expense of not being precisely aligned with the grid
   used for plotting colors. For the old behavior, use dotted=0.
+
+- Remove msgout(), and replace previous calls to that function with
+  message() from base R. As a result, the messages don't appear in Sweave
+  vignettes, but can now be turned on or off easily in knitr vignettes.
 
 CHANGES IN CHNOSZ 1.0.8 (2016-05-28)
 ------------------------------------

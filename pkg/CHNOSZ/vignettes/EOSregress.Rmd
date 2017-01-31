@@ -4,7 +4,9 @@ subtitle: "EOSregress in [CHNOSZ](http://www.chnosz.net)"
 author: "Jeffrey M. Dick"
 date: "`r Sys.Date()`"
 output:
-  tufte::tufte_html: default
+  tufte::tufte_html:
+    tufte_features: ["background", "italics"]
+    css: "vig.css"
   tufte::tufte_handout:
     citation_package: natbib
     latex_engine: xelatex

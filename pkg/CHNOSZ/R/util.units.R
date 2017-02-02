@@ -11,7 +11,7 @@ P.units <- function(units=NULL) {
   # set the units and return them
   if(units=="bar") with(as.environment("CHNOSZ"), thermo$opt$P.units <- "bar")
   if(units=="mpa") with(as.environment("CHNOSZ"), thermo$opt$P.units <- "MPa")
-  return(get("thermo")$opt$P.units)
+  message("changed pressure units to ", get("thermo")$opt$P.units)
 }
 
 T.units <- function(units=NULL) {
@@ -24,7 +24,7 @@ T.units <- function(units=NULL) {
   # set the units and return them
   if(units=="c") with(as.environment("CHNOSZ"), thermo$opt$T.units <- "C")
   if(units=="k") with(as.environment("CHNOSZ"), thermo$opt$T.units <- "K")
-  return(get("thermo")$opt$T.units)
+  message("changed temperature units to ", get("thermo")$opt$T.units)
 }
 
 E.units <- function(units=NULL) {
@@ -37,7 +37,7 @@ E.units <- function(units=NULL) {
   # set the units and return them
   if(units=="cal") with(as.environment("CHNOSZ"), thermo$opt$E.units <- "cal")
   if(units=="j") with(as.environment("CHNOSZ"), thermo$opt$E.units <- "J")
-  return(get("thermo")$opt$E.units)
+  message("changed energy units to ", get("thermo")$opt$E.units)
 }
 
 outvert <- function(value,units) {

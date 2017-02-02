@@ -160,7 +160,7 @@ info.approx <- function(species, state=NULL) {
     if(length(approx.species)==1) {
       message("info.approx: '", species, "' is similar to ", info.text(approx.species))
     } else {
-      napprox.max <- 25
+      napprox.max <- 100
       exttext <- ":"
       if(length(approx.species) > napprox.max) exttext <- paste(" (showing first ", napprox.max, ")", sep="")
       message("info.approx: '", species, "' is ambiguous; has approximate matches to ", 

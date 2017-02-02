@@ -5,7 +5,7 @@ author: "Jeffrey M. Dick"
 date: "`r Sys.Date()`"
 output:
   tufte::tufte_html:
-    tufte_features: ["background", "italics"]
+    tufte_features: ["background"]
     css: "vig.css"
   tufte::tufte_handout:
     citation_package: natbib
@@ -17,7 +17,7 @@ vignette: >
   %\VignetteIndexEntry{Regressing thermodynamic data}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
-bibliography: EOSregress.bib
+bibliography: vig.bib
 link-citations: yes
 ---
 

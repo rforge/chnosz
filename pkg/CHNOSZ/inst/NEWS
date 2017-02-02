@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-14 (2017-01-29)
+CHANGES IN CHNOSZ 1.0.8-15 (2017-02-02)
 ---------------------------------------
 
 - Add "AA" as a keyword for preset species in basis() (cysteine,
@@ -38,6 +38,8 @@ CHANGES IN CHNOSZ 1.0.8-14 (2017-01-29)
 - Remove msgout(), and replace previous calls to that function with
   message() from base R. As a result, the messages don't appear in Sweave
   vignettes, but can now be turned on or off easily in knitr vignettes.
+
+- Add vignette newintro.Rmd.
 
 CHANGES IN CHNOSZ 1.0.8 (2016-05-28)
 ------------------------------------

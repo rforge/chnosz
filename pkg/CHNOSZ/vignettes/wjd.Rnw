@@ -1,4 +1,4 @@
-%% LyX 2.1.3 created this file.  For more info, see http://www.lyx.org/.
+%% LyX 2.2.2 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
 \documentclass[english,noae,round]{article}
 \usepackage{mathpazo}
@@ -36,9 +36,7 @@
 
 \title{Winding journey down (in Gibbs energy)}
 
-
 \author{Jeffrey M. Dick}
-
 \maketitle
 
 \section{Introduction}
@@ -50,7 +48,7 @@ some examples of its usage. The help page for \texttt{wjd()} in the
 CHNOSZ documentation has details of the implementation that are not
 covered in this vignette. The functions demonstrated here are not
 intended for aqueous solutions or heterogeneous phase equilibria,
-which are covered in some reviews \citep[e.g.][]{NPW+79}.
+which are covered in some reviews \citep[e.g.][]{NPW_79}.
 
 The arguments of \texttt{wjd()} have default values to simulate the
 example problem given by \citealp{WJD58}. In their words, ``The
@@ -171,10 +169,10 @@ condition can be difficult. One type of observation that can be helpful
 is the amount of change during the iterations of the algorithm. As
 equilibrium is approached, it makes sense that the fractional decreases
 in Gibbs energy would become smaller and smaller. This is used as
-a stopping condition in the current implementation -- if the fractional
-change, relative to the total energy of the system, reaches the value
-of \texttt{Gfrac} given in the arguments the iterations stop. Here
-are the fractional changes with each iteration:
+a stopping condition in the current implementation \textendash{} if
+the fractional change, relative to the total energy of the system,
+reaches the value of \texttt{Gfrac} given in the arguments the iterations
+stop. Here are the fractional changes with each iteration:
 
 <<Gfrac>>=
 diff(w$F.Y)/w$F.Y[1:7]
@@ -182,7 +180,6 @@ diff(w$F.Y)/w$F.Y[1:7]
 
 Only the last value is below the default value of \texttt{Gfrac} in
 \texttt{wjd()}.
-
 
 \subsection{Chemical potentials of the elements (from different species representing
 them) become more uniform}
@@ -244,7 +241,6 @@ is.near.equil(w, tol=0.00001)
 
 \subsection{Different initial solutions yield similar results}
 
-
 \paragraph{Different guesses for an underdetermined system}
 
 Although it seems to be the case in the examples shown so far, increasing
@@ -296,8 +292,6 @@ Using the first guess generated using the ``stoich'' method there
 were \Sexpr{niterY1-niter} more iterations than using the default
 initial solution in \texttt{wjd()}.
 
-
-
 Do the different initial guesses actually give similar results?
 
 \setkeys{Gin}{width=0.6\textwidth}
@@ -312,7 +306,6 @@ points(1:10, wY1$X, pch=0)
 \setkeys{Gin}{width=0.6\textwidth}
 
 At that scale it's fairly difficult to tell them apart.
-
 
 \paragraph{Comparing many different guesses}
 
@@ -374,7 +367,6 @@ solution, it seems likely that we are near the global minimum.
 only a unique solution \citep{Oth76}. Therefore, the algorithm should
 converge on the same result for any initial vector of species mole
 numbers with the same bulk composition.)
-
 
 \section{An example from the literature: prebiological atmospheres}
 
@@ -454,7 +446,6 @@ there appears to be a second major crossing of curves at about 43\%
 carbon, corresponding to a rise in CO. (For a higher resolution, try
 setting \texttt{xCs <- seq(8, 47, 1)}.)
 
-
 \section{Running Down: Using a Thermodynamic Database}
 
 So far the examples shown here have been based on the chemical system
@@ -464,7 +455,6 @@ to manually construct the stoichiometric matrices and vectors of standard
 Gibbs energies of the species. The function \texttt{run.wjd()} pulls
 the compositional and thermodynamic data for requested species from
 the thermodynamic database and then calls \texttt{wjd()}.
-
 
 \subsection{At a single temperature}
 

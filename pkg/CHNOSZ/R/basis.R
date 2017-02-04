@@ -27,7 +27,7 @@ put.basis <- function(ispecies, logact = rep(NA, length(ispecies))) {
   if( nrow(comp) < ncol(comp) ) stop("underdetermined system; square stoichiometric matrix needed")
   # the second test: matrix is invertible
   if(class(try(solve(comp), silent=TRUE))=='try-error') 
-    stop("singular stoichiometric matrix; invertible one needed")
+    stop("singular stoichiometric matrix")
   # store the basis definition in thermo$basis, including
   # both numeric and character data, so we need to use a data frame
   comp <- cbind(as.data.frame(comp), ispecies, logact, state, stringsAsFactors=FALSE)

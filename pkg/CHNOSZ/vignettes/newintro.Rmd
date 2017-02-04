@@ -19,6 +19,7 @@ vignette: >
   \usepackage[utf8]{inputenc}
 bibliography: vig.bib
 link-citations: yes
+csl: elementa.csl
 ---
 
 ```{r options, include=FALSE}
@@ -31,7 +32,10 @@ options(digits = 6)
 knitr::opts_chunk$set(tidy = FALSE, cache.extra = packageVersion('tufte'))
 options(htmltools.dir.version = FALSE)
 knitr::knit_hooks$set(small.mar = function(before, options, envir) {
-    if (before) par(mar = c(4, 4, .1, .1))  # smaller margin on top and right
+    if (before) par(mar = c(4.2, 4.2, .1, .1))  # smaller margin on top and right
+})
+knitr::knit_hooks$set(tiny.mar = function(before, options, envir) {
+    if (before) par(mar = c(.1, .1, .1, .1))  # tiny margin all around
 })
 ```
 
@@ -47,7 +51,7 @@ Nevertheless, the database and functions are flexible, allowing one to model the
 
 ## Installing and loading CHNOSZ
 
-If you have just installed R for the first time, and you have an internet connection, installing CHNOSZ should be as simple as selecting the "Install packages from CRAN" or similar menu item in the R GUI or using the following command to start the package installation process:^[Or, install the package from a local package file, which you can download from [CRAN](http://cran.r-project.org) or from the [CHNOSZ website](http://chnosz.net).
+If you have just installed R for the first time, and you have an Internet connection, installing CHNOSZ should be as simple as selecting the "Install packages from CRAN" or similar menu item in the R GUI or using the following command to start the package installation process:^[Or, install the package from a local package file, which you can download from [CRAN](http://cran.r-project.org) or from the [CHNOSZ website](http://chnosz.net).
 ][]()
 ```{r install_CHNOSZ, eval=FALSE}
 install.packages("CHNOSZ")
@@ -239,7 +243,7 @@ subcrt(c("CO2", "CO2"), c("gas", "aq"), c(-1, 1))
 ```
 
 <p> <!--- needed to make the citation appear correction 20170202 -->
-In order to make a plot like that shown by Manning et al. [-@MSS13, Figure 18], let's run more calculations and store the results.
+In order to make a plot like Figure 18 of @MSS13, let's run more calculations and store the results.
 In addition to the reaction definition, we specify a greater number of temperature points than the default:
 ```{r dissolution, echo=FALSE, message=FALSE}
 T <- seq(0, 350, 10)
@@ -262,15 +266,149 @@ Here, the `axis.label()` function of CHNOSZ is used to create formatted axis lab
 
 ## Unbalanced reactions
 
+A balanced chemical reaction conserves mass.
+`subcrt()` won't stop you from running an unbalanced reaction, but it will give you a warning:
+```{r subcrt_unbalanced, results="hide"}
+subcrt(c("CO2", "CH4"), c(-1, 1))
+```
+
+In other words, to balance the reaction, we should add exactly 4 H to the left and 2 O to the right.
+That could be done manually be redefining the reaction with the appropriate species.
+There is another option: balancing the reaction automatically using basis species.
+
 ## Setting the basis species
+
+_Basis species_ are a minimal number of chemical species that represent the compositional variation in a system.
+The basis species are similar to thermodynamic components, but can include charged species. 
+You might want to use basis species to automatically balance reactions.
+A basis setting is also required for making chemical activity diagrams.
+
+Let's start with an example that **doesn't** work:
+```{r basis_singular, error=TRUE}
+basis(c("CO2", "H2", "H2CO2"))
+```
+
+That set of species has a singular (non-invertible) stoichiometric matrix.
+An error would also result from either an underdetermined or overdetermined system.
+A valid set of basis species has an invertible stoichiometric matrix and the same number of species as elements.
+
+```{r basis_CHO}
+basis(c("CO2", "H2", "H2O"))
+```
+The composition of any species made up of C, H, and O can be represented by a single linear combination of these basis species.
 
 ## Auto-balancing reactions
 
-# Basic diagrams
+Methanogenic metabolism in reducing environments may take advantage of acetoclastic or hydrogenotrophic processes.
+To consider reactions involving a charged species (acetate), let's define a basis with H<sup>+</sup>:
+```{r basis_CHOZ}
+basis(c("CO2", "H2", "H2O", "H+"))
+```
+
+By identifying species *other than* the basis species, the reactions will be automatically balanced.
+This produces the balanced reaction for acetoclastic methanogenesis:
+```{r subcrt_acetoclastic, message=FALSE}
+subcrt(c("acetate", "methane"), c(-1, 1))$reaction
+```
+
+We can similarly consider reactions for hydrogenotrophic methanogenesis as well as acetate oxidation (no production of methane):
+```{r subcrt_methanogenesis, message=FALSE}
+acetate_oxidation <- subcrt("acetate", -1)
+hydrogenotrophic <- subcrt("methane", 1)
+acetoclastic <- subcrt(c("acetate", "methane"), c(-1, 1))
+```
+
+<p>
+Use `describe.reaction()` to write the reactions on a plot:
+```{r describe_reaction_plot, fig.margin=TRUE, fig.width=3.5, fig.height=1.8, tiny.mar=TRUE, dpi=50, out.width="100%"}
+plot(0, 0, type="n", axes=FALSE, ann=FALSE, xlim=c(0, 5), ylim=c(5.2, -0.2))
+text(0, 0, "acetoclastic methanogenesis", adj=0)
+text(5, 1, describe.reaction(acetoclastic$reaction), adj=1)
+text(0, 2, "acetate oxidation", adj=0)
+text(5, 3, describe.reaction(acetate_oxidation$reaction), adj=1)
+text(0, 4, "hydrogenotrophic methanogenesis", adj=0)
+text(5, 5, describe.reaction(hydrogenotrophic$reaction), adj=1)
+```
+
+## Non-standard state affinities and Gibbs energies
+
+Usually, `subcrt()` returns only standard state thermodynamic properties.^[
+The standard state adopted for H2O is unit activity of the pure component at any *T* and *P*.
+The standard state for aqueous species specifies unit activity of a hypothetical one molal solution referenced to infinite dilution at any *T* and *P*.
+]
+Thermodynamic models often consider a non-standard state (i.e. non-unit activity).
+The activities of basis species can be modified with <span style="color:red">`basis()`</span>, and those of the other species using the `logact` argument in `subcrt()`.
+
+Let us calculate the chemical affinity^[equal to the negative of the overall (non-standard) Gibbs energy change of the reaction] of acetoclastic methanogenesis.
+We begin by changing the energy units to Joules.
+Then, we change the state of H<sub>2</sub> and CO<sub>2</sub> in the basis from `aq` (aqueous) to `gas`, and set the logarithm of fugacity of gaseous H<sub>2</sub> and the pH, using values from @MDS_13.
+The activity of acetate and fugacity of methane, as well as temperature and pressure, are set in the call to `subcrt()`:
+```{r basis_mayumi, message=FALSE, results="hide"}
+E.units("J")
+basis(c("CO2", "H2"), "gas")
+basis(c("H2", "pH"), c(-3.92, 7.3))
+```
+```{r affinity_acetoclastic, message=FALSE}
+subcrt(c("acetate", "methane"), c(-1, 1),
+       c("aq", "gas"), logact=c(-3.4, -0.18), T=55, P=50)$out
+```
+
+The new `A` column shows the affinity; the other columns are unaffected and still show the standard-state properties.
+Let's repeat the calculation for hydrogenotrophic methanogenesis.
+```{r affinity_hydrogenotrophic, message=FALSE}
+subcrt("methane", 1, "gas", logact=-0.18, T=55, P=50)$out
+```
+
+Under the specified conditions, the affinities of hydrogenotrophic and acetoclastic methanogenesis are somewhat greater than and less than 20 kJ, respectively.
+This result matches Figure 4b in Mayumi et al. (2013) at unit fugacity of CO<sub>2</sub>.
+
+We can go even further and reproduce their plot.^[The reproduction is not identical, owing to differences of thermodynamic data and of calculations of the effects of temperature and pressure.]
+To make the code neater, we write a function that can run any of the reactions:
+```{r rxnfun, message=FALSE}
+rxnfun <- function(coeffs) {
+  subcrt(c("acetate", "methane"), coeffs,
+         c("aq", "gas"), logact=c(-3.4, -0.18), T=55, P=50)$out
+}
+```
+
+<p>
+Now we're ready to calculate and plot the affinities.
+Here, we use the `lapply()` function of R to list the results at two values of logarithm of fugacity of CO<sub>2</sub>.
+We insert an empty reaction to get a line at zero affinity.
+`do.call(rbind, Adat)` turns the list into a data frame that can be plotted with `matplot()`.
+There, we plot the negative affinities, equal to Gibbs energy, as shown in the plot of Mayumi et al. (2013).
+```{r methanogenesis_plot, fig.margin=TRUE, fig.width=4.1, fig.height=4.1, small.mar=TRUE, dpi=50, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Gibbs energies of acetate oxidation and methanogenesis (after Mayumi et al., 2013).", cache=TRUE}
+Adat <- lapply(c(-3, 3), function(logfCO2) {
+  basis("CO2", logfCO2)
+  data.frame(logfCO2,
+    rxnfun(c(0, 0))$A,
+    rxnfun(c(-1, 0))$A,
+    rxnfun(c(-1, 1))$A,
+    rxnfun(c(0, 1))$A
+  )
+})
+Adat <- do.call(rbind, Adat)
+matplot(Adat[, 1], -Adat[, -1]/1000, type="l", lty=1, lwd=2,
+  xlab=axis.label("CO2"), ylab=axis.label("DG", prefix="k"))
+legend("topleft", c("acetate oxidation", "acetoclastic methanogenesis",
+  "hydrogenotrophic methanogenesis"), lty=1, col=2:4)
+```
+```{r methanogenesis_plot, echo=TRUE, eval=FALSE}
+```
+
+Let't not forget to clear the system settings, which were modified by <span style="color:red">`basis()`</span> and <span style="color:red">`E.units()`</span>, before running other calculations:
+```{r data_thermo, message=FALSE}
+```
+
+
+
+# Thermodynamic potential: `affinity()`
+
+`affinity()` offers calculations of chemical affinity of formation reactions over a configurable range of T, P, and activities of basis species.
 
 ## Setting the species of interest
 
-## Thermodynamic potential: `affinity()`
+The formation reactions refer to the formation of one mole of each the species from the basis species.
 
 ## Predominance: the `diagram()` function
 

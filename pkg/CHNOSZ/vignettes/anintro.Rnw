@@ -1,8 +1,9 @@
-%% LyX 2.1.3 created this file.  For more info, see http://www.lyx.org/.
+%% LyX 2.2.2 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
 \documentclass[english,noae,round]{article}
 \usepackage{mathpazo}
 \usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 \usepackage[letterpaper]{geometry}
 \geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
 \usepackage{color}
@@ -48,7 +49,6 @@
 
 \title{An introduction to CHNOSZ}
 
-
 \author{Jeffrey M. Dick}
 
 \maketitle
@@ -81,13 +81,12 @@ to model the relative stabilities of proteins, minerals or aqueous
 species using very similar commands. Examples below are intended to
 demonstrate basic usage to new users.
 
-
 \subsection{Outline of workflow}
 
 CHNOSZ is made up of a set of functions and supporting datasets. The
 major components of the package are shown in the figure below, which
 is an updated version of the flowchart from \citet{Dic08} (boxes
--- functions; ellipses -- datasets; bold text -- major user functions).
+– functions; ellipses – datasets; bold text – major user functions).
 
 \includegraphics[bb=0bp 440bp 612bp 792bp,clip,width=0.75\columnwidth]{flowchart}
 
@@ -119,7 +118,6 @@ find it helpful to save sequences of function calls that produce interesting
 results. The results can then be reproduced on demand by yourself
 or others with whom you might share your scripts.
 
-
 \subsection{Installing and loading CHNOSZ}
 
 If you have just installed R, and you are online, installing the CHNOSZ
@@ -150,7 +148,6 @@ data(thermo)
 The rest of this document assumes that the CHNOSZ package and data
 are loaded.
 
-
 \section{Thermodynamic database}
 
 
@@ -168,7 +165,7 @@ into a secondary database (OBIGT-2.csv) that should be regarded as
 experimental. If there is any doubt about the accuracy or suitability
 of data for a particular problem, please \emph{consult the primary
 sources} (which can be located using \texttt{browse.refs()}; see Section
-\ref{sub:thermo_refs}). Do not assume that by adding any species
+\ref{subsec:thermo_refs}). Do not assume that by adding any species
 to your calculation (or to any of the examples), you will necessarily
 obtain a reasonable answer. Do not assume that the examples are correct,
 or that they can be applied to your problem. As with the data, please
@@ -219,7 +216,7 @@ print(aadata)
 @
 
 
-\subsection{\texttt{\label{sub:thermo_refs}thermo\$refs}}
+\subsection{\texttt{\label{subsec:thermo_refs}thermo\$refs}}
 
 The thermodynamic data and other parameters used by the functions,
 as well as system definitions provided by the user in an interactive
@@ -329,7 +326,6 @@ of the proteins are not present in \texttt{thermo\$obigt}. Therefore,
 the first call to\texttt{ info()} just above had a side effect of
 adding the computed properties and parameters to \texttt{thermo\$obigt}.
 
-
 \section{Reaction properties}
 
 
@@ -361,7 +357,6 @@ Compared to other species available in CHNOSZ, the equations for calculating
 the properties of liquid $\mathrm{H_{2}O}$ are quite complex. The
 package uses a Fortran subroutine taken from SUPCRT for these calculations.
 See \texttt{help(water)} for more information.
-
 
 \subsection{A reaction}
 
@@ -404,7 +399,6 @@ them very cautiously (only if you have a specific reason for writing
 an unbalanced reaction). In the next section we'll see how to use
 another feature of CHNOSZ to automatically balance reactions.
 
-
 \section{Basis species}
 
 
@@ -425,6 +419,7 @@ diagrams. Let's start with an example that \emph{doesn't} work.
 <<basis_not,eval=FALSE>>=
 basis(c("CO2","H2O","NH3","H2S","H+"))
 @
+
 \begin{lyxcode}
 Error~in~put.basis(basis,~mystates)~:~
 
@@ -449,7 +444,6 @@ basis(c("CO2","H2O","NH3","O2","H2S","H+"))
 First basis definition! Note the column names, which give CHNOSZ its
 name. These represent the elements in the commonly-occurring amino
 acids, together with charge, denoted by ``Z''.
-
 
 \subsection{Auto-balancing a reaction}
 
@@ -502,7 +496,6 @@ You might complain that this reaction is not likely to represent an
 actual metabolic process ... as always, the challenge (and fun) of
 coming up with a useful basis definition is in relating the species
 to observable quantities.
-
 
 \subsection{It works for proteins too!}
 
@@ -588,7 +581,6 @@ See the code of the demo (look for \texttt{demo/solubility.R} in the
 directory where CHNOSZ is installed) to change the calculation from
 calcite to $\mathrm{CO_{2}}$.
 
-
 \subsection{Stability diagram for proteins}
 
 Suppose that we are asked to calculate the relative stabilities of
@@ -622,8 +614,8 @@ Now we are all set up to calculate the chemical affinities of the
 formation reactions. The chemical affinity is the negative of the
 Gibbs energy change of a reaction per unit of reaction progress; it
 is calculated in CHNOSZ using $\boldsymbol{A}=2.303RT\log(K/Q)$ ($R$
--- gas constant, $T$ -- temperature, $K$ -- equilibrium constant,
-$Q$ -- activity product).
+– gas constant, $T$ – temperature, $K$ – equilibrium constant, $Q$
+– activity product).
 
 \texttt{affinity()} can accept arguments describing the range of chemical
 conditions we're interested in. The names of the arguments can refer
@@ -653,7 +645,6 @@ diagram(e, legend.x="bottomleft", ylim=c(-6, -2))
 
 Notably, the protein from the organism found at the highest temperatures
 is relatively stable at more reduced conditions.
-
 
 \subsection{More proteins, more dimensions}
 
@@ -720,7 +711,7 @@ diagram(a)
 \setkeys{Gin}{width=1.0\textwidth}
 
 The 999's in the assignment of logarithms of activities of basis species
-could be any number -- these settings do not affect the outcome of
+could be any number – these settings do not affect the outcome of
 the calculation. This is so because 1) $\mathrm{HCl}$, $\mathrm{CO_{2}}$
 and $\mathrm{O_{2}}$ have zero stoichiometric coefficients in the
 species, 2) the activities of $\mathrm{Ca}^{+2}$ and $\mathrm{Mg}^{+2}$
@@ -743,7 +734,6 @@ In just a few lines it's possible to make a wide variety of activity
 diagrams for organic and inorganic species. Try it for your favorite
 system!
 
-
 \section{Where to go from here}
 
 You can explore the package documentation through R's help system;
@@ -765,7 +755,7 @@ example(diagram)
 Or you can use the following to run \emph{all} of the examples provided
 in the documentation for the package. You will see a lot of text fly
 by on the screen, as well as a variety of plots. The examples will
-take about 5--10 minutes to run, depending on your machine. 
+take about 5–10 minutes to run, depending on your machine. 
 
 <<examples,eval=FALSE>>=
 examples()
@@ -786,7 +776,6 @@ help(thermo)
 @
 
 Have fun!
-
 
 \section{More activity diagrams}
 
@@ -815,7 +804,7 @@ to load the properties of the methionine sidechain group used by \citet{DLH06}
 of difference.
 
 Toward the end of the script, points are added for Eh-pH values from
-soils \citep{BKM60} and hot springs in Yellowstone ($+$) \citep{SWM+05}
+soils \citep{BKM60} and hot springs in Yellowstone ($+$) \citep{SWM_05}
 and Iceland ($\blacktriangle$) \citep{SA02}. The symbols identifying
 the latter two sources were swapped in the figure caption of \citet{DLH06}.
 Finally legends are drawn to identify the lines and symbols. The \texttt{describe.property()}
@@ -851,7 +840,7 @@ legend("bottomleft", legend=ltext, pch=c(20, 3, 17))
 
 \subsection{Subcellular proteins}
 
-Localizations and abundances of proteins from YeastGFP \citep{HFG+03,GHB+03}
+Localizations and abundances of proteins from YeastGFP \citep{HFG_03,GHB_03}
 are used here to calculate an abundance-weighted average of amino
 acid compositions of proteins in different subcellular compartments
 of yeast. The relative stabilities of these 23 model proteins are
@@ -907,7 +896,7 @@ method is more versatile (multiple activities can be buffered, e.g.
 both $\mathrm{S_{2}}$ and $\mathrm{O_{2}}$ by pyrite-pyrrhotite-magnetite,
 and the buffers have effects on equilibrium activity diagrams) while
 the latter is more convenient (no need to set up the buffer in \texttt{thermo\$buffer}
--- the buffers come from the species of interest). The plot below,
+– the buffers come from the species of interest). The plot below,
 based on Fig. 6 of \citet{SS95}, shows values of $\log f_{\mathrm{H_{2}}_{\left(g\right)}}$
 buffered by minerals and in equilibrium with different activities
 of organic species that are calculated using these two methods.
@@ -1064,7 +1053,6 @@ such as this one may be misleading if the resolution is not high enough,
 or the initial hypercube is too small. Even after a successful simulation,
 it remains a matter of discussion what the optimized chemical activities
 of the basis species and the amino acids signify.
-
 
 \section{Document information}
 

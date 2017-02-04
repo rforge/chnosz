@@ -1,7 +1,9 @@
-#LyX 2.1 created this file. For more info see http://www.lyx.org/
-\lyxformat 474
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
 \begin_document
 \begin_header
+\save_transient_properties true
+\origin unavailable
 \textclass article
 \begin_preamble
 %\VignetteIndexEntry{An introduction to CHNOSZ}
@@ -17,18 +19,18 @@ sweave
 \maintain_unincluded_children false
 \language english
 \language_package default
-\inputencoding default
+\inputencoding utf8
 \fontencoding global
-\font_roman palatino
-\font_sans default
-\font_typewriter default
-\font_math auto
+\font_roman "palatino" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
-\font_sf_scale 100
-\font_tt_scale 100
+\font_sf_scale 100 100
+\font_tt_scale 100 100
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -211,7 +213,7 @@ key "Dic08"
 
 \end_inset
 
- (boxes -- functions; ellipses -- datasets; bold text -- major user functions).
+ (boxes – functions; ellipses – datasets; bold text – major user functions).
 \end_layout
 
 \begin_layout Standard
@@ -509,7 +511,7 @@ browse.refs()
 ; see Section 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "sub:thermo_refs"
+reference "subsec:thermo_refs"
 
 \end_inset
 
@@ -738,7 +740,7 @@ status open
 \family typewriter
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:thermo_refs"
+name "subsec:thermo_refs"
 
 \end_inset
 
@@ -2196,7 +2198,7 @@ zooms in
 
 \begin_layout Standard
 \begin_inset Branch stuff
-status collapsed
+status open
 
 \begin_layout Standard
 \begin_inset ERT
@@ -2501,19 +2503,19 @@ Now we are all set up to calculate the chemical affinities of the formation
 \begin_inset Formula $R$
 \end_inset
 
- -- gas constant, 
+ – gas constant, 
 \begin_inset Formula $T$
 \end_inset
 
- -- temperature, 
+ – temperature, 
 \begin_inset Formula $K$
 \end_inset
 
- -- equilibrium constant, 
+ – equilibrium constant, 
 \begin_inset Formula $Q$
 \end_inset
 
- -- activity product).
+ – activity product).
 \end_layout
 
 \begin_layout Standard
@@ -2970,8 +2972,8 @@ textwidth}
 
 \begin_layout Standard
 The 999's in the assignment of logarithms of activities of basis species
- could be any number -- these settings do not affect the outcome of the
- calculation.
+ could be any number – these settings do not affect the outcome of the calculati
+on.
  This is so because 1) 
 \begin_inset Formula $\mathrm{HCl}$
 \end_inset
@@ -3137,7 +3139,7 @@ all
  of the examples provided in the documentation for the package.
  You will see a lot of text fly by on the screen, as well as a variety of
  plots.
- The examples will take about 5--10 minutes to run, depending on your machine.
+ The examples will take about 5–10 minutes to run, depending on your machine.
  
 \end_layout
 
@@ -3398,7 +3400,7 @@ key "BKM60"
 ) 
 \begin_inset CommandInset citation
 LatexCommand citep
-key "SWM+05"
+key "SWM_05"
 
 \end_inset
 
@@ -3617,7 +3619,7 @@ Subcellular proteins
 Localizations and abundances of proteins from YeastGFP 
 \begin_inset CommandInset citation
 LatexCommand citep
-key "HFG+03,GHB+03"
+key "HFG_03,GHB_03"
 
 \end_inset
 
@@ -3870,7 +3872,7 @@ diagram()
 \family typewriter
 thermo$buffer
 \family default
- -- the buffers come from the species of interest).
+ – the buffers come from the species of interest).
  The plot below, based on Fig.
  6 of 
 \begin_inset CommandInset citation

@@ -1,7 +1,9 @@
-#LyX 2.1 created this file. For more info see http://www.lyx.org/
-\lyxformat 474
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
 \begin_document
 \begin_header
+\save_transient_properties true
+\origin unavailable
 \textclass article
 \begin_preamble
 %\VignetteIndexEntry{Winding journey down (in Gibbs energy)}
@@ -19,16 +21,16 @@ sweave
 \language_package default
 \inputencoding auto
 \fontencoding global
-\font_roman palatino
-\font_sans default
-\font_typewriter default
-\font_math auto
+\font_roman "palatino" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
-\font_sf_scale 100
-\font_tt_scale 100
+\font_sf_scale 100 100
+\font_tt_scale 100 100
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -159,7 +161,7 @@ wjd()
 \begin_inset CommandInset citation
 LatexCommand citep
 before "e.g."
-key "NPW+79"
+key "NPW_79"
 
 \end_inset
 
@@ -828,7 +830,7 @@ wjd()
  the iterations of the algorithm.
  As equilibrium is approached, it makes sense that the fractional decreases
  in Gibbs energy would become smaller and smaller.
- This is used as a stopping condition in the current implementation -- if
+ This is used as a stopping condition in the current implementation – if
  the fractional change, relative to the total energy of the system, reaches
  the value of 
 \family typewriter

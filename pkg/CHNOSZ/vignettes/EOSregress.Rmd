@@ -19,6 +19,7 @@ vignette: >
   \usepackage[utf8]{inputenc}
 bibliography: vig.bib
 link-citations: yes
+csl: elementa.csl
 ---
 
 ```{r setup, include=FALSE}

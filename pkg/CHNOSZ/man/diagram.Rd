@@ -85,6 +85,7 @@ The line type and line width can be controlled with \code{lty} and \code{lwd}, r
 On 2-D diagrams, the fields represent the species with the highest equilibrium activity.
 \code{fill} determines the color of the predominance fields, \code{col} that of the boundary lines.
 By default, \code{\link{heat.colors}} are used to fill the predominance fields in diagrams on the screen plot device.
+\code{fill} can be any color specification, or the word \samp{rainbow}, \samp{heat}, \samp{terrain}, \samp{topo}, or \samp{cm}, indicating a palette from \pkg{grDevices}.
 
 As of CHNOSZ 1.0.8-11, a new default line-drawing procedure has been implemented.
 This uses \code{\link{contour}} to draw smooth-looking diagonal and curved lines, at the expense of not coinciding exactly with the rectangular grid (which is still used for drawing colors).

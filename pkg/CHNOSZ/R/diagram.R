@@ -421,7 +421,7 @@ diagram <- function(
       }
       if(is.null(fill)) fill <- "transparent"
       else if(isTRUE(fill[1]=="rainbow")) fill <- rainbow(ngroups)
-      else if(isTRUE(fill[1]=="heat")) fill <- heat.colors(ngroups)
+      else if(isTRUE(fill[1] %in% c("heat", "terrain", "topo", "cm"))) fill <- get(paste0(fill[1], ".colors"))(ngroups)
       fill <- rep(fill, length.out=ngroups)
       # the x and y values 
       xs <- eout$vals[[1]]

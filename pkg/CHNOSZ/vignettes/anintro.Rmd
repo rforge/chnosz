@@ -37,6 +37,9 @@ knitr::knit_hooks$set(small.mar = function(before, options, envir) {
 knitr::knit_hooks$set(tiny.mar = function(before, options, envir) {
     if (before) par(mar = c(.1, .1, .1, .1))  # tiny margin all around
 })
+knitr::knit_hooks$set(smallish.mar = function(before, options, envir) {
+    if (before) par(mar = c(4.2, 4.2, 0.9, 0.9))  # smallish margins on top and right
+})
 ```
 
 # About
@@ -44,33 +47,47 @@ knitr::knit_hooks$set(tiny.mar = function(before, options, envir) {
 This document introduces the basic functionality of CHNOSZ, a package for the [R software environment](http://r-project.org).
 For more information on R, see "An Introduction to R" and other documents in [The R Manuals](http://cran.r-project.org/manuals.html).
 
-Since 2006, CHNOSZ has been developed to support a research project on the thermodynamic properties of proteins.
-Over time, the package has grown to calculate thermodynamic properties of reactions and to construct equilibrium chemical activity diagrams for both inorganic and organic systems.
-Development since 2009 has focused on the calculation of chemical affinities and metastable equilibrium for large numbers of proteins with applications to -omic (metagenomic and proteomic) data in various environments.
-Nevertheless, the database and functions are flexible, allowing one to model the relative stabilities of proteins, minerals or aqueous species using similar commands.
+CHNOSZ has been developed since 2006 to support research projects in geochemistry and biochemistry.
+The package provides functions and an extensive thermodynamic database that can be used to calculate the stoichiometric and energetic properties of reactions among minerals and organic or inorganic aqueous species.
+These same functions enable calculations of chemical affinities and metastable equilibrium for systems of proteins.
 
 ## Installing and loading CHNOSZ
 
-If you have just installed R for the first time, and you have an Internet connection, installing CHNOSZ should be as simple as selecting the "Install packages from CRAN" or similar menu item in the R GUI or using the following command to start the package installation process:^[Or, install the package from a local package file, which you can download from [CRAN](http://cran.r-project.org) or from the [CHNOSZ website](http://chnosz.net).
-][]()
+If you have just installed R for the first time, installing CHNOSZ should be as simple as selecting the "Install packages from CRAN" or similar menu item in the R GUI or using the following command to start the package installation process:
+```{marginfigure}
+Or, install the package from a local package file, which you can download from [CRAN](https://cran.r-project.org/package=CHNOSZ) or from the [CHNOSZ website](http://chnosz.net/download).
+```
 ```{r install_CHNOSZ, eval=FALSE}
 install.packages("CHNOSZ")
 ```
 
-Then load the CHNOSZ package to make its functions available in your working session.
+Then load the CHNOSZ package to make its functions available in your R session.
 ```{r library_CHNOSZ}
 library(CHNOSZ)
 ```
 
-Then load the thermo object, which contains the thermodynamic database and is also where your system settings will be stored.
+Then load the thermo object, which contains the thermodynamic database and system settings for CHNOSZ.
 ```{r data_thermo}
 data(thermo)
+```
+
+## Getting help
+
+After CHNOSZ is installed, type <span style="color:blue">`help.start()`</span> to browse the R help documents, then choose "Packages" followed by "CHNOSZ".
+That shows an index of the manual (help page) for each function; many of the help pages include examples.
+There are also links to the *demos* (longer examples) and *vignettes* (more in-depth documentation).
+Suggestions for accessing the documentation are indicated here with <span style="color:blue">blue text</span>.
+For example, read <span style="color:blue">`?"CHNOSZ-package"`</span> to get an overview of the package and a list of features.
+```{marginfigure}
+That page identifies some features as experimental, i.e. not based on published algorithms or extensively compared with published results.
 ```
 
 ## Organization of major functions
 
 CHNOSZ is made up of a set of functions and supporting datasets.
-The major components of the package are shown in the figure below, which is an updated version of the flowchart from @Dic08 (boxes – functions; ellipses – datasets; bold text – major user functions).
+The major components of the package are shown in the figure below, which is an updated version of the flowchart from @Dic08.
+Rectangles and ellipses represent functions and datasets; bold text indicates primary functions.
+
 ![CHNOSZ flowchart](CHNOSZ.png)
 
 Many functions in CHNOSZ have no side effects.
@@ -84,7 +101,7 @@ Major functions without side effects in CHNOSZ are:
 * `diagram()`: plot the results
 
 Some functions in CHNOSZ do have side effects: they modify the `thermo` data object in the current R session.
-In the text (not code) of this document, the names of these functions are shown in <span style="color:red">red</span>.
+In the text (not code) of this document, the names of these functions are shown in <span style="color:red">red text</span>.
 The major functions with side effects are:
 
 * <span style="color:red">`basis()`</span>: set the basis species and their chemical activities
@@ -92,7 +109,7 @@ The major functions with side effects are:
 * <span style="color:red">`data(thermo)`</span>: reset the database, restoring all settings to their default values.
 
 The following pseudocode shows a common sequence of commands.
-In actual usage, the ... are replaced by arguments that define the chemical makeup and range of conditions of the system:
+In actual usage, the `...` are replaced by arguments that define the chemical makeup and range of conditions of the system:
 ```{r, eval=FALSE}
 basis(...)
 species(...)
@@ -108,12 +125,11 @@ Some experimental functions are available:
 
 # Thermodynamic database and chemical formulas
 
-While an attempt has been made to provide a primary database (`OBIGT.csv`) that is generally internally consistent, all thermodynamic data, calculations, and examples are provided *as is*.^[
+While an attempt has been made to provide a primary database (`OBIGT.csv`) that is generally internally consistent, all thermodynamic data, calculations, and examples are provided *as is*.
+```{marginfigure}
 For crucial problems, check not only the accuracy of the database, but also the *suitability of the data* for your problem.
-If there is any doubt about the suitability of data, please consult the primary sources (which can be located using `browse.refs()`; see Section XXX).
-As with the data, please check the *suitability and accuracy of the available computational techniques*, at least by comparing the construction and output of the examples to the primary sources cited in each help page.
-Some examples without references demonstrate the more experimental features of CHNOSZ. 
-]
+If there is any doubt about the suitability of data, please consult the primary sources (see  <span style="color:blue">?`browse.refs`</span>).
+```
 Where possible, data with known or suspected inconsistencies have been placed into a secondary database (`OBIGT-2.csv`) that should be regarded as experimental.
 
 ## The `info()` function
@@ -186,18 +202,30 @@ ZC(makeup(88))
 
 # Calculating thermodynamic properties
 
-To calculate the standard molal properties of species and reactions, use `subcrt()`.^[
-The inspiration for this function (as well as its name), and the source of the FORTRAN subroutine used to calculate the thermodynamic properties of H<sub>2</sub>O, is SUPCRT (Johnson et al. 1992).]<sup> [-@JOH92]</sup>
+To calculate the standard molal properties of species and reactions, use `subcrt()`.
+```{marginfigure}
+The inspiration for the name `subcrt()`, and the source of the FORTRAN subroutine used to calculate the thermodynamic properties of H<sub>2</sub>O, is SUPCRT (Johnson et al., 1992).
+```
+<sup>[-@JOH92]</sup>
 If no reaction coefficients are given, `subcrt()` calculates the standard molal properties of invididual species:
 ```{r subcrt_water}
 subcrt("water")
 ```
 
-That uses the default temperature and pressure settings: equally-spaced temperature grid from 0 to 350 °C at _P_<sub>sat</sub>.^[_P_<sub>sat</sub> is 1 bar below 100 °C, or the pressure of liquid-vapor coexistence at higher temperatures.]
-The columns in the output are^[The corresponding units are °C (`T`), bar (`P`), g cm<sup>-3</sup> (`rho`), cal mol<sup>-1</sup> (`G` and `H`), cal K<sup>-1</sup> mol<sup>-1</sup> (`S`), cm<sup>3</sup> mol<sup>-1</sup> (`V`), and cal K<sup>-1</sup> mol<sup>-1</sup> (`Cp`).] temperature, pressure, density of water, logarithm of the equilibrium constant (only meaningful for reactions; see below), standard molal Gibbs energy and enthalpy of formation from the elements, standard molal entropy, volume, and heat capacity.
+That uses the default temperature and pressure settings: equally-spaced temperature grid from 0 to 350 °C at *P*<sub>sat</sub>.
+```{marginfigure}
+*P*<sub>sat</sub> is 1 bar below 100 °C, or the pressure of liquid-vapor coexistence at higher temperatures.
+```
+The columns in the output are temperature, pressure, density of water, logarithm of the equilibrium constant (only meaningful for reactions; see below), standard molal Gibbs energy and enthalpy of formation from the elements, standard molal entropy, volume, and heat capacity.
+```{marginfigure}
+The corresponding units are °C (`T`), bar (`P`), g cm<sup>-3</sup> (`rho`), cal mol<sup>-1</sup> (`G` and `H`), cal K<sup>-1</sup> mol<sup>-1</sup> (`S`), cm<sup>3</sup> mol<sup>-1</sup> (`V`), and cal K<sup>-1</sup> mol<sup>-1</sup> (`Cp`).
+```
 
 A custom temperature-pressure grid can be specified.
-Here, we calculate the properties of H<sub>2</sub>O on a _T_,_P_ grid in the supercritical region, with conditions grouped by pressure:
+Here, we calculate the properties of H<sub>2</sub>O on a *T*, *P* grid in the supercritical region, with conditions grouped by pressure:
+```{marginfigure}
+See also <span style="color:blue">`demo(density)`</span>.
+```
 ```{r subcrt_water_grid}
 subcrt("water", T=c(400, 500, 600), P=c(200, 400, 600), grid="P")$out$water
 ```
@@ -238,8 +266,12 @@ As expected, we get the same result from both operations.
 
 To calculate the thermodynamic properties of reactions, give the names of species, the physical states (optional), and reaction coefficients as the arguments to `subcrt()`.
 Here we calculate properties for the dissolution of CO<sub>2</sub>:
+```{marginfigure}
+Because of aqueous speciation, this doesn't give the _solubility_ of CO<sub>2</sub>.
+For an example of a solubility calculation, see <span style="color:blue">`demo(solubility)`</span>, which is based on a figure in Manning et al. (2013).
+```
 ```{r CO2_dissolution}
-subcrt(c("CO2", "CO2"), c("gas", "aq"), c(-1, 1))
+subcrt(c("CO2", "CO2"), c("gas", "aq"), c(-1, 1), T=seq(0, 250, 50))
 ```
 
 <p> <!--- needed to make the citation appear correction 20170202 -->
@@ -272,7 +304,7 @@ A balanced chemical reaction conserves mass.
 subcrt(c("CO2", "CH4"), c(-1, 1))
 ```
 
-In other words, to balance the reaction, we should add exactly 4 H to the left and 2 O to the right.
+In other words, to balance the reaction, we should add 4 H to the left and 2 O to the right.
 That could be done manually be redefining the reaction with the appropriate species.
 There is another option: balancing the reaction automatically using basis species.
 
@@ -283,15 +315,14 @@ The basis species are similar to thermodynamic components, but can include charg
 You might want to use basis species to automatically balance reactions.
 A basis setting is also required for making chemical activity diagrams.
 
-Let's start with an example that **doesn't** work:
+Let's start with an example that doesn't work:
 ```{r basis_singular, error=TRUE}
 basis(c("CO2", "H2", "H2CO2"))
 ```
 
 That set of species has a singular (non-invertible) stoichiometric matrix.
 An error would also result from either an underdetermined or overdetermined system.
-A valid set of basis species has an invertible stoichiometric matrix and the same number of species as elements.
-
+A valid set of basis species has an invertible stoichiometric matrix and the same number of species as elements:
 ```{r basis_CHO}
 basis(c("CO2", "H2", "H2O"))
 ```
@@ -332,14 +363,18 @@ text(5, 5, describe.reaction(hydrogenotrophic$reaction), adj=1)
 
 ## Non-standard state affinities and Gibbs energies
 
-Usually, `subcrt()` returns only standard state thermodynamic properties.^[
-The standard state adopted for H2O is unit activity of the pure component at any *T* and *P*.
-The standard state for aqueous species specifies unit activity of a hypothetical one molal solution referenced to infinite dilution at any *T* and *P*.
-]
+Usually, `subcrt()` returns only standard state thermodynamic properties.
+```{marginfigure}
+The standard state adopted for H<sub>2</sub>O is unit activity of the pure component at any *T* and *P*.
+The standard state for aqueous species is unit activity of a hypothetical one molal solution referenced to infinite dilution at any *T* and *P*.
+```
 Thermodynamic models often consider a non-standard state (i.e. non-unit activity).
 The activities of basis species can be modified with <span style="color:red">`basis()`</span>, and those of the other species using the `logact` argument in `subcrt()`.
 
-Let us calculate the chemical affinity^[equal to the negative of the overall (non-standard) Gibbs energy change of the reaction] of acetoclastic methanogenesis.
+Let us calculate the chemical affinity of acetoclastic methanogenesis.
+```{marginfigure}
+The affinity is equal to the negative of the overall (non-standard) Gibbs energy change of the reaction.
+```
 We begin by changing the energy units to Joules.
 Then, we change the state of H<sub>2</sub> and CO<sub>2</sub> in the basis from `aq` (aqueous) to `gas`, and set the logarithm of fugacity of gaseous H<sub>2</sub> and the pH, using values from @MDS_13.
 The activity of acetate and fugacity of methane, as well as temperature and pressure, are set in the call to `subcrt()`:
@@ -362,7 +397,10 @@ subcrt("methane", 1, "gas", logact=-0.18, T=55, P=50)$out
 Under the specified conditions, the affinities of hydrogenotrophic and acetoclastic methanogenesis are somewhat greater than and less than 20 kJ, respectively.
 This result matches Figure 4b in Mayumi et al. (2013) at unit fugacity of CO<sub>2</sub>.
 
-We can go even further and reproduce their plot.^[The reproduction is not identical, owing to differences of thermodynamic data and of calculations of the effects of temperature and pressure.]
+We can go even further and reproduce their plot.
+```{marginfigure}
+The reproduction is not identical, owing to differences of thermodynamic data and of calculations of the effects of temperature and pressure.
+```
 To make the code neater, we write a function that can run any of the reactions:
 ```{r rxnfun, message=FALSE}
 rxnfun <- function(coeffs) {
@@ -400,19 +438,82 @@ Let't not forget to clear the system settings, which were modified by <span styl
 ```{r data_thermo, message=FALSE}
 ```
 
-
-
-# Thermodynamic potential: `affinity()`
+# Affinity, species of interest, and potential diagrams
 
 `affinity()` offers calculations of chemical affinity of formation reactions over a configurable range of T, P, and activities of basis species.
 
-## Setting the species of interest
+By *formation reaction* is meant the stoichiometric requirements for formation of one mole of any species from the basis species.
+The <span style="color:red">`species()`</span> function is used to set these *species of interest*.
+Let's consider the stoichiometry of some aqueous sulfur-bearing species.
+```{r basis_CHNOSZ, results="hide"}
+basis("CHNOS+")
+```
+```{r sulfur_species}
+species(c("SO4-2", "HS-", "H2S", "HSO4-"))
+```
 
-The formation reactions refer to the formation of one mole of each the species from the basis species.
+There we used <span style="color:red">`basis()`</span> with a keyword to identify a preset basis definition.
+Now, we can use `affinity()` to calculate the affinities of the formation reactions of each of the species:
+```{marginfigure}
+The values returned by `affinity()` are dimensionless, i.e. log<sub>10</sub>(*A*/*RT*).
+```
+```{r affinity}
+affinity()$values
+```
 
-## Predominance: the `diagram()` function
+The same result (in energetic units) could be obtained using `subcrt()`, but `affinity()` has the advantage of being able to perform calculations on a grid of *T*, *P*, or activities of basis species.
+Let's choose a set of variables commonly used in aqueous speciation diagrams: Eh and pH.
+To use Eh as a variable, the electron (`e-`) should be in the basis.
+To get the electron in there, we could use a different keyword (<span style="color:red">`basis("CHNOSe")`</span>), or swap oxygen out of the existing basis:
+```{r swap_basis}
+swap.basis("O2", "e-")
+```
 
-## Labels, colors, etc.
+The <span style="color:red">swap.basis()</span> changed the basis species and recalculated their activities, but preserved the species of interest.
+```{marginfigure}
+That is, running `affinity()$values` again would give the same result.
+```
+
+<p>
+```{r EhpH_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=50, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE}
+a <- affinity(pH=c(0, 12), Eh=c(-1, 1))
+diagram(a, fill="heat")
+```
+Now we can calculate the affinities on an Eh-pH grid:
+```{r EhpH_plot, echo=1, eval=FALSE}
+```
+
+Given values of affinity, the `diagram()` function uses the maximum affinity method to make a potential diagram:
+```{r EhpH_plot_echo, eval=FALSE}
+diagram(a)
+```
+
+Note that the calculation of affinity implies a non-equilibrium reference state of equal activities of species (see above).
+Generally, then, `diagram()` gives a *potential diagram* because it shows regions of maximum affinity.
+In systems where equilibrium is attainable, it makes sense to call this a *predominance diagram*, showing regions of maximum activity.
+
+```{r EhpH_plot_color, fig.margin=TRUE, fig.width=4, fig.height=4, smallish.mar=TRUE, dpi=50, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE}
+diagram(a, fill="terrain", lwd=3, lty=3,
+        names=c("sulfate", "bisulfide", "hydrogen sulfide", "bisulfate"),
+        tplot=FALSE, main="sulfur species, 25 °C", bty="n")
+```
+The default colors for diagrams shown on screen are R's "heat colors".
+Some arguments in `diagram()` can be used to control the color, labels, and lines, and title (`main`).
+The `tplot` argument turns off plot customizations used in CHNOSZ.
+Additional arguments can be passed via `...`; here, we use that to remove the box around the plot:
+```{r EhpH_plot_color, echo=TRUE, eval=FALSE}
+```
+
+## Mosaic diagrams
+
+If sulfur is in the basis species, then we should consider that its speciation is sensitive to Eh and pH, as shown in the preceding diagram.
+Mosaic diagrams, which are often shown for metal oxide, sulfide, and carbonate minerals, account for speciation of the basis species.
+These diagrams are made by constructing individual diagrams for the possible basis species.
+The individual diagrams are then combined, each one contributing to the final diagram only in the range of stability of the corresponding basis species.
+
+Here, we use the `mosaic()` function in CHNOSZ to make a diagram for aqueous species and minerals in the Cu-S-Cl-H<sub>2</sub>O system, similar Figure 5a of @CPCC17.
+The key argument is `bases`, which identifies the candidate basis species (starting with the one in the current basis set).
+The other arguments, like those of `affinity()`, specify the ranges of the variables.
 
 # Equilibration
 
@@ -432,8 +533,6 @@ The formation reactions refer to the formation of one mole of each the species f
 
 # Other things you can do with diagrams
 
-## Mosaic diagrams
-
 ## Groups of species
 
 # Proteins
@@ -445,3 +544,7 @@ The formation reactions refer to the formation of one mole of each the species f
 ## Ionization
 
 ## Normalizing for different lengths
+
+# Functions outside of the main workflow
+
+transfer, wjd, eqdata, RH2obigt, EOSregress

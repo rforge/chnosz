@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-16 (2017-02-04)
+CHANGES IN CHNOSZ 1.0.8-17 (2017-02-04)
 ---------------------------------------
 
 - Add "AA" as a keyword for preset species in basis() (cysteine,
@@ -39,7 +39,7 @@ CHANGES IN CHNOSZ 1.0.8-16 (2017-02-04)
   message() from base R. As a result, the messages don't appear in Sweave
   vignettes, but can now be turned on or off easily in knitr vignettes.
 
-- Add vignette newintro.Rmd.
+- Replace anintro.Rnw (Sweave) with updated anintro.Rmd (knitr, tufte).
 
 CHANGES IN CHNOSZ 1.0.8 (2016-05-28)
 ------------------------------------

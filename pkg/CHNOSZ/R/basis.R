@@ -174,15 +174,18 @@ basis <- function(species=NULL, state=NULL, logact=NULL, delete=FALSE) {
   # pH transformation
   if("pH" %in% species) {
     logact[species=="pH"] <- -logact[species=="pH"]
-    species[species=="pH"] <- "H+"
+    if(!is.null(logact)) species[species=="pH"] <- "H+"
   }
   # Eh and pe transformations
-  if(any(c("pe","Eh") %in% species)) {
+  if("pe" %in% species) {
     logact[species=="pe"] <- -logact[species=="pe"]
+    if(!is.null(logact)) species[species=="pe"] <- "e-"
+  }
+  if("Eh" %in% species) {
     # 20090209 should be careful with this conversion as it's only for 25 deg C
-    # to be sure, just don"t call species("Eh")
-    logact[species=="Eh"] <- -convert(logact[species=="Eh"],"pe")
-    species[species %in% c("pe","Eh")] <- "e-"
+    # to be sure, just don't call species("Eh")
+    if(!is.null(logact)) logact[species=="Eh"] <- -convert(logact[species=="Eh"],"pe")
+    species[species=="Eh"] <- "e-"
   }
   ## if all species are in the existing basis definition, 
   ## *and* at least one of state or logact is not NULL

@@ -22,7 +22,7 @@ diagram <- function(
   # colors
   bg=par("bg"), col=par("col"), col.names=par("col"), fill=NULL, 
   # labels
-  names=NULL, main=NULL, legend.x="topright",
+  names=NULL, main=NULL, legend.x="topright", format.names=TRUE,
   # plotting controls
   add=FALSE, plot.it=TRUE, tplot=TRUE, ...
 ) {
@@ -196,6 +196,17 @@ diagram <- function(
         if(any(isdup)) names[isdup] <- paste(names[isdup],
           " (", eout$species$state[isdup], ")", sep="")
       }
+    }
+
+    ## apply formatting to chemical formulas 20170204
+    if(format.names) {
+      exprnames <- as.expression(names)
+      for(i in seq_along(exprnames)) {
+        # can the name be parsed as a chemical formula?
+        mtry <- suppressWarnings(try(makeup(exprnames[[i]]), TRUE))
+        if(!identical(class(mtry), "try-error")) exprnames[[i]] <- expr.species(exprnames[[i]])
+      }
+      names <- exprnames
     }
 
     if(nd==0) {

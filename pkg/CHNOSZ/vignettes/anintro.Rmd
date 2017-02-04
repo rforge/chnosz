@@ -449,7 +449,7 @@ Let's consider the stoichiometry of some aqueous sulfur-bearing species.
 basis("CHNOS+")
 ```
 ```{r sulfur_species}
-species(c("SO4-2", "HS-", "H2S", "HSO4-"))
+species(c("H2S", "HS-", "HSO4-", "SO4-2"))
 ```
 
 There we used <span style="color:red">`basis()`</span> with a keyword to identify a preset basis definition.
@@ -494,10 +494,10 @@ In systems where equilibrium is attainable, it makes sense to call this a *predo
 
 ```{r EhpH_plot_color, fig.margin=TRUE, fig.width=4, fig.height=4, smallish.mar=TRUE, dpi=50, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE}
 diagram(a, fill="terrain", lwd=3, lty=3,
-        names=c("sulfate", "bisulfide", "hydrogen sulfide", "bisulfate"),
+        names=c("hydrogen sulfide", "bisulfide", "bisulfate", "sulfate"),
         tplot=FALSE, main="sulfur species, 25 °C", bty="n")
 ```
-The default colors for diagrams shown on screen are R's "heat colors".
+The default colors for diagrams shown on the screen are R's "heat colors".
 Some arguments in `diagram()` can be used to control the color, labels, and lines, and title (`main`).
 The `tplot` argument turns off plot customizations used in CHNOSZ.
 Additional arguments can be passed via `...`; here, we use that to remove the box around the plot:
@@ -511,7 +511,7 @@ Mosaic diagrams, which are often shown for metal oxide, sulfide, and carbonate m
 These diagrams are made by constructing individual diagrams for the possible basis species.
 The individual diagrams are then combined, each one contributing to the final diagram only in the range of stability of the corresponding basis species.
 
-Here, we use the `mosaic()` function in CHNOSZ to make a diagram for aqueous species and minerals in the Cu-S-Cl-H<sub>2</sub>O system, similar Figure 5a of @CPCC17.
+Here, we use the `mosaic()` function in CHNOSZ to make a diagram for aqueous species and minerals in the Cu-S-Cl-H<sub>2</sub>O system, similar to Figure 5a of @CPCC17.
 The key argument is `bases`, which identifies the candidate basis species (starting with the one in the current basis set).
 The other arguments, like those of `affinity()`, specify the ranges of the variables.
 

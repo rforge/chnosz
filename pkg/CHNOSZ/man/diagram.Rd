@@ -15,8 +15,8 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
     cex=par("cex"), cex.names=1, cex.axis=par("cex"),
     lty=NULL, lwd=par("lwd"), dotted=NULL,
     bg=par("bg"), col=par("col"), col.names=par("col"), fill=NULL,
-    names=NULL, main=NULL, legend.x="topright", add=FALSE, plot.it=TRUE,
-    tplot=TRUE, ...)
+    names=NULL, main=NULL, legend.x="topright", format.names=TRUE,
+    add=FALSE, plot.it=TRUE, tplot=TRUE, ...)
   strip(affinity, ispecies = NULL, col = NULL, ns = NULL, 
     xticks = NULL, ymin = -0.2, xpad = 1, cex.names = 0.7)
   find.tp(x)
@@ -52,6 +52,7 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
   \item{names}{character, names of species for activity lines or predominance fields}
   \item{main}{character, a main \code{\link{title}} for the plot; \code{NULL} means to plot no title}
   \item{legend.x}{character, description of legend placement passed to \code{\link{legend}}}
+  \item{format.names}{logical, apply formatting to chemical formulas?}
   \item{add}{logical, add to current plot?}
   \item{plot.it}{logical, make a plot?}
   \item{tplot}{logical, set up plot with \code{\link{thermo.plot.new}}?}

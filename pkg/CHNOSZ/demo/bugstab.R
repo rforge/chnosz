@@ -44,7 +44,7 @@ for(i in 1:4) {
   basis(basis)
   a <- affinity(O2=O2, H2O=H2O, iprotein=ip, T=37)
   names <- bugs$abbrv[ibug]
-  d <- CHNOSZ::diagram(a, names=names, fill=col, as.residue=TRUE, tplot=FALSE, xlab=logfO2lab, ylab=logaH2Olab)
+  d <- diagram(a, names=names, fill=col, as.residue=TRUE, tplot=FALSE, xlab=logfO2lab, ylab=logaH2Olab, format.names=FALSE)
   if(i==1) title(main="fecal 16S rRNA", cex.main=1)
   if(i==2) title(main="fecal metagenome (ZTV+14)", cex.main=1)
   if(i==3) title(main="co-abundance groups", cex.main=1)

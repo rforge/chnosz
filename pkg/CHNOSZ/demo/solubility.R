@@ -19,8 +19,8 @@
 # (New York: John Wiley & Sons), 3rd edition
 
 # set this to CO2 or calcite
-#what <- "CO2"
 what <- "calcite"
+#what <- "CO2"
 
 # function to return the affinity of the metastable equilibrium species
 Afun <- function(loga.balance=-3, T=25) {

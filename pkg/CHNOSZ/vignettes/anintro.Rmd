@@ -458,7 +458,7 @@ species(c("H2S", "HS-", "HSO4-", "SO4-2"))
 There we used <span style="color:red">`basis()`</span> with a keyword to identify a preset basis definition.
 Now, we can use `affinity()` to calculate the affinities of the formation reactions of each of the species:
 ```{marginfigure}
-The values returned by `affinity()` are dimensionless, i.e. log<sub>10</sub>(*A*/*RT*).
+The values returned by `affinity()` are dimensionless, i.e. log<sub>10</sub>(**_A_**/*RT*).
 ```
 ```{r affinity}
 affinity()$values
@@ -598,7 +598,7 @@ We take a selection of the species from Shock and Canovas (2010) with activities
 We will write the synthesis reactions of organic species in terms of these basis species:
 ```{marginfigure}
 The constant activity of methane is a simplification of the calculation reported by Shock and Canovas (2010).
-More code could be added here to vary the activity of methane.
+The code could be expanded to vary the activity of methane.
 ```
 ```{r rainbow_species, results="hide"}
 basis(c("CO2", "H2", "NH4+", "H2O", "H2S", "H+"))
@@ -697,12 +697,91 @@ Here, values of log*f*<sub>H<sub>2</sub></sub> buffered by minerals or aqueous s
 ```{r demo_buffer, eval=FALSE}
 ```
 
-
 # Equilibration
+
+Above we considered this kind of question: for equal (or known) activities of species, what are their affinities?
+Turning the question around, we would like to know: for equal affinities of species, what are their activities?
+This is the question of equilibration.
+
+Before presenting some examples, it is helpful to know about the limitations of the tools.
+CHNOSZ is limited to treatment of ideal systems and does not take account of all possible reactions in the speciation of a system.
+```{marginfigure}
+See <span style="color:blue">`?nonideal`</span> and <span style="color:blue">`?wjd`</span> for some functions that address these issues, but are not integrated with the main workflow.
+```
+Instead, it assumes that the total activity of species in the system is set by the activity of *one* basis species.
+```{marginfigure}
+Because activity coefficients are assumed to be zero, activities are additive and we can refer to "total activity".
+```
+This balanced basis species must be present (with a positive or negative coefficient) in the formation reactions of all species considered.
+
+Under this constraint, activities of the species can be found such that the affinities of the formation reactions are all equal.
+This is known as metastable equilibrium.
+With additional constraints, the affinites of the formation reactions are not only equal to each other, but equal to zero.
+This is total equilibrium.
+An example of total equilibrium was given above for the PPM buffer.
+In contrast, models for systems of organic and biomolecules most often use metastable equilibrium constraints.
 
 ## Getting from affinity to equilibrium
 
-## Setting the constraints
+The `equilibrate()` function in CHNOSZ automatically chooses between two methods for calculating equilibrium.
+```{marginfigure}
+For more information, see the vignette <span style="color:blue">*Equilibrium in CHNOSZ*</span>.
+```
+The method based on the Boltzmann equation is fast, but is applicable only to systems where the coefficients on the balanced basis species are all one.
+The reaction-matrix method is slower, but can be applied to systems were the balanced basis species has non-unity coefficients.
+
+```{r bjerrum_diagram, fig.margin=TRUE, fig.width=3, fig.height=6, small.mar=TRUE, dpi=50, out.width="100%", echo=FALSE, results="hide", message=FALSE, cache=TRUE, fig.cap="Three views of carbonate speciation: affinity, metastable equilibrium activity, degree of formation."}
+par(mfrow=c(3, 1))
+basis("CHNOS+")
+species(c("CO2", "HCO3-", "CO3-2"))
+# affinity at 25 °C and 150 °C
+a25 <- affinity(pH=c(4, 12))
+a150 <- affinity(pH=c(4, 12), T=150)
+diagram(a25, legend.x="topleft", bty="n")
+diagram(a150, add=TRUE, col="red")
+# equilibration
+e25 <- equilibrate(a25, loga.balance=-3)
+e150 <- equilibrate(a150, loga.balance=-3)
+diagram(e25, ylim=c(-6, 0), bty="n")
+diagram(e150, add=TRUE, col="red")
+# degree of formation
+diagram(e25, alpha=TRUE, legend.x="center", bty="n")
+diagram(e150, alpha=TRUE, add=TRUE, col="red")
+```
+The distribution of aqueous carbonate species is a classic example of an equilibrium calculation.
+We can begin by plotting the affinities for equal activities of the species.
+Here, CO<sub>2</sub> is in the basis, so it has zero affinity, which is greater than the affinities of HCO<sub>3</sub><sup>-</sup> and CO<sub>3</sub><sup>-2</sup> at low pH:
+```{r bjerrum_1, eval=FALSE}
+basis("CHNOS+")
+species(c("CO2", "HCO3-", "CO3-2"))
+a25 <- affinity(pH=c(4, 12))
+a150 <- affinity(pH=c(4, 12), T=150)
+diagram(a25, legend.x="topleft", bty="n")
+diagram(a150, add=TRUE, col="red")
+```
+
+Now we use `equilibrate()` to calculate the activities of species.
+Our balancing constraint is that the total activity of C is 10<sup>-3</sup>.
+This shows a hypothetical *metastable equilibrium*; we know that for true equilibrium the total activity of C is affected by pH.
+```{r bjerrum_2, eval=FALSE}
+e25 <- equilibrate(a25, loga.balance=-3)
+e150 <- equilibrate(a150, loga.balance=-3)
+diagram(e25, ylim=c(-6, 0), bty="n")
+diagram(e150, add=TRUE, col="red")
+```
+
+To display the species distribution, or degree of formation, use the `alpha=TRUE` argument:
+```{r bjerrum_3, eval=FALSE}
+diagram(e25, alpha=TRUE, legend.x="center", bty="n")
+diagram(e150, alpha=TRUE, add=TRUE, col="red")
+```
+
+The possible reactions between species are all balanced on 1 C.
+Therefore, although pH alters the total activity of C, in an ideal system the total activity of C doesn't affect the relative activities of the species.
+```{marginfigure}
+See <span style="color:blue">`demo(solubility)`</span> for calculations of the total activity of C in this ideal system; uncomment a line in the demo to run calculations for CO<sub>2</sub> instead of calcite.
+```
+This makes the species distribution diagram useful for this system.
 
 ## Choosing different balancing constraints
 
@@ -728,4 +807,4 @@ mod.obigt, mod.buffer
 
 # Functions outside of the main workflow
 
-transfer, wjd, eqdata, RH2obigt, EOSregress
+transfer, wjd, eqdata, RH2obigt, EOSregress, nonideal

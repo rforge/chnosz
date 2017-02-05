@@ -106,7 +106,7 @@ basis("CHNOS+")
 a <- affinity(O2=c(-80, -73), iprotein=ip, loga.protein=logact)
 # make a speciation diagram
 e <- equilibrate(a, normalize=TRUE)
-diagram(e, ylim=c(-4.9, -2.9))
+diagram(e, ylim=c(-4.9, -2.9), format.names=FALSE)
 # where we are closest to experimental log activity
 logfO2 <- rep(-78, length(ip))
 abline(v=logfO2[1], lty=3)

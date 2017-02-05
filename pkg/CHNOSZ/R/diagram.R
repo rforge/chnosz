@@ -20,7 +20,7 @@ diagram <- function(
   # line styles
   lty=NULL, lwd=par("lwd"), dotted=NULL, 
   # colors
-  bg=par("bg"), col=par("col"), col.names=par("col"), fill=NULL, 
+  col=par("col"), col.names=par("col"), fill=NULL, 
   # labels
   names=NULL, main=NULL, legend.x="topright", format.names=TRUE,
   # plotting controls
@@ -254,7 +254,7 @@ diagram <- function(
             if(xvalues[imax] < xlim[1] + 0.2*diff(xlim)) adj <- 0
             text(xvalues[imax], plotvals[[i]][imax], labels=names[i], adj=adj)
           }
-        } else legend(x=legend.x, lty=lty, legend=names, col=col, bg=bg, cex=cex.names, lwd=lwd)
+        } else legend(x=legend.x, lty=lty, legend=names, col=col, cex=cex.names, lwd=lwd, ...)
       }
       # add a title
       if(!is.null(main)) title(main=main)

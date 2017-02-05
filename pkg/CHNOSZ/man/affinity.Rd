@@ -51,8 +51,7 @@ The appropriate \code{\link{basis}} species still must be defined prior to calli
 \code{iprotein} contains indices of desired proteins in \code{\link{thermo}$protein}; \code{affinity} adds to the species list the amino acid residues and and terminal H2O group (indicated by \dQuote{RESIDUE} in \code{thermo$protein}) then calculates the properties of the reactions for the residues and terminal group, including ionization effects, and adds them together to get those of the indicated proteins.
 
 In CHNOSZ version 0.9, \code{energy} gained a new argument \samp{transect} which is set to TRUE by \code{energy.args} when the length(s) of the variables is(are) greater than three.
-In this mode of operation, instead of performing the calculations on an \eqn{n}{n}-dimensional grid, the affinities are calculated on an \eqn{n}{n}-dimensional transect through chemical potential (possibly including T and/or P) space. 
-
+In this mode of operation, instead of performing the calculations on an \eqn{n}{n}-dimensional grid, the affinities are calculated on a transect of changing T, P, and/or chemical activity of basis species.
 }
 
 \value{
@@ -72,25 +71,28 @@ The guts of the calculations provided by \code{affinity} involve \code{\link{ene
 \examples{
 \dontshow{data(thermo)}## set up a system and calculate
 ## chemical affinities of formation reactions
-basis(c("SiO2","MgO","H2O","O2"),c(-5,-5,0,999))
+basis(c("SiO2", "MgO", "H2O", "O2"), c(-5, -5, 0, 999))
 species(c("quartz","enstatite","forsterite"))
 # chemical affinities (A/2.303RT) at 25 deg C and 1 bar
 affinity()
 # at higher temperature and pressure
-affinity(T=500,P=2000)
+affinity(T=500, P=2000)
 # ten different temperatures at one pressure
-affinity(T=c(500,1000,10),P=2000)
+affinity(T=c(500, 1000, 10), P=2000)
 # at 25 temperatures and pressures
-affinity(T=c(500,1000,5),P=c(1000,5000,5))
+affinity(T=c(500, 1000, 5), P=c(1000, 5000, 5))
 # as a function of logarithm of activity of MgO
-affinity(MgO=c(-10,-5,10))
-## equilibrium constants of formation reactions
+affinity(MgO=c(-10, -5, 10))
+# equilibrium constants of formation reactions
 affinity(property="logK")
-# Standard molal Gibbs energies of species,
+# standard molal Gibbs energies of species,
 # user units (default: cal/mol)
 affinity(property="G.species")
-# Standard molal Gibbs energies of reactions
+# standard molal Gibbs energies of reactions
 affinity(property="G")
+# a T,P-transect
+# (fluid pressure from Helgeson et al., 2009 Fig. 7)
+affinity(T=c(25, 110, 115, 215), P=c(11, 335, 500, 1450))
 
 ## affinities of metabolic reactions
 ## after Amend and Shock, 2001, Fig. 7
@@ -180,37 +182,6 @@ stopifnot(sum(out$G.100 < 0)==9)
 # reset units and species to run next examples
 E.units("cal")
 species(delete=TRUE)
-
-## calculations along a transect: methanogenesis and biosynthetic 
-## reactions in hydrothermal systems, after Shock and Canovas, 2010
-# this file has their mixing path results for Rainbow hydrothermal field
-file <- system.file("extdata/cpetc/SC10_Rainbow.csv", package="CHNOSZ")
-rb <- read.csv(file, check.names=FALSE)
-# write all synthesis reactions in terms of these basis species
-# it's okay not to set the activities of the basis species now
-# because they'll be changing along with temperature
-basis(c("CO2", "H2", "NH4+", "H2O", "H2S", "H+"))
-# now a selection of the species from SC10, with activities equal to 1e-6
-species(c("CH4", "formaldehyde", "ethylene", "glycolic acid", 
-  "n-nonanoic acid", "leucine", "aspartic acid", "tryptophan", "deoxyribose", 
-  "adenine", "cytosine"), -6)
-# the exception is methane; unlike SC10 we use a constant activity 1e-3
-# (accounting for variable activities of the species of interest here 
-# is possible but would require longer code ....)
-species("CH4", -3)
-# synchronized change of temperature and five basis activities
-a <- affinity(T=rb$T, CO2=rb$CO2, H2=rb$H2, `NH4+`=rb$`NH4+`, H2S=rb$H2S, pH=rb$pH)
-# the tricky part: affinity() uses dimensionless values (A/2.303RT)
-# but we want to show the values in cal/mol
-a$values <- lapply(a$values, function(val) {
-  -convert(val, "G", T=convert(a$vals[[1]], "K")) })
-# if we didn't have balance=1 here the values would be 
-# divided by the number of moles of CO2 in the reactions ...
-diagram(a, balance=1, ylim=c(-100000, 100000), ylab=axis.label("A"),
-  col=topo.colors(4), lwd=2)
-# add a zero-affinity line and a title
-abline(h=0, lty=2, lwd=2)
-title(main="Affinities of organic synthesis, after Shock and Canovas, 2010")
 }
 
 \references{
@@ -219,6 +190,8 @@ title(main="Affinities of organic synthesis, after Shock and Canovas, 2010")
   Amend, J. P. and Shock, E. L. (2001) Energetics of overall metabolic reactions of thermophilic and hyperthermophilic Archaea and Bacteria. \emph{FEMS Microbiol. Rev.} \bold{25}, 175--243. \url{http://dx.doi.org/10.1016/S0168-6445(00)00062-0}
 
   Dick, J. M., LaRowe, D. E. and Helgeson, H. C. (2006) Temperature, pressure, and electrochemical constraints on protein speciation: Group additivity calculation of the standard molal thermodynamic properties of ionized unfolded proteins. \emph{Biogeosciences} \bold{3}, 311--336. \url{http://www.biogeosciences.net/3/311/2006/bg-3-311-2006.html}
+
+  Helgeson, H. C., Richard, L, McKenzie, W. F., Norton, D. L. and Schmitt, A. (2009) A chemical and thermodynamic model of oil generation in hydrocarbon source rocks. \emph{Geochim. Cosmochim. Acta} \bold{73}, 594--695. \url{http://dx.doi.org/10.1016/j.gca.2008.03.004}
 
   Kondepudi, D. K. and Prigogine, I. (1998) \emph{Modern Thermodynamics: From Heat Engines to Dissipative Structures}, John Wiley & Sons, New York, 486 p. \url{http://www.worldcat.org/oclc/38055900}
 

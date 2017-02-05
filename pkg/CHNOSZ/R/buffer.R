@@ -23,7 +23,7 @@ mod.buffer <- function(name,species=NULL,state=get("thermo")$opt$state,logact=-3
         thermo$buffers <- thermo$buffers[-imod,]
         assign("thermo", thermo, "CHNOSZ")
         message(paste('mod.buffer: removed ',c2s(species),' in ',
-          c2s(unique(name)),' buffer.',sep=''))
+          c2s(unique(name)),' buffer',sep=''))
       } else {
         if(missing(state)) state <- thermo$buffers$state[imod]
         if(missing(logact)) logact <- thermo$buffers$logact[imod]
@@ -36,10 +36,10 @@ mod.buffer <- function(name,species=NULL,state=get("thermo")$opt$state,logact=-3
         assign("thermo", thermo, "CHNOSZ")
         if(identical(state.old,state) & identical(logact.old,logact)) {
           message(paste('mod.buffer: nothing changed for ',
-            c2s(species),' in ',c2s(unique(name)),' buffer.',sep=''))
+            c2s(species),' in ',c2s(unique(name)),' buffer',sep=''))
         } else {
           message(paste('mod.buffer: changed state and/or logact of ',
-            c2s(species),' in ',c2s(unique(name)),' buffer.',sep=''))
+            c2s(species),' in ',c2s(unique(name)),' buffer',sep=''))
         }
       }
     } else {
@@ -51,7 +51,7 @@ mod.buffer <- function(name,species=NULL,state=get("thermo")$opt$state,logact=-3
     t <- data.frame(name=name,species=species,state=state,logact=logact)
     thermo$buffers <- rbind(thermo$buffers,t)
     assign("thermo", thermo, "CHNOSZ")
-    message(paste('mod.buffer: added ',c2s(unique(name)),'.',sep=''))
+    message(paste('mod.buffer: added',c2s(unique(name))))
   }
   return(invisible(thermo$buffers[thermo$buffers$name %in% name,]))
 }

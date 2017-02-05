@@ -12,7 +12,7 @@ thermo.plot.new(xlim=xlim, ylim=c(-4, 4), xlab=axis.label("T"), ylab=axis.label(
 bufferline <- function(buffer, ixlab) {
   basis("H2", buffer)
   a <- affinity(T=xlim, P=300, return.buffer=TRUE, exceed.Ttr=TRUE)
-  lines(a$vals[[1]], a$H2, col="red", lwd=2)
+  lines(a$vals[[1]], a$H2, col=3, lwd=2)
   text(a$vals[[1]][ixlab], a$H2[ixlab], buffer)
 }
 bufferline("FeFeO", 20)
@@ -29,4 +29,4 @@ for(logact in c(-6, -10, -15)) {
 }
 # add legend
 legend("topright", legend = c(describe.property("P", 300), describe.basis(ibasis=c(2,4)),
-  "minerals", "formaldehyde", "HCN"), lty=c(NA, NA, NA, 1, 3, 2), col=c(NA, NA, NA, 2, 1, 1), bg="white")
+  "minerals", "formaldehyde", "HCN"), lty=c(NA, NA, NA, 1, 3, 2), col=c(NA, NA, NA, 3, 1, 1), bg="white")

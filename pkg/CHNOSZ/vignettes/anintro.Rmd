@@ -582,7 +582,62 @@ mosaicfun(list(H2=c(-15, 5, res)))
 mosaicfun(list(O2=c(-70, 0, res)))
 ```
 
-## T-, P-, activity-transect
+## *T*, *P*, activity transects
+
+Above, we used evenly-spaced grids of *T*, *P*, and/or chemical activities of basis species; the ranges of variables were given by two or three values (minimum, maximum, and optionally resolution).
+`affinity()` can also perform calculations along a transect, i.e. a particular path along one or more variables.
+A transect is calculated when there are four or more values assigned to the variable(s).
+Let's use this feature to calculate affinities (negative Gibbs energies) of methanogenesis and biosynthetic reactions in a hydrothermal system.
+The results of mixing calculations between seawater and the Rainbow hydrothermal vent fluid, reported by @SC10, are included in a data file in CHNOSZ:
+```{r rainbow_data}
+file <- system.file("extdata/cpetc/SC10_Rainbow.csv", package="CHNOSZ")
+rb <- read.csv(file, check.names=FALSE)
+```
+
+We take a selection of the species from Shock and Canovas (2010) with activities equal to 10<sup>-6</sup>; methane is assigned an activity of 10<sup>-3</sup>.
+We will write the synthesis reactions of organic species in terms of these basis species:
+```{marginfigure}
+The constant activity of methane is a simplification of the calculation reported by Shock and Canovas (2010).
+More code could be added here to vary the activity of methane.
+```
+```{r rainbow_species, results="hide"}
+basis(c("CO2", "H2", "NH4+", "H2O", "H2S", "H+"))
+species("CH4", -3)
+species(c("adenine", "cytosine", "aspartic acid", "deoxyribose",
+          "methane", "leucine", "tryptophan", "n-nonanoic acid"), -6)
+```
+
+Now we can calculate affinity along the transect of changing temperature and activities of five basis species.
+Each variable is given as a named argument; the name for `NH4+` must be quoted.
+```{marginfigure}
+A shorter code would use `do.call()` to construct the argument list: `do.call(affinity, as.list(rb))`
+```
+```{marginfigure}
+The target of the conversion is `G`, or free energy, from `logK`.
+That conversion requires temperature in Kelvin, which is obtained by conversion from °C.
+We finish with a negation (affinity is negative Gibbs energy) and scaling from cal to kcal.
+```
+Using the `convert()` function in CHNOSZ, we also convert the result from dimensionless values (**_A_**/2.303*RT*) to kcal/mol.
+```{r rainbow_affinity, message=FALSE}
+a <- affinity(T=rb$T, CO2=rb$CO2, H2=rb$H2,
+              `NH4+`=rb$`NH4+`, H2S=rb$H2S, pH=rb$pH)
+T <- convert(a$vals[[1]], "K")
+a$values <- lapply(a$values, convert, "G", T)
+a$values <- lapply(a$values, `*`, -0.001)
+```
+
+```{r rainbow_diagram, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=50, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE, fig.cap="Affinities of organic synthesis in a hydrothermal system, after Shock and Canovas (2010)."}
+diagram(a, balance=1, ylim=c(-100, 100), ylab=axis.label("A", prefix="k"),
+        col=rainbow(8), lwd=2, legend.x=NA, bg="slategray3")
+abline(h=0, lty=2, lwd=2)
+```
+Finally, we use `diagram()` to plot the results.
+Although only temperature is shown on the *x*-axis, pH and the activities of CO<sub>2</sub>, H<sub>2</sub>, NH<sub>4</sub><sup>+</sup>, and H<sub>2</sub>S are also varied according to the data in `rb`.
+By default, `diagram()` attempts to scale the affinities by dividing by the reaction coefficients of a shared basis species (in this case, CO<sub>2</sub>).
+To override that behavior, we set `balance=1` to plot the affinities of the formation reactions as written (per mole of the species being formed).
+Also, `legend.x=NA` is used to suppress making a legend (so the labels are placed next to the lines instead).
+```{r rainbow_diagram, eval=FALSE}
+```
 
 ## Buffers
 
@@ -611,14 +666,14 @@ basis(c("FeS2", "H2S", "O2", "H2O"))
 species(c("pyrite", "magnetite"))
 species("pyrrhotite", "cr2")
 ```
-```{r PPM_affinity, message=FALSE}
-unlist(affinity(T=300, P=100)$values)
-```
 ```{marginfigure}
 The affinity of formation of pyrite happens to be zero because it is identical to one of the selected basis species.
 ```
+```{r PPM_affinity, message=FALSE}
+unlist(affinity(T=300, P=100)$values)
+```
 
-We use `mod.buffer()` to choose the `cr2` phase of phyrrhotite, which is stable at this temperature.
+We use <span style="color:red">`mod.buffer()`</span> to choose the `cr2` phase of phyrrhotite, which is stable at this temperature.
 Then, we set up H<sub>2</sub>S and O<sub>2</sub> to be buffered by PPM, and inspect their buffered activities:
 ```{r PPM_setup, results="hide"}
 mod.buffer("PPM", "pyrrhotite", "cr2")

@@ -14,7 +14,7 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
     ylog=TRUE, xlim=NULL, ylim=NULL, xlab=NULL, ylab=NULL,
     cex=par("cex"), cex.names=1, cex.axis=par("cex"),
     lty=NULL, lwd=par("lwd"), dotted=NULL,
-    bg=par("bg"), col=par("col"), col.names=par("col"), fill=NULL,
+    col=par("col"), col.names=par("col"), fill=NULL,
     names=NULL, main=NULL, legend.x="topright", format.names=TRUE,
     add=FALSE, plot.it=TRUE, tplot=TRUE, ...)
   strip(affinity, ispecies = NULL, col = NULL, ns = NULL, 
@@ -45,7 +45,6 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
   \item{lty}{numeric, line types to be used in plots}
   \item{lwd}{numeric, line width}
   \item{dotted}{numeric, how often to skip plotting points on predominance field boundaries (to gain the effect of dotted or dashed boundary lines)}
-  \item{bg}{character, background color for legend}
   \item{col}{character, color of activity lines (1D diagram) or predominance field boundaries (2D diagram), or colors of bars in a strip diagram (\code{strip})}
   \item{col.names}{character, colors for labels of species}
   \item{fill}{character, colors used to fill predominance fields}

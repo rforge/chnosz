@@ -20,7 +20,7 @@
     mar = NULL, lwd = par("lwd"), side = c(1,2,3,4), 
     mgp = c(1.5, 0.3, 0), cex.axis = par("cex"), col = par("col"),
     yline = NULL, axs = "i", do.box = TRUE, ticks = NULL, las = 1,
-    xline = NULL)
+    xline = NULL, ...)
   thermo.axis(lab = "x-axis", side = 1, line = 1.5, cex = par("cex"),
     lwd = par("lwd"), T = NULL, col = par("col"))
   label.plot(x, xfrac = 0.05, yfrac = 0.95, paren = FALSE,
@@ -53,6 +53,7 @@
   \item{ticks}{numeric, same effect as \code{side} (retained for backwards compatibility)}
   \item{las}{numeric, style for axis labels}
   \item{xline}{numeric, margin line on which to plot \eqn{x}{x}-axis name}
+  \item{...}{further arguments passed to \code{par} or \code{mtext}}
   \item{lab}{character, description of axis label}
   \item{line}{numeric, margin line to plot axis label}
   \item{T}{numeric, temperature (K)}
@@ -70,7 +71,6 @@
   \item{xpoints}{numeric, points to plot on \eqn{x}{x} axis}
   \item{O2state}{character, state of O2}
   \item{main}{character, text for plot title}
-  \item{...}{further arguments passed to \code{mtext}}
   \item{residuals}{numeric, named vector of residuals to plot}
   \item{property}{character, name of property}
   \item{model}{character, name of model to use in plot title}

@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-19 (2017-02-05)
+CHANGES IN CHNOSZ 1.0.8-20 (2017-02-05)
 ---------------------------------------
 
 - Add "AA" as a keyword for preset species in basis() (cysteine,
@@ -22,7 +22,8 @@ CHANGES IN CHNOSZ 1.0.8-19 (2017-02-05)
   (citric acid cycle metabolites; thioester species have been kept) and
   from Dick et al., 2006 (methionine and [Met]).
 
-- Add demo bugstab.R.
+- Demos: add bugstab.R, rename buffer.R to protbuff.R, add new buffer.R,
+  remove nucleobase.R.
 
 - Correct charge (-2) of NAD(red)-2 in OBIGT.csv. Thanks to Peter
   Canovas.

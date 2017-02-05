@@ -582,10 +582,65 @@ mosaicfun(list(H2=c(-15, 5, res)))
 mosaicfun(list(O2=c(-70, 0, res)))
 ```
 
-## Buffers
-
 ## T-, P-, activity-transect
 
+## Buffers
+
+There is one final feature of `affinity()` to notice.
+Can we go the other direction: calculate the activities of basis species from the activities of the species of interest?
+This question relates to the concept of chemical activity buffers.
+In CHNOSZ there are two ways to perform buffer calculations:
+
+1. Assign the name of a buffer (listed in `thermo$buffer`) to the basis species
+* more versatile (multiple activities can be buffered, e.g. both S<sub>2</sub> and O<sub>2</sub> by pyrite-pyrrhotite-magnetite)
+* the buffers are active in calculations of affinity of other species
+* use <span style="color:red">`mod.buffer()`</span> to change or add buffers in `thermo$buffer`
+* <span style="color:blue">`demo(buffer)`</span> uses it for mineral buffers (solid lines)
+2. Use the `what` argument of `diagram()` to solve for the activity of the indicated basis species
+* more convenient (the buffers come from the currently defined species of interest), but only a single basis species can be buffered, and it's not used in the calculation of affinity
+* <span style="color:blue">`demo(buffer)`</span> uses it for aqueous organic species as buffers (dotted and dashed lines)
+
+As an example of method 1, let's look at the pyrite-pyrrhotite-magnetite (PPM) buffer at 300 °C.
+```{marginfigure}
+For other examples, see <span style="color:blue">`?buffer`</span> and <span style="color:blue">`demo(protbuff)`</span> (hypothetical buffer made of proteins).
+```
+Without the buffer, the basis species have default activities of zero.
+Under these conditions, the minerals are not in equilibrium, as shown by their different affinities of formation:
+```{r PPM_basis, results="hide", message=FALSE}
+basis(c("FeS2", "H2S", "O2", "H2O"))
+species(c("pyrite", "magnetite"))
+species("pyrrhotite", "cr2")
+```
+```{r PPM_affinity, message=FALSE}
+unlist(affinity(T=300, P=100)$values)
+```
+```{marginfigure}
+The affinity of formation of pyrite happens to be zero because it is identical to one of the selected basis species.
+```
+
+We use `mod.buffer()` to choose the `cr2` phase of phyrrhotite, which is stable at this temperature.
+Then, we set up H<sub>2</sub>S and O<sub>2</sub> to be buffered by PPM, and inspect their buffered activities:
+```{r PPM_setup, results="hide"}
+mod.buffer("PPM", "pyrrhotite", "cr2")
+basis(c("H2S", "O2"), c("PPM", "PPM"))
+```
+```{r PPM_activities, message=FALSE}
+unlist(affinity(T=300, P=100, return.buffer=TRUE)[1:3])
+```
+
+<p>
+Et voilà! We have found log*a*<sub>H<sub>2</sub>S</sub> and log*f*<sub>O<sub>2</sub></sub> that are compatible with the coexistence of the three minerals.
+Under these conditions, the affinities of formation reactions of the minerals in the buffer are all equal to zero:
+```{r demo_buffer, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=50, out.width="100%", message=FALSE, echo=FALSE, cache=TRUE}
+demo(buffer, echo=FALSE)
+```
+```{r PPM_affinity, message=FALSE}
+```
+
+Another example, based on Figure 6 of @SS95, is given in <span style="color:blue">`demo(buffer)`</span>.
+Here, values of log*f*<sub>H<sub>2</sub></sub> buffered by minerals or aqueous species are calculated using the two methods:
+```{r demo_buffer, eval=FALSE}
+```
 
 
 # Equilibration
@@ -604,11 +659,17 @@ mosaicfun(list(O2=c(-70, 0, res)))
 
 ## Group additivity
 
+## Compositional analysis (ZC and nH2O)
+
 ## Sources of amino acid data
 
 ## Ionization
 
 ## Normalizing for different lengths
+
+# Modifying the database
+
+mod.obigt, mod.buffer
 
 # Functions outside of the main workflow
 

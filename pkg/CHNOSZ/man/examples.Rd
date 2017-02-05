@@ -15,8 +15,8 @@
 \usage{
   examples(do.png = FALSE)
   demos(which = c("sources", "NaCl", "density",
-    "nucleobase", "ORP", "revisit", "findit", 
-    "ionize", "buffer", "yeastgfp", "mosaic",
+    "ORP", "revisit", "findit", 
+    "ionize", "buffer", "protbuff", "yeastgfp", "mosaic",
     "copper", "solubility", "wjd", "dehydration", "bugstab"), to.file=FALSE)
 }
 
@@ -35,12 +35,12 @@ See the comments in the source code for more information about each demo.
     \code{sources} \tab cross-check the reference list with the thermodynamic database \cr
     \code{NaCl} \tab equilibrium constant for aqueous NaCl dissociation (Shock et al., 1992) \cr
     \code{density} \tab density of H2O, inverted from IAPWS-95 equations (\code{\link{rho.IAPWS95}}) \cr
-    \code{nucleobase} \tab relative stabilities of nucleobases and some amino acids \cr
     \code{ORP} \tab oxidation-reduction potential of redox standards as a function of temperature \cr
     \code{revisit} \tab detailed example of usage of \code{\link{revisit}} \cr
     \code{findit} \tab detailed example of usage of \code{\link{findit}} \cr
     \code{ionize} \tab ionize.aa(): contour plots of net charge and ionization properties of LYSC_CHICK \cr
-    \code{buffer} \tab ionized proteins as a chemical activity buffer (1. thiol peroxidases 2. sigma factors) \cr
+    \code{buffer} \tab  minerals and aqueous species as buffers of hydrogen fugacity (Schulte and Shock, 1995) \cr
+    \code{protbuff} \tab ionized proteins as a chemical activity buffer (1. thiol peroxidases 2. sigma factors) \cr
     \code{yeastgfp} \tab logfO2-logaH2O diagrams for model proteins based on YeastGFP localizations (Dick, 2009) \cr
     \code{mosaic} \tab Eh-pH diagram with two sets of changing basis species (Garrels and Christ, 1965) \cr
     \code{copper} \tab another example of \code{\link{mosaic}}: complexation of Cu with glycine (Aksu and Doyle, 2001) \cr
@@ -62,6 +62,8 @@ See the comments in the source code for more information about each demo.
   Garrels, R. M. and Christ, C. L. (1965) \emph{Solutions, Minerals, and Equilibria}, Harper & Row, New York, 450 p. \url{http://www.worldcat.org/oclc/517586}
   
   Manning, C. E., Shock, E. L. and Sverjensky, D. A. (2013) The chemistry of carbon in aqueous fluids at crustal and upper-mantle conditions: Experimental and theoretical constraints. \emph{Rev. Mineral. Geochem.} \bold{75}, 109--148. \url{http://dx.doi.org/10.2138/rmg.2013.75.5}
+
+  Schulte, M. D. and Shock, E. L. (1995) Thermodynamics of Strecker synthesis in hydrothermal systems. \emph{Orig. Life Evol. Biosph.} \bold{25}, 161--173. \url{http://dx.doi.org/10.1007/BF01581580}
 
   Shock, E. L., Oelkers, E. H., Johnson, J. W., Sverjensky, D. A. and Helgeson, H. C. (1992) Calculation of the thermodynamic properties of aqueous species at high pressures and temperatures: Effective electrostatic radii, dissociation constants and standard partial molal properties to 1000 \eqn{^{\circ}}{°}C and 5 kbar. \emph{J. Chem. Soc. Faraday Trans.} \bold{88}, 803--826. \url{http://dx.doi.org/10.1039/FT9928800803}
 

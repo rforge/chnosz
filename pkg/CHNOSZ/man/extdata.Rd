@@ -39,7 +39,6 @@
 
   Files in \code{fasta} contain protein sequences:
   \itemize{
-    \item \code{HTCC1062.faa.xz} is a FASTA file of 1354 protein sequences in the organism \emph{Pelagibacter ubique} HTCC1062 downloaded from the NCBI RefSeq collection on 2009-04-12. The search term was Protein: txid335992[Organism:noexp] AND "refseq"[Filter]. See \code{\link{util.fasta}} and \code{\link{revisit}} for examples that use this file.
     \item \code{EF-Tu.aln} consists of aligned sequences (394 amino acids) of elongation factor Tu (EF-Tu). The sequences correspond to those taken from UniProtKB for ECOLI (\emph{Escherichia coli}), THETH (\emph{Thermus thermophilus}) and THEMA (\emph{Thermotoga maritima}), and reconstructed ancestral sequences taken from Gaucher et al., 2003 (maximum likelihood bacterial stem and mesophilic bacterial stem, and alternative bacterial stem). See the \sQuote{formation} vignette for an example that uses this file.
   }
 

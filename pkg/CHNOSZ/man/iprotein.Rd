@@ -87,33 +87,6 @@ stopifnot(protein.length(ip)==10)
 stopifnot(as.chemical.formula(protein.formula(ip))=="C41H69N11O18")
 # we can also calculate a formula without using add.protein
 as.chemical.formula(protein.formula(seq2aa("pentapeptide_test", "ANLSG")))
-
-# read a fasta file, calculate H/C and O/C for all proteins
-# and averages by polypeptide chain, residue and mass
-ffile <- system.file("extdata/fasta/HTCC1062.faa.xz", package="CHNOSZ")
-aa <- read.fasta(ffile)
-pf <- as.data.frame(protein.formula(aa))
-plot(pf$H/pf$C, pf$O/pf$C, pch=NA)
-points(pf$H/pf$C, pf$O/pf$C, pch=20, cex=0.5, col="grey")
-# average composition per polypeptide chain
-chainaa <- aasum(aa, average=TRUE)
-chainpf <- as.data.frame(protein.formula(chainaa))
-points(chainpf$H/chainpf$C, chainpf$O/chainpf$C, pch=15, col="red")
-# average by amino acid residue
-pl <- protein.length(aa)
-resaa <- aasum(aa, abundance=pl, average=TRUE)
-respf <- as.data.frame(protein.formula(resaa))
-points(respf$H/respf$C, respf$O/respf$C, pch=16, col="red")
-# average by mass
-pm <- mass(pf)
-massaa <- aasum(aa, abundance=pm, average=TRUE)
-masspf <- as.data.frame(protein.formula(massaa))
-points(masspf$H/masspf$C, masspf$O/masspf$C, pch=17, col="red")
-# add a legend and title
-legend("topright", pch=c(20, 15, 16, 17), col=c("grey", rep("red", 3)),
-  legend=c("protein", "chain average", "residue average", "mass average"))
-title(main=paste("O/C vs H/C for HTCC1062 proteins\n",
-  "n =", nrow(aa)))
 }
 
 \seealso{

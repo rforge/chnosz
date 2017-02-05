@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-23 (2017-02-05)
+CHANGES IN CHNOSZ 1.0.8-24 (2017-02-05)
 ---------------------------------------
 
 - Add "AA" as a keyword for preset species in basis() (cysteine,
@@ -46,6 +46,8 @@ CHANGES IN CHNOSZ 1.0.8-23 (2017-02-05)
   that parse as chemical formulas; use `format.names` to disable.
 
 - Add '...' argument to thermo.plot.new() (extra arguments for par()).
+
+- Remove HTCC1062.faa.xz.
 
 CHANGES IN CHNOSZ 1.0.8 (2016-05-28)
 ------------------------------------

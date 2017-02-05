@@ -91,7 +91,7 @@ Rectangles and ellipses represent functions and datasets; bold text indicates pr
 ![CHNOSZ flowchart](CHNOSZ.png)
 
 Many functions in CHNOSZ have no side effects.
-That is, the function only returns a result; to use the result in other functions, it can be assigned to a variable with `<-`.
+That is, the function only returns a result; to use the result elsewhere, it can be assigned to a variable with `<-`.
 Major functions without side effects in CHNOSZ are:
 
 * `info()`: search for species in the thermodynamic database
@@ -285,14 +285,17 @@ CH4 <- subcrt(c("CH4", "CH4"), c("gas", "aq"), c(-1, 1), T=T)$out$logK
 logK <- data.frame(T, CO2, CO, CH4)
 ```
 ```{r dissolution_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=50, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Equilibrium constants calculated for dissolution of CO<sub>2</sub>, CO, and CH<sub>4</sub>.", cache=TRUE}
-matplot(logK[, 1], logK[, -1], type="l",
+matplot(logK[, 1], logK[, -1], type="l", col=1, lty=1,
         xlab=axis.label("T"), ylab=axis.label("logK"))
+text(80, -1.7, expr.species("CO2"))
+text(270, -2.2, expr.species("CO"))
+text(310, -2.4, expr.species("CH4"))
 ```
 ```{r dissolution, eval=FALSE}
 ```
 
-Now we can make the plot.
-Here, the `axis.label()` function of CHNOSZ is used to create formatted axis labels:
+Now we can make the plot, using R's `matplot()`.
+Here, the `axis.label()` and `expr.species()` functions of CHNOSZ are used to create formatted axis labels and chemical formulas:
 ```{r dissolution_plot, eval=FALSE}
 ```
 
@@ -500,7 +503,7 @@ diagram(a, fill="terrain", lwd=3, lty=3,
 The default colors for diagrams shown on the screen are R's "heat colors".
 Some arguments in `diagram()` can be used to control the color, labels, and lines, and title (`main`).
 The `tplot` argument turns off plot customizations used in CHNOSZ.
-Additional arguments can be passed via `...`; here, we use that to remove the box around the plot:
+Additional arguments are passed to R's plotting functions; here, we use `bty` to remove the box around the plot:
 ```{r EhpH_plot_color, echo=TRUE, eval=FALSE}
 ```
 
@@ -511,23 +514,85 @@ Mosaic diagrams, which are often shown for metal oxide, sulfide, and carbonate m
 These diagrams are made by constructing individual diagrams for the possible basis species.
 The individual diagrams are then combined, each one contributing to the final diagram only in the range of stability of the corresponding basis species.
 
-Here, we use the `mosaic()` function in CHNOSZ to make a diagram for aqueous species and minerals in the Cu-S-Cl-H<sub>2</sub>O system, similar to Figure 5a of @CPCC17.
-The key argument is `bases`, which identifies the candidate basis species (starting with the one in the current basis set).
-The other arguments, like those of `affinity()`, specify the ranges of the variables.
+Let's use the `mosaic()` function in CHNOSZ to make a diagram for aqueous species and minerals in the Cu-S-Cl-H<sub>2</sub>O system, similar to Figure 5a of @CPCC17.
+To know what aqueous copper chloride complexes are available in the database, we can use a fuzzy search:
+```{r info_CuCl, results="hide"}
+info(" CuCl")
+```
+
+We wish to include chalcocite (Cu<sub>2</sub>S) in the system.
+This mineral undergoes phase transitions; to find out the temperatures of the phase transitions, we can also use `info()`:
+```{r info_chalcocite, message=FALSE}
+info(info("chalcocite", c("cr1", "cr2", "cr3")))$T
+```
+
+Those are temperatures in Kelvin (regardless of the <span style="color:red">`T.units()`</span>); at 200 °C we should use the second phase.
+
+Next we define the basis, and set the activities of the H<sub>2</sub>S and Cl<sup>-</sup> basis species.
+These represent the total activity of S and Cl in the system, which are distributed among the minerals and aqueous species (i.e., not the basis species).
+Three minerals and the aqueous copper chloride species are included:
+```{r copper_setup, echo=TRUE, results="hide"}
+basis(c("Cu", "H2S", "Cl-", "H2O", "H+", "e-"))
+basis("H2S", -6)
+basis("Cl-", -0.7)
+species(c("copper", "tenorite"))
+species("chalcocite", "cr2")
+species(c("CuCl", "CuCl2-", "CuCl3-2", "CuCl+", "CuCl2", "CuCl3-", "CuCl4-2"))
+```
+
+<p>
+We use `mosaic()` to generate and combine diagrams for each candidate basis species (H<sub>2</sub>S, HS<sup>-</sup>, HSO<sub>4</sub><sup>-</sup>, or SO<sub>4</sub><sup>-2</sup>) as a function of Eh and pH.
+The key argument is `bases`, which identifies the candidate basis species (starting with the one in the current basis).
+The other arguments, like those of `affinity()`, specify the ranges of the variables; `res` indicates the grid resolution to use for each variable (higher than the default).
+The first call to `diagram()` plots the species of interest; the second adds the predominance fields of the basis species.
+Finally, `water.lines()` is used to add the stability limits of water at the given temperature.
+```{r copper_mosaic, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=50, out.width="100%", message=FALSE, cache=TRUE}
+T <- 200
+res <- 300
+bases <- c("H2S", "HS-", "HSO4-", "SO4-2")
+m1 <- mosaic(bases, blend=TRUE, pH=c(0, 12, res), Eh=c(-1.2, 0.75, res), T=T)
+diagram(m1$A.species, lwd=2)
+diagram(m1$A.bases, add=TRUE, col="blue", col.names="blue", lty=2)
+water.lines("pH", "Eh", T=convert(T, "K"), col="red", lwd=2, lty=2)
+```
+
+The argument `blend=TRUE` is used to combine the diagrams according to the equilibrium activities of the basis species (see below).
+The smooth transitions between basis species cause the appearance of curved lines on the plot.
+Without that argument, the diagrams would be combined using the dominant basis species, and all of the line segments would be straight.
+
+We have seen the effects of speciation of S in the basis species.
+However, the choice of other basis species can also affect the diagram.
+For instance, we can use H<sub>2</sub> or O<sub>2</sub> in place of *e*<sup>-</sup>.
+To do that, let's write a function to swap those basis species and make a diagram.
+We use `do.call()` to construct the argument list for `mosaic()`; this way, the name of the `newvar` argument to our function indicates the chosen variable.
+```{r mosaicfun, fig.fullwidth=TRUE, fig.width=10.5, fig.height=3, small.mar=TRUE, dpi=50, out.width="100%", message=FALSE, results="hide", cache=TRUE, fig.cap="Different projections (defined by the basis species) of the same thermodynamic system. The choice between them depends on convenience rather than correctness."}
+mosaicfun <- function(newvar, T=200, res=300) {
+  swap.basis("e-", names(newvar))
+  if(names(newvar) == "O2") basis("O2", "gas")
+  mosaicargs <- c(list(bases), blend=TRUE, pH=list(c(-2, 12, res)), newvar, T=T)
+  m1 <- do.call(mosaic, mosaicargs)
+  diagram(m1$A.species, lwd=2, fill=rev(topo.colors(10)))
+  diagram(m1$A.bases, add=TRUE, col="blue", col.names="blue", lty=3)
+  title(main=axis.label(names(newvar)))
+  swap.basis(names(newvar), "e-")
+}
+layout(t(matrix(c(1, 1, 2, 2, 3, 3, 0))))
+mosaicfun(list(Eh=c(-1, 1, res)))
+mosaicfun(list(H2=c(-15, 5, res)))
+mosaicfun(list(O2=c(-70, 0, res)))
+```
+
+## Buffers
+
+## T-, P-, activity-transect
+
+
 
 # Equilibration
 
 ## Getting from affinity to equilibrium
 
 ## Setting the constraints
-
-# Other things you can do with affinity
-
-## Buffers
-
-## T-, P-, activity-transect
-
-# Other things you can do with equilibrate
 
 ## Choosing different balancing constraints
 

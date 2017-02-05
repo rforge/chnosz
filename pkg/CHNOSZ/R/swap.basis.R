@@ -62,12 +62,9 @@ ibasis <- function(species) {
 
 # swap in one basis species for another
 swap.basis <- function(species, species2, T = 25) {
-  # before we do anything, remember the old basis definition
+  # before we do anything, remember the old basis and species definitions
   oldbasis <- get("thermo")$basis
-  # and the species definition
   ts <- species()
-  # the delete the species
-  species(delete=TRUE)
   if(is.null(oldbasis)) 
     stop("swapping basis species requires an existing basis definition")
   # both arguments must have length 1
@@ -75,6 +72,11 @@ swap.basis <- function(species, species2, T = 25) {
     stop("two species must be identified")
   if(length(species) > 1 | length(species2) > 2)
     stop("can only swap one species for one species")
+  # replace pH with H+ and pe and Eh with e- 20170205
+  if(species == "pH") species <- "H+"
+  if(species %in% c("Eh", "pe")) species <- "e-"
+  if(species2 == "pH") species2 <- "H+"
+  if(species2 %in% c("Eh", "pe")) species2 <- "e-"
   # arguments are good, now find the basis species to swap out
   ib <- ibasis(species)
   if(is.na(ib)) stop(paste("basis species '",species,"' is not defined",sep=""))
@@ -94,7 +96,8 @@ swap.basis <- function(species, species2, T = 25) {
   bl <- basis.logact(emu, newbasis, T=T)
   # update the basis with these logacts
   mb <- mod.basis(ispecies, logact=bl)
-  # restore species if they were defined
+  # delete, then restore species if they were defined
+  species(delete=TRUE)
   if(!is.null(ts)) {
     suppressMessages(species(ts$ispecies))
     suppressMessages(species(1:nrow(get("thermo")$species), ts$logact))
@@ -102,4 +105,3 @@ swap.basis <- function(species, species2, T = 25) {
   # all done, return the new basis definition
   return(mb)
 }
-

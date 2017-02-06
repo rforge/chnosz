@@ -331,7 +331,7 @@ basis(c("CO2", "H2", "H2O"))
 ```
 The composition of any species made up of C, H, and O can be represented by a single linear combination of these basis species.
 
-## Auto-balancing reactions
+## Automatically balancing reactions
 
 Methanogenic metabolism in reducing environments may take advantage of acetoclastic or hydrogenotrophic processes.
 To consider reactions involving a charged species (acetate), let's define a basis with H<sup>+</sup>:
@@ -610,7 +610,7 @@ species(c("adenine", "cytosine", "aspartic acid", "deoxyribose",
 Now we can calculate affinity along the transect of changing temperature and activities of five basis species.
 Each variable is given as a named argument; the name for `NH4+` must be quoted.
 ```{marginfigure}
-A shorter code would use `do.call()` to construct the argument list: `do.call(affinity, as.list(rb))`
+A shorter expression would use `do.call()` to construct the argument list: `do.call(affinity, as.list(rb))`
 ```
 ```{marginfigure}
 The target of the conversion is `G`, or free energy, from `logK`.
@@ -783,23 +783,27 @@ See <span style="color:blue">`demo(solubility)`</span> for calculations of the t
 ```
 This makes the species distribution diagram useful for this system.
 
+## Groups of species
+
+[SMS98]
+
 ## Choosing different balancing constraints
 
-# Other things you can do with diagrams
-
-## Groups of species
+amino acids: [Sho90b]
 
 # Proteins
 
-## Group additivity
-
-## Compositional analysis (ZC and nH2O)
-
 ## Sources of amino acid data
 
-## Ionization
+## Group additivity and Ionization
 
 ## Normalizing for different lengths
+
+[Dic08]
+
+## Compositional analysis (ZC)
+
+[Dic14]
 
 # Modifying the database
 
@@ -808,3 +812,5 @@ mod.obigt, mod.buffer
 # Functions outside of the main workflow
 
 transfer, wjd, eqdata, RH2obigt, EOSregress, nonideal
+
+Gibbs energy minimization with amino acids: [Cob13]?

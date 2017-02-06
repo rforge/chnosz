@@ -250,6 +250,8 @@ balance <- function(aout, balance=NULL) {
     # no shared basis species - balance on one mole of species
     if(length(ibalance) == 0) balance <- 1
   } 
+  # change "1" to 1 (numeric) 20170206
+  if(identical(balance, "1")) balance <- 1
   if(is.numeric(balance[1])) {
     # a numeric vector
     n.balance <- rep(balance, length.out=length(aout$values))

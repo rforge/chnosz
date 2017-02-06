@@ -8,10 +8,11 @@
 \alias{water.lines}
 \alias{mtitle}
 \alias{residualsplot}
+\alias{ZC.col}
 \title{Functions to Create and Modify Plots}
 
 \description{
-  Initialize a new plot window using preset parameters, open a postcript file for plotting, add an axis or title to a plot, generate labels for plot axes and for identification of subplots and physical and chemical conditions, add stability lines for water to a diagram.
+  Initialize a new plot window using preset parameters, open a postcript file for plotting, add an axis or title to a plot, generate labels for plot axes and for identification of subplots and physical and chemical conditions, add stability lines for water to a diagram, get colors for set of values.
 }
 
 
@@ -33,6 +34,7 @@
     col = par("fg"), xpoints = NULL, O2state="gas")
   mtitle(main, line=0, ...)
   residualsplot(residuals, property = "Cp", model = "big")
+  ZC.col(z)
 }
 
 \arguments{
@@ -74,6 +76,7 @@
   \item{residuals}{numeric, named vector of residuals to plot}
   \item{property}{character, name of property}
   \item{model}{character, name of model to use in plot title}
+  \item{z}{numeric, set of values}
 }
 
 \details{
@@ -102,6 +105,10 @@ The spacing of the last (bottom) line from the edge of the plot is specified by 
 This function exists to facilitate using \code{\link{expression}}s in multiline titles (see \code{\link{revisit}} for an example.) 
 
   \code{residualsplot} produces a \code{\link{barchart}} with options useful for plotting residuals of group contribution models for thermodynamic properties. It plots horizontal bars stacked with largest on top. The names of the \code{residuals} argument (i.e., the names of model species) are plotted across from each respective bar. The axis title is taken from the \code{property} (probably \samp{Cp} or \samp{V}), and the plot title includes the \code{model} name. See the \sQuote{xadditivity} vignette for examples of these plots.
+
+\code{ZC.col} returns colors from a diverging palette (red - light grey - blue) corresponding to the values in \code{z}.
+Red is associated with lower values of \code{z}.
+This function is intended to generate colors for distinguishing average oxidation state of carbon \code{\link{ZC}}, but any numeric values can be supplied.
 
 }
 

@@ -230,3 +230,14 @@ residualsplot <- function(residuals,property="Cp",model="big") {
   # add axis label
   mtext(axis.label(property),1,3)
 }
+
+# get colors for range of ZC values 20170206
+ZC.col <- function(z) {
+  # scale values to [1, 1000]
+  z <- z * 999/diff(range(z))
+  z <- round(z - min(z)) + 1
+  # diverging (blue - light grey - red) palette
+  dcol <- colorspace::diverge_hcl(1000, c = 100, l = c(50, 90), power = 1)
+  # reverse the palette so red is at lower ZC (more reduced)
+  rev(dcol)[z]
+}

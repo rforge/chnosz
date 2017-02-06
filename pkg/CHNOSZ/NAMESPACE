@@ -16,3 +16,7 @@ importFrom("stats", "D", "as.formula", "cor", "lm", "loess.smooth",
 importFrom("utils", "browseURL", "capture.output", "combn", "demo",
   "example", "head", "installed.packages", "read.csv", "tail",
   "write.csv", "write.table")
+
+# Imports from colorspace
+importFrom("colorspace", "diverge_hcl")
+

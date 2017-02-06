@@ -42,12 +42,12 @@ knitr::knit_hooks$set(smallish.mar = function(before, options, envir) {
 })
 ```
 
-# About
+# First steps
 
 This document introduces the basic functionality of CHNOSZ, a package for the [R software environment](http://r-project.org).
 For more information on R, see "An Introduction to R" and other documents in [The R Manuals](http://cran.r-project.org/manuals.html).
 
-CHNOSZ has been developed since 2006 to support research projects in geochemistry and biochemistry.
+CHNOSZ has been developed since 2006 to support research projects in geochemistry and compositional biology.
 The package provides functions and an extensive thermodynamic database that can be used to calculate the stoichiometric and energetic properties of reactions among minerals and organic or inorganic aqueous species.
 These same functions enable calculations of chemical affinities and metastable equilibrium for systems of proteins.
 
@@ -55,7 +55,8 @@ These same functions enable calculations of chemical affinities and metastable e
 
 If you have just installed R for the first time, installing CHNOSZ should be as simple as selecting the "Install packages from CRAN" or similar menu item in the R GUI or using the following command to start the package installation process:
 ```{marginfigure}
-Or, install the package from a local package file, which you can download from [CRAN](https://cran.r-project.org/package=CHNOSZ) or from the [CHNOSZ website](http://chnosz.net/download).
+Or, install the package from a package file, which you can download from [CRAN](https://cran.r-project.org/package=CHNOSZ) or from the [CHNOSZ website](http://chnosz.net/download).
+This vignette depends on some features that are only available in the development version of CHNOSZ, which can be found at [R-Forge](https://r-forge.r-project.org/projects/chnosz/).
 ```
 ```{r install_CHNOSZ, eval=FALSE}
 install.packages("CHNOSZ")
@@ -448,6 +449,11 @@ Let't not forget to clear the system settings, which were modified by <span styl
 By *formation reaction* is meant the stoichiometric requirements for formation of one mole of any species from the basis species.
 The <span style="color:red">`species()`</span> function is used to set these *species of interest*.
 Let's consider the stoichiometry of some aqueous sulfur-bearing species.
+Here we use <span style="color:red">`basis()`</span> with a keyword to identify a preset basis definition.
+```{marginfigure}
+Possible keywords are `CHNOS` (including CO<sub>2</sub>, H<sub>2</sub>O, NH<sub>3</sub>, H<sub>2</sub>S, and O<sub>2</sub>), `CHNOS+` (also including H<sup>+</sup>), `CHNOSe` (including H<sup>+</sup>, and *e*<sup>-</sup> instead of O<sub>2</sub>).
+See <span style="color:blue">?basis</span> for more options.
+```
 ```{r basis_CHNOSZ, results="hide"}
 basis("CHNOS+")
 ```
@@ -455,7 +461,6 @@ basis("CHNOS+")
 species(c("H2S", "HS-", "HSO4-", "SO4-2"))
 ```
 
-There we used <span style="color:red">`basis()`</span> with a keyword to identify a preset basis definition.
 Now, we can use `affinity()` to calculate the affinities of the formation reactions of each of the species:
 ```{marginfigure}
 The values returned by `affinity()` are dimensionless, i.e. log<sub>10</sub>(**_A_**/*RT*).
@@ -710,7 +715,7 @@ See <span style="color:blue">`?nonideal`</span> and <span style="color:blue">`?w
 ```
 Instead, it assumes that the total activity of species in the system is set by the activity of *one* basis species.
 ```{marginfigure}
-Because activity coefficients are assumed to be zero, activities are additive and we can refer to "total activity".
+Because activity coefficients are assumed to be zero, activities are equal to concentration and we can refer to "total activity".
 ```
 This balanced basis species must be present (with a positive or negative coefficient) in the formation reactions of all species considered.
 
@@ -787,9 +792,44 @@ This makes the species distribution diagram useful for this system.
 
 [SMS98]
 
-## Choosing different balancing constraints
+## Choosing a different balance
 
-amino acids: [Sho90b]
+How about the choice between balancing constraints?
+Let's look at some amino acids in a hypothetical metastable equilibrium.
+This calculation is similar to one presented by @Sho90b for five amino acids, but here we include 20 proteinogenic amino acids, whose names are returned by `aminoacids("")`.
+We use `ZC.col()` to generate colors based on the average oxidation state of carbon of the amino acids (red and blue for relatively reduced and oxidized).
+```{r aminoacids_setup, results="hide", message=FALSE}
+basis("CHNOS")
+basis("CO2", "gas")
+swap.basis("NH3", "N2")
+species(aminoacids(""))
+a <- affinity(O2=c(-50, -25), CO2=c(-10, 15), T=250, P=265)
+aa.ZC <- ZC(info(aminoacids("")))
+col <- ZC.col(aa.ZC)
+```
+
+To make plots using different balance constraints, let's write a simple function that sets the `balance` argument of `diagram()` and adds a title to the plot.
+The first plot is the most similar to Figure 4 of Shock (1990), except for the absence of alanine (probably due to different thermodynamic data) and the presence of some other amino acids.
+There, we set `balance=1`, which indicates that moles of species are conserved; this is equivalent to balancing on the amino acid backbone.
+The remaining plots balance on each of the basis species (except for O<sub>2</sub>), then on volume (in the last plot).
+```{r aafun, fig.fullwidth=TRUE, fig.width=12.5, fig.height=2.5, small.mar=TRUE, dpi=50, out.width="100%", message=FALSE, results="hide", cache=TRUE}
+aafun <- function(balance) {
+  diagram(a, balance=balance, fill=col)
+  title(main=paste("balanced on", balance))
+}
+par(mfrow=c(1, 5))
+lapply(c("1", "CO2", "H2O", "N2", "volume"), aafun)
+```
+
+There are some broad similarities---increasing log*f*<sub>O<sub>2</sub></sub> favors more oxidized amino acids---but also substantial differences.
+It is interesting that there is more "going on" in the middle part of the digram showing volume conservation.
+
+Caveat: these plots demonstrate some possibilities in CHNOSZ and are not necessarily realistic portrayals of this system.
+It does seem odd to balance on a fugacious component like O<sub>2</sub> or H<sub>2</sub>O.
+Unlike different choices of basis species, which are thermodynamically equivalent (see the example above for a mineral system), the choice of balance reflects extra-thermodynamic factors.
+For instance, the widespread rule of thumb for balancing mineral reactions on a component is unrealistic for processes where volume is conserved [@MC11].
+Any choice of balancing constraints may oversimplify the physical or biological context for reactions of organic species or biomolecules.
+While choosing an inappropriate balance leads to infeasible models, a well-considered overview of the possibilities might offer insight into the conditions affecting the dynamics of some systems.
 
 # Proteins
 
@@ -799,15 +839,11 @@ amino acids: [Sho90b]
 
 ## Normalizing for different lengths
 
-[Dic08]
-
 ## Compositional analysis (ZC)
-
-[Dic14]
 
 # Modifying the database
 
-mod.obigt, mod.buffer
+mod.obigt, mod.buffer, OBIGT-2
 
 # Functions outside of the main workflow
 

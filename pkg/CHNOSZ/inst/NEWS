@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-25 (2017-02-06)
+CHANGES IN CHNOSZ 1.0.8-26 (2017-02-06)
 ---------------------------------------
 
 - Add "AA" as a keyword for preset species in basis() (cysteine,
@@ -48,6 +48,9 @@ CHANGES IN CHNOSZ 1.0.8-25 (2017-02-06)
 - Add '...' argument to thermo.plot.new() (extra arguments for par()).
 
 - Remove HTCC1062.faa.xz.
+
+- Add ZC.col() for generating a red-grey-blue color scale from
+  numeric values.
 
 CHANGES IN CHNOSZ 1.0.8 (2016-05-28)
 ------------------------------------

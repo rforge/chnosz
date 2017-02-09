@@ -85,8 +85,7 @@ T <- c(5, 25, 50, 75, 100, 125)
 points(T, convert(MP90.cp("LYSC_CHICK", T), "cal"))
 # Privalov and Makhatadze's experimental values
 e <- read.csv(system.file("extdata/cpetc/PM90.csv", package="CHNOSZ"))
-e <- e[e$protein=="LYSC_CHICK",]
-points(e$T, convert(e$Cp, "cal"), pch=16)
+points(e$T, convert(e$LYSC_CHICK, "cal"), pch=16)
 legend("bottomright", pch=c(16, 1, NA, NA), lty=c(NA, NA, 1, 2),
   legend=c("PM90 experiment", "MP90 groups", 
   "DLH06 groups no ion", "DLH06 groups ionized"))

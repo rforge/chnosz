@@ -87,11 +87,9 @@ expr.property <- function(property) {
     else if(thischar %in% letters) thisexpr <- substitute(""[italic(a)], list(a=thischar))
     else thisexpr <- substitute(a, list(a=thischar))
     # D for greek Delta
-    # A for bold A (affinity)
     # p for subscript italic P (in Cp)
     # 0 for degree sign (but not immediately following a number e.g. 2.303)
     if(thischar=='D') thisexpr <- substitute(Delta)
-    if(thischar=='A') thisexpr <- substitute(bold(A))
     if(thischar=='p') thisexpr <- substitute(a[italic(P)], list(a=""))
     if(thischar=='0' & !can.be.numeric(prevchar)) thisexpr <- substitute(degree)
     # put it together

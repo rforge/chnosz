@@ -845,7 +845,7 @@ The call to `equilibrate()` runs with the default balance (in this case, CO<sub>
 Actually, the total concentration of carbon depends on the mixing ratio, ranging from about 10<sup>-2.2</sup> (seawater) to 10<sup>-2.6</sup> (vent fluid).
 The ability to vary the activity of the balanced basis species is not yet implemented in CHNOSZ, so a single value is used here.
 ```
-```{r groups_affinity, message=FALSE}
+```{r groups_affinity, message=FALSE, cache=TRUE}
 a <- affinity(T=T, O2=O2, pH=pH)
 e <- equilibrate(a, loga.balance=-2.5)
 ```
@@ -871,7 +871,7 @@ diagram(e, alpha=TRUE, ylim=c(0, 0.13), lty=lty, names=names)
 
 That makes a diagram that is similar to Figure 6b of Shock and Schulte (1998).
 ```{marginfigure}
-Some differences with the original diagrams may be caused by artifacts introduced by digitization, combined with the sensitivity of the calculations to log*f*<sub>O<sub>2</sub></sub>.
+Some differences from the original diagrams may be caused by artifacts introduced by digitization, combined with the sensitivity of the calculations to log*f*<sub>O<sub>2</sub></sub>.
 ```
 It is also possible to plot the distribution of species within individual groups, such as alcohols and ketones.
 We do this by setting the names and line types for the *other* species to values that prevent them from being plotted:
@@ -922,13 +922,101 @@ While choosing an inappropriate balance leads to infeasible models, consideratio
 
 # Proteins
 
-## Sources of amino acid data
+Proteins in CHNOSZ are handled differently from other species.
+Amino acid group additivity is used to obtain the thermodynamic properties of proteins.
+Therefore, CHNOSZ has a data file with amino acid compositions of selected proteins, as well as functions for importing and downloading amino acid sequence data.
+When proteins in CHNOSZ are identified by name, they include an underscore, such as in `LYSC_CHICK` (chicken lysozyme C).
 
-## Group additivity and Ionization
+The length and chemical formula of one or more proteins are returned by `protein.length()` and `protein.formula()`.
+We can calculate the formula of the protein, and the per-residue formula, and show that both have the same average oxidation state of carbon:
+```{r formula_LYSC_CHICK}
+pl <- protein.length("LYSC_CHICK")
+pf <- protein.formula("LYSC_CHICK")
+list(length=pl, protein=pf, residue=pf/pl,
+     ZC_protein=ZC(pf), ZC_residue=ZC(pf/pl))
+```
+
+## Group additivity and ionization
+
+The group additivity calculations for proteins are based on equations and data from @AH00, @DLH06, and @LD12.
+There are two major options for the calculations: whether to calculate properties for crystalline or aqueous groups, and, for the latter, whether to model the ionization of the sidechain and terminal groups as a function of pH (as well as *T* and *P*).
+By default, additivity of aqueous groups is used:
+```{r subcrt_LYSC_CHICK, message=FALSE}
+subcrt("LYSC_CHICK")$out[[1]][1:6, ]
+```
+
+<p>
+Let's compare experimental values of heat capacity of four proteins, from @PM90, with those calculated using group additivity.
+After dividing Privalov and Makhatadze's experimental values by the lengths of the proteins to get per-residue values, we convert those to calories, then plot them.
+The loop calculates the properties of each protein using group additivity, for aqueous and crystalline groups, then plots the per-residue values.
+```{r protein_Cp, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=72, out.width="100%", echo=FALSE, message=FALSE, fig.cap='The heat capacity calculated by group additivity closely approximates experimental values for aqueous proteins. For a related figure showing the effects of ionization in the calculations, see <span style="color:blue">?ionize.aa</span>.', cache=TRUE, pngquant=pngquant}
+PM90 <- read.csv(system.file("extdata/cpetc/PM90.csv", package="CHNOSZ"))
+plength <- protein.length(colnames(PM90)[2:5])
+Cp_expt <- t(t(PM90[, 2:5]) / plength)
+matplot(PM90[, 1], convert(Cp_expt, "cal"), type="p", pch=19,
+        xlab=axis.label("T"), ylab=axis.label("Cp0"), ylim=c(28, 65))
+for(i in 1:4) {
+  pname <- colnames(Cp_expt)[i]
+  aq <- subcrt(pname, "aq", T=seq(0, 150))$out[[1]]
+  cr <- subcrt(pname, "cr", T=seq(0, 150))$out[[1]]
+  lines(aq$T, aq$Cp/plength[i], col=i)
+  lines(cr$T, cr$Cp/plength[i], col=i, lty=2)
+}
+legend("right", legend=colnames(Cp_expt),
+       col=1:4, pch=19, lty=1, bty="n", cex=0.9)
+legend("bottomright", legend=c("experimental", "calculated (aq)",
+       "calculated (cr)"), lty=c(NA, 1, 2), pch=c(19, NA, NA), bty="n")
+```
+```{r protein_Cp, eval=FALSE}
+```
+
+<p>
+Note that `subcrt()` has no provision for protein ionization.
+Instead, ionization is handled via `affinity()`, which calls `ionize.aa()` if a charged species is in the basis.
+```{marginfigure}
+Whether to calculate properties using aqueous or crystalline groups is determined by the value of `thermo\$opt\$state`; if it is changed from its default of `aq` to `cr`, no ionization is possible.
+```
+The following plot shows the calculated affinity of reaction between nonionized proteins and their ionized forms as a function of pH.
+The affinity is always positive, representing the strong energetic drive for ionization of proteins in aqueous solution.
+The degree of ionization of amino and carboxyl groups increase at low and high pH, respectively, accounting for the U-shaped lines.
+```{r protein_ionization, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=72, out.width="100%", echo=FALSE, results="hide", message=FALSE, fig.cap='Affinity of ionization of proteins. See <span style="color:blue">demo(ionize)</span> for ionization properties calculated as a function of temperature and pH.', cache=TRUE, pngquant=pngquant}
+ip <- iprotein(c("CYC_BOVIN", "LYSC_CHICK", "MYG_PHYCA", "RNAS1_BOVIN"))
+basis("CHNOS+")
+a_ion <- affinity(pH=c(0, 14), iprotein=ip)
+basis("CHNOS")
+a_nonion <- affinity(iprotein=ip)
+plot(c(0, 14), c(50, 300), xlab="pH", ylab=axis.label("A"), type="n")
+for(i in 1:4) {
+  A_ion <- as.numeric(a_ion$values[[i]])
+  A_nonion <- as.numeric(a_nonion$values[[i]])
+  lines(a_ion$vals[[1]], A_ion - A_nonion, col=i)
+}
+legend("topright", legend=a_ion$species$name,
+       col=1:4, lty=1, bty="n", cex=0.9)
+```
+We calculate the affinities for the same four proteins, using both charged and uncharged sets of basis species to activate and suppress the ionization calculations.
+The ionized calculation returns a series of values (as a function of pH), but there is only one value of affinity returned by the nonionized calculation, so we need to use `as.numeric()` to avoid subtracting non-conformable arrays:
+```{r protein_ionization, eval=FALSE}
+```
+
+Above, we used the `iprotein` argument of `affinity()` to specify the proteins in the calculation, using their indices as returned by `iprotein()`.
+```{marginfigure}
+The `iprotein` index refers to the rownumber of `thermo\$protein`; this is distinct from the `ispecies` index, which refers to the rownumber of `thermo\$species`.
+```
+That approach utilizes some optimizations that can be realized due group additivity, and is useful for calculations involving many proteins.
+An alternative, but slower, approach is to identify the proteins to `species()`; this should produce results that are equivalent to using the `iprotein` argument:
+```{r species_protein, message=FALSE}
+species(c("CYC_BOVIN", "LYSC_CHICK", "MYG_PHYCA", "RNAS1_BOVIN"))
+a_nonion2 <- affinity()
+unlist(a_nonion2$values)
+unlist(a_nonion$values)
+```
+
+## Compositional analysis (ZC)
 
 ## Normalizing for different lengths
 
-## Compositional analysis (ZC)
+## Adding amino acid data
 
 # Data options
 
@@ -954,6 +1042,6 @@ e.g. browse.refs(1)
 
 # Functions outside of the main workflow
 
-transfer, wjd, eqdata, RH2obigt, EOSregress
+transfer, wjd, eqdata, RH2obigt, EOSregress, anim.
 
 Gibbs energy minimization with amino acids: [Cob13]?

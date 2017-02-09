@@ -26,7 +26,7 @@
   }
 
 
-  Files in \code{cpetc} contain heat capacity data and other thermodynamic properties:
+  Files in \code{cpetc} contain heat capacity and other thermodynamic data and parameters:
   \itemize{
     \item \code{PM90.csv} Heat capacities of four unfolded aqueous proteins taken from Privalov and Makhatadze, 1990. Names of proteins are in the first column, temperature in \eqn{^{\circ}}{°}C in the second, and heat capacities in J mol\eqn{^{-1}}{^-1} K\eqn{^{-1}}{^-1} in the third. See \code{\link{ionize.aa}} for an example that uses this file.
     \item \code{RH95.csv} Heat capacity data for iron taken from Robie and Hemingway, 1995. Temperature in Kelvin is in the first column, heat capacity in J K\eqn{^{-1}}{^-1} mol\eqn{^{-1}}{^-1} in the second. See \code{\link{subcrt}} for an example that uses this file.
@@ -35,6 +35,7 @@
     \item \code{Cp.CH4.HW97.csv}, \code{V.CH4.HWM96.csv} Apparent molar heat capacities and volumes of CH4 in dilute aqueous solutions reported by Hnedkovsky and Wood, 1997 and Hnedkovsky et al., 1996. See \code{\link{EOSregress}} for examples that use these files.
     \item \code{BKM60_Fig7.dat} Eh-pH values for normal, wet and waterlogged soils from Fig. 7 of Baas Becking et al., 1960. See the \sQuote{anintro} vignette for an example that uses this file.
     \item \code{SC10_Rainbow.csv} Values of temperature (\eqn{^{\circ}}{°}C), pH and logarithms of activity of \eqn{\mathrm{CO_2}}{CO2}, \eqn{\mathrm{H_2}}{H2}, \eqn{\mathrm{NH_4^+}}{NH4+}, \eqn{\mathrm{H_2S}}{H2S} and \eqn{\mathrm{CH_4}}{CH4} for mixing of seawater and hydrothermal fluid at Rainbow field (Mid-Atlantic Ridge), taken from Shock and Canovas, 2010.
+    \item \code{SS98_Fig5a.csv}, \code{SS98_Fig5b.csv} Values of logarithm of fugacity of \eqn{\mathrm{O_2}}{O2} and pH as a function of temperature for mixing of seawater and hydrothermal fluid, digitized from Figs. 5a and b of Shock and Schulte, 1998.
   }
 
   Files in \code{fasta} contain protein sequences:
@@ -148,9 +149,11 @@
 
   SGD project. \emph{Saccharomyces} Genome Database, \url{http://www.yeastgenome.org}
 
+  Shock, E. and Canovas, P. (2010) The potential for abiotic organic synthesis and biosynthesis at seafloor hydrothermal systems. \emph{Geofluids} \bold{10}, 161--192. \url{http://dx.doi.org/10.1111/j.1468-8123.2010.00277.x}
+
   Shock, E. L., Oelkers, E. H., Johnson, J. W., Sverjensky, D. A. and Helgeson, H. C. (1992) Calculation of the thermodynamic properties of aqueous species at high pressures and temperatures: Effective electrostatic radii, dissociation constants and standard partial molal properties to 1000 \eqn{^{\circ}}{°}C and 5 kbar. \emph{J. Chem. Soc. Faraday Trans.} \bold{88}, 803--826. \url{http://dx.doi.org/10.1039/FT9928800803}
 
-  Shock, E. and Canovas, P. (2010) The potential for abiotic organic synthesis and biosynthesis at seafloor hydrothermal systems. \emph{Geofluids} \bold{10}, 161--192. \url{http://dx.doi.org/10.1111/j.1468-8123.2010.00277.x}
+  Shock, E. L. and Schulte, M. D. (1998) Organic synthesis during fluid mixing in hydrothermal systems. \emph{J. Geophys. Res.} \bold{103}, 28513--28527. \url{http://dx.doi.org/10.1029/98JE02142}
 
   YeastGFP project. Yeast GFP Fusion Localization Database, http://yeastgfp.ucsf.edu; Current location: \url{http://yeastgfp.yeastgenome.org}
 

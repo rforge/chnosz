@@ -89,13 +89,15 @@ diagram <- function(
     else message("diagram: using 'as.residue' in calculation of predominant species")
   }
 
-  ## sum activities of species together in groups 20090524
+  ## sum affinities or activities of species together in groups 20090524
   # using lapply/Reduce 20120927
   if(!missing(groups)) {
     # loop over the groups
     plotvals <- lapply(groups, function(ispecies) {
       # remove the logarithms
-      act <- lapply(plotvals[ispecies], function(x) 10^x)
+      if(eout.is.aout) act <- lapply(plotvals[ispecies], function(x) 10^x)
+      # and, for activity, multiply by n.balance 20170207
+      else act <- lapply(seq_along(ispecies), function(i) eout$n.balance[ispecies[i]] * 10^plotvals[[ispecies[i]]])
       # sum the activities
       return(Reduce("+", act))
     })
@@ -123,11 +125,11 @@ diagram <- function(
     plotvar <- what
   }
 
-  ## alpha: plot fractional degree of formation instead of logarithms of activities
+  ## alpha: plot fractional degree of formation
   ## scale the activities to sum=1  ... 20091017
   if(alpha) {
     # remove the logarithms
-    act <- lapply(eout$loga.equil, function(x) 10^x)
+    act <- lapply(plotvals, function(x) 10^x)
     # sum the activities
     sumact <- Reduce("+", act)
     # divide activities by the total
@@ -252,7 +254,8 @@ diagram <- function(
             adj <- 0.5
             if(xvalues[imax] > xlim[1] + 0.8*diff(xlim)) adj <- 1
             if(xvalues[imax] < xlim[1] + 0.2*diff(xlim)) adj <- 0
-            text(xvalues[imax], plotvals[[i]][imax], labels=names[i], adj=adj)
+            # also include y-adjustment (labels bottom-aligned with the line)
+            text(xvalues[imax], plotvals[[i]][imax], labels=names[i], adj=c(adj, 0))
           }
         } else legend(x=legend.x, lty=lty, legend=names, col=col, cex=cex.names, lwd=lwd, ...)
       }
@@ -462,6 +465,8 @@ diagram <- function(
         pn <- plot.names(zs, xs, ys, names)
         if(!is.null(dotted)) plot.line(zs, xlim, ylim, dotted, col, lwd, xrange=xrange)
         else contour.lines(predominant, xlim, ylim, lty=lty, col=col, lwd=lwd)
+        # re-draw the tick marks and axis lines in case the fill obscured them
+        if(tplot & !identical(fill, "transparent")) thermo.axis()
       } # done with the 2D plot!
       out2D <- list(lx=pn$lx, ly=pn$ly, is=pn$is)
     } # end if(nd==2)

@@ -20,9 +20,9 @@
   thermo.plot.new(xlim, ylim, xlab, ylab, cex = par("cex"),
     mar = NULL, lwd = par("lwd"), side = c(1,2,3,4), 
     mgp = c(1.5, 0.3, 0), cex.axis = par("cex"), col = par("col"),
-    yline = NULL, axs = "i", do.box = TRUE, ticks = NULL, las = 1,
+    yline = NULL, axs = "i", do.box = TRUE, las = 1,
     xline = NULL, ...)
-  thermo.axis(lab = "x-axis", side = 1, line = 1.5, cex = par("cex"),
+  thermo.axis(lab = NULL, side = 1:4, line = 1.5, cex = par("cex"),
     lwd = par("lwd"), T = NULL, col = par("col"))
   label.plot(x, xfrac = 0.05, yfrac = 0.95, paren = FALSE,
     italic = FALSE, ...)
@@ -52,7 +52,6 @@
   \item{yline}{numeric, margin line on which to plot \eqn{y}{y}-axis name}
   \item{axs}{character, setting for axis limit calculation}
   \item{do.box}{logical, draw a box around the plot?}
-  \item{ticks}{numeric, same effect as \code{side} (retained for backwards compatibility)}
   \item{las}{numeric, style for axis labels}
   \item{xline}{numeric, margin line on which to plot \eqn{x}{x}-axis name}
   \item{...}{further arguments passed to \code{par} or \code{mtext}}
@@ -81,7 +80,7 @@
 
 \details{
 
-  \code{thermo.plot.new} sets parameters for a new plot, creates a new plot using \code{\link{plot.new}}, and adds axes and major and minor ticks to the plot. Plot parameters (see \code{\link{par}}) including \code{cex}, \code{mar}, \code{lwd}, \code{mgp} and \code{axs} can be given, as well as a numeric vector in \code{ticks} identifying which sides of the plot receive tick marks. \code{yline}, if present, denotes the margin line (default \code{\link{par}('mgp')[1]}) where the y-axis name is plotted. The very first time \code{thermo.plot.new} is called, it stores the existing value of \code{par(no.readonly=TRUE)} in \code{thermo$opar} so that the plot device can be reset to the previous state later on.
+  \code{thermo.plot.new} sets parameters for a new plot, creates a new plot using \code{\link{plot.new}}, and adds axes and major and minor tick marks to the plot. Plot parameters (see \code{\link{par}}) including \code{cex}, \code{mar}, \code{lwd}, \code{mgp} and \code{axs} can be given, as well as a numeric vector in \code{side} identifying which sides of the plot receive tick marks. \code{yline}, if present, denotes the margin line (default \code{\link{par}('mgp')[1]}) where the y-axis name is plotted. The very first time \code{thermo.plot.new} is called, it stores the existing value of \code{par(no.readonly=TRUE)} in \code{thermo$opar} so that the plot device can be reset to the previous state later on.
 
 \code{water.lines} plots lines representing the oxidation and reduction stability limits of water on \code{yaxis}-\code{xaxis} diagrams, where \code{yaxis} can be \samp{Eh} or \samp{O2}, and \code{xaxis} can be \samp{pH} or \samp{T}.
 \code{which} controls which lines are drawn (\samp{oxidation}, \samp{reduction}, or both (the default)).
@@ -97,7 +96,9 @@ The location of the label is controlled by \code{xfrac} and \code{yfrac} (the fr
 \code{usrfig} returns the limits of the figure region in \dQuote{user} coordinates (i.e. the limits of the plot region, from \code{\link{par}("usr")}).
 It is a supporting function for \code{label.figure} but is also useful for other circumstances where information must be added at a particular location in a figure.
 
-  \code{thermo.axis} is used to add axes and axis labels to plots, with some default style settings (rotation of numeric labels) and conversions between oxidation-reduction scales (called by \code{thermo.plot.new}). It also adds minor tick marks.
+\code{thermo.axis} is used to add axes and axis labels to plots, with some default style settings (rotation of numeric labels) and conversions between oxidation-reduction scales (called by \code{thermo.plot.new}).
+It also adds minor tick marks.
+With the default arguments (no labels specified), it plots only the axis lines and tick marks; this is useful for overplotting the axis on diagrams filled with colors.
 
 \code{mtitle} can be used to add a multi-line title to a plot.
 It loops over each element of \code{main} and places it on a separate margin line using \code{\link{mtext}}.

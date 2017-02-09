@@ -2,7 +2,7 @@
 # Functions to create and modify plots
 
 thermo.plot.new <- function(xlim,ylim,xlab,ylab,cex=par('cex'),mar=NULL,lwd=par('lwd'),side=c(1,2,3,4),
-  mgp=c(1.5,0.3,0),cex.axis=par('cex'),col=par('col'),yline=NULL,axs='i',do.box=TRUE,ticks=NULL,
+  mgp=c(1.5,0.3,0),cex.axis=par('cex'),col=par('col'),yline=NULL,axs='i',do.box=TRUE,
   las=1,xline=NULL, ...) {
   # start a new plot with some customized settings
   thermo <- get("thermo")
@@ -11,9 +11,6 @@ thermo.plot.new <- function(xlim,ylim,xlab,ylab,cex=par('cex'),mar=NULL,lwd=par(
     thermo$opar <- par(no.readonly=TRUE)
     assign("thermo", thermo, "CHNOSZ")
   }
-  # 20091108 changed argument name from 'ticks' to 'side' but
-  # keep 'ticks' for backward compatibility
-  if(!is.null(ticks)) side <- ticks 
   # 20090324 mar handling: NULL - a default setting; NA - par's setting
   # 20090413 changed mar of top side from 2 to 2.5
   if(is.null(mar)) mar <- c(3,3.5,2.5,1) else if(is.na(mar[1])) mar <- par('mar')
@@ -33,7 +30,7 @@ thermo.plot.new <- function(xlim,ylim,xlab,ylab,cex=par('cex'),mar=NULL,lwd=par(
   if(4 %in% side) thermo.axis(NULL,side=4,lwd=lwd)
 }
 
-thermo.axis <- function(lab='x-axis',side=1,line=1.5,cex=par('cex'),lwd=par('lwd'),T=NULL,col=par('col')) {
+thermo.axis <- function(lab=NULL,side=1:4,line=1.5,cex=par('cex'),lwd=par('lwd'),T=NULL,col=par('col')) {
   # if T isn't NULL, looks like we want make a second
   # oxidation scale corresponding to one already plotted.
   # e.g.,  Eh-pe, Eh-logfO2, or logfO2-Eh
@@ -52,53 +49,56 @@ thermo.axis <- function(lab='x-axis',side=1,line=1.5,cex=par('cex'),lwd=par('lwd
   }
   if(!is.null(lwd)) {
     ## plot major tick marks and numeric labels
-    do.label <- TRUE
-    if(missing(cex) & side %in% c(3,4) & is.null(T)) do.label <- FALSE
-    at <- axis(side,labels=do.label,tick=TRUE,lwd=lwd,col=col,col.axis=col) 
-    ## plot minor tick marks
-    # the distance between major tick marks
-    da <- abs(diff(at[1:2]))
-    # distance between minor tick marks
-    di <- da / 4
-    if(da %% 2 | !(da %% 10)) di <- da / 5
-    # number of minor tick marks
-    if(side %in% c(1,3)) {
-      ii <- c(1,2) 
-      myasp <- par('xaxp')
-    } else {
-      ii <- c(3,4)
-      myasp <- par('yaxp')
+    for(thisside in side) {
+      do.label <- TRUE
+      if(missing(side) | (missing(cex) & thisside %in% c(3,4) & is.null(T))) do.label <- FALSE
+      at <- axis(thisside,labels=do.label,tick=TRUE,lwd=lwd,col=col,col.axis=col) 
+      ## plot minor tick marks
+      # the distance between major tick marks
+      da <- abs(diff(at[1:2]))
+      # distance between minor tick marks
+      di <- da / 4
+      if(da %% 2 | !(da %% 10)) di <- da / 5
+      # number of minor tick marks
+      if(thisside %in% c(1,3)) {
+        ii <- c(1,2) 
+        myasp <- par('xaxp')
+      } else {
+        ii <- c(3,4)
+        myasp <- par('yaxp')
+      }
+      myusr <- par('usr')[ii]
+      daxis <- abs(diff(myusr))
+      nt <- daxis / di + 1
+      ## if nt isn't an integer, it probably
+      ## means the axis limits don't correspond
+      ## to major tick marks (expect problems)
+      ##at <- seq(myusr[1],myusr[2],length.out=nt)
+      # start from (bottom/left) of axis?
+      bl <- 1
+      #if(myasp[2]==myusr[2]) bl <- 2
+      # is forward direction (top/right)?
+      tr <- 1
+      if(xor(myusr[2] < myusr[1] , bl==2)) tr <- -1
+      #at <- myusr[bl] + tr * di * seq(0:(nt-1))
+      # well all of that doesn't work in a lot of cases,
+      # where none of the axis limits correspond to
+      # major tick marks. perhaps the following will work
+      at <- myusr[1] + tr * di * (0:(nt-1))
+      # apply an offset
+      axt <- axTicks(thisside)[1]
+      daxt <- (axt - myusr[1])/di
+      daxt <- (daxt-round(daxt))*di
+      at <- at + daxt
+      tcl <- par('tcl') * 0.5
+      axis(thisside,labels=FALSE,tick=TRUE,lwd=lwd,col=col,col.axis=col,at=at,tcl=tcl)
     }
-    myusr <- par('usr')[ii]
-    daxis <- abs(diff(myusr))
-    nt <- daxis / di + 1
-    ## if nt isn't an integer, it probably
-    ## means the axis limits don't correspond
-    ## to major tick marks (expect problems)
-    ##at <- seq(myusr[1],myusr[2],length.out=nt)
-    # start from (bottom/left) of axis?
-    bl <- 1
-    #if(myasp[2]==myusr[2]) bl <- 2
-    # is forward direction (top/right)?
-    tr <- 1
-    if(xor(myusr[2] < myusr[1] , bl==2)) tr <- -1
-    #at <- myusr[bl] + tr * di * seq(0:(nt-1))
-    # well all of that doesn't work in a lot of cases,
-    # where none of the axis limits correspond to
-    # major tick marks. perhaps the following will work
-    at <- myusr[1] + tr * di * (0:(nt-1))
-    # apply an offset
-    axt <- axTicks(side)[1]
-    daxt <- (axt - myusr[1])/di
-    daxt <- (daxt-round(daxt))*di
-    at <- at + daxt
-    tcl <- par('tcl') * 0.5
-    axis(side,labels=FALSE,tick=TRUE,lwd=lwd,col=col,col.axis=col,at=at,tcl=tcl)
   }
-
   # rotate labels on side axes
-  if(side %in% c(2,4)) las <- 0 else las <- 1
-  if(!is.null(lab)) mtext(lab,side=side,line=line,cex=cex,las=las)
+  for(thisside in side) {
+    if(thisside %in% c(2,4)) las <- 0 else las <- 1
+    if(!is.null(lab)) mtext(lab,side=thisside,line=line,cex=cex,las=las)
+  }
   # reset limits if we were plotting a second axis
   if(!is.null(T)) par(opar)
 }

@@ -38,7 +38,7 @@ names <- c(Cu_s, Cu_aq, CuGly)
 # mosaic diagram with to speciate glycine as a function of pH
 m <- mosaic(bases=Gly, pH=c(0, 16, 300), Eh=c(-0.6, 1.0, 300))
 fill <- c(rep("lightgrey", 3), rep("white", 4), rep("lightblue", 4))
-d <- diagram(m$A.species, fill=fill, names=NULL, tplot=FALSE, xaxs="i", yaxs="i")
+d <- diagram(m$A.species, fill=fill, names=NULL, xaxs="i", yaxs="i")
 # to make the labels look nicer
 names <- names[sort(unique(as.numeric(d$predominant)))]
 for(i in 1:length(names)) {
@@ -57,10 +57,8 @@ for(i in 1:length(names)) {
 d <- diagram(m$A.bases, add=TRUE, col="darkblue", lty=3, names=NULL)
 text(d$lx, -0.5, Gly, col="darkblue")
 
-# add water lines and title and re-draw a box around the plot
-# because the filling of fields masks it
+# add water lines and title
 water.lines()
-box()
 mtitle(expression("Copper-water-glycine at 25"~degree*"C and 1 bar",
   "After Aksu and Doyle, 2001 (Fig. 2b)"), line=0.5)
 

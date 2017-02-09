@@ -29,4 +29,5 @@ for(logact in c(-6, -10, -15)) {
 }
 # add legend
 legend("topright", legend = c(describe.property("P", 300), describe.basis(ibasis=c(2,4)),
-  "minerals", "formaldehyde", "HCN"), lty=c(NA, NA, NA, 1, 3, 2), col=c(NA, NA, NA, 3, 1, 1), bg="white")
+  "minerals", "formaldehyde", "HCN"), lty=c(NA, NA, NA, 1, 3, 2), col=c(NA, NA, NA, 3, 1, 1),
+  bg="white", cex=0.9)

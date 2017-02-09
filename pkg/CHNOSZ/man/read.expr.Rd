@@ -88,7 +88,7 @@ read.expr(file, "name", "log10(pg/ml)", list(description="Complement"))
 
 ## speciation diagram for ER.to.Golgi proteins (COPII coat 
 ## proteins) as a function of logfO2, after Dick, 2009
-# use old parameters for [Met] sidechain group
+# use old parameters for [Met] (Dick et al., 2006)
 mod.obigt("[Met]", G=-35245, H=-59310)
 y <- yeastgfp("ER.to.Golgi")
 # don't use those with NA abundance

@@ -1,8 +1,8 @@
 ## Oxygen fugacity - activity of H2O predominance 
 ## diagrams for proteologs for 23 YeastGFP localizations
-# use old properties of [Met] to reproduce this example
+# use old properties of [Met] (Dick et al., 2006) to reproduce this example
 data(thermo)
-add.obigt()
+mod.obigt("[Met]", G=-35245, H=-59310)
 # arranged by decreasing metastability:
 # order of this list of locations is based on the 
 # (dis)appearance of species on the current set of diagrams

@@ -26,6 +26,9 @@ csl: elementa.csl
 # invalidate cache when the tufte version changes
 knitr::opts_chunk$set(tidy = FALSE, cache.extra = packageVersion('tufte'))
 options(htmltools.dir.version = FALSE)
+# use pngquant to optimize PNG images
+knitr::knit_hooks$set(pngquant = knitr::hook_pngquant)
+pngquant <- "--speed=1 --quality=0-50"
 ```
 
 
@@ -81,7 +84,7 @@ Cpdat$Cp <- convert(Cpdat$Cp, "cal")
 Cpdat$P <- convert(Cpdat$P, "bar")
 ```
 
-```{r EOSregress_hide, fig.margin = TRUE, fig.cap = "Heat Capacity of Aqueous Methane", fig.width=3.5, fig.height=3.5, cache=TRUE, results="hide", message=FALSE, echo=FALSE, dpi=50, out.width=672, out.height=336}
+```{r EOSregress_hide, fig.margin = TRUE, fig.cap = "Heat Capacity of Aqueous Methane", fig.width=3.5, fig.height=3.5, cache=TRUE, results="hide", message=FALSE, echo=FALSE, dpi=72, out.width=672, out.height=336, pngquant=pngquant}
 var <- c("invTTheta2", "TXBorn")
 Cplm <- EOSregress(Cpdat, var, T.max=600)
 EOSplot(Cpdat, coefficients=round(Cplm$coefficients, 1))
@@ -162,7 +165,7 @@ Vcoeffs <- round(c(Vnonlm$coefficients, QBorn=Vomega), 1)
 Vcoeffs_database <- EOScoeffs("CH4", "V")
 ```
 
-```{r Vplot_hide, fig.margin=TRUE, results="hide", message=FALSE, echo=FALSE, fig.width=3.5, fig.height=7, fig.cap="Volume of Aqueous Methane", dpi=50, out.width=672, out.height=672}
+```{r Vplot_hide, fig.margin=TRUE, results="hide", message=FALSE, echo=FALSE, fig.width=3.5, fig.height=7, fig.cap="Volume of Aqueous Methane", dpi=72, out.width=672, out.height=672, pngquant=pngquant}
 par(mfrow=c(2, 1))
 # plot 1
 EOSplot(Vdat, coefficients=Vcoeffs)
@@ -208,7 +211,7 @@ Nadat <- prop.PT[, c("T", "P", "Cp")]
 As noted above, $\omega$ for electrolytes is not a constant.
 What happens if we apply the linear model anyway, knowing it's not applicable (especially at high temperature)?
 
-```{r Nalm, fig.margin=TRUE, fig.width=3.5, fig.height=3.5, fig.cap="Heat Capacity of Na$^+$ (Inapplicable: Constant $ω$)", dpi=50, out.width=672, out.height=336}
+```{r Nalm, fig.margin=TRUE, fig.width=3.5, fig.height=3.5, fig.cap="Heat Capacity of Na$^+$ (Inapplicable: Constant $ω$)", dpi=72, out.width=672, out.height=336, pngquant=pngquant}
 var <- c("invTTheta2", "TXBorn")
 Nalm <- EOSregress(Nadat, var, T.max=600)
 EOSplot(Nadat, coefficients=Nalm$coefficients, fun.legend=NULL)
@@ -232,7 +235,7 @@ omega.guess <- coef(Nalm)[3]
 Then, we can use an iterative procedure that refines successive guesses of $\omega_{P_r,T_r}$.
 The convergence criterion is measured by the difference in sequential regressed values of $\omega$.
 
-```{r Nawhile, fig.margin=TRUE, fig.width=3.5, fig.height=3.5, fig.cap="Heat Capacity of Na$^+$ (Variable $ω$)", dpi=50, out.width=672, out.height=336}
+```{r Nawhile, fig.margin=TRUE, fig.width=3.5, fig.height=3.5, fig.cap="Heat Capacity of Na$^+$ (Variable $ω$)", dpi=72, out.width=672, out.height=336, pngquant=pngquant}
 diff.omega <- 999
 while(abs(diff.omega) > 1) {
   Nalm1 <- EOSregress(Nadat, var1, omega.PrTr=tail(omega.guess, 1), Z=1)
@@ -254,7 +257,7 @@ Note that the regressed value of $\omega$ has volumetric units (cm$^3$∙bar/mol
 Compared to $C_P^\circ$, the regression of $V^\circ$ is very finicky.
 Given a starting guess of $\omega_{P_r,T_r}$ of 1400000 cm$^3$∙bar/mol, the iteration converges on 1394890 instead of the "true" database value of 1383230 (represented by dashed line in the plot).
 
-```{r NaVolume_hide, fig.margin=TRUE, fig.width=3.5, fig.height=3.5, fig.cap="Volume of Na$^+$ (Variable $ω$)", results="hide", message=FALSE, echo=FALSE, dpi=50, out.width=672, out.height=336}
+```{r NaVolume_hide, fig.margin=TRUE, fig.width=3.5, fig.height=3.5, fig.cap="Volume of Na$^+$ (Variable $ω$)", results="hide", message=FALSE, echo=FALSE, dpi=72, out.width=672, out.height=336, pngquant=pngquant}
 T <- convert(seq(0, 600, 25), "K")
 P <- 1000
 prop.PT <- subcrt("Na+", T=T, P=P, grid="T", convert=FALSE)$out[[1]]

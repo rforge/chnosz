@@ -269,7 +269,7 @@ balance <- function(aout, balance=NULL) {
       # is the balance the name of a basis species?
       if(length(ibalance)==0) {
         ibalance <- match(balance, rownames(aout$basis))
-        if(is.na(ibalance)) stop("basis species (", balance, ") not available to balance transformations")
+        if(is.na(ibalance)) stop("basis species (", balance, ") not available to balance reactions")
       }
       # the name of the basis species (need this if we got ibalance which which.balance, above)
       balance <- colnames(aout$species)[ibalance[1]]

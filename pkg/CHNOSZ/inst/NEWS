@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-26 (2017-02-06)
+CHANGES IN CHNOSZ 1.0.8-27 (2017-02-09)
 ---------------------------------------
 
 - Add "AA" as a keyword for preset species in basis() (cysteine,
@@ -51,6 +51,12 @@ CHANGES IN CHNOSZ 1.0.8-26 (2017-02-06)
 
 - Add ZC.col() for generating a red-grey-blue color scale from
   numeric values.
+
+- For the `groups` argument in diagram(), activities are now multiplied
+  by the balance coefficients before the summation.
+
+- With new default arguments, thermo.axis() only plots the axis tick
+  marks and lines (useful for redrawing the axis on filled diagrams).
 
 CHANGES IN CHNOSZ 1.0.8 (2016-05-28)
 ------------------------------------

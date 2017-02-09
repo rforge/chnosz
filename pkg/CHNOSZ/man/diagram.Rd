@@ -74,8 +74,8 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
 The allowed variables are any that \code{\link{affinity}} accepts: temperature, pressure, or the chemical activities of the basis species
 
 If \code{alpha} is TRUE, the fractional degrees of formation (ratios of activities to total activity) are plotted.
-This setting is useful for visualizing the molalities (activities for ideal interactions) of monomer groups in a system of biopolymers (e.g. proteins).
-If \code{groups} is supplied, the activities of the species identified in each numeric vector of this list are summed together and subsequently treated as a single species; the names of the new species are taken from the names of this list.
+If \code{groups} is supplied, the activities of the species identified in each numeric element of this list are multiplied by the balance coefficients of the species, then summed together.
+The names of the list are used to label the lines or fields for the summed activities of the resulting groups.
 
 For 1-D diagrams, the default setting for the y-axis is a logarithmic scale (unless \code{alpha} is TRUE) with limits corresponding to the range of logarithms of activities (or 0,1 if \code{alpha} is TRUE); these actions can be overridden by \code{ylog} and \code{ylim}.
 A \code{\link{legend}} is placed at the location identified by \code{legend.x}, or omitted if \code{legend.x} is \code{FALSE}.

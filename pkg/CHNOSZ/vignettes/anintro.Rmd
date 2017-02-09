@@ -7,6 +7,7 @@ output:
     tufte_features: ["background"]
     css: "vig.css"
     toc: true
+    mathjax: null
   tufte::tufte_handout:
     citation_package: natbib
     latex_engine: xelatex
@@ -40,6 +41,11 @@ knitr::knit_hooks$set(tiny.mar = function(before, options, envir) {
 knitr::knit_hooks$set(smallish.mar = function(before, options, envir) {
     if (before) par(mar = c(4.2, 4.2, 0.9, 0.9))  # smallish margins on top and right
 })
+# use pngquant to optimize PNG images
+knitr::knit_hooks$set(pngquant = knitr::hook_pngquant)
+pngquant <- "--speed=1 --quality=0-50"
+# some frequently used HTML expressions
+logfO2 <- "log<i>f</i><sub>O<sub>2</sub></sub>"
 ```
 
 # First steps
@@ -194,7 +200,7 @@ makeup(88)
 as.chemical.formula(makeup(88))
 ```
 
-For organic species, a simple calculation of the average oxidation state of carbon ($Z_C$) is possible given the species index, chemical formula, or elemental count:
+For organic species, a simple calculation of the average oxidation state of carbon (*Z*<sub>C</sub>) is possible given the species index, chemical formula, or elemental count:
 ```{r ZC_88}
 ZC(88)
 ZC(info(88)$formula)
@@ -231,7 +237,7 @@ See also <span style="color:blue">`demo(density)`</span>.
 subcrt("water", T=c(400, 500, 600), P=c(200, 400, 600), grid="P")$out$water
 ```
 
-```{r subcrt_water_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=50, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Isothermal contours of density (g cm<sup>-3</sup>) and pressure (bar) of H<sub>2</sub>O.", cache=TRUE}
+```{r subcrt_water_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=72, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Isothermal contours of density (g cm<sup>-3</sup>) and pressure (bar) of H<sub>2</sub>O.", cache=TRUE, pngquant=pngquant}
 H2O <- subcrt("water", T=seq(0, 1000, 100), P=c(NA, seq(1, 500, 1)), grid="T")
 H2O <- H2O$out$water
 plot(H2O$P, H2O$rho, type="l")
@@ -285,7 +291,7 @@ CO <- subcrt(c("CO", "CO"), c("gas", "aq"), c(-1, 1), T=T)$out$logK
 CH4 <- subcrt(c("CH4", "CH4"), c("gas", "aq"), c(-1, 1), T=T)$out$logK
 logK <- data.frame(T, CO2, CO, CH4)
 ```
-```{r dissolution_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=50, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Equilibrium constants calculated for dissolution of CO<sub>2</sub>, CO, and CH<sub>4</sub>.", cache=TRUE}
+```{r dissolution_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=72, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Equilibrium constants calculated for dissolution of CO<sub>2</sub>, CO, and CH<sub>4</sub>.", cache=TRUE, pngquant=pngquant}
 matplot(logK[, 1], logK[, -1], type="l", col=1, lty=1,
         xlab=axis.label("T"), ylab=axis.label("logK"))
 text(80, -1.7, expr.species("CO2"))
@@ -355,7 +361,7 @@ acetoclastic <- subcrt(c("acetate", "methane"), c(-1, 1))
 
 <p>
 Use `describe.reaction()` to write the reactions on a plot:
-```{r describe_reaction_plot, fig.margin=TRUE, fig.width=3.5, fig.height=1.8, tiny.mar=TRUE, dpi=50, out.width="100%"}
+```{r describe_reaction_plot, fig.margin=TRUE, fig.width=3.5, fig.height=1.8, tiny.mar=TRUE, dpi=72, out.width="100%", pngquant=pngquant}
 plot(0, 0, type="n", axes=FALSE, ann=FALSE, xlim=c(0, 5), ylim=c(5.2, -0.2))
 text(0, 0, "acetoclastic methanogenesis", adj=0)
 text(5, 1, describe.reaction(acetoclastic$reaction), adj=1)
@@ -365,7 +371,7 @@ text(0, 4, "hydrogenotrophic methanogenesis", adj=0)
 text(5, 5, describe.reaction(hydrogenotrophic$reaction), adj=1)
 ```
 
-## Non-standard state affinities and Gibbs energies
+## Affinity: not the standard state Gibbs energy
 
 Usually, `subcrt()` returns only standard state thermodynamic properties.
 ```{marginfigure}
@@ -419,7 +425,7 @@ Here, we use the `lapply()` function of R to list the results at two values of l
 We insert an empty reaction to get a line at zero affinity.
 `do.call(rbind, Adat)` turns the list into a data frame that can be plotted with `matplot()`.
 There, we plot the negative affinities, equal to Gibbs energy, as shown in the plot of Mayumi et al. (2013).
-```{r methanogenesis_plot, fig.margin=TRUE, fig.width=4.1, fig.height=4.1, small.mar=TRUE, dpi=50, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Gibbs energies of acetate oxidation and methanogenesis (after Mayumi et al., 2013).", cache=TRUE}
+```{r methanogenesis_plot, fig.margin=TRUE, fig.width=4.1, fig.height=4.1, small.mar=TRUE, dpi=72, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Gibbs energies of acetate oxidation and methanogenesis (after Mayumi et al., 2013).", cache=TRUE, pngquant=pngquant}
 Adat <- lapply(c(-3, 3), function(logfCO2) {
   basis("CO2", logfCO2)
   data.frame(logfCO2,
@@ -442,7 +448,11 @@ Let't not forget to clear the system settings, which were modified by <span styl
 ```{r data_thermo, message=FALSE}
 ```
 
-# Affinity, species of interest, and potential diagrams
+## Activity coefficients
+
+Example using `nonideal()` ...
+
+# `affinity()`, species of interest, and potential diagrams
 
 `affinity()` offers calculations of chemical affinity of formation reactions over a configurable range of T, P, and activities of basis species.
 
@@ -483,7 +493,7 @@ That is, running `affinity()$values` again would give the same result.
 ```
 
 <p>
-```{r EhpH_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=50, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE}
+```{r EhpH_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=72, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE, pngquant=pngquant}
 a <- affinity(pH=c(0, 12), Eh=c(-1, 1))
 diagram(a, fill="heat")
 ```
@@ -500,7 +510,7 @@ Note that the calculation of affinity implies a non-equilibrium reference state 
 Generally, then, `diagram()` gives a *potential diagram* because it shows regions of maximum affinity.
 In systems where equilibrium is attainable, it makes sense to call this a *predominance diagram*, showing regions of maximum activity.
 
-```{r EhpH_plot_color, fig.margin=TRUE, fig.width=4, fig.height=4, smallish.mar=TRUE, dpi=50, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE}
+```{r EhpH_plot_color, fig.margin=TRUE, fig.width=4, fig.height=4, smallish.mar=TRUE, dpi=72, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE, pngquant=pngquant}
 diagram(a, fill="terrain", lwd=3, lty=3,
         names=c("hydrogen sulfide", "bisulfide", "bisulfate", "sulfate"),
         tplot=FALSE, main="sulfur species, 25 °C", bty="n")
@@ -515,7 +525,7 @@ Additional arguments are passed to R's plotting functions; here, we use `bty` to
 ## Mosaic diagrams
 
 If sulfur is in the basis species, then we should consider that its speciation is sensitive to Eh and pH, as shown in the preceding diagram.
-Mosaic diagrams, which are often shown for metal oxide, sulfide, and carbonate minerals, account for speciation of the basis species.
+Mosaic diagrams (or combined diagrams), which are often shown for metal oxide, sulfide, and carbonate minerals, account for speciation of the basis species.
 These diagrams are made by constructing individual diagrams for the possible basis species.
 The individual diagrams are then combined, each one contributing to the final diagram only in the range of stability of the corresponding basis species.
 
@@ -551,7 +561,7 @@ The key argument is `bases`, which identifies the candidate basis species (start
 The other arguments, like those of `affinity()`, specify the ranges of the variables; `res` indicates the grid resolution to use for each variable (higher than the default).
 The first call to `diagram()` plots the species of interest; the second adds the predominance fields of the basis species.
 Finally, `water.lines()` is used to add the stability limits of water at the given temperature.
-```{r copper_mosaic, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=50, out.width="100%", message=FALSE, cache=TRUE}
+```{r copper_mosaic, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=72, out.width="100%", message=FALSE, cache=TRUE, pngquant=pngquant}
 T <- 200
 res <- 300
 bases <- c("H2S", "HS-", "HSO4-", "SO4-2")
@@ -570,7 +580,7 @@ However, the choice of other basis species can also affect the diagram.
 For instance, we can use H<sub>2</sub> or O<sub>2</sub> in place of *e*<sup>-</sup>.
 To do that, let's write a function to swap those basis species and make a diagram.
 We use `do.call()` to construct the argument list for `mosaic()`; this way, the name of the `newvar` argument to our function indicates the chosen variable.
-```{r mosaicfun, fig.fullwidth=TRUE, fig.width=10.5, fig.height=3, small.mar=TRUE, dpi=50, out.width="100%", message=FALSE, results="hide", cache=TRUE, fig.cap="Different projections (defined by the basis species) of the same thermodynamic system. The choice between them depends on convenience rather than correctness."}
+```{r mosaicfun, fig.fullwidth=TRUE, fig.width=10.5, fig.height=3, small.mar=TRUE, dpi=72, out.width="100%", message=FALSE, results="hide", cache=TRUE, fig.cap="Different projections (defined by the basis species) of the same thermodynamic system. The choice between them depends on convenience rather than correctness.", pngquant=pngquant}
 mosaicfun <- function(newvar, T=200, res=300) {
   swap.basis("e-", names(newvar))
   if(names(newvar) == "O2") basis("O2", "gas")
@@ -578,7 +588,7 @@ mosaicfun <- function(newvar, T=200, res=300) {
   m1 <- do.call(mosaic, mosaicargs)
   diagram(m1$A.species, lwd=2, fill=rev(topo.colors(10)))
   diagram(m1$A.bases, add=TRUE, col="blue", col.names="blue", lty=3)
-  title(main=axis.label(names(newvar)))
+  title(main=expr.species(names(newvar)))
   swap.basis(names(newvar), "e-")
 }
 layout(t(matrix(c(1, 1, 2, 2, 3, 3, 0))))
@@ -593,7 +603,7 @@ Above, we used evenly-spaced grids of *T*, *P*, and/or chemical activities of ba
 `affinity()` can also perform calculations along a transect, i.e. a particular path along one or more variables.
 A transect is calculated when there are four or more values assigned to the variable(s).
 Let's use this feature to calculate affinities (negative Gibbs energies) of methanogenesis and biosynthetic reactions in a hydrothermal system.
-The results of mixing calculations between seawater and the Rainbow hydrothermal vent fluid, reported by @SC10, are included in a data file in CHNOSZ:
+Some results of mixing calculations for seawater and vent fluid from the Rainbow hydrothermal field, reported by @SC10, are included in a data file in CHNOSZ:
 ```{r rainbow_data}
 file <- system.file("extdata/cpetc/SC10_Rainbow.csv", package="CHNOSZ")
 rb <- read.csv(file, check.names=FALSE)
@@ -603,7 +613,7 @@ We take a selection of the species from Shock and Canovas (2010) with activities
 We will write the synthesis reactions of organic species in terms of these basis species:
 ```{marginfigure}
 The constant activity of methane is a simplification of the calculation reported by Shock and Canovas (2010).
-The code could be expanded to vary the activity of methane.
+The code here could be expanded to vary the activity of methane.
 ```
 ```{r rainbow_species, results="hide"}
 basis(c("CO2", "H2", "NH4+", "H2O", "H2S", "H+"))
@@ -631,7 +641,7 @@ a$values <- lapply(a$values, convert, "G", T)
 a$values <- lapply(a$values, `*`, -0.001)
 ```
 
-```{r rainbow_diagram, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=50, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE, fig.cap="Affinities of organic synthesis in a hydrothermal system, after Shock and Canovas (2010)."}
+```{r rainbow_diagram, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=72, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE, fig.cap="Affinities of organic synthesis in a hydrothermal system, after Shock and Canovas (2010).", pngquant=pngquant}
 diagram(a, balance=1, ylim=c(-100, 100), ylab=axis.label("A", prefix="k"),
         col=rainbow(8), lwd=2, legend.x=NA, bg="slategray3")
 abline(h=0, lty=2, lwd=2)
@@ -688,12 +698,11 @@ basis(c("H2S", "O2"), c("PPM", "PPM"))
 unlist(affinity(T=300, P=100, return.buffer=TRUE)[1:3])
 ```
 
-<p>
-Et voilà! We have found log*a*<sub>H<sub>2</sub>S</sub> and log*f*<sub>O<sub>2</sub></sub> that are compatible with the coexistence of the three minerals.
-Under these conditions, the affinities of formation reactions of the minerals in the buffer are all equal to zero:
-```{r demo_buffer, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=50, out.width="100%", message=FALSE, echo=FALSE, cache=TRUE}
+```{r demo_buffer, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=72, out.width="100%", message=FALSE, echo=FALSE, cache=TRUE, pngquant=pngquant}
 demo(buffer, echo=FALSE)
 ```
+Et voilà! We have found log*a*<sub>H<sub>2</sub>S</sub> and `r logfO2` that are compatible with the coexistence of the three minerals.
+Under these conditions, the affinities of formation reactions of the minerals in the buffer are all equal to zero:
 ```{r PPM_affinity, message=FALSE}
 ```
 
@@ -724,7 +733,7 @@ This is known as metastable equilibrium.
 With additional constraints, the affinites of the formation reactions are not only equal to each other, but equal to zero.
 This is total equilibrium.
 An example of total equilibrium was given above for the PPM buffer.
-In contrast, models for systems of organic and biomolecules most often use metastable equilibrium constraints.
+In contrast, models for systems of organic and biomolecules often involve metastable equilibrium constraints.
 
 ## Getting from affinity to equilibrium
 
@@ -735,7 +744,7 @@ For more information, see the vignette <span style="color:blue">*Equilibrium in 
 The method based on the Boltzmann equation is fast, but is applicable only to systems where the coefficients on the balanced basis species are all one.
 The reaction-matrix method is slower, but can be applied to systems were the balanced basis species has non-unity coefficients.
 
-```{r bjerrum_diagram, fig.margin=TRUE, fig.width=3, fig.height=6, small.mar=TRUE, dpi=50, out.width="100%", echo=FALSE, results="hide", message=FALSE, cache=TRUE, fig.cap="Three views of carbonate speciation: affinity, metastable equilibrium activity, degree of formation."}
+```{r bjerrum_diagram, fig.margin=TRUE, fig.width=3, fig.height=6, small.mar=TRUE, dpi=72, out.width="100%", echo=FALSE, results="hide", message=FALSE, cache=TRUE, fig.cap="Three views of carbonate speciation: affinity, metastable equilibrium activity, degree of formation.", pngquant=pngquant}
 par(mfrow=c(3, 1))
 basis("CHNOS+")
 species(c("CO2", "HCO3-", "CO3-2"))
@@ -790,13 +799,93 @@ This makes the species distribution diagram useful for this system.
 
 ## Groups of species
 
-[SMS98]
+Sometimes it is helpful to look at the total concentration (i.e. activity) of groups in species distribution diagrams.
+The `groups` argument of `diagram()` can be used to sum together the activities of species.
+
+To demonstrate this feature, let's consider the distribution of carbon among organic and inorganic species in the hydrothermal mixing scenario described by @SS98.
+First we define the basis and add two inorganic species.
+The `index.return=FALSE` argument tells `info()` to return the index (number) of the species in the current species definition; these indices are saved for use below:
+```{r groups_basis, results="hide", message=FALSE}
+basis("CHNOS+")
+ii <- species(c("CO2", "HCO3-"), index.return=TRUE)
+```
+
+Next, we add each group of organic species: C<sub>1</sub>--C<sub>8</sub> alcohols, C<sub>3</sub>--C<sub>8</sub> ketones, C<sub>2</sub>--C<sub>12</sub> carboxylic acids and their corresponding anions, and C<sub>2</sub>--C<sub>8</sub> alkenes.
+We provide `info()` with a set of `ispecies` values to select these species.
+The species in each group are ordered by carbon number in the database, so the set is made from the starting and ending indices using R's `seq()` function, wrapped by `seq2()` to make the code shorter.
+```{r groups_species, message=FALSE}
+seq2 <- function(x) seq(x[1], x[2])
+ia <- species(seq2(info(c("methanol", "octanol"))), index.return=TRUE)
+ik <- species(seq2(info(c("acetone", "2-octanone"))), index.return=TRUE)
+ic <- species(seq2(info(c("acetic acid","n-dodecanoic acid"))),index.return=TRUE)
+ica <- species(seq2(info(c("acetate", "n-dodecanoate"))), index.return=TRUE)
+ie <- species(seq2(info(c("ethylene", "octene"))), index.return=TRUE)
+```
+
+Now we read two data files that contain values of `r logfO2` and pH as a function of temperature, digitized from Figure 5 of Schulte and Shock (1998).
+```{marginfigure}
+The specific values are for calculations with vent fluids initially set by the fayalite-magnetite-quartz buffer minus 1/2 log*f*<sub>O<sub>2</sub></sub> (FMQ - 1/2).
+```
+These values were calculated using a speciation and mixing model that is not available in CHNOSZ; however, we can use these intermediate values as input to the "downstream" calculations that are available in CHNOSZ.
+Because of the noise introduced by digitization of the figure, we smooth the data using R's `smooth.spline()` function; the lower *T* limit reflects the absence of data below this temperature in the figure for log*f*<sub>O<sub>2</sub></sub>.
+```{r groups_data}
+O2dat <- read.csv(system.file(
+  "extdata/cpetc/SS98_Fig5a.csv", package="CHNOSZ"))
+pHdat <- read.csv(system.file(
+  "extdata/cpetc/SS98_Fig5b.csv", package="CHNOSZ"))
+T <- seq(8, 350)
+O2 <- predict(smooth.spline(O2dat$T, O2dat$logfO2), T)$y
+pH <- predict(smooth.spline(pHdat$T, pHdat$pH), T)$y
+```
+
+We are ready to calculate affinities and equilibrium activities of the species.
+This calculation utilizes the transect mode of `affinity()`.
+The call to `equilibrate()` runs with the default balance (in this case, CO<sub>2</sub>), with a log activity set to -2.5.
+```{marginfigure}
+Actually, the total concentration of carbon depends on the mixing ratio, ranging from about 10<sup>-2.2</sup> (seawater) to 10<sup>-2.6</sup> (vent fluid).
+The ability to vary the activity of the balanced basis species is not yet implemented in CHNOSZ, so a single value is used here.
+```
+```{r groups_affinity, message=FALSE}
+a <- affinity(T=T, O2=O2, pH=pH)
+e <- equilibrate(a, loga.balance=-2.5)
+```
+
+At last we come to the diagram.
+The groups are identified by the current species numbers in a list, where the list elements are given names that will appear on the diagram.
+When summing the activities of species in the groups, each activity is multiplied first by the balance coefficient on that species.
+Therefore, the total activity is that of a basis species (or of an element that only in that basis species, like carbon in this example).
+```{r groups_diagram, echo=2:4, eval=FALSE}
+layout(t(matrix(c(1, 1, 2, 2, 3, 3, 0))))
+groups <- list(inorganic=ii, alcohols=ia, ketones=ik,
+               `carboxylic acids`=c(ic, ica), alkenes=ie)
+diagram(e, alpha=TRUE, groups=groups, legend.x=NA)
+# plot only alcohols
+names <- within(species(), name[-ia] <- "")$name
+lty <- ifelse(names=="", 0, 1)
+diagram(e, alpha=TRUE, ylim=c(0, 0.5), lty=lty, names=names)
+# plot only ketones
+names <- within(species(), name[-ik] <- "")$name
+lty <- ifelse(names=="", 0, 1)
+diagram(e, alpha=TRUE, ylim=c(0, 0.13), lty=lty, names=names)
+```
+
+That makes a diagram that is similar to Figure 6b of Shock and Schulte (1998).
+```{marginfigure}
+Some differences with the original diagrams may be caused by artifacts introduced by digitization, combined with the sensitivity of the calculations to log*f*<sub>O<sub>2</sub></sub>.
+```
+It is also possible to plot the distribution of species within individual groups, such as alcohols and ketones.
+We do this by setting the names and line types for the *other* species to values that prevent them from being plotted:
+```{r groups_diagram, echo=-(1:4), eval=FALSE}
+```
+```{r groups_diagram, fig.fullwidth=TRUE, fig.width=10.5, fig.height=3, small.mar=TRUE, dpi=72, out.width="100%", echo=FALSE, message=FALSE, results="hide", cache=TRUE, pngquant=pngquant}
+```
 
 ## Choosing a different balance
 
 How about the choice between balancing constraints?
+Be default, `equilibrate()` and `diagram()` balance reactions on the first basis species that is present in each of the species of interest.
 Let's look at some amino acids in a hypothetical metastable equilibrium.
-This calculation is similar to one presented by @Sho90b for five amino acids, but here we include 20 proteinogenic amino acids, whose names are returned by `aminoacids("")`.
+This calculation is based on one described by @Sho90b for five amino acids, but here we include 20 proteinogenic amino acids, whose names are returned by `aminoacids("")`.
 We use `ZC.col()` to generate colors based on the average oxidation state of carbon of the amino acids (red and blue for relatively reduced and oxidized).
 ```{r aminoacids_setup, results="hide", message=FALSE}
 basis("CHNOS")
@@ -812,7 +901,7 @@ To make plots using different balance constraints, let's write a simple function
 The first plot is the most similar to Figure 4 of Shock (1990), except for the absence of alanine (probably due to different thermodynamic data) and the presence of some other amino acids.
 There, we set `balance=1`, which indicates that moles of species are conserved; this is equivalent to balancing on the amino acid backbone.
 The remaining plots balance on each of the basis species (except for O<sub>2</sub>), then on volume (in the last plot).
-```{r aafun, fig.fullwidth=TRUE, fig.width=12.5, fig.height=2.5, small.mar=TRUE, dpi=50, out.width="100%", message=FALSE, results="hide", cache=TRUE}
+```{r aafun, fig.fullwidth=TRUE, fig.width=12.5, fig.height=2.5, small.mar=TRUE, dpi=72, out.width="100%", message=FALSE, results="hide", cache=TRUE, pngquant=pngquant}
 aafun <- function(balance) {
   diagram(a, balance=balance, fill=col)
   title(main=paste("balanced on", balance))
@@ -821,7 +910,7 @@ par(mfrow=c(1, 5))
 lapply(c("1", "CO2", "H2O", "N2", "volume"), aafun)
 ```
 
-There are some broad similarities---increasing log*f*<sub>O<sub>2</sub></sub> favors more oxidized amino acids---but also substantial differences.
+There are some broad similarities---increasing `r logfO2` favors more oxidized amino acids---but also substantial differences.
 It is interesting that there is more "going on" in the middle part of the digram showing volume conservation.
 
 Caveat: these plots demonstrate some possibilities in CHNOSZ and are not necessarily realistic portrayals of this system.
@@ -829,7 +918,7 @@ It does seem odd to balance on a fugacious component like O<sub>2</sub> or H<sub
 Unlike different choices of basis species, which are thermodynamically equivalent (see the example above for a mineral system), the choice of balance reflects extra-thermodynamic factors.
 For instance, the widespread rule of thumb for balancing mineral reactions on a component is unrealistic for processes where volume is conserved [@MC11].
 Any choice of balancing constraints may oversimplify the physical or biological context for reactions of organic species or biomolecules.
-While choosing an inappropriate balance leads to infeasible models, a well-considered overview of the possibilities might offer insight into the conditions affecting the dynamics of some systems.
+While choosing an inappropriate balance leads to infeasible models, consideration of the possibilities might give insight into the conditions affecting the dynamics of some systems.
 
 # Proteins
 
@@ -841,12 +930,30 @@ While choosing an inappropriate balance leads to infeasible models, a well-consi
 
 ## Compositional analysis (ZC)
 
-# Modifying the database
+# Data options
 
-mod.obigt, mod.buffer, OBIGT-2
+## Source of data: browse.refs()
+
+e.g. browse.refs(1)
+
+## water: IAPWS or SUPCRT
+
+## secondary database: OBIGT-2
+
+## Modifying the database: mod.obigt(), mod.buffer()
+
+# Diagnosing problems
+
+## Checking database consistency
+
+## Tests; errors
+
+## Messages from functions
+
+(Look at messages in calculation above: groups?)
 
 # Functions outside of the main workflow
 
-transfer, wjd, eqdata, RH2obigt, EOSregress, nonideal
+transfer, wjd, eqdata, RH2obigt, EOSregress
 
 Gibbs energy minimization with amino acids: [Cob13]?

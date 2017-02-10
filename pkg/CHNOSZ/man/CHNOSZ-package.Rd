@@ -92,9 +92,14 @@ Examples without a reference (and some with references) demonstrate experimental
 }
 
 \section{Acknowledgements}{
-  This package would not exist without the fearless leadership and encouragement of Professor Harold C. Helgeson. Hal and his associates are in some way responsible for many of the equations and data contained in this package. A direct contribution of code is the file \code{H2O92D.f}, taken from the SUPCRT92 distribution, with only cosmetic modifications (masking of WRITE and STOP statements) made for compatibility with an \R environment. The revised Helgeson-Kirkham-Flowers equations of state are used in this package, together with the thermodynamic properties and parameters for many species taken from numerous papers coauthored by Helgeson.
+  This package would not exist without the leadership and encouragement of Professor Harold C. Helgeson.
+  Hal and his associates are in some way responsible for many of the equations and data contained in this package.
+  A direct contribution of code is the file \code{H2O92D.f}, taken from the SUPCRT92 distribution, with minor modifications (masking of WRITE and STOP statements) made for compatibility with an \R environment.
+  The revised Helgeson-Kirkham-Flowers equations of state are used in this package, together with the thermodynamic properties and parameters for many species taken from numerous papers coauthored by Helgeson.
 
-  Work on this package at U.C. Berkeley from ~2003--2008 was supported by research grants solicited by HCH from the U.S. National Science Foundation and Department of Energy. In 2009--2011, the major research project stimulating development of this package at Arizona State University was funded by the National Science Foundation under grant EAR-0847616. The files in \code{extdata/bison} are excerpts of results of BLAST calculations made on the Saguaro high performance computer at ASU. 
+  Work on this package at U.C. Berkeley from ~2003--2008 was supported by research grants to HCH from the U.S. National Science Foundation and Department of Energy.
+  In 2009--2011, development of this package was based upon work supported by the National Science Foundation under grant EAR-0847616.
+  The files in \code{extdata/bison} are excerpts of results of BLAST calculations made on the Saguaro high performance computer at ASU. 
 }
 
 \section{Known Bugs}{

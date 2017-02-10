@@ -1,64 +1,79 @@
-CHANGES IN CHNOSZ 1.0.8-28 (2017-02-09)
+CHANGES IN CHNOSZ 1.0.8-29 (2017-02-10)
 ---------------------------------------
 
-- Add "AA" as a keyword for preset species in basis() (cysteine,
-  glutamic acid, glutamine, H2O, oxygen).
+DOCUMENTATION:
 
 - Add eos-regress.Rmd vignette; update related functions.
 
-- More flexible parsing of chemical formulas for ZC() and other
-  functions; e.g. ZC(colMeans(protein.formula(1:4))) now works.
-
-- subcrt() now returns 'loggam' using the common logarithm; add
-  test-nonideal.R to check for consistency between loggam and logK
-  values returned by subcrt(). This also fixes the issue previously
-  noted for the first example in ?nonideal. Thanks to David T. Wang for
-  the bug report and test.
-
-- OBIGT.csv: Add data for citric acid cycle metabolites from Canovas and
-  Shock, 2016.
-
-- Clean up OBIGT-2.csv: remove data from Dalla-Betta and Schulte, 2009
-  (citric acid cycle metabolites; thioester species have been kept) and
-  from Dick et al., 2006 (methionine and [Met]).
+- Replace anintro.Rnw (Sweave) with rewritten anintro.Rmd (knitr, Tufte
+  style).
 
 - Demos: add bugstab.R, rename buffer.R to protbuff.R, add new buffer.R,
   remove nucleobase.R.
 
-- Correct charge (-2) of NAD(red)-2 in OBIGT.csv. Thanks to Peter
-  Canovas.
+NEW DATA AND FEATURES:
+
+- OBIGT.csv: Add data for citric acid cycle metabolites from Canovas and
+  Shock, 2016.
+
+- extdata: Add fasta/rubisco.fasta and cpetc/*.csv files SS98_Fig5a,
+  SS98_Fig5b, PM90 (all used by anintro.Rmd).
+
+- Add ZC.col() for generating a red-grey-blue color scale from
+  numeric values.
+
+- For the `groups` argument in diagram(), activities are multiplied
+  by the balance coefficients before the summation.
+
+- Add "CEQ" as a keyword for preset species in basis() (cysteine,
+  glutamic acid, glutamine, H2O, oxygen).
+
+- More flexible parsing of chemical formulas for ZC() and other
+  functions; e.g. `ZC(colMeans(protein.formula(1:4)))` now works.
 
 - read.fasta() extracts information from UniProt FASTA headers
   (accession, name, organism) into columns of the output data frame
   (protein, abbrv, organism).
 
-- diagram() draws smoother boundary lines (with contour(); 'lty' is
+- diagram() draws smoother boundary lines (with contour(); `lty` is
   usable), at the expense of not being precisely aligned with the grid
-  used for plotting colors. For the old behavior, use dotted=0.
+  used for plotting colors. For the old behavior, use `dotted=0`.
+
+- diagram() applies formatting (subscripts and superscripts) to names
+  that parse as chemical formulas; use `format.names=FALSE` to disable.
+
+- Add `...` argument to thermo.plot.new() (additional arguments for
+  par()).
+
+- With new default arguments, thermo.axis() only plots the axis tick
+  marks and lines; this is used in diagram() to redraw the axes on
+  filled diagrams.
+
+CLEANUP AND BUG FIXES:
+
+- subcrt() returns `loggam` using the common logarithm; add
+  test-nonideal.R to check for consistency between loggam and logK
+  values returned by subcrt(). This also fixes the issue previously
+  noted for the first example in ?nonideal. Thanks to David T. Wang for
+  the bug report and test.
+
+- OBIGT-2.csv: remove data for citric acid cycle metabolites from
+  Dalla-Betta and Schulte, 2009; thioester species have been kept.
+
+- OBIGT-2.csv: remove data for methionine and [Met] from Dick et al.,
+  2006. Examples that require the old group additivity parameters
+  modify the database using: `mod.obigt("[Met]", G=-35245, H=-59310)`.
+
+- Correct charge (-2) of NAD(red)-2 in OBIGT.csv. Thanks to Peter
+  Canovas.
 
 - Remove msgout(), and replace previous calls to that function with
   message() from base R. As a result, the messages don't appear in Sweave
-  vignettes, but can now be turned on or off easily in knitr vignettes.
-
-- Replace anintro.Rnw (Sweave) with updated anintro.Rmd (knitr, tufte).
-
-- diagram() applies formatting (subscripts and superscripts) to names
-  that parse as chemical formulas; use `format.names` to disable.
-
-- Add '...' argument to thermo.plot.new() (extra arguments for par()).
+  vignettes, but can be turned on or off in knitr vignettes.
 
 - Remove HTCC1062.faa.xz.
 
-- Add ZC.col() for generating a red-grey-blue color scale from
-  numeric values.
-
-- For the `groups` argument in diagram(), activities are now multiplied
-  by the balance coefficients before the summation.
-
-- With new default arguments, thermo.axis() only plots the axis tick
-  marks and lines (useful for redrawing the axis on filled diagrams).
-
-- Remove the bold formatting for "A" in expr.property(); now "A" is
+- Remove the bold formatting for "A" in expr.property(); "A" is
   italicized like most other uppercase letters.
 
 CHANGES IN CHNOSZ 1.0.8 (2016-05-28)

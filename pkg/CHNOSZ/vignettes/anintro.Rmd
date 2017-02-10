@@ -41,11 +41,17 @@ knitr::knit_hooks$set(tiny.mar = function(before, options, envir) {
 knitr::knit_hooks$set(smallish.mar = function(before, options, envir) {
     if (before) par(mar = c(4.2, 4.2, 0.9, 0.9))  # smallish margins on top and right
 })
+# dpi setting
+dpi <- 100
 # use pngquant to optimize PNG images
 knitr::knit_hooks$set(pngquant = knitr::hook_pngquant)
 pngquant <- "--speed=1 --quality=0-50"
 # some frequently used HTML expressions
 logfO2 <- "log<i>f</i><sub>O<sub>2</sub></sub>"
+# use lowercase here because these tend to be variable names in the examples
+zc <- "<i>Z</i><sub>C</sub>"
+o2 <- "O<sub>2</sub>"
+h2o <- "H<sub>2</sub>O"
 ```
 
 # First steps
@@ -99,16 +105,20 @@ Rectangles and ellipses represent functions and datasets; bold text indicates pr
 
 Many functions in CHNOSZ have no side effects.
 That is, the function only returns a result; to use the result elsewhere, it can be assigned to a variable with `<-`.
+In this document (but not in the code chunks), the names of these functions are set in <span style="color:green">green text</span>.
+```{marginfigure}
+When they are mentioned, names of functions in the base and recommended packages of R are said to belong to R. Example: Use R's `plot()` to plot the points.
+```
 Major functions without side effects in CHNOSZ are:
 
-* `info()`: search for species in the thermodynamic database
-* `subcrt()`: calculate the thermodynamic properties of species and reactions
-* `affinity()`: calculate the affinities of formation reactions using given chemical activities
-* `equilibrate()`: calculate the equilibrium chemical activities of the species of interest
-* `diagram()`: plot the results
+* <span style="color:green">`info()`</span>: search for species in the thermodynamic database
+* <span style="color:green">`subcrt()`</span>: calculate the thermodynamic properties of species and reactions
+* <span style="color:green">`affinity()`</span>: calculate the affinities of formation reactions using given chemical activities
+* <span style="color:green">`equilibrate()`</span>: calculate the equilibrium chemical activities of the species of interest
+* <span style="color:green">`diagram()`</span>: plot the results
 
 Some functions in CHNOSZ do have side effects: they modify the `thermo` data object in the current R session.
-In the text (not code) of this document, the names of these functions are shown in <span style="color:red">red text</span>.
+In this document, the names of these functions are set in <span style="color:red">red text</span>.
 The major functions with side effects are:
 
 * <span style="color:red">`basis()`</span>: set the basis species and their chemical activities
@@ -128,7 +138,7 @@ data(thermo)         ## clear system settings
 
 Some experimental functions are available:
 
-* (**experimental**) using `revisit()` to calculate/plot summary statistics of the chemical activities of the species of interest and `findit()` to search for combinations of activities of basis species, temperature and/or pressure that optimize those statistics.
+* (**experimental**) using <span style="color:green">`revisit()`</span> to calculate/plot summary statistics of the chemical activities of the species of interest and <span style="color:green">`findit()`</span> to search for combinations of activities of basis species, temperature and/or pressure that optimize those statistics.
 
 # Thermodynamic database and chemical formulas
 
@@ -139,9 +149,9 @@ If there is any doubt about the suitability of data, please consult the primary 
 ```
 Where possible, data with known or suspected inconsistencies have been placed into a secondary database (`OBIGT-2.csv`) that should be regarded as experimental.
 
-## The `info()` function
+## The <span style="color:green">`info()`</span> function
 
-The `info()` function provides an interface to the thermodynamic database packaged with CHNOSZ.
+<span style="color:green">`info()`</span> provides an interface to the thermodynamic database packaged with CHNOSZ.
 Suppose you are interested in the thermodynamic properties aqueous ethylene.
 You can search for the species by name:
 ```{r info_ethylene}
@@ -154,7 +164,7 @@ A second argument can be used to specify a different physical state:
 info("ethylene", "gas")
 ```
 
-Knowing that aqueous ethylene is species number 88 in the database, you can again use `info()` to retrieve the set of standard molal thermodynamic properties and equations of state parameters:
+Knowing that aqueous ethylene is species number 88 in the database, you can again use <span style="color:green">`info()`</span> to retrieve the set of standard molal thermodynamic properties and equations of state parameters:
 ```{r info_88}
 info(88)
 ```
@@ -167,7 +177,7 @@ info(info("water"))
 
 ## Fuzzy searches
 
-Calling `info()` with a string that does not exactly match the name of any species invokes a fuzzy search of the database:
+Calling <span style="color:green">`info()`</span> with a string that does not exactly match the name of any species invokes a fuzzy search of the database:
 ```{r width180, include=FALSE}
 options(width = 180)
 ```
@@ -187,20 +197,20 @@ info(" ribose")
 
 The messages may be useful for browsing the database, but owing to their ambiguous results, these fuzzy searches return an `NA` value for the species index.
 
-## Counting elements, chemical formulas, `ZC()`
+## Counting elements, chemical formulas, <span style="color:green">`ZC()`</span>
 
 Continuing with the example of ethylene, let's look at its chemical formula:
 ```{r info_88_formula}
 info(88)$formula
 ```
 
-We can use the `makeup()` function to count the elements in the formula, followed by `as.chemical.formula()` to return to the formula:
+We can use <span style="color:green">`makeup()`</span> to count the elements in the formula, followed by <span style="color:green">`as.chemical.formula()`</span> to return to the formula:
 ```{r makeup_88}
 makeup(88)
 as.chemical.formula(makeup(88))
 ```
 
-For organic species, a simple calculation of the average oxidation state of carbon (*Z*<sub>C</sub>) is possible given the species index, chemical formula, or elemental count:
+For organic species, a simple calculation of the average oxidation state of carbon (`r zc`) is possible given the species index, chemical formula, or elemental count:
 ```{r ZC_88}
 ZC(88)
 ZC(info(88)$formula)
@@ -209,12 +219,12 @@ ZC(makeup(88))
 
 # Calculating thermodynamic properties
 
-To calculate the standard molal properties of species and reactions, use `subcrt()`.
+To calculate the standard molal properties of species and reactions, use <span style="color:green">`subcrt()`</span>.
 ```{marginfigure}
-The inspiration for the name `subcrt()`, and the source of the FORTRAN subroutine used to calculate the thermodynamic properties of H<sub>2</sub>O, is SUPCRT (Johnson et al., 1992).
+The inspiration for the name <span style="color:green">`subcrt()`</span>, and the source of the FORTRAN subroutine used to calculate the thermodynamic properties of `r h2o`, is SUPCRT (Johnson et al., 1992).
 ```
 <sup>[-@JOH92]</sup>
-If no reaction coefficients are given, `subcrt()` calculates the standard molal properties of invididual species:
+If no reaction coefficients are given, <span style="color:green">`subcrt()`</span> calculates the standard molal properties of invididual species:
 ```{r subcrt_water}
 subcrt("water")
 ```
@@ -229,7 +239,7 @@ The corresponding units are °C (`T`), bar (`P`), g cm<sup>-3</sup> (`rho`), cal
 ```
 
 A custom temperature-pressure grid can be specified.
-Here, we calculate the properties of H<sub>2</sub>O on a *T*, *P* grid in the supercritical region, with conditions grouped by pressure:
+Here, we calculate the properties of `r h2o` on a *T*, *P* grid in the supercritical region, with conditions grouped by pressure:
 ```{marginfigure}
 See also <span style="color:blue">`demo(density)`</span>.
 ```
@@ -237,12 +247,12 @@ See also <span style="color:blue">`demo(density)`</span>.
 subcrt("water", T=c(400, 500, 600), P=c(200, 400, 600), grid="P")$out$water
 ```
 
-```{r subcrt_water_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=72, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Isothermal contours of density (g cm<sup>-3</sup>) and pressure (bar) of H<sub>2</sub>O.", cache=TRUE, pngquant=pngquant}
-H2O <- subcrt("water", T=seq(0, 1000, 100), P=c(NA, seq(1, 500, 1)), grid="T")
-H2O <- H2O$out$water
-plot(H2O$P, H2O$rho, type="l")
+```{r subcrt_water_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Isothermal contours of density (g cm<sup>-3</sup>) and pressure (bar) of H<sub>2</sub>O.", cache=TRUE, pngquant=pngquant}
+substuff <- subcrt("water", T=seq(0,1000,100), P=c(NA, seq(1,500,1)), grid="T")
+water <- substuff$out$water
+plot(water$P, water$rho, type="l")
 ```
-The additional operations (`$out$water`) are used to extract a specific part of the results; this can be used with e.g. `write.table()` or `plot()` for further processing:
+The additional operations (`$out$water`) are used to extract a specific part of the results; this can be used with e.g. R's `write.table()` or `plot()` for further processing:
 ```{r subcrt_water_plot, eval=FALSE}
 ```
 
@@ -259,7 +269,7 @@ subcrt("methane", T=298.15, P=0.1)$out$methane$G
 data(thermo)  ## restore default settings
 ```
 
-A related function, `convert()`, can be used to convert given values between units.
+A related function, <span style="color:green">`convert()`</span>, can be used to convert given values between units.
 Let's convert the standard Gibbs energy of aqueous methane listed in the database from cal/mol to J/mol:
 ```{r methane_G, message=FALSE}
 convert(info(info("methane"))$G, "J")
@@ -271,7 +281,7 @@ As expected, we get the same result from both operations.
 
 ## Reaction definitions
 
-To calculate the thermodynamic properties of reactions, give the names of species, the physical states (optional), and reaction coefficients as the arguments to `subcrt()`.
+To calculate the thermodynamic properties of reactions, give the names of species, the physical states (optional), and reaction coefficients as the arguments to <span style="color:green">`subcrt()`</span>.
 Here we calculate properties for the dissolution of CO<sub>2</sub>:
 ```{marginfigure}
 Because of aqueous speciation, this doesn't give the _solubility_ of CO<sub>2</sub>.
@@ -281,9 +291,9 @@ For an example of a solubility calculation, see <span style="color:blue">`demo(s
 subcrt(c("CO2", "CO2"), c("gas", "aq"), c(-1, 1), T=seq(0, 250, 50))
 ```
 
-<p> <!--- needed to make the citation appear correction 20170202 -->
 In order to make a plot like Figure 18 of @MSS13, let's run more calculations and store the results.
 In addition to the reaction definition, we specify a greater number of temperature points than the default:
+
 ```{r dissolution, echo=FALSE, message=FALSE}
 T <- seq(0, 350, 10)
 CO2 <- subcrt(c("CO2", "CO2"), c("gas", "aq"), c(-1, 1), T=T)$out$logK
@@ -291,7 +301,7 @@ CO <- subcrt(c("CO", "CO"), c("gas", "aq"), c(-1, 1), T=T)$out$logK
 CH4 <- subcrt(c("CH4", "CH4"), c("gas", "aq"), c(-1, 1), T=T)$out$logK
 logK <- data.frame(T, CO2, CO, CH4)
 ```
-```{r dissolution_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=72, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Equilibrium constants calculated for dissolution of CO<sub>2</sub>, CO, and CH<sub>4</sub>.", cache=TRUE, pngquant=pngquant}
+```{r dissolution_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Equilibrium constants calculated for dissolution of CO<sub>2</sub>, CO, and CH<sub>4</sub>.", cache=TRUE, pngquant=pngquant}
 matplot(logK[, 1], logK[, -1], type="l", col=1, lty=1,
         xlab=axis.label("T"), ylab=axis.label("logK"))
 text(80, -1.7, expr.species("CO2"))
@@ -302,14 +312,14 @@ text(310, -2.4, expr.species("CH4"))
 ```
 
 Now we can make the plot, using R's `matplot()`.
-Here, the `axis.label()` and `expr.species()` functions of CHNOSZ are used to create formatted axis labels and chemical formulas:
+Here, <span style="color:green">`axis.label()`</span> and <span style="color:green">`expr.species()`</span> are used to create formatted axis labels and chemical formulas:
 ```{r dissolution_plot, eval=FALSE}
 ```
 
 ## Unbalanced reactions
 
 A balanced chemical reaction conserves mass.
-`subcrt()` won't stop you from running an unbalanced reaction, but it will give you a warning:
+<span style="color:green">`subcrt()`</span> won't stop you from running an unbalanced reaction, but it will give you a warning:
 ```{r subcrt_unbalanced, results="hide"}
 subcrt(c("CO2", "CH4"), c(-1, 1))
 ```
@@ -359,9 +369,9 @@ hydrogenotrophic <- subcrt("methane", 1)
 acetoclastic <- subcrt(c("acetate", "methane"), c(-1, 1))
 ```
 
-<p>
-Use `describe.reaction()` to write the reactions on a plot:
-```{r describe_reaction_plot, fig.margin=TRUE, fig.width=3.5, fig.height=1.8, tiny.mar=TRUE, dpi=72, out.width="100%", pngquant=pngquant}
+Use <span style="color:green">`describe.reaction()`</span> to write the reactions on a plot:
+
+```{r describe_reaction_plot, fig.margin=TRUE, fig.width=3.5, fig.height=1.8, tiny.mar=TRUE, dpi=dpi, out.width="100%", pngquant=pngquant}
 plot(0, 0, type="n", axes=FALSE, ann=FALSE, xlim=c(0, 5), ylim=c(5.2, -0.2))
 text(0, 0, "acetoclastic methanogenesis", adj=0)
 text(5, 1, describe.reaction(acetoclastic$reaction), adj=1)
@@ -373,21 +383,21 @@ text(5, 5, describe.reaction(hydrogenotrophic$reaction), adj=1)
 
 ## Affinity: not the standard state Gibbs energy
 
-Usually, `subcrt()` returns only standard state thermodynamic properties.
+Usually, <span style="color:green">`subcrt()`</span> returns only standard state thermodynamic properties.
 ```{marginfigure}
 The standard state adopted for H<sub>2</sub>O is unit activity of the pure component at any *T* and *P*.
 The standard state for aqueous species is unit activity of a hypothetical one molal solution referenced to infinite dilution at any *T* and *P*.
 ```
 Thermodynamic models often consider a non-standard state (i.e. non-unit activity).
-The activities of basis species can be modified with <span style="color:red">`basis()`</span>, and those of the other species using the `logact` argument in `subcrt()`.
+The activities of basis species can be modified with <span style="color:red">`basis()`</span>, and those of the other species using the `logact` argument in <span style="color:green">`subcrt()`</span>.
 
 Let us calculate the chemical affinity of acetoclastic methanogenesis.
 ```{marginfigure}
 The affinity is equal to the negative of the overall (non-standard) Gibbs energy change of the reaction.
 ```
 We begin by changing the energy units to Joules.
-Then, we change the state of H<sub>2</sub> and CO<sub>2</sub> in the basis from `aq` (aqueous) to `gas`, and set the logarithm of fugacity of gaseous H<sub>2</sub> and the pH, using values from @MDS_13.
-The activity of acetate and fugacity of methane, as well as temperature and pressure, are set in the call to `subcrt()`:
+Then, we change the state of `r h2o` and CO<sub>2</sub> in the basis from `aq` (aqueous) to `gas`, and set the logarithm of fugacity of gaseous H<sub>2</sub> and the pH, using values from @MDS_13.
+The activity of acetate and fugacity of methane, as well as temperature and pressure, are set in the call to <span style="color:green">`subcrt()`</span>:
 ```{r basis_mayumi, message=FALSE, results="hide"}
 E.units("J")
 basis(c("CO2", "H2"), "gas")
@@ -419,13 +429,13 @@ rxnfun <- function(coeffs) {
 }
 ```
 
-<p>
 Now we're ready to calculate and plot the affinities.
-Here, we use the `lapply()` function of R to list the results at two values of logarithm of fugacity of CO<sub>2</sub>.
+Here, we use R's `lapply()` to list the results at two values of logarithm of fugacity of CO<sub>2</sub>.
 We insert an empty reaction to get a line at zero affinity.
-`do.call(rbind, Adat)` turns the list into a data frame that can be plotted with `matplot()`.
+`do.call(rbind, Adat)` turns the list into a data frame that can be plotted with R's `matplot()`.
 There, we plot the negative affinities, equal to Gibbs energy, as shown in the plot of Mayumi et al. (2013).
-```{r methanogenesis_plot, fig.margin=TRUE, fig.width=4.1, fig.height=4.1, small.mar=TRUE, dpi=72, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Gibbs energies of acetate oxidation and methanogenesis (after Mayumi et al., 2013).", cache=TRUE, pngquant=pngquant}
+
+```{r methanogenesis_plot, fig.margin=TRUE, fig.width=4.1, fig.height=4.1, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Gibbs energies of acetate oxidation and methanogenesis (after Mayumi et al., 2013).", cache=TRUE, pngquant=pngquant}
 Adat <- lapply(c(-3, 3), function(logfCO2) {
   basis("CO2", logfCO2)
   data.frame(logfCO2,
@@ -441,7 +451,7 @@ matplot(Adat[, 1], -Adat[, -1]/1000, type="l", lty=1, lwd=2,
 legend("topleft", c("acetate oxidation", "acetoclastic methanogenesis",
   "hydrogenotrophic methanogenesis"), lty=1, col=2:4)
 ```
-```{r methanogenesis_plot, echo=TRUE, eval=FALSE}
+```{r methanogenesis_plot, eval=FALSE}
 ```
 
 Let't not forget to clear the system settings, which were modified by <span style="color:red">`basis()`</span> and <span style="color:red">`E.units()`</span>, before running other calculations:
@@ -450,11 +460,11 @@ Let't not forget to clear the system settings, which were modified by <span styl
 
 ## Activity coefficients
 
-Example using `nonideal()` ...
+XXX Example using <span style="color:green">`nonideal()`</span> ...
 
-# `affinity()`, species of interest, and potential diagrams
+# <span style="color:green">`affinity()`</span>, species of interest, and potential diagrams
 
-`affinity()` offers calculations of chemical affinity of formation reactions over a configurable range of T, P, and activities of basis species.
+<span style="color:green">`affinity()`</span> offers calculations of chemical affinity of formation reactions over a configurable range of T, P, and activities of basis species.
 
 By *formation reaction* is meant the stoichiometric requirements for formation of one mole of any species from the basis species.
 The <span style="color:red">`species()`</span> function is used to set these *species of interest*.
@@ -471,15 +481,15 @@ basis("CHNOS+")
 species(c("H2S", "HS-", "HSO4-", "SO4-2"))
 ```
 
-Now, we can use `affinity()` to calculate the affinities of the formation reactions of each of the species:
+Now, we can use <span style="color:green">`affinity()`</span> to calculate the affinities of the formation reactions of each of the species:
 ```{marginfigure}
-The values returned by `affinity()` are dimensionless, i.e. log<sub>10</sub>(**_A_**/*RT*).
+The values returned by <span style="color:green">`affinity()`</span> are dimensionless, i.e. log<sub>10</sub>(*A*/*RT*).
 ```
 ```{r affinity}
 affinity()$values
 ```
 
-The same result (in energetic units) could be obtained using `subcrt()`, but `affinity()` has the advantage of being able to perform calculations on a grid of *T*, *P*, or activities of basis species.
+The same result (in energetic units) could be obtained using <span style="color:green">`subcrt()`</span>, but <span style="color:green">`affinity()`</span> has the advantage of being able to perform calculations on a grid of *T*, *P*, or activities of basis species.
 Let's choose a set of variables commonly used in aqueous speciation diagrams: Eh and pH.
 To use Eh as a variable, the electron (`e-`) should be in the basis.
 To get the electron in there, we could use a different keyword (<span style="color:red">`basis("CHNOSe")`</span>), or swap oxygen out of the existing basis:
@@ -489,11 +499,10 @@ swap.basis("O2", "e-")
 
 The <span style="color:red">swap.basis()</span> changed the basis species and recalculated their activities, but preserved the species of interest.
 ```{marginfigure}
-That is, running `affinity()$values` again would give the same result.
+That is, running <span style="color:green">`affinity()`</span>`$values` again would give the same result.
 ```
 
-<p>
-```{r EhpH_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=72, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE, pngquant=pngquant}
+```{r EhpH_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE, pngquant=pngquant}
 a <- affinity(pH=c(0, 12), Eh=c(-1, 1))
 diagram(a, fill="heat")
 ```
@@ -501,22 +510,22 @@ Now we can calculate the affinities on an Eh-pH grid:
 ```{r EhpH_plot, echo=1, eval=FALSE}
 ```
 
-Given values of affinity, the `diagram()` function uses the maximum affinity method to make a potential diagram:
+Given values of affinity, the <span style="color:green">`diagram()`</span> function uses the maximum affinity method to make a potential diagram:
 ```{r EhpH_plot_echo, eval=FALSE}
 diagram(a)
 ```
 
 Note that the calculation of affinity implies a non-equilibrium reference state of equal activities of species (see above).
-Generally, then, `diagram()` gives a *potential diagram* because it shows regions of maximum affinity.
+Generally, then, <span style="color:green">`diagram()`</span> gives a *potential diagram* because it shows regions of maximum affinity.
 In systems where equilibrium is attainable, it makes sense to call this a *predominance diagram*, showing regions of maximum activity.
 
-```{r EhpH_plot_color, fig.margin=TRUE, fig.width=4, fig.height=4, smallish.mar=TRUE, dpi=72, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE, pngquant=pngquant}
+```{r EhpH_plot_color, fig.margin=TRUE, fig.width=4, fig.height=4, smallish.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE, pngquant=pngquant}
 diagram(a, fill="terrain", lwd=3, lty=3,
         names=c("hydrogen sulfide", "bisulfide", "bisulfate", "sulfate"),
         tplot=FALSE, main="sulfur species, 25 °C", bty="n")
 ```
-The default colors for diagrams shown on the screen are R's "heat colors".
-Some arguments in `diagram()` can be used to control the color, labels, and lines, and title (`main`).
+The default colors for diagrams shown on the screen uses R's `heat.colors()` palette.
+Some arguments in <span style="color:green">`diagram()`</span> can be used to control the color, labels, and lines, and title (`main`).
 The `tplot` argument turns off plot customizations used in CHNOSZ.
 Additional arguments are passed to R's plotting functions; here, we use `bty` to remove the box around the plot:
 ```{r EhpH_plot_color, echo=TRUE, eval=FALSE}
@@ -529,14 +538,14 @@ Mosaic diagrams (or combined diagrams), which are often shown for metal oxide, s
 These diagrams are made by constructing individual diagrams for the possible basis species.
 The individual diagrams are then combined, each one contributing to the final diagram only in the range of stability of the corresponding basis species.
 
-Let's use the `mosaic()` function in CHNOSZ to make a diagram for aqueous species and minerals in the Cu-S-Cl-H<sub>2</sub>O system, similar to Figure 5a of @CPCC17.
+Let's use <span style="color:green">`mosaic()`</span> to make a diagram for aqueous species and minerals in the Cu-S-Cl-`r h2o` system, similar to Figure 5a of @CPCC17.
 To know what aqueous copper chloride complexes are available in the database, we can use a fuzzy search:
 ```{r info_CuCl, results="hide"}
 info(" CuCl")
 ```
 
 We wish to include chalcocite (Cu<sub>2</sub>S) in the system.
-This mineral undergoes phase transitions; to find out the temperatures of the phase transitions, we can also use `info()`:
+This mineral undergoes phase transitions; to find out the temperatures of the phase transitions, we can also use <span style="color:green">`info()`</span>:
 ```{r info_chalcocite, message=FALSE}
 info(info("chalcocite", c("cr1", "cr2", "cr3")))$T
 ```
@@ -555,13 +564,13 @@ species("chalcocite", "cr2")
 species(c("CuCl", "CuCl2-", "CuCl3-2", "CuCl+", "CuCl2", "CuCl3-", "CuCl4-2"))
 ```
 
-<p>
-We use `mosaic()` to generate and combine diagrams for each candidate basis species (H<sub>2</sub>S, HS<sup>-</sup>, HSO<sub>4</sub><sup>-</sup>, or SO<sub>4</sub><sup>-2</sup>) as a function of Eh and pH.
+We use <span style="color:green">`mosaic()`</span> to generate and combine diagrams for each candidate basis species (H<sub>2</sub>S, HS<sup>-</sup>, HSO<sub>4</sub><sup>-</sup>, or SO<sub>4</sub><sup>-2</sup>) as a function of Eh and pH.
 The key argument is `bases`, which identifies the candidate basis species (starting with the one in the current basis).
-The other arguments, like those of `affinity()`, specify the ranges of the variables; `res` indicates the grid resolution to use for each variable (higher than the default).
-The first call to `diagram()` plots the species of interest; the second adds the predominance fields of the basis species.
-Finally, `water.lines()` is used to add the stability limits of water at the given temperature.
-```{r copper_mosaic, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=72, out.width="100%", message=FALSE, cache=TRUE, pngquant=pngquant}
+The other arguments, like those of <span style="color:green">`affinity()`</span>, specify the ranges of the variables; `res` indicates the grid resolution to use for each variable (higher than the default).
+The first call to <span style="color:green">`diagram()`</span> plots the species of interest; the second adds the predominance fields of the basis species.
+Finally, <span style="color:green">`water.lines()`</span> is used to add the stability limits of water at the given temperature.
+
+```{r copper_mosaic, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", message=FALSE, cache=TRUE, pngquant=pngquant}
 T <- 200
 res <- 300
 bases <- c("H2S", "HS-", "HSO4-", "SO4-2")
@@ -577,10 +586,10 @@ Without that argument, the diagrams would be combined using the dominant basis s
 
 We have seen the effects of speciation of S in the basis species.
 However, the choice of other basis species can also affect the diagram.
-For instance, we can use H<sub>2</sub> or O<sub>2</sub> in place of *e*<sup>-</sup>.
+For instance, we can use H<sub>2</sub> or `r o2` in place of *e*<sup>-</sup>.
 To do that, let's write a function to swap those basis species and make a diagram.
-We use `do.call()` to construct the argument list for `mosaic()`; this way, the name of the `newvar` argument to our function indicates the chosen variable.
-```{r mosaicfun, fig.fullwidth=TRUE, fig.width=10.5, fig.height=3, small.mar=TRUE, dpi=72, out.width="100%", message=FALSE, results="hide", cache=TRUE, fig.cap="Different projections (defined by the basis species) of the same thermodynamic system. The choice between them depends on convenience rather than correctness.", pngquant=pngquant}
+We use R's `do.call()` to construct the argument list for <span style="color:green">`mosaic()`</span>; this way, the name of the `newvar` argument to our function indicates the chosen variable.
+```{r mosaicfun, fig.fullwidth=TRUE, fig.width=10.5, fig.height=3, small.mar=TRUE, dpi=dpi, out.width="100%", message=FALSE, results="hide", cache=TRUE, fig.cap="Different projections (defined by the basis species) of the same thermodynamic system. The choice between them depends on convenience rather than correctness.", pngquant=pngquant}
 mosaicfun <- function(newvar, T=200, res=300) {
   swap.basis("e-", names(newvar))
   if(names(newvar) == "O2") basis("O2", "gas")
@@ -632,7 +641,7 @@ The target of the conversion is `G`, or free energy, from `logK`.
 That conversion requires temperature in Kelvin, which is obtained by conversion from °C.
 We finish with a negation (affinity is negative Gibbs energy) and scaling from cal to kcal.
 ```
-Using the `convert()` function in CHNOSZ, we also convert the result from dimensionless values (**_A_**/2.303*RT*) to kcal/mol.
+Using the `convert()` function in CHNOSZ, we also convert the result from dimensionless values (*A*/2.303*RT*) to kcal/mol.
 ```{r rainbow_affinity, message=FALSE}
 a <- affinity(T=rb$T, CO2=rb$CO2, H2=rb$H2,
               `NH4+`=rb$`NH4+`, H2S=rb$H2S, pH=rb$pH)
@@ -641,7 +650,7 @@ a$values <- lapply(a$values, convert, "G", T)
 a$values <- lapply(a$values, `*`, -0.001)
 ```
 
-```{r rainbow_diagram, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=72, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE, fig.cap="Affinities of organic synthesis in a hydrothermal system, after Shock and Canovas (2010).", pngquant=pngquant}
+```{r rainbow_diagram, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE, fig.cap="Affinities of organic synthesis in a hydrothermal system, after Shock and Canovas (2010).", pngquant=pngquant}
 diagram(a, balance=1, ylim=c(-100, 100), ylab=axis.label("A", prefix="k"),
         col=rainbow(8), lwd=2, legend.x=NA, bg="slategray3")
 abline(h=0, lty=2, lwd=2)
@@ -689,7 +698,7 @@ unlist(affinity(T=300, P=100)$values)
 ```
 
 We use <span style="color:red">`mod.buffer()`</span> to choose the `cr2` phase of phyrrhotite, which is stable at this temperature.
-Then, we set up H<sub>2</sub>S and O<sub>2</sub> to be buffered by PPM, and inspect their buffered activities:
+Then, we set up H<sub>2</sub>S and `r o2` to be buffered by PPM, and inspect their buffered activities:
 ```{r PPM_setup, results="hide"}
 mod.buffer("PPM", "pyrrhotite", "cr2")
 basis(c("H2S", "O2"), c("PPM", "PPM"))
@@ -698,7 +707,7 @@ basis(c("H2S", "O2"), c("PPM", "PPM"))
 unlist(affinity(T=300, P=100, return.buffer=TRUE)[1:3])
 ```
 
-```{r demo_buffer, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=72, out.width="100%", message=FALSE, echo=FALSE, cache=TRUE, pngquant=pngquant}
+```{r demo_buffer, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", message=FALSE, echo=FALSE, cache=TRUE, pngquant=pngquant}
 demo(buffer, echo=FALSE)
 ```
 Et voilà! We have found log*a*<sub>H<sub>2</sub>S</sub> and `r logfO2` that are compatible with the coexistence of the three minerals.
@@ -744,7 +753,7 @@ For more information, see the vignette <span style="color:blue">*Equilibrium in 
 The method based on the Boltzmann equation is fast, but is applicable only to systems where the coefficients on the balanced basis species are all one.
 The reaction-matrix method is slower, but can be applied to systems were the balanced basis species has non-unity coefficients.
 
-```{r bjerrum_diagram, fig.margin=TRUE, fig.width=3, fig.height=6, small.mar=TRUE, dpi=72, out.width="100%", echo=FALSE, results="hide", message=FALSE, cache=TRUE, fig.cap="Three views of carbonate speciation: affinity, metastable equilibrium activity, degree of formation.", pngquant=pngquant}
+```{r bjerrum_diagram, fig.margin=TRUE, fig.width=3, fig.height=6, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, cache=TRUE, fig.cap="Three views of carbonate speciation: affinity, metastable equilibrium activity, degree of formation.", pngquant=pngquant}
 par(mfrow=c(3, 1))
 basis("CHNOS+")
 species(c("CO2", "HCO3-", "CO3-2"))
@@ -877,7 +886,7 @@ It is also possible to plot the distribution of species within individual groups
 We do this by setting the names and line types for the *other* species to values that prevent them from being plotted:
 ```{r groups_diagram, echo=-(1:4), eval=FALSE}
 ```
-```{r groups_diagram, fig.fullwidth=TRUE, fig.width=10.5, fig.height=3, small.mar=TRUE, dpi=72, out.width="100%", echo=FALSE, message=FALSE, results="hide", cache=TRUE, pngquant=pngquant}
+```{r groups_diagram, fig.fullwidth=TRUE, fig.width=10.5, fig.height=3, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, results="hide", cache=TRUE, pngquant=pngquant}
 ```
 
 ## Choosing a different balance
@@ -901,7 +910,7 @@ To make plots using different balance constraints, let's write a simple function
 The first plot is the most similar to Figure 4 of Shock (1990), except for the absence of alanine (probably due to different thermodynamic data) and the presence of some other amino acids.
 There, we set `balance=1`, which indicates that moles of species are conserved; this is equivalent to balancing on the amino acid backbone.
 The remaining plots balance on each of the basis species (except for O<sub>2</sub>), then on volume (in the last plot).
-```{r aafun, fig.fullwidth=TRUE, fig.width=12.5, fig.height=2.5, small.mar=TRUE, dpi=72, out.width="100%", message=FALSE, results="hide", cache=TRUE, pngquant=pngquant}
+```{r aafun, fig.fullwidth=TRUE, fig.width=12.5, fig.height=2.5, small.mar=TRUE, dpi=dpi, out.width="100%", message=FALSE, results="hide", cache=TRUE, pngquant=pngquant}
 aafun <- function(balance) {
   diagram(a, balance=balance, fill=col)
   title(main=paste("balanced on", balance))
@@ -914,7 +923,7 @@ There are some broad similarities---increasing `r logfO2` favors more oxidized a
 It is interesting that there is more "going on" in the middle part of the digram showing volume conservation.
 
 Caveat: these plots demonstrate some possibilities in CHNOSZ and are not necessarily realistic portrayals of this system.
-It does seem odd to balance on a fugacious component like O<sub>2</sub> or H<sub>2</sub>O.
+It does seem odd to balance on a fugacious component like `r o2` or `r h2o`.
 Unlike different choices of basis species, which are thermodynamically equivalent (see the example above for a mineral system), the choice of balance reflects extra-thermodynamic factors.
 For instance, the widespread rule of thumb for balancing mineral reactions on a component is unrealistic for processes where volume is conserved [@MC11].
 Any choice of balancing constraints may oversimplify the physical or biological context for reactions of organic species or biomolecules.
@@ -945,11 +954,11 @@ By default, additivity of aqueous groups is used:
 subcrt("LYSC_CHICK")$out[[1]][1:6, ]
 ```
 
-<p>
 Let's compare experimental values of heat capacity of four proteins, from @PM90, with those calculated using group additivity.
 After dividing Privalov and Makhatadze's experimental values by the lengths of the proteins to get per-residue values, we convert those to calories, then plot them.
 The loop calculates the properties of each protein using group additivity, for aqueous and crystalline groups, then plots the per-residue values.
-```{r protein_Cp, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=72, out.width="100%", echo=FALSE, message=FALSE, fig.cap='The heat capacity calculated by group additivity closely approximates experimental values for aqueous proteins. For a related figure showing the effects of ionization in the calculations, see <span style="color:blue">?ionize.aa</span>.', cache=TRUE, pngquant=pngquant}
+
+```{r protein_Cp, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, fig.cap='The heat capacity calculated by group additivity closely approximates experimental values for aqueous proteins. For a related figure showing the effects of ionization in the calculations, see <span style="color:blue">?ionize.aa</span>.', cache=TRUE, pngquant=pngquant}
 PM90 <- read.csv(system.file("extdata/cpetc/PM90.csv", package="CHNOSZ"))
 plength <- protein.length(colnames(PM90)[2:5])
 Cp_expt <- t(t(PM90[, 2:5]) / plength)
@@ -970,7 +979,6 @@ legend("bottomright", legend=c("experimental", "calculated (aq)",
 ```{r protein_Cp, eval=FALSE}
 ```
 
-<p>
 Note that `subcrt()` has no provision for protein ionization.
 Instead, ionization is handled via `affinity()`, which calls `ionize.aa()` if a charged species is in the basis.
 ```{marginfigure}
@@ -978,8 +986,9 @@ Whether to calculate properties using aqueous or crystalline groups is determine
 ```
 The following plot shows the calculated affinity of reaction between nonionized proteins and their ionized forms as a function of pH.
 The affinity is always positive, representing the strong energetic drive for ionization of proteins in aqueous solution.
-The degree of ionization of amino and carboxyl groups increase at low and high pH, respectively, accounting for the U-shaped lines.
-```{r protein_ionization, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=72, out.width="100%", echo=FALSE, results="hide", message=FALSE, fig.cap='Affinity of ionization of proteins. See <span style="color:blue">demo(ionize)</span> for ionization properties calculated as a function of temperature and pH.', cache=TRUE, pngquant=pngquant}
+The degree of ionization of amino and carboxyl groups increase at low and high pH, respectively, giving rise to U-shaped lines.
+
+```{r protein_ionization, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, fig.cap='Affinity of ionization of proteins. See <span style="color:blue">demo(ionize)</span> for ionization properties calculated as a function of temperature and pH.', cache=TRUE, pngquant=pngquant}
 ip <- iprotein(c("CYC_BOVIN", "LYSC_CHICK", "MYG_PHYCA", "RNAS1_BOVIN"))
 basis("CHNOS+")
 a_ion <- affinity(pH=c(0, 14), iprotein=ip)
@@ -1004,7 +1013,11 @@ Above, we used the `iprotein` argument of `affinity()` to specify the proteins i
 The `iprotein` index refers to the rownumber of `thermo\$protein`; this is distinct from the `ispecies` index, which refers to the rownumber of `thermo\$species`.
 ```
 That approach utilizes some optimizations that can be realized due group additivity, and is useful for calculations involving many proteins.
-An alternative, but slower, approach is to identify the proteins to `species()`; this should produce results that are equivalent to using the `iprotein` argument:
+An alternative, but slower, approach is to identify the proteins to `species()`; this produces results that are equivalent to using the `iprotein` argument:
+<!-- this is needed because the figure above might be cached, preventing the call to basis() there -->
+```{r basis_CHNOS, echo=FALSE, results="hide"}
+basis("CHNOS")
+```
 ```{r species_protein, message=FALSE}
 species(c("CYC_BOVIN", "LYSC_CHICK", "MYG_PHYCA", "RNAS1_BOVIN"))
 a_nonion2 <- affinity()
@@ -1012,13 +1025,80 @@ unlist(a_nonion2$values)
 unlist(a_nonion$values)
 ```
 
-## Compositional analysis (ZC)
+## Compositional analysis
+
+Functions in CHNOSZ make it easy to get the chemical formulas of proteins from their amino acid compositions.
+Calculations based on the formulas, such as the average oxidation state of carbon (`r zc`), and the stoichiometry of formation from basis species, are also available.
+
+Let's compare the `r zc` of Rubisco with optimal growth temperature of organisms, as shown in Figure 6a of @Dic14.
+First we read a CSV file with the protein ID's and optimal growth temperature (*T*<sub>opt</sub>); the midpoint of the range of *T*<sub>opt</sub> is used for plotting.
+Then we use `read.fasta()` to read a FASTA file holding the amino acid sequences of the proteins; the function returns a data frame with the amino acid counts.
+To put the proteins in the right order, the IDs in the CSV file are matched to the names of the proteins in the FASTA file.
+Then, in one line, we calculate the formula of the protein, followed by `r zc`.
+Next, point symbols are assigned according to domain (Eukaryota, Bacteria, Archaea); numerals inside the symbols reflect the ordering by *T*<sub>opt</sub> in three temperature ranges (0--35 °C, 37.5--60 °C, and 65--100 °C).
+
+```{r rubisco_ZC, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Average oxidation state of carbon in Rubisco compared with optimal growth temperature of organisms.", cache=TRUE, pngquant=pngquant}
+datfile <- system.file("extdata/cpetc/rubisco.csv", package="CHNOSZ")
+fastafile <- system.file("extdata/fasta/rubisco.fasta", package="CHNOSZ")
+dat <- read.csv(datfile)
+aa <- read.fasta(fastafile)
+Topt <- (dat$T1 + dat$T2)/2
+idat <- match(dat$ID, substr(aa$protein, 4, 9))
+aa <- aa[idat, ]
+ZC <- ZC(protein.formula(aa))
+pch <- match(dat$domain, c("E", "B", "A")) - 1
+col <- match(dat$domain, c("A", "B", "E")) + 1
+plot(Topt, ZC, pch=pch, cex=2, col=col,
+     xlab=expression(list(italic(T)[opt], degree*C)),
+     ylab=expression(italic(Z)[C]))
+text(Topt, ZC, rep(1:9, 3), cex=0.8)
+abline(v=c(36, 63), lty=2, col="grey")
+legend("topright", legend=c("Archaea", "Bacteria", "Eukaryota"),
+       pch=c(2, 1, 0), col=2:4, pt.cex=2)
+```
+```{r rubisco_ZC, eval=FALSE}
+```
+
+`protein.basis()` returns the stoichiometry of the basis species the formation reaction of the proteins.
+Dividing by `protein.length()` gives the per-residue reaction coefficients.
+Using the set of basis species we have seen before (CO<sub>2</sub>, NH<sub>3</sub>, H<sub>2</sub>S, `r h2o`, `r o2`) there is a correlation between `r zc` and *n*<sub>`r o2`</sub>/residue, as well as a correlation of the latter with *n*<sub>`r h2o`</sub>/residue (left column).
+```{marginfigure}
+The calculation of *Z*<sub>C</sub>, which is a sum of elemental ratios, is not affected by the choice of basis species.
+```
+The "CEQ" keyword to <span style="color:red">basis()</span> loads basis species with a particular combination of three amino acids (cysteine, glutamic acid, glutamine, `r h2o`, `r o2`) that strengthens the relationship between `r zc` and *n*<sub>`r o2`</sub>/residue, but weakens that between *n*<sub>`r o2`</sub>/residue and *n*<sub>`r h2o`</sub>/residue (right column).
+
+```{r rubisco_O2, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, fig.cap="Compositions of proteins projected into different sets of basis species.", cache=TRUE, pngquant=pngquant}
+layout(matrix(1:4, nrow=2))
+par(mgp=c(1.8, 0.5, 0))
+pl <- protein.length(aa)
+ZClab <- axis.label("ZC")
+nO2lab <- expression(italic(n)[O[2]]/residue)
+nH2Olab <- expression(italic(n)[H[2]*O]/residue)
+lapply(c("CHNOS", "CEQ"), function(thisbasis) {
+  basis(thisbasis)
+  pb <- protein.basis(aa)
+  nO2 <- pb[, "O2"]/pl
+  plot(nO2, ZC, pch=pch, col=col, xlab=nO2lab, ylab=ZClab)
+  nH2O <- pb[, "H2O"]/pl
+  plot(nO2, nH2O, pch=pch, col=col, xlab=nO2lab, ylab=nH2Olab)
+  mtext(thisbasis, font=2)
+})
+```
+```{r rubisco_O2, echo=-(1:2), eval=FALSE}
+```
+
+By projecting the compositions of proteins into the "CEQ" set of basis species, *n*<sub>`r o2`</sub>/residue emerges as a strong indicator of oxidation state, while *n*<sub>`r h2o`</sub>/residue is a relatively non-correlated (i.e. independent) compositional variable.
+These independent variables underlie compositional and thermodynamic analyses that can distinguish the effects of oxidation and hydration state in proteomic experiments [@Dic17].
 
 ## Normalizing for different lengths
 
 ## Adding amino acid data
 
-# Data options
+In the Rubisco example above, we saw the use of `read.fasta()` to read amino acid sequences from a FASTA file.
+There are some other methods of adding proteins to CHNOSZ.
+`read.aa()` is used to read amino acid compositions from a CSV file with the same columns that are present in `thermo$protein`:
+
+# Thermodynamic data options
 
 ## Source of data: browse.refs()
 

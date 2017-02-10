@@ -36,11 +36,13 @@
     \item \code{BKM60_Fig7.dat} Eh-pH values for normal, wet and waterlogged soils from Fig. 7 of Baas Becking et al., 1960. See the \sQuote{anintro} vignette for an example that uses this file.
     \item \code{SC10_Rainbow.csv} Values of temperature (\eqn{^{\circ}}{°}C), pH and logarithms of activity of \eqn{\mathrm{CO_2}}{CO2}, \eqn{\mathrm{H_2}}{H2}, \eqn{\mathrm{NH_4^+}}{NH4+}, \eqn{\mathrm{H_2S}}{H2S} and \eqn{\mathrm{CH_4}}{CH4} for mixing of seawater and hydrothermal fluid at Rainbow field (Mid-Atlantic Ridge), taken from Shock and Canovas, 2010.
     \item \code{SS98_Fig5a.csv}, \code{SS98_Fig5b.csv} Values of logarithm of fugacity of \eqn{\mathrm{O_2}}{O2} and pH as a function of temperature for mixing of seawater and hydrothermal fluid, digitized from Figs. 5a and b of Shock and Schulte, 1998.
+    \item \code{rubisco.csv} UniProt IDs for Rubisco, ranges of optimal growth temperature of organisms, and domain and name of organisms, from Dick, 2014.
   }
 
   Files in \code{fasta} contain protein sequences:
   \itemize{
     \item \code{EF-Tu.aln} consists of aligned sequences (394 amino acids) of elongation factor Tu (EF-Tu). The sequences correspond to those taken from UniProtKB for ECOLI (\emph{Escherichia coli}), THETH (\emph{Thermus thermophilus}) and THEMA (\emph{Thermotoga maritima}), and reconstructed ancestral sequences taken from Gaucher et al., 2003 (maximum likelihood bacterial stem and mesophilic bacterial stem, and alternative bacterial stem). See the \sQuote{formation} vignette for an example that uses this file.
+    \item \code{rubisco.csv} Sequences of Rubisco obtained from UniProt (see Dick, 2014).
   }
 
   Files in \code{protein} contain protein composition data for model organisms.
@@ -112,6 +114,8 @@
   Dayhoff, M. O. and Lippincott, E. R. and Eck, R. V. (1964) Thermodynamic Equilibria In Prebiological Atmospheres. \emph{Science} \bold{146}, 1461--1464. \url{http://dx.doi.org/10.1126/science.146.3650.1461}
 
   Dayhoff, M. O. and Lippincott, E. R., Eck, R. V. and Nagarajan (1967) Thermodynamic Equilibrium In Prebiological Atmospheres of C, H, O, N, P, S, and Cl. Report SP-3040, National Aeronautics and Space Administration. \url{http://ntrs.nasa.gov/search.jsp?R=19670017966}
+
+  Dick, J. M. (2014) Average oxidation state of carbon in proteins. \emph{J. R. Soc. Interface} \bold{11}, 20131095. \url{http://dx.doi.org/10.1098/rsif.2013.1095}
 
   Dick, J. M. (2016) Proteomic indicators of oxidation and hydration state in colorectal cancer. \emph{PeerJ} \bold{4}:e2238. \url{http://dx.doi.org/10.7717/peerj.2238}
 

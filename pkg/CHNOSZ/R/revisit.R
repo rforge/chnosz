@@ -195,8 +195,9 @@ revisit <- function(eout, objective = "CV", loga2 = NULL, loga0 = NULL, ispecies
     if(plot.it) {
       if(is.null(ylim)) ylim <- extendrange(H, f=0.075)
       if(is.null(xlim)) xlim <- xrange
-      # format the objective name if it's DGtr
+      # format the objective name if it's DGtr or DGinf
       if(objective=="DGtr") ylab <- expr.property("DGtr/2.303RT")
+      if(objective=="DGinf") ylab <- expr.property("DGinf/2.303RT")
       else ylab <- objective
       if(!add) thermo.plot.new(xlim=xlim, ylim=ylim, xlab=axis.label(xname),
         ylab=ylab, yline=yline, cex=cex, lwd=lwd, mar=mar, side=side)

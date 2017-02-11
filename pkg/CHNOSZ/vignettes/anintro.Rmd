@@ -381,7 +381,7 @@ text(0, 4, "hydrogenotrophic methanogenesis", adj=0)
 text(5, 5, describe.reaction(hydrogenotrophic$reaction), adj=1)
 ```
 
-## Affinity: not the standard state Gibbs energy
+## Chemical affinity
 
 Usually, <span style="color:green">`subcrt()`</span> returns only standard state thermodynamic properties.
 ```{marginfigure}
@@ -460,7 +460,7 @@ Let't not forget to clear the system settings, which were modified by <span styl
 
 ## Activity coefficients
 
-XXX Example using <span style="color:green">`nonideal()`</span> ...
+XXX Example using <span style="color:green">`nonideal()`</span> ...  Alberty, 2003, Fig. 1.4-1.5 (p. 9-10, 235-236)
 
 # <span style="color:green">`affinity()`</span>, species of interest, and potential diagrams
 
@@ -566,7 +566,7 @@ species(c("CuCl", "CuCl2-", "CuCl3-2", "CuCl+", "CuCl2", "CuCl3-", "CuCl4-2"))
 
 We use <span style="color:green">`mosaic()`</span> to generate and combine diagrams for each candidate basis species (H<sub>2</sub>S, HS<sup>-</sup>, HSO<sub>4</sub><sup>-</sup>, or SO<sub>4</sub><sup>-2</sup>) as a function of Eh and pH.
 The key argument is `bases`, which identifies the candidate basis species (starting with the one in the current basis).
-The other arguments, like those of <span style="color:green">`affinity()`</span>, specify the ranges of the variables; `res` indicates the grid resolution to use for each variable (higher than the default).
+The other arguments, like those of <span style="color:green">`affinity()`</span>, specify the ranges of the variables; `res` indicates the grid resolution to use for each variable (higher than the default of 128).
 The first call to <span style="color:green">`diagram()`</span> plots the species of interest; the second adds the predominance fields of the basis species.
 Finally, <span style="color:green">`water.lines()`</span> is used to add the stability limits of water at the given temperature.
 
@@ -589,7 +589,7 @@ However, the choice of other basis species can also affect the diagram.
 For instance, we can use H<sub>2</sub> or `r o2` in place of *e*<sup>-</sup>.
 To do that, let's write a function to swap those basis species and make a diagram.
 We use R's `do.call()` to construct the argument list for <span style="color:green">`mosaic()`</span>; this way, the name of the `newvar` argument to our function indicates the chosen variable.
-```{r mosaicfun, fig.fullwidth=TRUE, fig.width=10.5, fig.height=3, small.mar=TRUE, dpi=dpi, out.width="100%", message=FALSE, results="hide", cache=TRUE, fig.cap="Different projections (defined by the basis species) of the same thermodynamic system. The choice between them depends on convenience rather than correctness.", pngquant=pngquant}
+```{r mosaicfun, fig.fullwidth=TRUE, fig.width=9, fig.height=3, small.mar=TRUE, dpi=dpi, out.width="85%", message=FALSE, results="hide", cache=TRUE, fig.cap="Different projections (defined by the basis species) of the same thermodynamic system. The choice between them depends on convenience rather than correctness.", pngquant=pngquant}
 mosaicfun <- function(newvar, T=200, res=300) {
   swap.basis("e-", names(newvar))
   if(names(newvar) == "O2") basis("O2", "gas")
@@ -597,10 +597,9 @@ mosaicfun <- function(newvar, T=200, res=300) {
   m1 <- do.call(mosaic, mosaicargs)
   diagram(m1$A.species, lwd=2, fill=rev(topo.colors(10)))
   diagram(m1$A.bases, add=TRUE, col="blue", col.names="blue", lty=3)
-  title(main=expr.species(names(newvar)))
   swap.basis(names(newvar), "e-")
 }
-layout(t(matrix(c(1, 1, 2, 2, 3, 3, 0))))
+par(mfrow=c(1, 3))
 mosaicfun(list(Eh=c(-1, 1, res)))
 mosaicfun(list(H2=c(-15, 5, res)))
 mosaicfun(list(O2=c(-70, 0, res)))
@@ -863,8 +862,8 @@ At last we come to the diagram.
 The groups are identified by the current species numbers in a list, where the list elements are given names that will appear on the diagram.
 When summing the activities of species in the groups, each activity is multiplied first by the balance coefficient on that species.
 Therefore, the total activity is that of a basis species (or of an element that only in that basis species, like carbon in this example).
-```{r groups_diagram, echo=2:4, eval=FALSE}
-layout(t(matrix(c(1, 1, 2, 2, 3, 3, 0))))
+```{r groups_diagram, echo=1:4, eval=FALSE}
+par(mfrow=c(1, 3))
 groups <- list(inorganic=ii, alcohols=ia, ketones=ik,
                `carboxylic acids`=c(ic, ica), alkenes=ie)
 diagram(e, alpha=TRUE, groups=groups, legend.x=NA)
@@ -886,7 +885,7 @@ It is also possible to plot the distribution of species within individual groups
 We do this by setting the names and line types for the *other* species to values that prevent them from being plotted:
 ```{r groups_diagram, echo=-(1:4), eval=FALSE}
 ```
-```{r groups_diagram, fig.fullwidth=TRUE, fig.width=10.5, fig.height=3, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, results="hide", cache=TRUE, pngquant=pngquant}
+```{r groups_diagram, fig.fullwidth=TRUE, fig.width=9, fig.height=3, small.mar=TRUE, dpi=dpi, out.width="85%", echo=FALSE, message=FALSE, results="hide", cache=TRUE, pngquant=pngquant}
 ```
 
 ## Choosing a different balance
@@ -901,7 +900,7 @@ basis("CHNOS")
 basis("CO2", "gas")
 swap.basis("NH3", "N2")
 species(aminoacids(""))
-a <- affinity(O2=c(-50, -25), CO2=c(-10, 15), T=250, P=265)
+a <- affinity(O2=c(-50, -25, 300), CO2=c(-10, 15, 300), T=250, P=265)
 aa.ZC <- ZC(info(aminoacids("")))
 col <- ZC.col(aa.ZC)
 ```
@@ -1090,7 +1089,83 @@ lapply(c("CHNOS", "QEC"), function(thisbasis) {
 By projecting the compositions of proteins into the "QEC" set of basis species, *n*&#773;<sub>`r o2`</sub> emerges as a strong indicator of oxidation state, while *n*&#773;<sub>`r h2o`</sub> is a relatively non-correlated (i.e. independent) compositional variable.
 These independent variables make it easier to distinguish the effects of oxidation and hydration state in proteomic experiments [@Dic17].
 
-## Normalizing for different lengths
+## Normalization to residues
+
+As with other systems, a balance must be chosen for calculations of the metastable equilibrium distribution for proteins.
+Balancing on the number of backbone units (the length of the proteins) seems a reasonable choice given the polymeric structure of proteins.
+```{marginfigure}
+Balancing on one of the basis species remains a possibility, using the `balance` argument in <span style="color:green">`equilibrate()`</span> or <span style="color:green">`diagram()`</span>.
+```
+However, there is an additional consideration: owing to the large size of proteins compared to the basis species, the distribution of *proteins* in metastable equilibrium has many orders of magnitude separation between the activities of the dominant and less-dominant proteins.
+The metastable coexistence of the *residues* (i.e. per-residue formulas, or residue equivalents) of the same proteins spans a much smaller range of chemical activities.
+In CHNOSZ, the calculation of metastable equilibrium activities of the residue equivalents is referred to as *normalization*.
+```{marginfigure}
+See the vignette <span style="color:blue">*Equilibrium in CHNOSZ*</span> for other examples using normalization.
+```
+
+To take an example, let's look at the metastable equilibrium distribution of selected proteins in the ER-to-Golgi compartment of *S. cerevisiae* (yeast).
+This example brings in a few other functions we haven't seen yet: <span style="color:green">`yeastgfp()`</span>, <span style="color:green">`unitize()`</span>, and <span style="color:green">`revisit()`</span>.
+<span style="color:green">`yeastgfp()`</span> queries a data file in CHNOSZ for the names and relative abundances of proteins taken from the YeastGFP study of @GHB_03.
+There are six proteins identified in the ER-to-Golgi compartment; one has NA abundance, so it is excluded from the comparisons.
+```{r yeastgfp}
+y <- yeastgfp("ER.to.Golgi")
+ina <- is.na(y$abundance)
+```
+
+Next, we get the amino acid compositions of the proteins and add them to thermo$protein.
+```{r add_protein_yeast, message=FALSE}
+aa <- more.aa(y$protein[!ina], "Sce")
+ip <- add.protein(aa)
+```
+
+The YeastGFP study reported absolute abundances of molecules, but the thermodynamic calculations give relative chemical activities of the proteins.
+In order to make a comparison between them, we use <span style="color:green">`unitize()`</span> to scale the abundances or activities of proteins (in logarithmic units) such that the total abundance or activity of residue equivalents is unity.
+To do that, we must have the lengths of the proteins.
+The first call to <span style="color:green">`unitize()`</span> generates equal logarithms of activities of proteins for unit total activity of residues; this is used as the reference state for <span style="color:green">`affinity()`</span>.
+The second call to <span style="color:green">`unitize()`</span> scales the logarithms of experimental abundances for unit total activity of residues; this is used for plotting a comparison with the theoretical results.
+```{r unitize}
+pl <- protein.length(ip)
+logact <- unitize(numeric(5), pl)
+logabundance <- unitize(log10(y$abundance[!ina]), pl)
+```
+
+Now we can load the proteins and calculate their activities in metastable equilibrium as a function of `r logfO2`.
+```{marginfigure}
+The commented line uses <span style="color:red">`mod.obigt()`</span> to revert the parameters of the methionine sidechain group to those present in older versions of CHNOSZ (Dick et al., 2006).
+The current database, with parameters instantiated by <span style="color:red">`data(thermo)`</span> and used here, contains updated group additivity parameters for methionine (LaRowe and Dick, 2012).
+```
+```{r yeastplot, eval=FALSE, echo=1:6}
+par(mfrow=c(1, 3))
+basis("CHNOS+")
+#mod.obigt("[Met]", G=-35245, H=-59310)
+a <- affinity(O2=c(-80, -73), iprotein=ip, loga.protein=logact)
+e <- equilibrate(a)
+diagram(e, ylim=c(-5, -2), format.names=FALSE, legend.x=NA, col=1:5, lwd=2)
+e <- equilibrate(a, normalize=TRUE)
+diagram(e, ylim=c(-5, -2.5), format.names=FALSE, legend.x=NA, col=1:5, lwd=2)
+abline(h=logabundance, lty=1:5, col=1:5)
+revisit(e, "DGinf", logabundance)
+```
+
+Oh! The proteins look very non-coexistent in metastable equilibrium.
+We can get a different view by using per-residue rather than per-protein reactions via the `normalize` argument for <span style="color:green">`equilibrate()`</span>:
+```{marginfigure}
+The normalization step is followed by conversion of activities of residues to activities of proteins; that conversion can be skipped using the `as.residue` argument in <span style="color:green">`equilibrate()`</span>.
+```
+```{r yeastplot, eval=FALSE, echo=7:9}
+```
+
+The experimental relative abundances are plotted as thin horizontal lines with the same style and color as the thicker curved lines calculated for metastable equilibrium.
+With the exception of YNL049C, the overlap between the calculations and experiments looks to be greatest near the middle-left part of the figure.
+The <span style="color:green">`revisit()`</span> function offers some statistical and thermodynamic measures that can quantify this comparison.
+Here, we plot the free energy associated with the information-theoretic "relative entropy" or Kullback-Leibler divergence:
+```{r yeastplot, eval=FALSE, echo=10}
+```
+```{r yeastplot, fig.fullwidth=TRUE, fig.width=7.5, fig.height=2.5, small.mar=TRUE, dpi=100, out.width="85%", echo=FALSE, message=FALSE, results="hide", cache=TRUE, fig.cap="ER-to-Golgi proteins: calculations without and with normalization, and free energy difference between experimental and normalization-calculated abundances.", pngquant=pngquant}
+```
+
+The minimum free energy difference occurs near `r logfO2` = -78.
+This agrees with the assessment shown in Figure 4 of @Dic09 (note that the old methionine sidechain group was used in that study).
 
 ## Adding proteins
 
@@ -1221,7 +1296,7 @@ Let's see this in action using amino acid compositions deduced from metagenomic 
 We read a data file of amino acid compositions produced in that study, taking those labelled "transferase".
 Then we add the proteins and get their indices using <span style="color:red">`add.protein()`</span>, set the basis, calculate the affinities, and make a potential diagram with temperature and activity of dissolved hydrogen as variables:
 
-```{r bison_transferase, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, fig.cap='Potential diagram for metagenomically identified sequences of transferase proteins in the outflow channel of Bison Pool hot spring. See also the vignette <span style="color:blue">*Hot-spring proteins in CHNOSZ*</span>.', cache=TRUE, pngquant=pngquant}
+```{r bison_transferase, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, fig.cap='Potential diagram for metagenomically identified sequences of transferases in the outflow channel of Bison Pool hot spring. See also the vignette <span style="color:blue">*Hot-spring proteins in CHNOSZ*</span>.', cache=TRUE, pngquant=pngquant}
 aa <- read.aa(system.file("extdata/protein/DS11.csv", package="CHNOSZ"))
 aa <- aa[grep("transferase", aa$protein), ]
 ip <- add.protein(aa)
@@ -1229,7 +1304,8 @@ bspecies <- c("HCO3-", "H2O", "NH3", "HS-", "H2", "H+")
 basis(c("HCO3-", "H2O", "NH3", "HS-", "H2", "H+"))
 basis(c("HCO3-", "NH3", "HS-", "H+"), c(-3, -4, -7, -7.933))
 T <- c(50, 100)
-a <- affinity(T = T, H2 = c(-7, -4), iprotein = ip)
+res <- 300
+a <- affinity(T = c(T, res), H2 = c(-7, -4, res), iprotein = ip)
 fill <- ZC.col(ZC(protein.formula(ip)))
 diagram(a, normalize = TRUE, fill = fill, names = 1:5, format.names=FALSE)
 logaH2 <- function(T) -11 + T * 3/40
@@ -1262,10 +1338,18 @@ e.g. browse.refs(1)
 
 ## Messages from functions
 
-(Look at messages in calculation above: groups?)
+(Look at messages in calculation above: groups, ER-to-Golgi?)
 
 # Functions outside of the main workflow
 
-transfer, wjd, eqdata, RH2obigt, EOSregress, anim.
+transfer, wjd, eqdata, RH2obigt, EOSregress, anim, taxonomy
 
 Gibbs energy minimization with amino acids: [Cob13]?
+
+# Document history
+
+* 2010-09-30 Initial version.
+* 2011-08-15 Add browse.refs(); modifying database hint changed to help(thermo).
+* 2012-06-16 Add “More activity diagrams”.
+* 2015-05-14 Add warning about internal consistency of thermodynamic data.
+* 2017-02-15 Complete rewrite; switch from Sweave to knitr (Tufte style).

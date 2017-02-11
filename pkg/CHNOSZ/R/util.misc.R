@@ -77,7 +77,7 @@ unitize <- function(logact=NULL,length=NULL,logact.tot=0) {
   # apply the factor
   act <- act * act.fact
   # take the logarithms
-  logact <- log10(act)
+  log10(act)
   # done!
 }
 

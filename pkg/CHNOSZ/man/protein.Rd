@@ -32,23 +32,10 @@ Gr.ionized_residue <- Gr.ionized/protein.length("LYSC_CHICK")
 ## Standard molal entropy of a protein reaction
 basis("CHNOS")
 # here we provide the reaction coefficients of the 
-# proteins (per protein backbone); 'subcrt' function calculates 
+# proteins (per protein backbone); subcrt() calculates 
 # the coefficients of the basis species in the reaction
-s <- subcrt(c("CSG_METTL","CSG_METJA"), c(-1/530,1/530),
+s <- subcrt(c("CSG_METTL", "CSG_METJA"), c(-1/530, 1/530),
   T=seq(0, 350, length.out=50))
-thermo.plot.new(xlim=range(s$out$T), ylim=range(s$out$S),
-  xlab=axis.label("T"), ylab=axis.label("DS0r"))
-lines(s$out$T, s$out$S)
-# do it at high pressure as well
-s <- subcrt(c("CSG_METTL","CSG_METJA"), c(-1/530,1/530),
-  T=seq(0,350,length.out=50), P=3000)
-lines(s$out$T, s$out$S, lty=2)
-# label the plot
-title(main=paste("Standard molal entropy\n",
-  "P = Psat (solid), P = 3000 bar (dashed)"))
-s$reaction$coeff <- round(s$reaction$coeff, 3)
-dsr <- describe.reaction(s$reaction, iname=c(1,2))
-text(170, -3, dsr, cex=0.8)
 
 
 ### Equilibrium activity diagrams

@@ -86,41 +86,31 @@ file <- system.file("extdata/abundance/AA03.csv", package="CHNOSZ")
 # look for proteins described as "Complement"
 read.expr(file, "name", "log10(pg/ml)", list(description="Complement"))
 
-## speciation diagram for ER.to.Golgi proteins (COPII coat 
-## proteins) as a function of logfO2, after Dick, 2009
-# use old parameters for [Met] (Dick et al., 2006)
-mod.obigt("[Met]", G=-35245, H=-59310)
-y <- yeastgfp("ER.to.Golgi")
-# don't use those with NA abundance
-ina <- is.na(y$abundance)
-# get the amino acid compositions of the proteins
-aa <- more.aa(y$protein[!ina], "Sce")
-# add proteins to thermo$protein
-ip <- add.protein(aa)
-# use logarithms of activities of proteins such
-# that total activity of residues is unity
-pl <- protein.length(ip)
-logact <- unitize(rep(1, length(ip)), pl)
-# load the proteins
+## Localizations and abundances of proteins from YeastGFP are used here
+## to calculate an abundance-weighted average of amino acid compositions of proteins
+## in different subcellular compartments of yeast.
+## This figure is similar to Fig. 3 of Dick (2009). 
+locations <- yeastgfp()
+gfp <- yeastgfp(locations)
+aa <- more.aa(gfp$protein, "Sce")
+for(i in 1:length(locations)) {
+  avgaa <- aasum(aa[[i]], gfp$abundance[[i]], average=TRUE, protein=locations[i])
+  add.protein(avgaa)
+}
 basis("CHNOS+")
-a <- affinity(O2=c(-80, -73), iprotein=ip, loga.protein=logact)
-# make a speciation diagram
-e <- equilibrate(a, normalize=TRUE)
-diagram(e, ylim=c(-4.9, -2.9), format.names=FALSE)
-# where we are closest to experimental log activity
-logfO2 <- rep(-78, length(ip))
-abline(v=logfO2[1], lty=3)
-# scale experimental abundances such that
-# total activity of residues is unity
-logact.expt <- unitize(log10(y$abundance[!ina]), pl)
-# plot experimental log activity
-points(logfO2, logact.expt, pch=16)
-text(logfO2+0.5, logact.expt, y$protein[!ina])
-# add title
-title(main=paste("ER.to.Golgi; points - relative abundances",
-  "from YeastGFP. Figure after Dick, 2009",sep="\n"))
-# restore default thermodynamic database
-data(thermo)
+species(locations, "Sce")
+a <- affinity(O2=c(-82, -65))
+e <- equilibrate(a, loga.balance=0, normalize=TRUE)
+mycolor <- topo.colors(length(locations))
+diagram(e, names=locations, ylim=c(-5, -3), legend.x=NA, col=mycolor, lwd=2)
+dp <- describe.property(c("T", "P"), c(25, 1))
+db <- describe.basis(ibasis=(1:6)[-5])
+legend("topright", legend=c(dp, db), bty="n")
+## Notable features include: proteins in the early Golgi, endoplasmic reticulum (ER)
+## and vacuole are chemically the most stable relative to those in other locations in the cell;
+## proteins in the vacuole are very oxidized; the stability of proteins decreases going from
+## early Golgi to Golgi to late Golgi; the least stable proteins (or most energetic)
+## are found in the microtubules and bud neck.
 
 #############################
 ## examples using stress() ##

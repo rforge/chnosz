@@ -13,7 +13,7 @@
 \usage{
   grep.file(file, pattern = "", y = NULL, ignore.case = TRUE, 
     startswith = ">", lines = NULL, grep = "grep")
-  read.fasta(file, i = NULL, ret = "count", lines = NULL, 
+  read.fasta(file, iseq = NULL, ret = "count", lines = NULL, 
     ihead = NULL, start=NULL, stop=NULL, type="protein", id = NULL)
   count.aa(seq, start=NULL, stop=NULL, type="protein")
   uniprot.aa(protein, start=NULL, stop=NULL)
@@ -27,7 +27,7 @@
   \item{startswith}{character, only lines starting with this expression are matched}
   \item{lines}{list of character, supply the lines here instead of reading them from file}
   \item{grep}{character, name of system \samp{grep} command}
-  \item{i}{numeric, line numbers of sequence headers to read}
+  \item{iseq}{numeric, which sequences to read from the file}
   \item{ret}{character, specification for type of return (count, sequence, or FASTA format)}
   \item{ihead}{numeric, which lines are headers}
   \item{start}{numeric, position in sequence to start counting}
@@ -48,7 +48,7 @@ This avoids having to read the file into R using \code{\link{readLines}}.
 If the lines from the file were obtained in a preceding operation, they can be supplied to this function in the \code{lines} argument.
 
 \code{read.fasta} is used to retrieve entries from a FASTA file.
-To read only selected sequences pass the line numbers of the header lines to the function in \code{i} (they can be identified using e.g. \code{grep.file}).
+Use \code{iseq} to select the sequences to read (the default is all sequences).
 The function returns various formats depending on the value of \code{ret}.
 The default \samp{count} returns a data frame of amino acid counts (the data frame can be given to \code{\link{add.protein}} in order to add the proteins to \code{\link{thermo}$protein}), \samp{seq} returns a list of sequences, and \samp{fas} returns a list of lines extracted from the FASTA file, including the headers (this can be used e.g. to generate a new FASTA file with only the selected sequences).
 Similarly to \code{grep.file}, this function utilizes the OS's \samp{grep} on supported operating systems in order to identify the header lines as well as \samp{cat} to read the file, otherwise \code{\link{readLines}} and \R's \code{\link{substr}} are used to read the file and locate the header lines.

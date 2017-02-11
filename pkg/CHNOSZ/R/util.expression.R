@@ -74,7 +74,7 @@ expr.property <- function(property) {
   if(property=="pH") return("pH")
   if(property=="pe") return("pe")
   if(property=="IS") return("IS")
-  if(property=="ZC") return(quote(bar(italic(Z))[C]))
+  if(property=="ZC") return(quote(italic(Z)[C]))
   # process each character in the property abbreviation
   prevchar <- character()
   for(i in 1:length(propchar)) {

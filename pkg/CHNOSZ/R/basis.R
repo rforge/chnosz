@@ -94,7 +94,7 @@ mod.basis <- function(species, state=NULL, logact=NULL) {
 # to load a preset basis definition by keyword
 preset.basis <- function(key=NULL) {
   # the available keywords
-  basis.key <- c("CHNOS", "CHNOS+", "CHNOSe", "CHNOPS+", "MgCHNOPS+", "FeCHNOS", "FeCHNOS+", "CEQ")
+  basis.key <- c("CHNOS", "CHNOS+", "CHNOSe", "CHNOPS+", "MgCHNOPS+", "FeCHNOS", "FeCHNOS+", "QEC")
   # just list the keywords if none is specified
   if(is.null(key)) return(basis.key)
   # delete any previous basis definition
@@ -109,7 +109,7 @@ preset.basis <- function(key=NULL) {
   else if(ibase==5) species <- c("Mg+2", "CO2", "H2O", "NH3", "H3PO4", "H2S", "e-", "H+")
   else if(ibase==6) species <- c("Fe2O3", "CO2", "H2O", "NH3", "H2S", "oxygen")
   else if(ibase==7) species <- c("Fe2O3", "CO2", "H2O", "NH3", "H2S", "oxygen", "H+")
-  else if(ibase==8) species <- c("cysteine", "glutamic acid", "glutamine", "H2O", "oxygen")
+  else if(ibase==8) species <- c("glutamine", "glutamic acid", "cysteine", "H2O", "oxygen")
   # get the preset logact
   logact <- preset.logact(species)
   # load the species and return the result

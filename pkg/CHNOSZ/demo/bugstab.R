@@ -4,8 +4,8 @@
 
 # resolution for plots
 res <- 500
-# basis can be "AA" or "CHNOS"
-basis <- "AA"
+# basis can be "QEC" or "CHNOS"
+basis <- "QEC"
 layout(cbind(matrix(sapply(list(c(1, 2), c(3, 4)), function(x) rep(rep(x, each=3), 3)), nrow=6, byrow=TRUE),
              matrix(rep(c(0, 5, 5, 5, 5, 0), each=4), nrow=6, byrow=TRUE)))
 par(mar=c(3.3, 3.3, 1.5, 1.5), mgp=c(2.1, 0.7, 0), xaxs="i", yaxs="i", las=1, cex=0.9)

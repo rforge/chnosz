@@ -44,12 +44,12 @@ grep.file <- function(file,pattern="",y=NULL,ignore.case=TRUE,startswith=">",lin
   return(as.numeric(out))
 }
 
-read.fasta <- function(file, i=NULL, ret="count", lines=NULL, ihead=NULL,
+read.fasta <- function(file, iseq=NULL, ret="count", lines=NULL, ihead=NULL,
   start=NULL, stop=NULL, type="protein", id=NULL) {
   # read sequences from a fasta file
   # some of the following code was adapted from 
   # read.fasta in package seqinR
-  # value of 'i' is what sequences to read 
+  # value of 'iseq' is what sequences to read (default is all)
   # value of 'ret' determines format of return value:
   #   count: amino acid composition (same columns as thermo$protein, can be used by add.protein)
   #        or nucleic acid base composition (A-C-G-T)
@@ -80,28 +80,20 @@ read.fasta <- function(file, i=NULL, ret="count", lines=NULL, ihead=NULL,
     linefun <- function(i1,i2) lines[i1:i2]
   }
   # identify the lines that begin and end each sequence
-  if(is.null(i)) {
-    i <- ihead
-    begin <- i + 1
-    end <- i - 1
-    end <- c(end[-1], nlines)
-  } else {
-    begin <- i + 1
-    iend <- match(i,ihead)
-    # we have to be careful about the last record
-    iend[iend==ihead[length(ihead)]] <- NA
-    end <- ihead[iend+1] - 1
-    end[is.na(end)] <- nlines
-  } 
+  begin <- ihead + 1
+  end <- ihead - 1
+  end <- c(end[-1], nlines)
+  # use all or selected sequences
+  if(is.null(iseq)) iseq <- seq_along(begin)
   # just return the lines from the file
   if(ret=="fas") {
     iline <- numeric()
-    for(i in 1:length(begin)) iline <- c(iline,(begin[i]-1):end[i])
+    for(i in iseq) iline <- c(iline,(begin[i]-1):end[i])
     return(lines[iline])
   }
   # get each sequence from the begin to end lines
   seqfun <- function(i) paste(linefun(begin[i],end[i]),collapse="")
-  sequences <- lapply(1:length(i), seqfun)
+  sequences <- lapply(iseq, seqfun)
   # organism name is from file name
   # (basename minus extension)
   bnf <- strsplit(basename(file),split=".",fixed=TRUE)[[1]][1]
@@ -109,9 +101,9 @@ read.fasta <- function(file, i=NULL, ret="count", lines=NULL, ihead=NULL,
   # protein/gene name is from header line for entry
   # (strip the ">" and go to the first space)
   missid <- missing(id)
-  if(is.null(id)) id <- as.character(palply("", 1:length(i), function(j) {
+  if(is.null(id)) id <- as.character(palply("", iseq, function(j) {
     # get the text of the line
-    f1 <- linefun(i[j],i[j])
+    f1 <- linefun(ihead[j],ihead[j])
     # stop if the first character is not ">"
     # or the first two charaters are "> "
     if(substr(f1,1,1)!=">" | length(grep("^> ",f1)>0))

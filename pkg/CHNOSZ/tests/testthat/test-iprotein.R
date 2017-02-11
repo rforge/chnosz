@@ -39,9 +39,12 @@ test_that("group additivity for proteins gives expected values", {
   expect_equal(formula, lprop$formula)
 })
 
-test_that("amino acid counts taken from a fasta file can be added",{
+test_that("read.fasta() identifies sequences correctly and gives amino acid compositions in the correct format",{
   ffile <- system.file("extdata/fasta/EF-Tu.aln", package="CHNOSZ")
   aa <- read.fasta(ffile)
+  expect_equal(aa[1, ], read.fasta(ffile, 1))
+  # use unlist here so that different row names are not compared
+  expect_equal(unlist(aa[8, ]), unlist(read.fasta(ffile, 8)))
   expect_message(ip1 <- add.protein(aa), "added 8 new protein\\(s\\)")
   expect_message(ip2 <- add.protein(aa), "replaced 8 existing protein\\(s\\)")
   # add.protein should return the correct indices for existing proteins

@@ -17,7 +17,7 @@
   aa2eos(aa, state=get("thermo")$opt$state)
   seq2aa(protein, sequence)
   aasum(aa, abundance = 1, average = FALSE, protein = NULL, organism = NULL)
-  read.aa(file = "protein.csv")
+  read.aa(file = "protein.csv", ...)
   add.protein(aa)
 }
 
@@ -31,6 +31,7 @@
   \item{abundance}{numeric, abundances of proteins}
   \item{average}{logical, return the weighted average of amino acid counts?}
   \item{file}{character, path to file with amino acid compositions}
+  \item{...}{additional arguments passed to \code{\link{read.csv}}}
 }
 
 \details{

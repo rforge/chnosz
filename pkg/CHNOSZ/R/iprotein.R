@@ -104,6 +104,8 @@ aa2eos <- function(aa, state=get("thermo")$opt$state) {
 }
 
 seq2aa <- function(protein, sequence) {
+  # remove newlines and whitespace
+  sequence <- gsub("\\s", "", gsub("[\r\n]", "", sequence))
   # make a data frame from counting the amino acids in the sequence
   caa <- count.aa(sequence)
   colnames(caa) <- aminoacids(3)
@@ -112,7 +114,7 @@ seq2aa <- function(protein, sequence) {
   ip <- suppressMessages(iprotein(protein))
   # now make the data frame
   po <- strsplit(protein, "_")[[1]]
-  aa <- data.frame(protein=po[1], organism=po[2], ref=NA, abbrv=NA)
+  aa <- data.frame(protein=po[1], organism=po[2], ref=NA, abbrv=NA, stringsAsFactors=FALSE)
   aa <- cbind(aa, chains=1, caa)
   return(aa)
 }
@@ -149,10 +151,10 @@ aasum <- function(aa, abundance=1, average=FALSE, protein=NULL, organism=NULL) {
   return(out)
 }
 
-read.aa <- function(file="protein.csv") {
+read.aa <- function(file="protein.csv", ...) {
   # 20090428 added colClasses here
   # 20140128 added as.is=TRUE (in case numeric values are stored in ref or abbrv column)
-  aa <- read.csv(file, colClasses=c(rep("character", 2), NA, NA, rep("numeric", 21)), as.is=TRUE)
+  aa <- read.csv(file, colClasses=c(rep("character", 2), NA, NA, rep("numeric", 21)), as.is=TRUE, ...)
   if(!identical(colnames(aa), colnames(get("thermo")$protein)))
     stop(paste("format of", file, "is incompatible with thermo$protein"))
   return(aa)

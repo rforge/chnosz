@@ -36,7 +36,7 @@
     \item \code{BKM60_Fig7.dat} Eh-pH values for normal, wet and waterlogged soils from Fig. 7 of Baas Becking et al., 1960. See the \sQuote{anintro} vignette for an example that uses this file.
     \item \code{SC10_Rainbow.csv} Values of temperature (\eqn{^{\circ}}{°}C), pH and logarithms of activity of \eqn{\mathrm{CO_2}}{CO2}, \eqn{\mathrm{H_2}}{H2}, \eqn{\mathrm{NH_4^+}}{NH4+}, \eqn{\mathrm{H_2S}}{H2S} and \eqn{\mathrm{CH_4}}{CH4} for mixing of seawater and hydrothermal fluid at Rainbow field (Mid-Atlantic Ridge), taken from Shock and Canovas, 2010.
     \item \code{SS98_Fig5a.csv}, \code{SS98_Fig5b.csv} Values of logarithm of fugacity of \eqn{\mathrm{O_2}}{O2} and pH as a function of temperature for mixing of seawater and hydrothermal fluid, digitized from Figs. 5a and b of Shock and Schulte, 1998.
-    \item \code{rubisco.csv} UniProt IDs for Rubisco, ranges of optimal growth temperature of organisms, and domain and name of organisms, from Dick, 2014.
+    \item \code{rubisco.csv} UniProt IDs for Rubisco, ranges of optimal growth temperature of organisms, domain and name of organisms, and URL of reference for growth temperature, from Dick, 2014.
   }
 
   Files in \code{fasta} contain protein sequences:

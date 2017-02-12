@@ -14,7 +14,7 @@ Make line or contour plots showing the values of the objective function and the 
     ispecies = NULL, col = par("fg"), yline = 2, ylim = NULL,
     cex = par("cex"), lwd = par("lwd"), mar = NULL, side = 1:4,
     xlim = NULL, labcex = 0.6, pch = 1, main = NULL, plot.it = NULL,
-    add = FALSE, plot.optval = TRUE, style.2D = "contour")
+    add = FALSE, plot.optval = TRUE, style.2D = "contour", bg = par("bg"))
   optimal.index(z, objective)
   extremes(z, objective)
 }
@@ -41,6 +41,7 @@ Make line or contour plots showing the values of the objective function and the 
   \item{plot.optval}{logical, show the location of the optimal value(s)?}
   \item{style.2D}{character, type of 2-D plot}
   \item{z}{numeric, matrix of values (\samp{H} element of output from \code{revisit})}
+  \item{bg}{character, background for \code{\link{points}}}
 }
 
 \details{

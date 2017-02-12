@@ -51,7 +51,7 @@ revisit <- function(eout, objective = "CV", loga2 = NULL, loga0 = NULL, ispecies
   col = par("fg"), yline = 2, ylim = NULL, cex = par("cex"),
   lwd = par("lwd"), mar = NULL, side = 1:4, xlim = NULL, labcex = 0.6,
   pch = 1, main = NULL, plot.it = NULL, add = FALSE, plot.optval = TRUE,
-  style.2D = "contour") {
+  style.2D = "contour", bg = par("bg")) {
   # given a list of logarithms of activities of species
   # (as vectors or matrices or higher dimensional arrays) 
   # calculate a diversity index or thermodynamic property 
@@ -158,6 +158,11 @@ revisit <- function(eout, objective = "CV", loga2 = NULL, loga0 = NULL, ispecies
     xrange <- range(xs)
   } else xs <- NA
 
+  # format the objective name if it's DGtr or DGinf
+  if(objective=="DGtr") objexpr <- expr.property("DGtr/2.303RT")
+  if(objective=="DGinf") objexpr <- expr.property("DGinf/2.303RT")
+  else objexpr <- objective
+
   # make plots and assemble return values
   if(nd==0) {
     # a 0-D plot
@@ -168,21 +173,24 @@ revisit <- function(eout, objective = "CV", loga2 = NULL, loga0 = NULL, ispecies
         qqline(loga1)
       } else if(any(grepl("a2", objargs))) {
         # plot the points for a referenced objective
-        ylab <- "loga1"
-        xlab <- "loga2"
+        xlab <- substitute(log~italic(a)[expt])
+        ylab <- substitute(log~italic(a)[calc])
         if(is.null(xlim)) xlim <- extendrange(loga2)
         if(is.null(ylim)) ylim <- extendrange(loga1)
-        plot(loga2, loga1, xlab=xlab, ylab=ylab, pch=pch, col=col, xlim=xlim, ylim=ylim, cex=cex)
+        # just initialize the plot here; add points below so that appear above lines
+        plot(loga2, loga1, xlab=xlab, ylab=ylab, xlim=xlim, ylim=ylim, type="n")
         # add a 1:1 line
         lines(range(loga2), range(loga2), col="grey")
-        # add a lowess line
+        # add a loess line
         if(!is.null(lwd)) {
           ls <- loess.smooth(loga2, loga1, family="gaussian")
           lines(ls$x, ls$y, col="red", lwd=lwd)
         }
+        # add points
+        points(loga2, loga1, pch=pch, col=col, cex=cex, bg=bg)
       } else plot.it <- FALSE
       # add a title
-      if(missing(main)) main <- paste(objective, "=", round(H,3)) 
+      if(missing(main)) main <- substitute(obj==H, list(obj=objexpr, H=round(H,3)))
       if(plot.it) title(main=main)
     }
   } else if(nd==1) {
@@ -195,12 +203,8 @@ revisit <- function(eout, objective = "CV", loga2 = NULL, loga0 = NULL, ispecies
     if(plot.it) {
       if(is.null(ylim)) ylim <- extendrange(H, f=0.075)
       if(is.null(xlim)) xlim <- xrange
-      # format the objective name if it's DGtr or DGinf
-      if(objective=="DGtr") ylab <- expr.property("DGtr/2.303RT")
-      if(objective=="DGinf") ylab <- expr.property("DGinf/2.303RT")
-      else ylab <- objective
       if(!add) thermo.plot.new(xlim=xlim, ylim=ylim, xlab=axis.label(xname),
-        ylab=ylab, yline=yline, cex=cex, lwd=lwd, mar=mar, side=side)
+        ylab=objexpr, yline=yline, cex=cex, lwd=lwd, mar=mar, side=side)
       # plot the values
       lines(xs, c(H), col=col)
       # indicate the optimal value

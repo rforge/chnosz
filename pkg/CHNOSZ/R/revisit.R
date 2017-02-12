@@ -172,7 +172,7 @@ revisit <- function(eout, objective = "CV", loga2 = NULL, loga0 = NULL, ispecies
         xlab <- "loga2"
         if(is.null(xlim)) xlim <- extendrange(loga2)
         if(is.null(ylim)) ylim <- extendrange(loga1)
-        plot(loga2, loga1, xlab=xlab, ylab=ylab, pch=pch, col=col, xlim=xlim, ylim=ylim)
+        plot(loga2, loga1, xlab=xlab, ylab=ylab, pch=pch, col=col, xlim=xlim, ylim=ylim, cex=cex)
         # add a 1:1 line
         lines(range(loga2), range(loga2), col="grey")
         # add a lowess line

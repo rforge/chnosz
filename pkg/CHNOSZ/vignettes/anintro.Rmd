@@ -20,7 +20,9 @@ vignette: >
   \usepackage[utf8]{inputenc}
 bibliography: vig.bib
 link-citations: yes
-csl: elementa.csl
+# The custom CSL file gives a build error on R-Forge (2017-02-12):
+#   pandoc-citeproc: error while parsing the XML string
+#csl: elementa.csl
 ---
 
 ```{r options, include=FALSE}
@@ -46,7 +48,8 @@ knit_hooks$set(smallish.mar = function(before, options, envir) {
 dpi <- 72
 # use pngquant to optimize PNG images
 knit_hooks$set(pngquant = hook_pngquant)
-pngquant <- "--speed=1 --quality=0-50"
+# pngquant isn't available on R-Forge ...
+if (!nzchar(Sys.which("pngquant"))) pngquant <- NULL else pngquant <- "--speed=1 --quality=0-50"
 # some frequently used HTML expressions
 logfO2 <- "log<i>f</i><sub>O<sub>2</sub></sub>"
 # use lowercase here because these tend to be variable names in the examples
@@ -56,7 +59,7 @@ h2o <- "H<sub>2</sub>O"
 # http://stackoverflow.com/questions/23852753/knitr-with-gridsvg
 # Set up a chunk hook for manually saved plots.
 knit_hooks$set(custom.plot = hook_plot_custom)
-# hook to change <img /> to <embed /> - required for interactive SVG
+# hook to change <img /> to <embed /> -- required for interactive SVG
 hook_plot <- knit_hooks$get("plot")
 knit_hooks$set(plot = function(x, options) {
   x <- hook_plot(x, options)
@@ -921,7 +924,7 @@ It is interesting that there is more "going on" in the middle part of the digram
 Caveat: these plots demonstrate some possibilities in CHNOSZ and are not necessarily realistic portrayals of this system.
 It does seem odd to balance on a fugacious component like `r o2` or `r h2o`.
 Unlike different choices of basis species, which are thermodynamically equivalent (see the example above for a mineral system), the choice of balance reflects extra-thermodynamic factors.
-For instance, the widespread rule of thumb for balancing mineral reactions on a component is unrealistic for processes where volume is conserved [@MC11].
+For instance, the widespread rule of thumb for balancing mineral reactions on a component is unrealistic for processes where volume is conserved [@MD98].
 Any choice of balancing constraints may oversimplify the physical or biological context for reactions of organic species or biomolecules.
 While choosing an inappropriate balance leads to infeasible models, consideration of the possibilities might give insight into the conditions affecting the dynamics of some systems.
 

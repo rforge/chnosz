@@ -19,7 +19,7 @@ vignette: >
   \usepackage[utf8]{inputenc}
 bibliography: vig.bib
 link-citations: yes
-csl: elementa.csl
+#csl: elementa.csl
 ---
 
 ```{r setup, include=FALSE}
@@ -28,7 +28,8 @@ knitr::opts_chunk$set(tidy = FALSE, cache.extra = packageVersion('tufte'))
 options(htmltools.dir.version = FALSE)
 # use pngquant to optimize PNG images
 knitr::knit_hooks$set(pngquant = knitr::hook_pngquant)
-pngquant <- "--speed=1 --quality=0-50"
+# pngquant isn't available on R-Forge ...
+if (!nzchar(Sys.which("pngquant"))) pngquant <- NULL else pngquant <- "--speed=1 --quality=0-50"
 ```
 
 

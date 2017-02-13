@@ -75,7 +75,7 @@ knit_hooks$set(plot = function(x, options) {
 
 # First steps
 
-This document introduces the basic functionality of CHNOSZ, a package for the [R software environment](http://r-project.org).
+This document introduces the usage of CHNOSZ, a package for the [R software environment](http://r-project.org).
 For more information on R, see "An Introduction to R" and other documents in [The R Manuals](http://cran.r-project.org/manuals.html).
 
 CHNOSZ has been developed since 2006 to support research projects in geochemistry and compositional biology.
@@ -111,7 +111,7 @@ There are also links to the *demos* (longer examples) and *vignettes* (more in-d
 Suggestions for accessing the documentation are indicated here with <span style="color:blue">blue text</span>.
 For example, read <span style="color:blue">`?"CHNOSZ-package"`</span> to get an overview of the package and a list of features.
 ```{marginfigure}
-That page identifies some features as experimental, i.e. that implement new algorithms and/or have not been extensively compared with published results.
+That page identifies some features as experimental, i.e. that implement new algorithms and/or have not been extensively tested.
 ```
 
 ## Organization of major functions
@@ -649,7 +649,7 @@ species(c("adenine", "cytosine", "aspartic acid", "deoxyribose",
 Now we can calculate affinity along the transect of changing temperature and activities of five basis species.
 Each variable is given as a named argument; the name for `NH4+` must be quoted.
 ```{marginfigure}
-A shorter expression would use R's `do.call()` to construct the argument list: `do.call(<span style="color:green">affinity</span>, as.list(rb))`
+A shorter expression would use R's `do.call()` to construct the function call: `do.call(`<span style="color:green">`affinity`</span>`, as.list(rb))`.
 ```
 ```{marginfigure}
 The target of the conversion is `G`, or free energy, from `logK`.
@@ -674,7 +674,7 @@ Finally, we use <span style="color:green">`diagram()`</span> to plot the results
 Although only temperature is shown on the *x* axis, pH and the activities of CO<sub>2</sub>, H<sub>2</sub>, NH<sub>4</sub><sup>+</sup>, and H<sub>2</sub>S are also varied according to the data in `rb`.
 By default, <span style="color:green">`diagram()`</span> attempts to scale the affinities by dividing by the reaction coefficients of a shared basis species (in this case, CO<sub>2</sub>).
 To override that behavior, we set `balance = 1` to plot the affinities of the formation reactions as written (per mole of the species being formed).
-Also, `legend.x=NA` is used to suppress making a legend (so the labels are placed next to the lines instead).
+Also, `legend.x = NA` is used to suppress making a legend (so the labels are placed next to the lines instead).
 ```{r rainbow_diagram, eval=FALSE}
 ```
 
@@ -1038,7 +1038,7 @@ To put the proteins in the right order, the IDs in the CSV file are matched to t
 Then, in one line, we calculate the formula of the protein, followed by `r zc`.
 Next, point symbols are assigned according to domain (Archaea, Bacteria, Eukaryota); numerals inside the symbols reflect the ordering by *T*<sub>opt</sub> in three temperature ranges (0--35 °C, 37.5--60 °C, and 65--100 °C).
 
-```{r rubisco_svg, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, out.width="100%", fig.keep='none', fig.ext='svg', custom.plot=TRUE, embed.tag=TRUE, echo=FALSE, results="hide", message=FALSE, fig.cap='Average oxidation state of carbon in Rubisco compared with optimal growth temperature of organisms. <span style="color:blue">This is an interactive image.</span> Move the mouse over the points to show the names of the organisms, and click to open a reference in a new window. (Made using [RSVGTipsDevice](https://cran.r-project.org/package=RSVGTipsDevice); code differs from that shown to the left.)', cache=TRUE}
+```{r rubisco_svg, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, out.width="100%", fig.keep='none', fig.ext='svg', custom.plot=TRUE, embed.tag=TRUE, echo=FALSE, results="hide", message=FALSE, fig.cap='Average oxidation state of carbon in Rubisco compared with optimal growth temperature of organisms. **This is an interactive image.** Move the mouse over the points to show the names of the organisms, and click to open a reference in a new window. (Made using [RSVGTipsDevice](https://cran.r-project.org/package=RSVGTipsDevice); code differs from that shown to the left.)', cache=TRUE}
 if(require("RSVGTipsDevice")) {
   datfile <- system.file("extdata/cpetc/rubisco.csv", package = "CHNOSZ")
   fastafile <- system.file("extdata/fasta/rubisco.fasta", package = "CHNOSZ")
@@ -1522,8 +1522,8 @@ The exception is H<sub>2</sub>O.
 With the default settings, thermodynamic properties for H<sub>2</sub>O are derived from SUPCRT92 (Johnson et al., 1992).
 ```
 ```{r thermo_refs_subcrt, message=FALSE}
-sout <- subcrt(c("C2H5OH", "O2", "CO2", "H2O"), c(-1, -3, 2, 3))
-thermo.refs(sout)
+substuff <- subcrt(c("C2H5OH", "O2", "CO2", "H2O"), c(-1, -3, 2, 3))
+thermo.refs(substuff)
 ```
 
 The URLs of the references can be copied to a browser, or opened using R's `browseURL()`:
@@ -1586,10 +1586,9 @@ mod.obigt("S3-", state = "aq", a1 = 2.5, a2 = 19.9, a3 = 9.2, a4 = -3.6,
           c1 = 50.2, c2 = 9.6, omega = 0.8, z = -1)
 ```
 
-Let's add it as a basis species to automatically balance the reaction of SO<sub>4</sub><sup>-2</sup> and 2 H<sub>2</sub>S:
+Let's include it with basis species to automatically balance the reaction of SO<sub>4</sub><sup>-2</sup> and 2 H<sub>2</sub>S:
 ```{r S3_reaction, message=FALSE}
-basis(c("S3-", "O2", "H2O", "H+"))
-basis("O2", "gas")
+basis(c("S3-", "O2", "H2O", "H+"), c("aq", "gas", "liq", "aq"))
 subcrt(c("H2S", "SO4-2"), c(-2, -1), T = c(25, 500), P = c(1, 700))
 ```
 
@@ -1633,24 +1632,104 @@ Without additional information, there is often no clear strategy for "fixing" th
 See the [Numerical Tools at GEOPIG](http://geopig.asu.edu/tools) for SUPCRT updates (slop files), including corrections that have not yet been ported to CHNOSZ.
 ```
 
-# Diagnosing problems
+# Messages and errors
 
-## Tests; errors
+As you get started writing your own code and functions that use CHNOSZ, it is not uncommon to encounter problems.
+For example, mismatched data types can cause problems (the important difference between factor and character was mentioned above).
 
-e.g. "variables define a transect but their lengths are not all equal"
+Many functions in CHNOSZ perform various degrees of "sanity checks" on the arguments and will report errors if an inconsistency is detected.
+For example, unequal lengths of variables in the transect mode of <span style="color:green">`affinity()`</span> (when the variables have more than 3 values) causes an error:
 
-## Messages from functions
+```{r affinity_error, error=TRUE, message=FALSE, results="hide"}
+basis("CHNOS")
+aa <- c("D", "T", "S", "E", "G", "A", "K", "H")
+species(aminoacids("", aa))
+a <- affinity(O2=seq(-80, -50), T=seq(0, 100))
+```
 
-(Look at messages in calculation above: groups, ER-to-Golgi?)
+In normal operation, without errors, many functions print informative messages.
+```{marginfigure}
+To reduce clutter, messages have not been shown in the output of most of the examples in this vignette.
+```
+Checking these can help you decide if the system and calculations have the desired configuration.
+Here, we fix the condition that caused the error above:
+```{r message_example, results="hide"}
+a <- affinity(O2=seq(-80, -50, length.out=101), T=seq(0, 100))
+e <- equilibrate(a)
+#diagram(e, alpha=TRUE, legend.x=NA)
+```
+
+The messages give some useful information, such as the variables and their ranges, the "wetness" of the reactions (i.e. they contain water and/or aqueous species), the balanced basis species and balance coefficients, the logarithm of total activity of the balanced basis species, and the equilibration method.
+The commented call to <span style="color:green">`diagram()`</span> would produce a diagram that, in this case, doesn't result in any messages.
+
+Here is another example, with the output hidden, but where the messages show the species in the reaction and the other states that are available for the same compounds in the database.
+The number of *T* and *P* values comes from the default arguments for <span style="color:green">`subcrt()`</span>:
+```{r message_subcrt, results="hide"}
 subcrt(c("C2H5OH", "O2", "CO2", "H2O"), c(-1, -3, 2, 3))
+```
+
+You may occasionally encounter programming bugs or limits of the algorithms.
+The following setup breaks the reaction-matrix calculation for equilibration.
+Here, C<sub>5</sub>H<sub>9</sub>NO<sub>4</sub> (glutamic acid) is identified as the balance (the only basis species present in the formation reactions of all species).
+Both a warning and an error are generated due to missing values in a computation within <span style="color:green">`equil.reaction()`</span>:
+<!-- 20170213
+The warning and error don't get formatted correctly in html output.
+As a workaround, we show the warning text in the chunk and set warning=FALSE.
+It's bothersome to see the warning when rendering the vignette, so we ignore warnings temporarily.
+-->
+`r op <- options(warn = -1)`
+```{r equilibrate_error, error=TRUE, results="hide", warning=FALSE}
+basis("QEC")
+species(aminoacids("", aa))
+a <- affinity()
+e <- equilibrate(a)
+## Warning in logafun(logactfun(Abar, i)): NaNs produced
+```
+`r options(op)`
+
+This is a case where further development and testing are needed.
+
+If you have problems, be sure to read the help pages, examples, and code itself.
+Another resource is the tests that are included in the `testthat` directory.
+Reading and running these tests can be useful for getting a sense of the error conditions and other limitations of the functions.
+
+# Citation and contact information
+
+If you use CHNOSZ for publications, it would be appreciated if you cite the following paper:
+
+```{r citation_CHNOSZ, results="asis"}
+cref <- citation("CHNOSZ")
+print(cref, style = "html")
+```
+
+If you have bug reports, questions that haven't been answered here or in the other documentation, or contributions of code or data, please contact the maintainer:
+
+```{r maintainer_CHNOSZ}
+maintainer("CHNOSZ")
+```
+
+Thank you for reading, and have fun!
+
+> "As any practitioner knows, the effort of research is so tedious and time consuming that when the work stops being fun, there's no sense in continuing. The best scientists live a life of keen amusement."
+>
+> `r tufte::quote_footer('--- Stephen Jay Gould')`
+
 
 # Document history
 
 * 2010-09-30 Initial version.
 * 2011-08-15 Add <span style="color:green">`browse.refs()`</span>; modifying database hint changed to <span style="color:blue">`help(thermo)`</span>.
 ```{marginfigure}
-<span style="color:green">`browse.refs()`</span> changed to <span style="color:green">`thermo.refs()`</span> in 2017.
+<span style="color:green">`browse.refs()`</span> renamed to <span style="color:green">`thermo.refs()`</span> in 2017.
 ```
 * 2012-06-16 Add “More activity diagrams”.
 * 2015-05-14 Add warning about internal consistency of thermodynamic data.
 * 2017-02-15 Complete rewrite; switch from Sweave to knitr (Tufte style).
+
+View the R Markdown source of this document [on R-Forge](https://r-forge.r-project.org/scm/viewvc.php/pkg/CHNOSZ/vignettes/anintro.Rmd?view=markup&root=chnosz) or in R:
+
+```{r file_edit_anintro, eval=FALSE}
+file.edit(system.file("doc/anintro.Rmd", package = "CHNOSZ"))
+```
+
+***

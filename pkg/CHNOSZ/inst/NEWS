@@ -1,12 +1,12 @@
-CHANGES IN CHNOSZ 1.0.8-35 (2017-02-12)
+CHANGES IN CHNOSZ 1.0.8-36 (2017-02-13)
 ---------------------------------------
 
 DOCUMENTATION:
 
-- Add eos-regress.Rmd vignette; update related functions.
-
 - Replace anintro.Rnw (Sweave) with rewritten anintro.Rmd (knitr, Tufte
   style).
+
+- Add eos-regress.Rmd vignette; update related functions.
 
 - Demos: add bugstab.R, rename buffer.R to protbuff.R, add new buffer.R,
   remove nucleobase.R.
@@ -84,6 +84,9 @@ CLEANUP AND BUG FIXES:
 
 - Remove the bold formatting for "A" in expr.property(); "A" is
   italicized like most other uppercase letters.
+
+- Rename browse.refs() to thermo.refs(); remove URL browsing (except for
+  summary table).
 
 CHANGES IN CHNOSZ 1.0.8 (2016-05-28)
 ------------------------------------

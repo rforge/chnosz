@@ -165,12 +165,13 @@ add.obigt <- function(file=system.file("extdata/thermo/OBIGT-2.csv",package="CHN
   return(invisible(inew))
 }
 
-browse.refs <- function(key=NULL) {
-  ## browse to web page associated with a given source
-  ## of thermodynamic data. first version: 20110615
+thermo.refs <- function(key=NULL) {
+  ## return references for thermodynamic data.
+  ## 20110615 browse.refs() first version
+  ## 20170212 thermo.refs() remove browsing (except for table of all sources)
   # 'key' can be
   # NULL: show a table of all sources in a browser
-  # character: open a web page for each listed source
+  # character: return data for each listed source key
   # numeric: open one or two web pages for each listed species
   # list: the output of subcrt()
   ## first retrieve the sources table
@@ -252,36 +253,26 @@ browse.refs <- function(key=NULL) {
     ### end adaptation from print.findFn
     # show table in browser
     browseURL(File)
-    cat("browse.refs: table of references is shown in browser\n")
+    cat("thermo.refs: table of references is shown in browser\n")
   } else if(is.character(key)) {
-    # open the URL(s) of the given source(s)
-    for(i in seq_along(key)) {
-      ix <- match(key[i],x$key)
-      if(is.na(ix)) {
-        cat(paste("browse.refs: reference key",key[i],"not found\n"))
-        next
-      } 
-      URL <- x$URL[ix]
-      if(URL=="" | is.na(URL)) {
-        cat(paste("browse.refs: no URL available for reference key",key[i],"\n"))
-        next
-      }
-      cat(paste("browse.refs: opening URL for ",key[i]," (",x$author[ix],", ",x$year[ix],")\n",sep=""))
-      browseURL(x$URL[ix])
-    }
-    return(invisible(URL))
+    # return citation information for the given source(s)
+    ix <- match(key, x$key)
+    ina <- is.na(ix)
+    if(any(is.na(ix))) message(paste("thermo.refs: reference key(s)",
+      paste(key[ina], collapse = ","), "not found"))
+    return(x[ix, ])
   } else if(is.numeric(key)) {
-    # open the URL(s) of sources associated with the indicated species
+    # get the source keys for the indicated species
     sinfo <- suppressMessages(info(key))
-    mysources <- unique(c(sinfo$ref1,sinfo$ref2))
+    mysources <- unique(c(sinfo$ref1, sinfo$ref2))
     mysources <- mysources[!is.na(mysources)]
-    return(browse.refs(mysources))
+    return(thermo.refs(mysources))
   } else if(is.list(key)) {
     if("species" %in% names(key)) ispecies <- key$species$ispecies
     else if("reaction" %in% names(key)) ispecies <- key$reaction$ispecies
     else stop("list does not appear to be a result from subcrt()")
     if(is.null(ispecies)) stop("list does not appear to be a result from subcrt()")
-    return(browse.refs(ispecies))
+    return(thermo.refs(ispecies))
   }
 }
 

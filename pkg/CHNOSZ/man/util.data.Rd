@@ -3,7 +3,7 @@
 \alias{util.data}
 \alias{add.obigt}
 \alias{mod.obigt}
-\alias{browse.refs}
+\alias{thermo.refs}
 \alias{checkEOS}
 \alias{checkGHS}
 \alias{check.obigt}
@@ -20,7 +20,7 @@
     package = "CHNOSZ"), force = FALSE, E.units = "cal")
   mod.obigt(...)
   today()
-  browse.refs(key=NULL)
+  thermo.refs(key=NULL)
   checkEOS(eos, state, prop, ret.diff = FALSE)
   checkGHS(ghs, ret.diff = FALSE)
   check.obigt()
@@ -64,7 +64,10 @@ The values provided should be in the units specifed in the documentation for the
 
   \code{change} is a wrapper function to \code{mod.obigt} and \code{\link{mod.buffer}}. The \code{name} provided in the argument refers to the name or numeric index of the species to update or add using \code{mod.obigt}, unless the \code{name} begins with an underscore character, in which case the remaining part of the name (after the underscore) is passed to \code{mod.buffer}. The arguments in \code{...} are sent without change to the subordinate function.
 
-  \code{browse.refs} with default arguments uses \code{\link{browseURL}} to display the sources of thermodynamic data in \code{thermo$refs}, with the URLs in that table showing as hyperlinks in the browser. Otherwise, if \code{key} is character, the URLs of those reference \code{key}s are opened in the browser. If \code{key} is numeric, the values refer to the species in those rows of \code{thermo$obigt}, and the URLs for each listed reference (\code{thermo$obigt$ref1}, \code{thermo$obigt$ref2}) are opened. If \code{key} is a list, it is interpreted as the result of a call to \code{subcrt}, and the reference URLs for each species involved in the calculation are opened.
+\code{thermo.refs} with default arguments uses \code{\link{browseURL}} to display the sources of thermodynamic data in \code{thermo$refs}, with the URLs in that table showing as hyperlinks in the browser.
+Otherwise, if \code{key} is character, the citation information for those reference \code{key}s (including URLs) are returned.
+If \code{key} is numeric, the values refer to the species in those rows of \code{thermo$obigt}, and the citation information for each listed reference (\code{thermo$obigt$ref1}, \code{thermo$obigt$ref2}) is returned.
+If \code{key} is a list, it is interpreted as the result of a call to \code{subcrt}, and the citation information for each species involved in the calculation is returned.
 
   \code{checkEOS} compares heat capacity and volume calculated from equation-of-state parameters with reference (tabulated) values at 25 \eqn{^{\circ}}{°}C and 1 bar and prints a message and returns the calculated value if tolerance is exceeded. The Helgeson-Kirkham-Flowers equations of state parameters are in \code{eos}, which is a data frame with columns (and column names) in the same format as \code{\link{thermo}$obigt}. The \code{prop}erty can be one of \samp{Cp} or \code{V}. The code only distinguishes between \code{state}s of \samp{aq} and all others. The default tolerances, given in \code{thermo$opt$Cp.tol} and \code{thermo$opt$V.tol}, are 1 cal/K.mol for Cp and 1 cm3/mol for V. If \code{ret.diff} is TRUE, the differences are returned irrespective of their values, and no messages are printed.
 
@@ -104,18 +107,19 @@ iCl2O <- mod.obigt("Cl2O", G=20970)
 info(iCl2O)
 # add a species with a name that is distinct from the formula
 mod.obigt("buckminsterfullerene", formula="C60", state="cr")
-\dontrun{
-## marked dontrun because they open pages in a browser
-# show the contents of thermo$refs
-browse.refs()
-# Internet needed for the following examples:
-# open URL for Helgeson et al., 1998
-browse.refs("HOK+98")
-# open two URLs for alanine
-browse.refs(info("alanine"))
-# open three URLs for species in the reaction
+
+# citation information for Helgeson et al., 1998
+thermo.refs("HOK+98")
+# two references for alanine
+thermo.refs(info("alanine"))
+# three references for species in the reaction
 s <- subcrt(c("O2","O2"),c("gas","aq"),c(-1,1))
-browse.refs(s) }
+thermo.refs(s) 
+\dontrun{
+## marked dontrun because it opens a browser
+# show the contents of thermo$refs
+thermo.refs()
+} 
 
 ## calculate thermodynamic properties of organic compounds
 ## using group additivity, after Richard and Helgeson, 1998

@@ -1,5 +1,5 @@
 name,abbrv,formula,state,ref1,ref2,date,G,H,S,Cp,V,a1.a,a2.b,a3.c,a4.d,c1.e,c2.f,omega.lambda,z.T
-water,NA,H2O,liq,WP02,NA,25.Oct.06,-56687.711481,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+water,NA,H2O,liq,NA,NA,25.Oct.06,-56687.711481,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 e-,NA,Z0-1,aq,NA,NA,28.Oct.06,0,0,15.6166,0,0,0,0,0,0,0,0,0,0
 H+,H+,H+,aq,SH88,NA,06.Nov.97,0,0,0,0,0,0,0,0,0,0,0,0,0
 Li+,Li+,Li+,aq,SH88,NA,06.Nov.97,-69933,-66552,2.7,14.2,-0.87,-0.0237,-0.069,11.58,-2.7761,19.2,-0.24,0.4862,1

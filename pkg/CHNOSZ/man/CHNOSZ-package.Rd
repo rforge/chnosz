@@ -24,7 +24,7 @@ It is up to you to check not only the accuracy of the data, but also the \emph{s
 By combining data taken from different sources, it is possible to build an inconsistent and/or nonsensical calculation.
 An attempt has been made to provide a primary database (OBIGT.csv) that is internally consistent, but no guarantee can be made.
 Where possible, data with known or suspected inconsistencies have been placed into a secondary database (OBIGT-2.csv) that should be regarded as experimental.
-If there is any doubt about the accuracy or suitability of data for a particular problem, please \emph{consult the primary sources} (see \code{\link{browse.refs}}).
+If there is any doubt about the accuracy or suitability of data for a particular problem, please \emph{consult the primary sources} (see \code{\link{thermo.refs}}).
 Do not assume that by adding any species to your calculation (or to any of the examples), you will necessarily obtain a reasonable answer.
 Do not assume that the examples are correct, or that they can be applied to your problem.
 As with the data, please \emph{compare the construction and output of the examples to the primary sources}, cited in the reference list in each help page.

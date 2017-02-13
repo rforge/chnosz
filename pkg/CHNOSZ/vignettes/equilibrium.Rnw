@@ -435,7 +435,7 @@ prA <- function() {
 prB <- function() {
   a <- affinity(O2=c(-90, -70))
   e <- equilibrate(a, balance="length", loga.balance=0)
-  diagram(e, names=organisms, ylim=c(-5, -1), legend.x=NA)
+  diagram(e, names=organisms, ylim=c(-5, -1))
 }
 
 prC <- function() {
@@ -447,7 +447,7 @@ prC <- function() {
 prD <- function() {
   a <- affinity(O2=c(-90, -70))
   e <- equilibrate(a, normalize=TRUE, loga.balance=0)
-  diagram(e, names=organisms, ylim=c(-5, -1), legend.x=NA)
+  diagram(e, names=organisms, ylim=c(-5, -1))
 }
 
 prE <- function() {
@@ -459,7 +459,7 @@ prE <- function() {
 prF <- function() {
   a <- affinity(O2=c(-90, -70))
   e <- equilibrate(a, as.residue=TRUE, loga.balance=0)
-  diagram(e, names=organisms, ylim=c(-3, 1), legend.x=NA)
+  diagram(e, names=organisms, ylim=c(-3, 1))
 }
 @
 
@@ -1043,11 +1043,11 @@ species(proteins, organisms)
 a <- affinity(O2=c(-100, -65))
 layout(matrix(1:2), heights=c(1, 2))
 e <- equilibrate(a)
-diagram(e, ylim=c(-2.8, -1.6), legend.x=NA, names=organisms)
+diagram(e, ylim=c(-2.8, -1.6), names=organisms)
 water.lines(xaxis="O2")
 title(main="Equilibrium activities of proteins, normalize = FALSE")
 e <- equilibrate(a, normalize=TRUE)
-diagram(e, ylim=c(-4, -2), legend.x=NA, names=organisms)
+diagram(e, ylim=c(-4, -2), names=organisms)
 water.lines(xaxis="O2")
 title(main="Equilibrium activities of proteins, normalize = TRUE")
 @

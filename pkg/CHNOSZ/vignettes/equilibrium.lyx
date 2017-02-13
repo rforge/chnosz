@@ -1857,7 +1857,7 @@ prB <- function() {
 
 \begin_layout Plain Layout
 
-  diagram(e, names=organisms, ylim=c(-5, -1), legend.x=NA)
+  diagram(e, names=organisms, ylim=c(-5, -1))
 \end_layout
 
 \begin_layout Plain Layout
@@ -1915,7 +1915,7 @@ prD <- function() {
 
 \begin_layout Plain Layout
 
-  diagram(e, names=organisms, ylim=c(-5, -1), legend.x=NA)
+  diagram(e, names=organisms, ylim=c(-5, -1))
 \end_layout
 
 \begin_layout Plain Layout
@@ -1973,7 +1973,7 @@ prF <- function() {
 
 \begin_layout Plain Layout
 
-  diagram(e, names=organisms, ylim=c(-3, 1), legend.x=NA)
+  diagram(e, names=organisms, ylim=c(-3, 1))
 \end_layout
 
 \begin_layout Plain Layout
@@ -4360,7 +4360,7 @@ e <- equilibrate(a)
 
 \begin_layout Plain Layout
 
-diagram(e, ylim=c(-2.8, -1.6), legend.x=NA, names=organisms)
+diagram(e, ylim=c(-2.8, -1.6), names=organisms)
 \end_layout
 
 \begin_layout Plain Layout
@@ -4380,7 +4380,7 @@ e <- equilibrate(a, normalize=TRUE)
 
 \begin_layout Plain Layout
 
-diagram(e, ylim=c(-4, -2), legend.x=NA, names=organisms)
+diagram(e, ylim=c(-4, -2), names=organisms)
 \end_layout
 
 \begin_layout Plain Layout

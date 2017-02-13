@@ -15,7 +15,7 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
     cex=par("cex"), cex.names=1, cex.axis=par("cex"),
     lty=NULL, lwd=par("lwd"), dotted=NULL,
     col=par("col"), col.names=par("col"), fill=NULL,
-    names=NULL, main=NULL, legend.x="topright", format.names=TRUE,
+    names=NULL, main=NULL, legend.x=NA, format.names=TRUE,
     add=FALSE, plot.it=TRUE, tplot=TRUE, ...)
   strip(affinity, ispecies = NULL, col = NULL, ns = NULL, 
     xticks = NULL, ymin = -0.2, xpad = 1, cex.names = 0.7)
@@ -78,8 +78,8 @@ If \code{groups} is supplied, the activities of the species identified in each n
 The names of the list are used to label the lines or fields for the summed activities of the resulting groups.
 
 For 1-D diagrams, the default setting for the y-axis is a logarithmic scale (unless \code{alpha} is TRUE) with limits corresponding to the range of logarithms of activities (or 0,1 if \code{alpha} is TRUE); these actions can be overridden by \code{ylog} and \code{ylim}.
-A \code{\link{legend}} is placed at the location identified by \code{legend.x}, or omitted if \code{legend.x} is \code{FALSE}.
-If \code{legend.x} is NA, instead of a legend, the lines are labeled with the names of the species near the maximum value.
+If \code{legend.x} is NA (the default), the lines are labeled with the names of the species near the maximum value.
+Otherwise, a \code{\link{legend}} is placed at the location identified by \code{legend.x}, or omitted if \code{legend.x} is NULL.
 The line type and line width can be controlled with \code{lty} and \code{lwd}, respectively.
 
 On 2-D diagrams, the fields represent the species with the highest equilibrium activity.

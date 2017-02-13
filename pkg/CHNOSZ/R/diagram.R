@@ -22,7 +22,7 @@ diagram <- function(
   # colors
   col=par("col"), col.names=par("col"), fill=NULL, 
   # labels
-  names=NULL, main=NULL, legend.x="topright", format.names=TRUE,
+  names=NULL, main=NULL, legend.x=NA, format.names=TRUE,
   # plotting controls
   add=FALSE, plot.it=TRUE, tplot=TRUE, ...
 ) {
@@ -240,8 +240,6 @@ diagram <- function(
       }
       # draw the lines
       for(i in 1:length(plotvals)) lines(xvalues, plotvals[[i]], col=col[i], lty=lty[i], lwd=lwd[i])
-      # turn off legend if too many species
-      if(ngroups > 10 & missing(legend.x)) legend.x <- NA
       if(!add & !is.null(legend.x)) {
         # 20120521: use legend.x=NA to label lines rather than make legend
         if(is.na(legend.x)) {

@@ -58,7 +58,7 @@ species(proteins)
 a <- affinity(O2=c(-100, -65))
 # try normalize=FALSE to make Fig. 5a in the paper
 e <- equilibrate(a, normalize=TRUE)
-d <- diagram(e, ylim=c(-5, -1), legend.x=NA, names=organisms)
+d <- diagram(e, ylim=c(-5, -1), names=organisms)
 # add water stability line
 abline(v=-83.1, lty=2)
 title(main="Surface-layer proteins, after Dick, 2008")
@@ -87,7 +87,7 @@ ZC <- ZC(species()$ispecies)
 col <- rep("red", length(prot))
 col[ZC > 0] <- "blue"
 e <- equilibrate(a, normalize=TRUE)
-d <- diagram(e, col=col, legend.x=NA)
+d <- diagram(e, col=col, format.names=FALSE)
 title(main="Bovine proteins, GSH/GSSG redox buffer")
 }
 

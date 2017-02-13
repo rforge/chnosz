@@ -102,15 +102,10 @@ species(locations, "Sce")
 a <- affinity(O2=c(-82, -65))
 e <- equilibrate(a, loga.balance=0, normalize=TRUE)
 mycolor <- topo.colors(length(locations))
-diagram(e, names=locations, ylim=c(-5, -3), legend.x=NA, col=mycolor, lwd=2)
+diagram(e, names=locations, ylim=c(-5, -3), col=mycolor, lwd=2)
 dp <- describe.property(c("T", "P"), c(25, 1))
 db <- describe.basis(ibasis=(1:6)[-5])
 legend("topright", legend=c(dp, db), bty="n")
-## Notable features include: proteins in the early Golgi, endoplasmic reticulum (ER)
-## and vacuole are chemically the most stable relative to those in other locations in the cell;
-## proteins in the vacuole are very oxidized; the stability of proteins decreases going from
-## early Golgi to Golgi to late Golgi; the least stable proteins (or most energetic)
-## are found in the microtubules and bud neck.
 
 #############################
 ## examples using stress() ##

@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-37 (2017-02-13)
+CHANGES IN CHNOSZ 1.0.8-38 (2017-02-13)
 ---------------------------------------
 
 DOCUMENTATION:
@@ -58,6 +58,9 @@ NEW DATA AND FEATURES:
 - read.fasta(): change argument `i` to `iseq`; this is used to select
   particular sequences to read from the file.
 
+- diagram(): default of `legend.x` changed to NA (instead of making a
+  legend, put labels near the lines).
+
 CLEANUP AND BUG FIXES:
 
 - subcrt() returns `loggam` using the common logarithm; add
@@ -75,6 +78,8 @@ CLEANUP AND BUG FIXES:
 
 - Correct charge (-2) of NAD(red)-2 in OBIGT.csv. Thanks to Peter
   Canovas.
+
+- Also correct charge (-2) of MgATP-2.
 
 - Remove msgout(), and replace previous calls to that function with
   message() from base R. As a result, the messages don't appear in Sweave

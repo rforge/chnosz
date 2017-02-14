@@ -84,7 +84,7 @@ These same functions enable calculations of chemical affinities and metastable e
 
 ## Installing and loading CHNOSZ
 
-If you have just installed R for the first time, installing CHNOSZ should be as simple as selecting the "Install packages from CRAN" or similar menu item in the R GUI or using the following command to start the package installation process:
+After installing R, install CHNOSZ by selecting the "Install packages from CRAN" or similar menu item in the R GUI or by using the following command:
 ```{marginfigure}
 Or, install the package from a package file, which you can download from [CRAN](https://cran.r-project.org/package=CHNOSZ) or from the [CHNOSZ website](http://chnosz.net/download).
 This vignette depends on some features that are only available in the development version of CHNOSZ, which can be found at [R-Forge](https://r-forge.r-project.org/projects/chnosz/).
@@ -93,12 +93,12 @@ This vignette depends on some features that are only available in the developmen
 install.packages("CHNOSZ")
 ```
 
-Then load the CHNOSZ package to make its functions available in your R session.
+Then load the CHNOSZ package to make its functions available in your R session:
 ```{r library_CHNOSZ}
 library(CHNOSZ)
 ```
 
-Then load the thermo object, which contains the thermodynamic database and system settings for CHNOSZ.
+Then load the `thermo` object, which contains the thermodynamic database and system settings for CHNOSZ:
 ```{r data_thermo}
 data(thermo)
 ```
@@ -106,13 +106,10 @@ data(thermo)
 ## Getting help
 
 After CHNOSZ is installed, type <span style="color:blue">`help.start()`</span> to browse the R help documents, then choose "Packages" followed by "CHNOSZ".
-That shows an index of the manual (help page) for each function; many of the help pages include examples.
-There are also links to the *demos* (longer examples) and *vignettes* (more in-depth documentation).
+That shows an index of the *manual* (help pages) for each function; many of the help pages include examples.
+There are also links to the *demos* (longer examples) and *vignettes* (more in-depth documentation; this document is a vignette).
 Suggestions for accessing the documentation are indicated here with <span style="color:blue">blue text</span>.
 For example, read <span style="color:blue">`?"CHNOSZ-package"`</span> to get an overview of the package and a list of features.
-```{marginfigure}
-That page identifies some features as experimental, i.e. that implement new algorithms and/or have not been extensively tested.
-```
 
 ## Organization of major functions
 
@@ -145,8 +142,8 @@ The major functions with side effects are:
 * <span style="color:red">`data(thermo)`</span>: reset the database, restoring all settings to their default values.
 
 The following pseudocode shows a common sequence of commands.
-In actual usage, the `...` are replaced by arguments that define the chemical makeup and range of conditions of the system:
-```{r, eval=FALSE}
+In actual usage, the `...` are replaced by arguments that define the chemical species and variables:
+```{r pseudocode, eval=FALSE}
 basis(...)
 species(...)
 a <- affinity(...)
@@ -162,12 +159,12 @@ While an attempt has been made to provide a primary database (`OBIGT.csv`) that 
 For crucial problems, check not only the accuracy of the database, but also the *suitability of the data* for your problem.
 If there is any doubt about the suitability of data, please consult the primary sources (see  <span style="color:blue">?`thermo.refs`</span>).
 ```
-Where possible, data with known or suspected inconsistencies have been placed into a secondary database (`OBIGT-2.csv`) that should be regarded as experimental.
+Data sets that are likely to introduce inconsistencies with the main database have been placed into a secondary data file (`OBIGT-2.csv`) that can be read with <span style="color:red">`add.obigt()`</span> ([see below](#Adding-data)).
 
 ## The <span style="color:green">`info()`</span> function
 
 <span style="color:green">`info()`</span> provides an interface to the thermodynamic database packaged with CHNOSZ.
-Suppose you are interested in the thermodynamic properties aqueous ethylene.
+Suppose you are interested in the thermodynamic properties of aqueous ethylene.
 You can search for the species by name:
 ```{r info_ethylene}
 info("ethylene")
@@ -276,7 +273,7 @@ The additional operations (`$out$water`) are used to extract a specific part of 
 The default units of temperature, pressure, and energy are °C, bar, and calories.
 The functions <span style="color:red">`T.units()`</span>, <span style="color:red">`P.units()`</span>, and <span style="color:red">`E.units()`</span> can be used to change the units used by various functions in CHNOSZ.
 What is the Gibbs energy (J/mol) of aqueous methane at 298.15 K and 0.1 MPa?
-```{r methane_units, message=FALSE}
+```{r units_methane, message=FALSE}
 T.units("K")
 P.units("MPa")
 E.units("J")
@@ -286,7 +283,7 @@ data(thermo)  ## restore default settings
 
 A related function, <span style="color:green">`convert()`</span>, can be used to convert given values between units.
 Let's convert the standard Gibbs energy of aqueous methane listed in the database from cal/mol to J/mol:
-```{r methane_G, message=FALSE}
+```{r convert_G, message=FALSE}
 convert(info(info("methane"))$G, "J")
 ```
 
@@ -302,33 +299,33 @@ Here we calculate properties for the dissolution of CO<sub>2</sub>:
 Because of aqueous speciation, this doesn't give the _solubility_ of CO<sub>2</sub>.
 For an example of a solubility calculation, see <span style="color:blue">`demo(solubility)`</span>, which is based on a figure in Manning et al. (2013).
 ```
-```{r CO2_dissolution}
+```{r subcrt_CO2}
 subcrt(c("CO2", "CO2"), c("gas", "aq"), c(-1, 1), T = seq(0, 250, 50))
 ```
 
 In order to make a plot like Figure 18 of @MSS13, let's run more calculations and store the results.
 In addition to the reaction definition, we specify a greater number of temperature points than the default:
 
-```{r dissolution, echo=FALSE, message=FALSE}
+```{r CO2_logK, echo=FALSE, message=FALSE}
 T <- seq(0, 350, 10)
 CO2 <- subcrt(c("CO2", "CO2"), c("gas", "aq"), c(-1, 1), T = T)$out$logK
 CO <- subcrt(c("CO", "CO"), c("gas", "aq"), c(-1, 1), T = T)$out$logK
 CH4 <- subcrt(c("CH4", "CH4"), c("gas", "aq"), c(-1, 1), T = T)$out$logK
 logK <- data.frame(T, CO2, CO, CH4)
 ```
-```{r dissolution_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Equilibrium constants calculated for dissolution of CO<sub>2</sub>, CO, and CH<sub>4</sub>.", cache=TRUE, pngquant=pngquant}
+```{r CO2_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Equilibrium constants calculated for dissolution of CO<sub>2</sub>, CO, and CH<sub>4</sub>.", cache=TRUE, pngquant=pngquant}
 matplot(logK[, 1], logK[, -1], type = "l", col = 1, lty = 1,
         xlab = axis.label("T"), ylab = axis.label("logK"))
 text(80, -1.7, expr.species("CO2"))
 text(270, -2.2, expr.species("CO"))
 text(310, -2.4, expr.species("CH4"))
 ```
-```{r dissolution, eval=FALSE}
+```{r CO2_logK, eval=FALSE}
 ```
 
 Now we can make the plot, using R's `matplot()`.
 Here, <span style="color:green">`axis.label()`</span> and <span style="color:green">`expr.species()`</span> are used to create formatted axis labels and chemical formulas:
-```{r dissolution_plot, eval=FALSE}
+```{r CO2_plot, eval=FALSE}
 ```
 
 ## Unbalanced reactions
@@ -490,7 +487,7 @@ See <span style="color:blue">`?basis`</span> for more options.
 ```{r basis_CHNOSZ, results="hide"}
 basis("CHNOS+")
 ```
-```{r sulfur_species}
+```{r species_sulfur}
 species(c("H2S", "HS-", "HSO4-", "SO4-2"))
 ```
 
@@ -515,7 +512,7 @@ The <span style="color:red">`swap.basis()`</span> changed the basis species and 
 That is, running <span style="color:green">`affinity()`</span>`$values` again would give the same result.
 ```
 
-```{r EhpH_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE, pngquant=pngquant}
+```{r EhpH_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE, fig.cap="Aqueous sulfur species at 25 °C.", pngquant=pngquant}
 a <- affinity(pH = c(0, 12), Eh = c(-1, 1))
 diagram(a, fill = "heat")
 ```
@@ -527,15 +524,14 @@ Now we can calculate the affinities on an Eh-pH grid:
 ## Potential diagrams
 
 Given values of affinity, the <span style="color:green">`diagram()`</span> function uses the maximum affinity method to make a potential diagram (i.e. a Pourbaix diagram):
-```{r EhpH_plot_echo, eval=FALSE}
-diagram(a)
+```{r EhpH_plot, echo=2, eval=FALSE}
 ```
 
 Note that the calculation of affinity implies a non-equilibrium reference state of equal activities of species (see above).
 Generally, then, <span style="color:green">`diagram()`</span> gives a *potential diagram* because it shows regions of maximum affinity.
 In systems where equilibrium is attainable, it makes sense to call this a *predominance diagram*, showing regions of maximum activity.
 
-```{r EhpH_plot_color, fig.margin=TRUE, fig.width=4, fig.height=4, smallish.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE, pngquant=pngquant}
+```{r EhpH_plot_color, fig.margin=TRUE, fig.width=4, fig.height=4, smallish.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE, fig.cap="The same plot, with different colors and labels.", pngquant=pngquant}
 diagram(a, fill = "terrain", lwd = 3, lty = 3,
         names = c("hydrogen sulfide", "bisulfide", "bisulfate", "sulfate"),
         tplot = FALSE, main = "sulfur species, 25 °C", bty = "n")
@@ -586,7 +582,7 @@ The other arguments, like those of <span style="color:green">`affinity()`</span>
 The first call to <span style="color:green">`diagram()`</span> plots the species of interest; the second adds the predominance fields of the basis species.
 Finally, <span style="color:green">`water.lines()`</span> is used to add the stability limits of water at the given temperature.
 
-```{r copper_mosaic, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", message=FALSE, cache=TRUE, pngquant=pngquant}
+```{r copper_mosaic, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", message=FALSE, cache=TRUE, fig.cap="Copper minerals and aqueous complexes with chloride, 25 °C.", pngquant=pngquant}
 T <- 200
 res <- 300
 bases <- c("H2S", "HS-", "HSO4-", "SO4-2")
@@ -677,7 +673,7 @@ To override that behavior, we set `balance = 1` to plot the affinities of the fo
 ```{r rainbow_diagram, eval=FALSE}
 ```
 
-## Buffers
+## Buffers (experimental feature)
 
 There is one other feature of <span style="color:green">`affinity()`</span> to mention here.
 Can we go the other direction: calculate the activities of basis species from the activities of the species of interest?
@@ -721,7 +717,7 @@ basis(c("H2S", "O2"), c("PPM", "PPM"))
 unlist(affinity(T = 300, P = 100, return.buffer = TRUE)[1:3])
 ```
 
-```{r demo_buffer, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", message=FALSE, echo=FALSE, cache=TRUE, pngquant=pngquant}
+```{r demo_buffer, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", message=FALSE, echo=FALSE, cache=TRUE, fig.cap="Values of log<i>f</i><sub>H<sub>2</sub></sub> corresponding to mineral buffers or to given activities of aqueous species.", pngquant=pngquant}
 demo(buffer, echo = FALSE)
 ```
 Et voilà! We have found log*a*<sub>H<sub>2</sub>S</sub> and `r logfO2` that are compatible with the coexistence of the three minerals.
@@ -886,10 +882,10 @@ It is also possible to plot the distribution of species within individual groups
 We do this by setting the names and line types for the *other* species to values that prevent them from being plotted:
 ```{r groups_diagram, echo=-(1:4), eval=FALSE}
 ```
-```{r groups_diagram, fig.fullwidth=TRUE, fig.width=9, fig.height=3, small.mar=TRUE, dpi=dpi, out.width="85%", echo=FALSE, message=FALSE, results="hide", cache=TRUE, pngquant=pngquant}
+```{r groups_diagram, fig.fullwidth=TRUE, fig.width=9, fig.height=3, small.mar=TRUE, dpi=dpi, out.width="85%", echo=FALSE, message=FALSE, results="hide", cache=TRUE, fig.cap="Distribution of inorganic and groups of organic species (left plot) and of alcohols and ketones (middle and right plots) as a function of <i>T</i>, pH, and log<i>f</i><sub>O<sub>2</sub></sub>.", pngquant=pngquant}
 ```
 
-## Using a different balance
+## Balancing differently
 
 How about the choice between balancing constraints?
 Be default, <span style="color:green">`equilibrate()`</span> and <span style="color:green">`diagram()`</span> balance reactions on the first basis species that is present in each of the species of interest.
@@ -1095,7 +1091,6 @@ legend("topright", legend = c("Archaea", "Bacteria", "Eukaryota"),
 ```
 ```{r rubisco_ZC, eval=FALSE, echo=2:18}
 ```
-
 
 <span style="color:green">`protein.basis()`</span> returns the stoichiometry of the basis species the formation reaction of the proteins.
 Dividing by <span style="color:green">`protein.length()`</span> gives the per-residue reaction coefficients (*n*&#773;).
@@ -1360,6 +1355,9 @@ The dashed line and points show the *T* and log*a*<sub>H<sub>2</sub></sub> that 
 
 # Experimental features
 
+Some features in CHNOSZ that implement new algorithms and/or have not been extensively tested should be regarded as experimental.
+A couple of experimental features are described here; also note that `buffer()` and `transfer()` implement experimental features (see ?`CHNOSZ-package`)
+
 ## Activity coefficients
 
 <span style="color:green">`nonideal()`</span> uses the Debye-Hückel equation, described in Chapter 3 of @Alb03, to calculate activity coefficients of charged species.
@@ -1573,7 +1571,7 @@ basis("O2", r$xopt)
 basis("NH3", r$yopt)
 ourfun(c(3, 5))
 findit(vars[1:3], objective, loga2=loga2, loga.balance=log10(Ctot),
-       T=T, res=10, niter=8, rat=0.8)
+       T=T, res=10, niter=3, rat=0.6)
 ourfun(c(2, 3, 5), "right")
 ```
 
@@ -1611,17 +1609,9 @@ This side effect (changing the activities of basis species) is why the text for 
 ```{r smoker_plot, fig.fullwidth=TRUE, fig.width=9, fig.height=5, small.mar=TRUE, dpi=100, out.width="85%", echo=FALSE, message=FALSE, results="hide", cache=TRUE, fig.cap="Optimization of a thermodynamic model for relative abundances of amino acids in a 270 °C black smoker fluid using 1, 2, or 3 variables (left to right).", pngquant=pngquant}
 ```
 
-The calculation using <span style="color:red">`findit()`</span>, in which the added variable log*a*<sub>`r h2o`</sub> optimizes to ca. -2.2, shows that measured concentrations of 6 amino acids fall within 1--2 log units of the relative abundances in metastable equilibrium.
+The calculation using <span style="color:red">`findit()`</span>, in which the added variable log*a*<sub>`r h2o`</sub> optimizes to ca. -2.4, shows that measured concentrations of 6 amino acids fall within 1--2 log units of the relative abundances in metastable equilibrium.
 According these calculations, two amino acids, serine and threonine, are very far from metastable equilibrium with the others.
 There is a danger of using too many, or unrepresentative variables, but in some systems, calculations of this type may provide insight on processes affecting reactions of organic compounds.
-
-# Functions outside of the main workflow
-
-XXX
-
-transfer, wjd, eqdata, RH2obigt, EOSregress, anim, taxonomy
-
-Gibbs energy minimization with amino acids: [Cob13]?
 
 # Thermodynamic data
 
@@ -1664,11 +1654,7 @@ ref <- thermo.refs(iFo)
 browseURL(ref$URL)  ## opens a page on worldcat.org
 ```
 
-## Water: IAPWS or SUPCRT
-
-XXX
-
-## Adding data
+## Adding data {#Adding-data}
 
 Use <span style="color:red">`add.obigt()`</span> to add data to the database in the current session.
 
@@ -1676,8 +1662,8 @@ Without any arguments, <span style="color:red">`add.obigt()`</span> adds data fr
 There are ca. 300 species listed here, many of which are not present in the main database.
 However, many of these datasets include one or more species that are already present in the main database, but have different parameters.
 Therefore, these data could not be included in the main database without breaking internal consistency.
-Some of the datasets here may have incomplete or have provisional data.
-Please check the references!
+Some of the datasets here may have incomplete or provisional data.
+Please check the data entries and references carefully!
 
 Given a file name, <span style="color:red">`add.obigt()`</span> adds data in that file to database in the running session.
 The file must be a CSV (comma separated value) file with column headers that match those in the main database.
@@ -1763,6 +1749,14 @@ Without additional information, there is often no clear strategy for "fixing" th
 See the [Numerical Tools at GEOPIG](http://geopig.asu.edu/tools) for SUPCRT updates (slop files), including corrections that have not yet been ported to CHNOSZ.
 ```
 
+## Water: SUPCRT92 or IAPWS-95
+
+For calculations of the thermodynamic and dielectric properties of liquid and supercritical H<sub>2</sub>O, CHNOSZ uses a Fortran subroutine (`H2O92`) from SUPCRT92 (Johnson et al., 1992).
+Alternatively, the IAPWS-95 formulation for thermodynamic properties [@WP02] can be utilized.
+In part because of intrinsic thermodynamic differences between SUPCRT92 and IAPWS-95, as well as different equations used in CHNOSZ for calculating the dielectric constant when the IAPWS-95 option is active, this option could introduce inconsistencies with the data for aqueous species in the database and is not recommended for general use in CHNOSZ.
+However, the IAPWS-95 equations may be useful for those interested in developing equations of state, and may be extrapolated to a greater range of *T* and *P* than SUPCRT.
+See <span style="color:blue">`?water`</span> for more information, as well as the last example in <span style="color:blue">`?subcrt`</span>, where uncommenting the line for the `IAPWS95` option allows extrapolation to lower temperatures for supercooled water.
+
 # Messages and errors
 
 As you get started writing your own code and functions that use CHNOSZ, it is not uncommon to encounter problems.
@@ -1821,9 +1815,50 @@ e <- equilibrate(a)
 
 This is a case where further development and testing are needed.
 
-If you have problems, be sure to read the help pages, examples, and code itself.
-Another resource is the tests that are included in the `testthat` directory.
-Reading and running these tests can be useful for getting a sense of the error conditions and other limitations of the functions.
+If you have problems, be sure to read the help pages, examples, and the source code of the functions.
+Another resource is the tests that are included with the package.
+Use R's `system.file()` to find where these tests are installed on your computer:
+```{r file_tests, eval=FALSE}
+system.file("tests/testthat/", package = "CHNOSZ")
+```
+To run the tests, install and load the [**testthat**](https://cran.r-project.org/package=testthat) package followed by:
+```{r test_package, eval=FALSE}
+test_package("CHNOSZ")
+```
+Reading and running these tests can be useful for understanding the error conditions and other limitations of the functions.
+
+# Functions outside the main workflow
+
+Some functions in CHNOSZ lie outside the main workflow described above.
+
+## Regressing thermodynamic data
+
+<span style="color:green">`EOSregress()`</span> and related functions can be used to regress "equation of state" parameters (e.g. coefficients in the HKF equations) from heat capacity and volumetric data. See <span style="color:blue">`?EOSregress`</span> and the vignette, <span style="color:blue">*Regressing thermodynamic data*</span>.
+
+## Gibbs energy minimization
+
+<span style="color:green">`wjd()`</span> is an implementation of Gibbs energy minimization using the method of steepest descent described by @WJD58.
+See <span style="color:blue">`?wjd`</span> as well as the vignette, <span style="color:blue">*Winding journey down (in Gibbs energy)*</span>.
+
+## Reaction paths (experimental feature)
+
+<span style="color:green">`transfer()`</span> offers a basic implementation of a reaction path model (mass transfer combined with chemical equilibrium).
+This is an experimental feature; the example in <span style="color:blue">`?transfer`</span> shows an approximate path for reaction of potassium feldspar in a closed system [@HGM69].
+
+## Animations
+
+A few functions have been written (see <span style="color:blue">`?anim`</span>) to make GIF animations of chemical activity diagrams from a series of PNG files.
+The functions require the `convert` system command from [ImageMagick](http://www.imagemagick.org).
+
+## Group additivity and EQ6 output
+
+<span style="color:green">`RH2obigt()`</span> implements a group additivity calculation of standard molal thermodynamic properties and equations of state parameters of crystalline and liquid organic molecules from @RH98.
+
+<span style="color:green">`eqdata()`</span> reads data, including concentrations of aqueous species, number of moles of solid phases, and mineral saturation states (affinities), from an EQ6 output file [[@Wol92]](http://www.wipp.energy.gov/library/cra/2009_cra/references/Others/Wolery_1992_EQ36_A_Software_Package_for_Geochemical_Modeling_of_Aqueous_Systems_ERMS241375.pdf).
+
+## NCBI taxonomy files
+
+Some functions are available (see <span style="color:blue">`?taxonomy`</span>) to read data from [NCBI taxonomy files](ftp://ftp.ncbi.nih.gov/pub/taxonomy/), traverse taxonomic ranks, and get scientific names of taxonomic nodes.
 
 # Citation and contact information
 

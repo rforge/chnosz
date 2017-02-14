@@ -7,8 +7,7 @@ release checklist for CHNOSZ
 
 - compile vignettes with release version number and date.
 
-- run examples() and demos() to make sure they can be run
-  (that includes \donttest ones that aren't run by R CMD check)
+- run examples() and demos() to check their output and
 
 - check output of demo("sources") to make sure all data sources are cited
 

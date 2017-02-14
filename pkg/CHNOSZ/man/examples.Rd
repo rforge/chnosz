@@ -14,9 +14,8 @@
 
 \usage{
   examples(do.png = FALSE)
-  demos(which = c("sources", "NaCl", "density",
-    "ORP", "revisit", "findit", 
-    "ionize", "buffer", "protbuff", "yeastgfp", "mosaic",
+  demos(which = c("sources", "protein.equil", "add.obigt", "affinity", "NaCl", "density",
+    "ORP", "revisit", "findit", "ionize", "buffer", "protbuff", "yeastgfp", "mosaic",
     "copper", "solubility", "wjd", "dehydration", "bugstab"), to.file=FALSE)
 }
 
@@ -33,6 +32,9 @@ See the comments in the source code for more information about each demo.
 
   \tabular{ll}{
     \code{sources} \tab cross-check the reference list with the thermodynamic database \cr
+    \code{protein.equil} \tab chemical activities of two proteins in metastable equilibrium (Dick and Shock, 2011) \cr
+    \code{add.obigt} \tab a couple of diagrams using the secondary thermodynamic database \cr
+    \code{affinity} \tab affinities of metabolic reactions and amino acid synthesis \cr
     \code{NaCl} \tab equilibrium constant for aqueous NaCl dissociation (Shock et al., 1992) \cr
     \code{density} \tab density of H2O, inverted from IAPWS-95 equations (\code{\link{rho.IAPWS95}}) \cr
     \code{ORP} \tab oxidation-reduction potential of redox standards as a function of temperature \cr
@@ -56,6 +58,8 @@ See the comments in the source code for more information about each demo.
   Aksu, S. and Doyle, F. M. (2001) Electrochemistry of copper in aqueous glycine solutions. \emph{J. Electrochem. Soc.} \bold{148}, B51--B57. \url{http://dx.doi.org/10.1149/1.1344532}
 
   Dick, J. M. (2009) Calculation of the relative metastabilities of proteins in subcellular compartments of \emph{Saccharomyces cerevisiae}. \emph{BMC Syst. Biol.} \bold{3}:75. \url{http://dx.doi.org/10.1186/1752-0509-3-75}
+
+  Dick, J. M. and Shock, E. L. (2011) Calculation of the relative chemical stabilities of proteins as a function of temperature and redox chemistry in a hot spring. \emph{PLoS ONE} \bold{6}, e22782. \url{http://dx.doi.org/10.1371/journal.pone.0022782}
 
   Dick, J. M. (2016) Proteomic indicators of oxidation and hydration state in colorectal cancer. \emph{PeerJ} \bold{4}:e2238. \url{http://dx.doi.org/10.7717/peerj.2238}
 

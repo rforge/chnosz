@@ -926,7 +926,7 @@ aaB <- function() {
 
 \begin_layout Plain Layout
 
-  a <- affinity(O2=c(-90, -70, res), H2O=c(-20, 10, res))
+  a <- affinity(O2=c(-90, -70, 80), H2O=c(-20, 10, 80))
 \end_layout
 
 \begin_layout Plain Layout
@@ -979,7 +979,7 @@ aaD <- function() {
 
 \begin_layout Plain Layout
 
-  a <- affinity(O2=c(-71, -66), H2O=c(-8, 4))
+  a <- affinity(O2=c(-71, -66, 80), H2O=c(-8, 4, 80))
 \end_layout
 
 \begin_layout Plain Layout
@@ -1818,7 +1818,7 @@ prA <- function() {
 
 \begin_layout Plain Layout
 
-  a <- affinity(O2=c(-90, -70, res), H2O=c(-20, 0, res))
+  a <- affinity(O2=c(-90, -70, 80), H2O=c(-20, 0, 80))
 \end_layout
 
 \begin_layout Plain Layout

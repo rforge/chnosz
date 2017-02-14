@@ -47,5 +47,27 @@ for(i in 1:length(nloc)) {
 # return to plot defaults
 layout(matrix(1))
 par(opar)
+
+## Localizations and abundances of proteins from YeastGFP are used here
+## to calculate an abundance-weighted average of amino acid compositions of proteins
+## in different subcellular compartments of yeast.
+## This figure is similar to Fig. 3 of Dick (2009). 
+locations <- yeastgfp()
+gfp <- yeastgfp(locations)
+aa <- more.aa(gfp$protein, "Sce")
+for(i in 1:length(locations)) {
+  avgaa <- aasum(aa[[i]], gfp$abundance[[i]], average=TRUE, protein=locations[i])
+  add.protein(avgaa)
+}
+basis("CHNOS+")
+species(locations, "Sce")
+a <- affinity(O2=c(-82, -65))
+e <- equilibrate(a, loga.balance=0, normalize=TRUE)
+mycolor <- topo.colors(length(locations))
+diagram(e, names=locations, ylim=c(-5, -3), col=mycolor, lwd=2)
+dp <- describe.property(c("T", "P"), c(25, 1))
+db <- describe.basis(ibasis=(1:6)[-5])
+legend("topright", legend=c(dp, db), bty="n")
+
 # reset thermodynamic database
 data(thermo)

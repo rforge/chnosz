@@ -29,9 +29,8 @@ examples <- function(do.png=FALSE) {
   cat("Time elapsed: ", proc.time() - .ptime, "\n")
 }
 
-demos <- function(which=c("sources", "NaCl", "density", 
-  "ORP", "revisit", "findit",
-  "ionize", "buffer", "protbuff", "yeastgfp", "mosaic",
+demos <- function(which=c("sources", "protein.equil", "add.obigt", "affinity", "NaCl", "density", 
+  "ORP", "revisit", "findit", "ionize", "buffer", "protbuff", "yeastgfp", "mosaic",
   "copper", "solubility", "wjd", "dehydration", "bugstab"), to.file=FALSE) {
   # run one or more demos from CHNOSZ with ask=FALSE, and return the value of the last one
   for(i in 1:length(which)) {

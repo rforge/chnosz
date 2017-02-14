@@ -71,6 +71,15 @@ knit_hooks$set(plot = function(x, options) {
   if (!is.null(options$embed.tag) && options$embed.tag) x <- gsub("<img ", "<embed ", x)
   x
 })
+# http://stackoverflow.com/questions/30530008/hook-to-time-knitr-chunks
+now = Sys.time()
+knit_hooks$set(timeit = function(before) {
+    if (before) { now <<- Sys.time() }
+    else {
+        paste("%", sprintf("Chunk rendering time: %s seconds.\n", round(Sys.time() - now, digits = 3))) 
+    }
+})
+timeit <- NULL
 ```
 
 # First steps
@@ -259,7 +268,7 @@ See also <span style="color:blue">`demo(density)`</span>.
 subcrt("water", T = c(400, 500, 600), P = c(200, 400, 600), grid = "P")$out$water
 ```
 
-```{r subcrt_water_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Isothermal contours of density (g cm<sup>-3</sup>) and pressure (bar) of H<sub>2</sub>O.", cache=TRUE, pngquant=pngquant}
+```{r subcrt_water_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Isothermal contours of density (g cm<sup>-3</sup>) and pressure (bar) of H<sub>2</sub>O.", cache=TRUE, pngquant=pngquant, timeit=timeit}
 substuff <- subcrt("water", T=seq(0,1000,100), P=c(NA, seq(1,500,1)), grid="T")
 water <- substuff$out$water
 plot(water$P, water$rho, type = "l")
@@ -313,7 +322,7 @@ CO <- subcrt(c("CO", "CO"), c("gas", "aq"), c(-1, 1), T = T)$out$logK
 CH4 <- subcrt(c("CH4", "CH4"), c("gas", "aq"), c(-1, 1), T = T)$out$logK
 logK <- data.frame(T, CO2, CO, CH4)
 ```
-```{r CO2_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Equilibrium constants calculated for dissolution of CO<sub>2</sub>, CO, and CH<sub>4</sub>.", cache=TRUE, pngquant=pngquant}
+```{r CO2_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Equilibrium constants calculated for dissolution of CO<sub>2</sub>, CO, and CH<sub>4</sub>.", cache=TRUE, pngquant=pngquant, timeit=timeit}
 matplot(logK[, 1], logK[, -1], type = "l", col = 1, lty = 1,
         xlab = axis.label("T"), ylab = axis.label("logK"))
 text(80, -1.7, expr.species("CO2"))
@@ -383,7 +392,7 @@ acetoclastic <- subcrt(c("acetate", "methane"), c(-1, 1))
 
 Use <span style="color:green">`describe.reaction()`</span> to write the reactions on a plot:
 
-```{r describe_reaction_plot, fig.margin=TRUE, fig.width=3.5, fig.height=1.8, tiny.mar=TRUE, dpi=dpi, out.width="100%", pngquant=pngquant}
+```{r describe_reaction_plot, fig.margin=TRUE, fig.width=3.5, fig.height=1.8, tiny.mar=TRUE, dpi=dpi, out.width="100%", pngquant=pngquant, timeit=timeit}
 plot(0, 0, type = "n", axes = FALSE, ann=FALSE, xlim=c(0, 5), ylim=c(5.2, -0.2))
 text(0, 0, "acetoclastic methanogenesis", adj = 0)
 text(5, 1, describe.reaction(acetoclastic$reaction), adj = 1)
@@ -447,7 +456,7 @@ We insert an empty reaction to get a line at zero affinity.
 `do.call(rbind, Adat)` turns the list into a data frame that can be plotted with R's `matplot()`.
 There, we plot the negative affinities, equal to Gibbs energy, as shown in the plot of Mayumi et al. (2013).
 
-```{r methanogenesis_plot, fig.margin=TRUE, fig.width=4.1, fig.height=4.1, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Gibbs energies of acetate oxidation and methanogenesis (after Mayumi et al., 2013).", cache=TRUE, pngquant=pngquant}
+```{r methanogenesis_plot, fig.margin=TRUE, fig.width=4.1, fig.height=4.1, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Gibbs energies of acetate oxidation and methanogenesis (after Mayumi et al., 2013).", cache=TRUE, pngquant=pngquant, timeit=timeit}
 Adat <- lapply(c(-3, 3), function(logfCO2) {
   basis("CO2", logfCO2)
   data.frame(logfCO2,
@@ -512,7 +521,7 @@ The <span style="color:red">`swap.basis()`</span> changed the basis species and 
 That is, running <span style="color:green">`affinity()`</span>`$values` again would give the same result.
 ```
 
-```{r EhpH_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE, fig.cap="Aqueous sulfur species at 25 °C.", pngquant=pngquant}
+```{r EhpH_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE, fig.cap="Aqueous sulfur species at 25 °C.", pngquant=pngquant, timeit=timeit}
 a <- affinity(pH = c(0, 12), Eh = c(-1, 1))
 diagram(a, fill = "heat")
 ```
@@ -531,7 +540,7 @@ Note that the calculation of affinity implies a non-equilibrium reference state 
 Generally, then, <span style="color:green">`diagram()`</span> gives a *potential diagram* because it shows regions of maximum affinity.
 In systems where equilibrium is attainable, it makes sense to call this a *predominance diagram*, showing regions of maximum activity.
 
-```{r EhpH_plot_color, fig.margin=TRUE, fig.width=4, fig.height=4, smallish.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE, fig.cap="The same plot, with different colors and labels.", pngquant=pngquant}
+```{r EhpH_plot_color, fig.margin=TRUE, fig.width=4, fig.height=4, smallish.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE, fig.cap="The same plot, with different colors and labels.", pngquant=pngquant, timeit=timeit}
 diagram(a, fill = "terrain", lwd = 3, lty = 3,
         names = c("hydrogen sulfide", "bisulfide", "bisulfate", "sulfate"),
         tplot = FALSE, main = "sulfur species, 25 °C", bty = "n")
@@ -582,9 +591,9 @@ The other arguments, like those of <span style="color:green">`affinity()`</span>
 The first call to <span style="color:green">`diagram()`</span> plots the species of interest; the second adds the predominance fields of the basis species.
 Finally, <span style="color:green">`water.lines()`</span> is used to add the stability limits of water at the given temperature.
 
-```{r copper_mosaic, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", message=FALSE, cache=TRUE, fig.cap="Copper minerals and aqueous complexes with chloride, 25 °C.", pngquant=pngquant}
+```{r copper_mosaic, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", message=FALSE, cache=TRUE, fig.cap="Copper minerals and aqueous complexes with chloride, 25 °C.", pngquant=pngquant, timeit=timeit}
 T <- 200
-res <- 300
+res <- 200
 bases <- c("H2S", "HS-", "HSO4-", "SO4-2")
 m1 <- mosaic(bases, blend = TRUE, pH = c(0, 12, res), Eh=c(-1.2, 0.75, res), T=T)
 diagram(m1$A.species, lwd = 2)
@@ -601,8 +610,8 @@ However, the choice of other basis species can also affect the diagram.
 For instance, we can use H<sub>2</sub> or `r o2` in place of *e*<sup>-</sup>.
 To do that, let's write a function to swap those basis species and make a diagram.
 We use R's `do.call()` to construct the argument list for <span style="color:green">`mosaic()`</span>; this way, the name of the `newvar` argument to our function indicates the chosen variable.
-```{r mosaicfun, fig.fullwidth=TRUE, fig.width=9, fig.height=3, small.mar=TRUE, dpi=dpi, out.width="85%", message=FALSE, results="hide", cache=TRUE, fig.cap="Different projections (defined by the basis species) of the same thermodynamic system. The choice between them depends on convenience rather than correctness.", pngquant=pngquant}
-mosaicfun <- function(newvar, T = 200, res = 300) {
+```{r mosaicfun, fig.fullwidth=TRUE, fig.width=9, fig.height=3, small.mar=TRUE, dpi=dpi, out.width="85%", message=FALSE, results="hide", cache=TRUE, fig.cap="Different projections (defined by the basis species) of the same thermodynamic system. The choice between them depends on convenience rather than correctness.", pngquant=pngquant, timeit=timeit}
+mosaicfun <- function(newvar, T = 200) {
   swap.basis("e-", names(newvar))
   if (names(newvar) == "O2") basis("O2", "gas")
   mosaicargs <- c(list(bases), blend=TRUE, pH=list(c(-2, 12, res)), newvar, T=T)
@@ -661,7 +670,7 @@ a$values <- lapply(a$values, convert, "G", T)
 a$values <- lapply(a$values, `*`, -0.001)
 ```
 
-```{r rainbow_diagram, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE, fig.cap="Affinities of organic synthesis in a hydrothermal system, after Shock and Canovas (2010).", pngquant=pngquant}
+```{r rainbow_diagram, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE, fig.cap="Affinities of organic synthesis in a hydrothermal system, after Shock and Canovas (2010).", pngquant=pngquant, timeit=timeit}
 diagram(a, balance = 1, ylim = c(-100, 100), ylab = axis.label("A", prefix="k"),
         col = rainbow(8), lwd = 2, bg = "slategray3")
 abline(h = 0, lty = 2, lwd = 2)
@@ -717,7 +726,7 @@ basis(c("H2S", "O2"), c("PPM", "PPM"))
 unlist(affinity(T = 300, P = 100, return.buffer = TRUE)[1:3])
 ```
 
-```{r demo_buffer, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", message=FALSE, echo=FALSE, cache=TRUE, fig.cap="Values of log<i>f</i><sub>H<sub>2</sub></sub> corresponding to mineral buffers or to given activities of aqueous species.", pngquant=pngquant}
+```{r demo_buffer, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", message=FALSE, echo=FALSE, cache=TRUE, fig.cap="Values of log<i>f</i><sub>H<sub>2</sub></sub> corresponding to mineral buffers or to given activities of aqueous species.", pngquant=pngquant, timeit=timeit}
 demo(buffer, echo = FALSE)
 ```
 Et voilà! We have found log*a*<sub>H<sub>2</sub>S</sub> and `r logfO2` that are compatible with the coexistence of the three minerals.
@@ -763,7 +772,7 @@ For more information, see the vignette <span style="color:blue">*Equilibrium in 
 The method based on the Boltzmann equation is fast, but is applicable only to systems where the coefficients on the balanced basis species are all one.
 The reaction-matrix method is slower, but can be applied to systems were the balanced basis species has non-unity coefficients.
 
-```{r bjerrum_diagram, fig.margin=TRUE, fig.width=3, fig.height=6, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, cache=TRUE, fig.cap="Three views of carbonate speciation: affinity, metastable equilibrium activity, degree of formation.", pngquant=pngquant}
+```{r bjerrum_diagram, fig.margin=TRUE, fig.width=3, fig.height=6, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, cache=TRUE, fig.cap="Three views of carbonate speciation: affinity, metastable equilibrium activity, degree of formation.", pngquant=pngquant, timeit=timeit}
 par(mfrow = c(3, 1))
 basis("CHNOS+")
 species(c("CO2", "HCO3-", "CO3-2"))
@@ -882,7 +891,7 @@ It is also possible to plot the distribution of species within individual groups
 We do this by setting the names and line types for the *other* species to values that prevent them from being plotted:
 ```{r groups_diagram, echo=-(1:4), eval=FALSE}
 ```
-```{r groups_diagram, fig.fullwidth=TRUE, fig.width=9, fig.height=3, small.mar=TRUE, dpi=dpi, out.width="85%", echo=FALSE, message=FALSE, results="hide", cache=TRUE, fig.cap="Distribution of inorganic and groups of organic species (left plot) and of alcohols and ketones (middle and right plots) as a function of <i>T</i>, pH, and log<i>f</i><sub>O<sub>2</sub></sub>.", pngquant=pngquant}
+```{r groups_diagram, fig.fullwidth=TRUE, fig.width=9, fig.height=3, small.mar=TRUE, dpi=dpi, out.width="85%", echo=FALSE, message=FALSE, results="hide", cache=TRUE, fig.cap="Distribution of inorganic and groups of organic species (left plot) and of alcohols and ketones (middle and right plots) as a function of <i>T</i>, pH, and log<i>f</i><sub>O<sub>2</sub></sub>.", pngquant=pngquant, timeit=timeit}
 ```
 
 ## Balancing differently
@@ -897,7 +906,7 @@ basis("CHNOS")
 basis("CO2", "gas")
 swap.basis("NH3", "N2")
 species(aminoacids(""))
-a <- affinity(O2 = c(-50, -25, 300), CO2 = c(-10, 15, 300), T = 250, P = 265)
+a <- affinity(O2 = c(-50, -25, 200), CO2 = c(-10, 15, 200), T = 250, P = 265)
 aa.ZC <- ZC(info(aminoacids("")))
 col <- ZC.col(aa.ZC)
 ```
@@ -906,7 +915,7 @@ To make plots using different balance constraints, let's write a simple function
 The first plot is the most similar to Figure 4 of Shock (1990), except for the absence of alanine (probably due to different thermodynamic data) and the presence of some other amino acids.
 There, we set `balance = 1`, which indicates that moles of species are conserved; this is equivalent to balancing on the amino acid backbone.
 The remaining plots balance on each of the basis species (except for O<sub>2</sub>), then on volume (in the last plot).
-```{r aafun, fig.fullwidth=TRUE, fig.width=12.5, fig.height=2.5, small.mar=TRUE, dpi=dpi, out.width="100%", message=FALSE, results="hide", cache=TRUE, pngquant=pngquant}
+```{r aafun, fig.fullwidth=TRUE, fig.width=12.5, fig.height=2.5, small.mar=TRUE, dpi=dpi, out.width="100%", message=FALSE, results="hide", cache=TRUE, pngquant=pngquant, timeit=timeit}
 aafun <- function(balance) {
   diagram(a, balance = balance, fill = col)
   title(main = paste("balanced on", balance))
@@ -954,7 +963,7 @@ Let's compare experimental values of heat capacity of four proteins, from @PM90,
 After dividing Privalov and Makhatadze's experimental values by the lengths of the proteins to get per-residue values, we convert those to calories, then plot them.
 The loop calculates the properties of each protein using group additivity, for aqueous and crystalline groups, then plots the per-residue values.
 
-```{r protein_Cp, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, fig.cap='The heat capacity calculated by group additivity closely approximates experimental values for aqueous proteins. For a related figure showing the effects of ionization in the calculations, see <span style="color:blue">?ionize.aa</span>.', cache=TRUE, pngquant=pngquant}
+```{r protein_Cp, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, fig.cap='The heat capacity calculated by group additivity closely approximates experimental values for aqueous proteins. For a related figure showing the effects of ionization in the calculations, see <span style="color:blue">?ionize.aa</span>.', cache=TRUE, pngquant=pngquant, timeit=timeit}
 PM90 <- read.csv(system.file("extdata/cpetc/PM90.csv", package = "CHNOSZ"))
 plength <- protein.length(colnames(PM90)[2:5])
 Cp_expt <- t(t(PM90[, 2:5]) / plength)
@@ -984,7 +993,7 @@ The following plot shows the calculated affinity of reaction between nonionized 
 The affinity is always positive, representing the strong energetic drive for ionization of proteins in aqueous solution.
 The degree of ionization of amino and carboxyl groups increase at low and high pH, respectively, giving rise to U-shaped lines.
 
-```{r protein_ionization, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, fig.cap='Affinity of ionization of proteins. See <span style="color:blue">demo(ionize)</span> for ionization properties calculated as a function of temperature and pH.', cache=TRUE, pngquant=pngquant}
+```{r protein_ionization, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, fig.cap='Affinity of ionization of proteins. See <span style="color:blue">demo(ionize)</span> for ionization properties calculated as a function of temperature and pH.', cache=TRUE, pngquant=pngquant, timeit=timeit}
 ip <- iprotein(c("CYC_BOVIN", "LYSC_CHICK", "MYG_PHYCA", "RNAS1_BOVIN"))
 basis("CHNOS+")
 a_ion <- affinity(pH = c(0, 14), iprotein = ip)
@@ -1033,7 +1042,7 @@ To put the proteins in the right order, the IDs in the CSV file are matched to t
 Then, in one line, we calculate the formula of the protein, followed by `r zc`.
 Next, point symbols are assigned according to domain (Archaea, Bacteria, Eukaryota); numerals inside the symbols reflect the ordering by *T*<sub>opt</sub> in three temperature ranges (0--35 °C, 37.5--60 °C, and 65--100 °C).
 
-```{r rubisco_svg, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, out.width="100%", fig.keep='none', fig.ext='svg', custom.plot=TRUE, embed.tag=TRUE, echo=FALSE, results="hide", message=FALSE, fig.cap='Average oxidation state of carbon in Rubisco compared with optimal growth temperature of organisms. **This is an interactive image.** Move the mouse over the points to show the names of the organisms, and click to open a reference in a new window. (Made using [RSVGTipsDevice](https://cran.r-project.org/package=RSVGTipsDevice) with code that can be seen in the source of this document.)', cache=TRUE}
+```{r rubisco_svg, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, out.width="100%", fig.keep='none', fig.ext='svg', custom.plot=TRUE, embed.tag=TRUE, echo=FALSE, results="hide", message=FALSE, fig.cap='Average oxidation state of carbon in Rubisco compared with optimal growth temperature of organisms. **This is an interactive image.** Move the mouse over the points to show the names of the organisms, and click to open a reference in a new window. (Made using [RSVGTipsDevice](https://cran.r-project.org/package=RSVGTipsDevice) with code that can be seen in the source of this document.)', cache=TRUE, timeit=timeit}
 if(require("RSVGTipsDevice")) {
   datfile <- system.file("extdata/cpetc/rubisco.csv", package = "CHNOSZ")
   fastafile <- system.file("extdata/fasta/rubisco.fasta", package = "CHNOSZ")
@@ -1068,7 +1077,7 @@ if(require("RSVGTipsDevice")) {
   dev.off()
 }
 ```
-```{r rubisco_ZC, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Average oxidation state of carbon in Rubisco compared with optimal growth temperature of organisms.", cache=TRUE, pngquant=pngquant}
+```{r rubisco_ZC, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Average oxidation state of carbon in Rubisco compared with optimal growth temperature of organisms.", cache=TRUE, pngquant=pngquant, timeit=timeit}
 if(!require("RSVGTipsDevice")) {
 datfile <- system.file("extdata/cpetc/rubisco.csv", package = "CHNOSZ")
 fastafile <- system.file("extdata/fasta/rubisco.fasta", package = "CHNOSZ")
@@ -1100,7 +1109,7 @@ The calculation of *Z*<sub>C</sub>, which sums elemental ratios, is not affected
 ```
 The `QEC` keyword to <span style="color:red">`basis()`</span> loads basis species with a particular combination of three amino acids (glutamine, glutamic acid, cysteine, `r h2o`, `r o2`) that strengthens the relationship between `r zc` and *n*&#773;<sub>`r o2`</sub>, but weakens that between *n*&#773;<sub>`r o2`</sub> and *n*&#773;<sub>`r h2o`</sub> (right column).
 
-```{r rubisco_O2, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, fig.cap="Compositions of proteins projected into different sets of basis species.", cache=TRUE, pngquant=pngquant}
+```{r rubisco_O2, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, fig.cap="Compositions of proteins projected into different sets of basis species.", cache=TRUE, pngquant=pngquant, timeit=timeit}
 layout(matrix(1:4, nrow = 2))
 par(mgp=c(1.8, 0.5, 0))
 pl <- protein.length(aa)
@@ -1195,7 +1204,7 @@ The <span style="color:green">`revisit()`</span> function offers some statistica
 Here, we plot the information-theoretic free energy Δ*G<sub>inf</sub>* (relative entropy or Kullback-Leibler divergence):
 ```{r yeastplot, eval=FALSE, echo=10}
 ```
-```{r yeastplot, fig.fullwidth=TRUE, fig.width=7.5, fig.height=2.5, small.mar=TRUE, dpi=ifelse(dpi==50, 50, 100), out.width="85%", echo=FALSE, message=FALSE, results="hide", cache=TRUE, fig.cap="ER-to-Golgi proteins: calculations without and with normalization, and free energy difference between experimental and normalization-calculated abundances.", pngquant=pngquant}
+```{r yeastplot, fig.fullwidth=TRUE, fig.width=7.5, fig.height=2.5, small.mar=TRUE, dpi=ifelse(dpi==50, 50, 100), out.width="85%", echo=FALSE, message=FALSE, results="hide", cache=TRUE, fig.cap="ER-to-Golgi proteins: calculations without and with normalization, and free energy difference between experimental and normalization-calculated abundances.", pngquant=pngquant, timeit=timeit}
 ```
 
 The minimum free energy difference occurs near `r logfO2` = -78.
@@ -1328,7 +1337,7 @@ Let's see this in action using amino acid compositions deduced from metagenomic 
 We read a data file of amino acid compositions produced in that study, taking those labelled "transferase".
 Then we add the proteins and get their indices using <span style="color:red">`add.protein()`</span>, set the basis, calculate the affinities, and make a potential diagram with temperature and activity of dissolved hydrogen as variables:
 
-```{r bison_transferase, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, fig.cap='Potential diagram for metagenomically identified sequences of transferases in the outflow channel of Bison Pool hot spring. See also the vignette <span style="color:blue">*Hot-spring proteins in CHNOSZ*</span>.', cache=TRUE, pngquant=pngquant}
+```{r bison_transferase, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, fig.cap='Potential diagram for metagenomically identified sequences of transferases in the outflow channel of Bison Pool hot spring. See also the vignette <span style="color:blue">*Hot-spring proteins in CHNOSZ*</span>.', cache=TRUE, pngquant=pngquant, timeit=timeit}
 aa <- read.aa(system.file("extdata/protein/DS11.csv", package = "CHNOSZ"))
 aa <- aa[grep("transferase", aa$protein), ]
 ip <- add.protein(aa)
@@ -1484,7 +1493,7 @@ This is similar to Figure 1.5 of Alberty (2003):
 ```
 
 <p>
-```{r ATP, fig.fullwidth=TRUE, fig.width=10, fig.height=2.5, dpi=ifelse(dpi==50, 50, 100), out.width="100%", echo=FALSE, message=FALSE, results="hide", fig.cap="Binding of H<sup>+</sup> and Mg<sup>+2</sup> to ATP at 100 °C and *I* = 0 M (first plot) or 0.25 M (third and fourth plots).", cache=TRUE, pngquant=pngquant}
+```{r ATP, fig.fullwidth=TRUE, fig.width=10, fig.height=2.5, dpi=ifelse(dpi==50, 50, 100), out.width="100%", echo=FALSE, message=FALSE, results="hide", fig.cap="Binding of H<sup>+</sup> and Mg<sup>+2</sup> to ATP at 100 °C and *I* = 0 M (first plot) or 0.25 M (third and fourth plots).", cache=TRUE, pngquant=pngquant, timeit=timeit}
 ```
 </p>
 
@@ -1541,7 +1550,7 @@ Also, we assign the objective function to be the root mean square deviation (RMS
 basis("CHNOS")
 species(AA)
 T <- 270
-res <- 80
+res <- 64
 objective <- "RMSD"
 ```
 
@@ -1571,7 +1580,7 @@ basis("O2", r$xopt)
 basis("NH3", r$yopt)
 ourfun(c(3, 5))
 findit(vars[1:3], objective, loga2=loga2, loga.balance=log10(Ctot),
-       T=T, res=10, niter=3, rat=0.6)
+       T=T, res=8, niter=3, rat=0.6)
 ourfun(c(2, 3, 5), "right")
 ```
 
@@ -1606,7 +1615,7 @@ This side effect (changing the activities of basis species) is why the text for 
 ```{r smoker_plot, eval=FALSE, echo=23:25}
 ```
 
-```{r smoker_plot, fig.fullwidth=TRUE, fig.width=9, fig.height=5, small.mar=TRUE, dpi=100, out.width="85%", echo=FALSE, message=FALSE, results="hide", cache=TRUE, fig.cap="Optimization of a thermodynamic model for relative abundances of amino acids in a 270 °C black smoker fluid using 1, 2, or 3 variables (left to right).", pngquant=pngquant}
+```{r smoker_plot, fig.fullwidth=TRUE, fig.width=9, fig.height=5, small.mar=TRUE, dpi=100, out.width="85%", echo=FALSE, message=FALSE, results="hide", cache=TRUE, fig.cap="Optimization of a thermodynamic model for relative abundances of amino acids in a 270 °C black smoker fluid using 1, 2, or 3 variables (left to right).", pngquant=pngquant, timeit=timeit}
 ```
 
 The calculation using <span style="color:red">`findit()`</span>, in which the added variable log*a*<sub>`r h2o`</sub> optimizes to ca. -2.4, shows that measured concentrations of 6 amino acids fall within 1--2 log units of the relative abundances in metastable equilibrium.

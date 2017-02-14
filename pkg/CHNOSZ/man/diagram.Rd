@@ -161,19 +161,6 @@ title(main="equilibrium logfO2 for 1e-3 mol/kg of CO2 and ... ")
 
 ### 1-D diagrams: logarithms of activities
 
-## Aqueous sulfur species (after Seewald, 1997 and 2001)
-basis("CHNOS+")
-basis("pH", 5)
-species(c("H2S", "S2-2", "S3-2", "S2O3-2", "S2O4-2", 
-  "S3O6-2", "S5O6-2", "S2O6-2", "HSO3-", "SO2", "HSO4-"))
-a <- affinity(O2=c(-50, -15), T=325, P=350)
-e <- equilibrate(a, loga.balance=-2)
-diagram(e, ylim=c(-30, 0), legend.x="topleft")
-title(main=paste("Aqueous sulfur speciation, 325 degC, 350 bar\n",
-  "After Seewald, 1997"))
-# try it with and without the loga.balance argument (total activity of 
-# the balanced quantity, in this case H2S aka sulfur) 
-
 ## Degrees of formation of ionized forms of glycine
 ## After Fig. 1 of Aksu and Doyle, 2001 
 basis("CHNOS+")
@@ -234,42 +221,6 @@ title(main=paste("HCl-H2O-CaO-CO2-MgO-(SiO2) at 300 degrees C,",
 # note: Bowers et al. use different variables (e.g. (a_Ca+2)/(a_H+)^2),
 # so the plot here is not an exact reproduction
 
-## pe-pH diagram for hydrated iron sulfides,
-## goethite and pyrite, after Majzlan et al., 2006
-# add some of these species to the database
-add.obigt()
-basis(c("Fe+2", "SO4-2", "H2O", "H+", "e-"), 
-  c(0, log10(3), log10(0.75), 999, 999))
-species(c("rhomboclase", "ferricopiapite", "hydronium jarosite",
-  "goethite", "melanterite", "pyrite"))
-a <- affinity(pH=c(-1, 4, 256), pe=c(-5, 23, 256))
-d <- diagram(a, main="Fe-S-O-H, after Majzlan et al., 2006")
-# the first four species show up along the top of the diagram
-stopifnot(all.equal(unique(t(d$predominant)[256,]), 1:4))
-water.lines(yaxis="pe")
-text(3, 22, describe.basis(thermo$basis[2:3,], digits=2, oneline=TRUE))
-text(3, 21, describe.property(c("T", "P"), c(25, 1), oneline=TRUE))
-# reset the database
-data(thermo)
-
-## Aqueous Aluminum Species F-/OH-, after Tagirov and Schott, 2001
-# some of the species are not in the default databse
-add.obigt()
-# the 999s have no effect on the diagram:
-# pH and log_a(F-) are plotting variables
-# O2 is not in the formation reactions
-# Al+3 is the balanced quantity
-basis(c("Al+3", "F-", "H+", "O2", "H2O"), c(rep(999, 4), 0))
-species(c("Al+3", "Al(OH)4-", "AlOH+2", "Al(OH)2+", "Al(OH)3",
-  "AlF+2", "AlF2+", "AlF3", "AlF4-", "Al(OH)2F2-", "Al(OH)2F",
-  "AlOHF2"), "aq")
-a <- affinity(pH=c(0, 10), "F-"=c(-1, -9), T=200)
-diagram(a, fill="heat")
-title(main=paste("Aqueous aluminium species, T=200 C, P=Psat\n",
-  "after Tagirov and Schott, 2001"))
-# restore thermodynamic database to default
-data(thermo)
-
 ## Temperature-Pressure: kayanite-sillimanite-andalusite
 # cf. Fig. 49 of Helgeson et al., 1978
 # this is a system of one component (Al2SiO5), but we need the same 
@@ -307,13 +258,9 @@ stopifnot(species()$name[d$predominant[99, 101]]=="sillimanite")
 
   LaRowe, D. E. and Helgeson, H. C. (2007) Quantifying the energetics of metabolic reactions in diverse biogeochemical systems: electron flow and ATP synthesis. \emph{Geobiology} \bold{5}, 153--168. \url{http://dx.doi.org/10.1111/j.1472-4669.2007.00099.x}
 
-  Majzlan, J., Navrotsky, A., McClesky, R. B. and Alpers, C. N. (2006) Thermodynamic properties and crystal structure refinement of ferricopiapite, coquimbite, rhomboclase, and Fe2(SO4)3(H2O)5. \emph{Eur. J. Mineral.} \bold{18}, 175--186. \url{http://dx.doi.org/10.1127/0935-1221/2006/0018-0175}
-
   Seewald, J. S. (1997) Mineral redox buffers and the stability of organic compounds under hydrothermal conditions. \emph{Mat. Res. Soc. Symp. Proc.} \bold{432}, 317--331. \url{http://dx.doi.org/10.1557/PROC-432-317}
 
   Seewald, J. S. (2001) Aqueous geochemistry of low molecular weight hydrocarbons at elevated temperatures and pressures: Constraints from mineral buffered laboratory experiments \emph{Geochim. Cosmochim. Acta} \bold{65}, 1641--1664. \url{http://dx.doi.org/10.1016/S0016-7037(01)00544-0}
-
-  Tagirov, B. and Schott, J. (2001) Aluminum speciation in crustal fluids revisited. \emph{Geochim. Cosmochim. Acta} \bold{65}, 3965--3992. \url{http://dx.doi.org/10.1016/S0016-7037(01)00705-0}
 
 }
 

@@ -244,7 +244,7 @@ aaA <- function() {
 }
 
 aaB <- function() {
-  a <- affinity(O2=c(-90, -70, res), H2O=c(-20, 10, res))
+  a <- affinity(O2=c(-90, -70, 80), H2O=c(-20, 10, 80))
   e <- equilibrate(a, balance=1)
   diagram(e, names=aa)
 }
@@ -255,7 +255,7 @@ aaC <- function() {
 }
 
 aaD <- function() {
-  a <- affinity(O2=c(-71, -66), H2O=c(-8, 4))
+  a <- affinity(O2=c(-71, -66, 80), H2O=c(-8, 4, 80))
   e <- equilibrate(a, balance="CO2")
   diagram(e, names=aa)
 }
@@ -427,7 +427,7 @@ Code for the figures.
 
 <<PRfigures>>=
 prA <- function() {
-  a <- affinity(O2=c(-90, -70, res), H2O=c(-20, 0, res))
+  a <- affinity(O2=c(-90, -70, 80), H2O=c(-20, 0, 80))
   e <- equilibrate(a, balance="length", loga.balance=0)
   diagram(e, names=organisms)
 }

@@ -1,4 +1,7 @@
 sources         cross-check the reference list with the thermodynamic database
+protein.equil   chemical activities of two proteins in metastable equilibrium
+add.obigt       a couple of diagrams using the secondary thermodynamic database
+affinity        affinities of metabolic reactions and amino acid synthesis
 NaCl            equilibrium constant for aqueous NaCl dissociation
 density         density of H2O, inverted from IAPWS-95 equations
 ORP             oxidation-reduction potential of redox standards as a function of temperature

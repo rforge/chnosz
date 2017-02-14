@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-39 (2017-02-14)
+CHANGES IN CHNOSZ 1.0.8-40 (2017-02-14)
 ---------------------------------------
 
 DOCUMENTATION:
@@ -9,7 +9,8 @@ DOCUMENTATION:
 - Add eos-regress.Rmd vignette; update related functions.
 
 - Demos: add bugstab.R, rename buffer.R to protbuff.R, add new buffer.R,
-  remove nucleobase.R.
+  remove nucleobase.R, and add protein.equil.R, add.obigt.R, and
+  affinity.R (examples moved from help pages).
 
 NEW DATA AND FEATURES:
 

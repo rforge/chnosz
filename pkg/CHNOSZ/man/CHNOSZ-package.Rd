@@ -55,7 +55,7 @@ Examples without a reference (and some with references) demonstrate experimental
 
   \item Activity diagrams - plot the equilibrium activities at a single point (as barplots), or as a function of one (species activity diagrams) or two (predominance diagrams) variables (\code{\link{diagram}}).
 
-  \item Buffer calculations (\bold{experimental}) - compute activities of basis species that are determined by a buffer of one or more species (e.g., pyrite-pyrrhotite-magnetite; acetic acid-CO2) (\code{\link{buffer}}).
+  \item Buffer calculations - compute activities of basis species that are determined by a buffer of one or more species (e.g., pyrite-pyrrhotite-magnetite; acetic acid-CO2) (\code{\link{buffer}}).
 
   \item Activity statistics (\bold{experimental}) - calculate summary statistics for equilibrium activities of species (\code{\link{revisit}}).
 

@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-40 (2017-02-14)
+CHANGES IN CHNOSZ 1.0.8-41 (2017-02-15)
 ---------------------------------------
 
 DOCUMENTATION:
@@ -6,11 +6,11 @@ DOCUMENTATION:
 - Replace anintro.Rnw (Sweave) with rewritten anintro.Rmd (knitr, Tufte
   style).
 
-- Add eos-regress.Rmd vignette; update related functions.
+- Add eos-regress.Rmd.
 
-- Demos: add bugstab.R, rename buffer.R to protbuff.R, add new buffer.R,
-  remove nucleobase.R, and add protein.equil.R, add.obigt.R, and
-  affinity.R (examples moved from help pages).
+- Demos: Move examples from help pages to protein.equil.R, add.obigt.R,
+  and affinity.R; add bugstab.R; update buffer.R and rename old buffer.R
+  to protbuff.R; remove nucleobase.R.
 
 NEW DATA AND FEATURES:
 

@@ -245,7 +245,7 @@ To calculate the standard molal properties of species and reactions, use <span s
 The inspiration for the name <span style="color:green">`subcrt()`</span>, and the source of the Fortran subroutine used to calculate the thermodynamic properties of H<sub>2</sub>O, is SUPCRT (Johnson et al., 1992).
 ```
 <sup>[-@JOH92]</sup>
-If no reaction coefficients are given, <span style="color:green">`subcrt()`</span> calculates the standard molal properties of invididual species:
+If no reaction coefficients are given, <span style="color:green">`subcrt()`</span> calculates the standard molal properties of individual species:
 ```{r subcrt_water}
 subcrt("water")
 ```
@@ -478,7 +478,7 @@ legend("topleft", c("acetate oxidation", "acetoclastic methanogenesis",
 ```{r methanogenesis_plot, eval=FALSE}
 ```
 
-Let't not forget to clear the system settings, which were modified by <span style="color:red">`basis()`</span> and <span style="color:red">`E.units()`</span>, before running other calculations:
+Let's not forget to clear the system settings, which were modified by <span style="color:red">`basis()`</span> and <span style="color:red">`E.units()`</span>, before running other calculations:
 ```{r data_thermo, message=FALSE}
 ```
 
@@ -497,9 +497,9 @@ Some available keywords are `CHNOS` (including CO<sub>2</sub>, H<sub>2</sub>O, N
 See <span style="color:blue">`?basis`</span> for more options.
 ```
 ```{marginfigure}
-What is `SO42-`? Is it 1 S, 4 O, and 2 -ve charges, or 1 S, 42 O, and 1 -ve charge?
+What is `SO42-`? Is it 1 S, 4 O, and 2 negative charges, or 1 S, 42 O, and 1 negative charge?
 The ambiguity of a digit that could belong to the coefficient for the following charge or to that for the preceding element is why formulas in CHNOSZ are written with the number of charges after the + or - symbol.
-`SO4-2` is unambiguously parsed as 1 S, 4 O and 2 -ve charges.
+`SO4-2` is unambiguously parsed as 1 S, 4 O and 2 negative charges.
 ```
 ```{r basis_CHNOSZ, results="hide"}
 basis("CHNOS+")
@@ -774,7 +774,7 @@ This balanced, or conserved, basis species must be present (with a positive or n
 
 For a given total activity of the balanced basis species, activities of the species can be found such that the affinities of the formation reactions are all equal.
 This is an example of metastable equilibrium.
-With additional constraints, the affinites of the formation reactions are not only equal to each other, but equal to zero.
+With additional constraints, the affinities of the formation reactions are not only equal to each other, but equal to zero.
 This is total equilibrium.
 An example of total equilibrium was given above for the PPM buffer.
 In contrast, models for systems of organic and biomolecules often involve metastable equilibrium constraints.
@@ -940,7 +940,7 @@ lapply(c("1", "CO2", "H2O", "N2", "volume"), aafun)
 ```
 
 There are some broad similarities---increasing `r logfO2` favors more oxidized amino acids---but also substantial differences.
-It is interesting that there is more "going on" in the middle part of the digram showing volume conservation.
+It is interesting that there is more "going on" in the middle part of the diagram showing volume conservation.
 
 *Caveat lector*. These plots demonstrate some possibilities in CHNOSZ and are not necessarily realistic portrayals of this system.
 It does seem odd to balance on a fugacious component like `r o2` or `r h2o`.
@@ -1357,7 +1357,7 @@ a <- affinity(iprotein = ip)
 
 As shown there, the `iprotein` argument of <span style="color:green">`affinity()`</span> can be used to calculate the affinities of reactions to form the indicated proteins, bypassing the <span style="color:red">`species()`</span> step.
 Let's see this in action using amino acid compositions deduced from metagenomic sequences in the Bison Pool hot spring in Yellowstone [@DS11].
-We read a data file of amino acid compositions produced in that study, taking those labelled "transferase".
+We read a data file of amino acid compositions produced in that study, taking those labeled "transferase".
 Then we add the proteins and get their indices using <span style="color:red">`add.protein()`</span>, set the basis, calculate the affinities, and make a potential diagram with temperature and activity of dissolved hydrogen as variables:
 
 ```{r bison_transferase, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, fig.cap='Potential diagram for metagenomically identified sequences of transferases in the outflow channel of Bison Pool hot spring. See also the vignette <span style="color:blue">*Hot-spring proteins in CHNOSZ*</span>.', cache=TRUE, pngquant=pngquant, timeit=timeit}
@@ -1607,7 +1607,7 @@ findit(vars[1:3], objective, loga2 = loga2, loga.balance = log10(Ctot),
 ourfun(c(2, 3, 5), "right")
 ```
 
-Now, we write a function that calculates the affinities and metasable equilibrium activities at a single condition and uses <span style="color:green">`revisit()`</span> to make a scatter plot.
+Now, we write a function that calculates the affinities and metastable equilibrium activities at a single condition and uses <span style="color:green">`revisit()`</span> to make a scatter plot.
 The plot includes a 1:1 line (grey), a trend line calculated using R's `loess.smooth()` (red), and a title with the minimum value of RMSD.
 The function also adds a legend summarizing the optimal conditions:
 ```{r smoker_plot, eval=FALSE, echo=7:14}
@@ -1703,7 +1703,7 @@ Please check the data entries and references carefully!
 
 Given a file name, <span style="color:red">`add.obigt()`</span> adds data in that file to database in the running session.
 The file must be a CSV (comma separated value) file with column headers that match those in the main database.
-To show the requred format, we print here the first few lines of `OBIGT-2.csv`.
+To show the required format, we print here the first few lines of `OBIGT-2.csv`.
 Missing values are indicated by `NA`:
 ```{marginfigure}
 R's `read.csv()` has a useful option: `as.is = TRUE`.

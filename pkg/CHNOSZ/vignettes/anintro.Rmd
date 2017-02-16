@@ -828,7 +828,7 @@ In contrast, models for systems of organic and biomolecules often involve metast
 
 The <span style="color:green">`equilibrate()`</span> function in CHNOSZ automatically chooses between two methods for calculating equilibrium.
 ```{marginfigure}
-For more information, see the vignette <span style="color:blue">*Equilibrium in CHNOSZ*</span>.
+For more information, see the vignette [<span style="color:blue">*Equilibrium in CHNOSZ*</span>](equilibrium.pdf).
 ```
 The method based on the Boltzmann equation is fast, but is applicable only to systems where the coefficient on the balanced basis species in each of the formation reactions is one.
 The reaction-matrix method is slower, but can be applied to systems were the balanced basis species has reaction coefficients other than one.
@@ -1213,7 +1213,7 @@ However, there is an additional consideration: owing to the large size of protei
 The metastable coexistence of the *residues* (i.e. per-residue formulas, or residue equivalents) of the same proteins spans a much smaller range of chemical activities.
 In CHNOSZ, the calculation of metastable equilibrium activities of the residue equivalents is referred to as *normalization*.
 ```{marginfigure}
-See the vignette <span style="color:blue">*Equilibrium in CHNOSZ*</span> for other examples using normalization.
+See the vignette [<span style="color:blue">*Equilibrium in CHNOSZ*</span>](equilibrium.pdf) for other examples using normalization.
 ```
 
 To take an example, let's look at the metastable equilibrium distribution of selected proteins in the ER-to-Golgi location of *S. cerevisiae* (yeast).
@@ -1407,7 +1407,7 @@ Let's see this in action using amino acid compositions deduced from metagenomic 
 We read a data file of amino acid compositions produced in that study, taking those labeled "transferase".
 Then we add the proteins and get their indices using <span style="color:red">`add.protein()`</span>, set the basis, calculate the affinities, and make a potential diagram with temperature and activity of dissolved hydrogen as variables:
 
-```{r bison_transferase, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, fig.cap='Potential diagram for metagenomically identified sequences of transferases in the outflow channel of Bison Pool hot spring. See also the vignette <span style="color:blue">*Hot-spring proteins in CHNOSZ*</span>.', cache=TRUE, pngquant=pngquant, timeit=timeit}
+```{r bison_transferase, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, fig.cap='Potential diagram for metagenomically identified sequences of transferases in the outflow channel of Bison Pool hot spring. See also the vignette [<span style="color:blue">*Hot-spring proteins in CHNOSZ*</span>](hotspring.pdf).', cache=TRUE, pngquant=pngquant, timeit=timeit}
 aa <- read.aa(system.file("extdata/protein/DS11.csv", package = "CHNOSZ"))
 aa <- aa[grep("transferase", aa$protein), ]
 ip <- add.protein(aa)
@@ -1916,12 +1916,12 @@ Some functions in CHNOSZ lie outside the main workflow described above.
 
 ## Regressing thermodynamic data
 
-<span style="color:green">`EOSregress()`</span> and related functions can be used to regress "equation of state" parameters (e.g. coefficients in the HKF equations) from heat capacity and volumetric data. See <span style="color:blue">`?EOSregress`</span> and the vignette, [<span style="color:blue">*Regressing thermodynamic data*</span>](../eos-regress.html).
+<span style="color:green">`EOSregress()`</span> and related functions can be used to regress "equation of state" parameters (e.g. coefficients in the HKF equations) from heat capacity and volumetric data. See <span style="color:blue">`?EOSregress`</span> and the vignette, [<span style="color:blue">*Regressing thermodynamic data*</span>](eos-regress.html).
 
 ## Gibbs energy minimization
 
 <span style="color:green">`wjd()`</span> implements a Gibbs energy minimization using the method of steepest descent described by @WJD58.
-See <span style="color:blue">`?wjd`</span> as well as the vignette, <span style="color:blue">*Winding journey down (in Gibbs energy)*</span>.
+See <span style="color:blue">`?wjd`</span> as well as the vignette, [<span style="color:blue">*Winding journey down (in Gibbs energy)*</span>](wjd.pdf).
 
 ## Reaction paths (experimental feature) {#Reaction-paths-experimental-feature}
 

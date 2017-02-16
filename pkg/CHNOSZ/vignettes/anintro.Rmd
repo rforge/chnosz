@@ -41,9 +41,14 @@ h2o <- "H<sub>2</sub>O"
 
 ```{r setup, include=FALSE}
 library(knitr)
+
+## from "Tufte Handout" example dated 2016-12-27
 # invalidate cache when the tufte version changes
 opts_chunk$set(tidy = FALSE, cache.extra = packageVersion('tufte'))
 options(htmltools.dir.version = FALSE)
+
+## adjust plot margins
+## first one from https://yihui.name/knitr/hooks/
 knit_hooks$set(small.mar = function(before, options, envir) {
     if (before) par(mar = c(4.2, 4.2, .1, .1))  # smaller margin on top and right
 })
@@ -66,7 +71,8 @@ if (!nzchar(Sys.which("pngquant"))) {
   dpi <- 72
 }
 
-## extend knitr's hook_plot_custom to check for existence of figure file 20170216
+## pandoc error is caused by non-existent figure in rubisco_svg chunk when RSVGTipsDevice is not available,
+## so extend knitr's hook_plot_custom to check for existence of figure file 20170216
 ## first, we need to copy a couple of knitr's utility functions
 # if LHS is NULL, return the RHS
 `%n%` = function(x, y) if (is.null(x)) y else x
@@ -92,7 +98,7 @@ hook_plot_custom_checkfile = function(before, options, envir){
   ext = options$fig.ext %n% dev2ext(options$dev)
   hook = knit_hooks$get('plot')
 
-  # do not show non-existent figure (causes pandoc error)
+  # do not show non-existent figure
   if (!file.exists(fig_path(ext, options, 1))) return()
 
   n = options$fig.num
@@ -125,6 +131,28 @@ knit_hooks$set(timeit = function(before) {
     }
 })
 timeit <- NULL
+
+## 20170216 workaround for R CMD check warning only on Windows (R-Forge, winbuilder):
+# * checking re-building of vignette outputs ... WARNING
+# Error in re-building vignettes:
+#  ...
+# Warning in get_engine(options$engine) :
+#  Unknown language engine 'marginfigure' (must be registered via knit_engines$set()).
+## 
+## from html.R in tufte package:
+knitr::knit_engines$set(marginfigure = function(options) {
+  options$type = 'marginnote'
+  if (is.null(options$html.tag)) options$html.tag = 'span'
+  options$html.before = marginnote_html()
+  eng_block = knitr::knit_engines$get('block')
+  eng_block(options)
+})
+marginnote_html = function(text = '', icon = '&#8853;') {
+  sprintf(paste0(
+    '<label for="tufte-mn-" class="margin-toggle">%s</label>',
+    '<input type="checkbox" id="tufte-mn-" class="margin-toggle">%s'
+  ), icon, text)
+}
 ```
 
 # First steps

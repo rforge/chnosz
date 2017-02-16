@@ -30,6 +30,15 @@ options(width = 80)
 options(digits = 6)
 ```
 
+```{r HTML, include=FALSE}
+## some frequently used HTML expressions
+logfO2 <- "log<i>f</i><sub>O<sub>2</sub></sub>"
+# use lowercase here because these tend to be variable names in the examples
+zc <- "<i>Z</i><sub>C</sub>"
+o2 <- "O<sub>2</sub>"
+h2o <- "H<sub>2</sub>O"
+```
+
 ```{r setup, include=FALSE}
 library(knitr)
 # invalidate cache when the tufte version changes
@@ -44,7 +53,8 @@ knit_hooks$set(tiny.mar = function(before, options, envir) {
 knit_hooks$set(smallish.mar = function(before, options, envir) {
     if (before) par(mar = c(4.2, 4.2, 0.9, 0.9))  # smallish margins on top and right
 })
-# use pngquant to optimize PNG images
+
+## use pngquant to optimize PNG images
 knit_hooks$set(pngquant = hook_pngquant)
 # pngquant isn't available on R-Forge ...
 if (!nzchar(Sys.which("pngquant"))) {
@@ -55,23 +65,58 @@ if (!nzchar(Sys.which("pngquant"))) {
   pngquant <- "--speed=1 --quality=0-50"
   dpi <- 72
 }
-# some frequently used HTML expressions
-logfO2 <- "log<i>f</i><sub>O<sub>2</sub></sub>"
-# use lowercase here because these tend to be variable names in the examples
-zc <- "<i>Z</i><sub>C</sub>"
-o2 <- "O<sub>2</sub>"
-h2o <- "H<sub>2</sub>O"
-# http://stackoverflow.com/questions/23852753/knitr-with-gridsvg
-# Set up a chunk hook for manually saved plots.
-knit_hooks$set(custom.plot = hook_plot_custom)
-# hook to change <img /> to <embed /> -- required for interactive SVG
+
+## extend knitr's hook_plot_custom to check for existence of figure file 20170216
+## first, we need to copy a couple of knitr's utility functions
+# if LHS is NULL, return the RHS
+`%n%` = function(x, y) if (is.null(x)) y else x
+# recycle some plot options such as fig.cap, out.width/height, etc when there
+# are multiple plots per chunk
+.recyle.opts = c('fig.cap', 'fig.scap', 'fig.env', 'fig.pos', 'fig.subcap',
+                 'out.width', 'out.height', 'out.extra', 'fig.link')
+# when passing options to plot hooks, reduce the recycled options to scalars
+reduce_plot_opts = function(options) {
+  i = options$fig.cur %n% 1L
+  for (o in .recyle.opts) {
+    v = options[[o]]
+    if ((n <- length(v)) == 0) next
+    if ((j <- i %% n) == 0) j = n
+    options[o] = list(v[j])
+  }
+  options
+}
+hook_plot_custom_checkfile = function(before, options, envir){
+  if (before) return() # run hook after the chunk
+  if (options$fig.show == 'hide') return() # do not show figures
+
+  ext = options$fig.ext %n% dev2ext(options$dev)
+  hook = knit_hooks$get('plot')
+
+  # do not show non-existent figure (causes pandoc error)
+  if (!file.exists(fig_path(ext, options, 1))) return()
+
+  n = options$fig.num
+  if (n == 0L) n = options$fig.num = 1L # make sure fig.num is at least 1
+  res = unlist(lapply(seq_len(n), function(i) {
+    options$fig.cur = i
+    hook(fig_path(ext, options, i), reduce_plot_opts(options))
+  }), use.names = FALSE)
+  paste(res, collapse = '')
+}
+
+## http://stackoverflow.com/questions/23852753/knitr-with-gridsvg
+## Set up a chunk hook for manually saved plots.
+knit_hooks$set(custom.plot = hook_plot_custom_checkfile)
+
+## hook to change <img /> to <embed /> -- required for interactive SVG
 hook_plot <- knit_hooks$get("plot")
 knit_hooks$set(plot = function(x, options) {
   x <- hook_plot(x, options)
   if (!is.null(options$embed.tag) && options$embed.tag) x <- gsub("<img ", "<embed ", x)
   x
 })
-# http://stackoverflow.com/questions/30530008/hook-to-time-knitr-chunks
+
+## http://stackoverflow.com/questions/30530008/hook-to-time-knitr-chunks
 now = Sys.time()
 knit_hooks$set(timeit = function(before) {
     if (before) { now <<- Sys.time() }
@@ -914,7 +959,8 @@ We do this by setting the names and line types for the *other* species to values
 How about the choice between balancing constraints?
 Be default, <span style="color:green">`equilibrate()`</span> and <span style="color:green">`diagram()`</span> balance reactions on the first basis species that is present in each of the species of interest.
 Let's look at some amino acids in a hypothetical metastable equilibrium.
-This calculation is based on one described by @Sho90b for five amino acids, but here we include 20 proteinogenic amino acids, whose names are returned by <span style="color:green">`aminoacids("")`</span>.
+This calculation is loosely based on one described by @Sho90b for five amino acids.
+Here we include 20 proteinogenic amino acids, whose names are returned by <span style="color:green">`aminoacids("")`</span>.
 We use <span style="color:green">`ZC.col()`</span> to generate colors based on the average oxidation state of carbon of the amino acids (red and blue for relatively reduced and oxidized).
 ```{r aminoacids_setup, results="hide", message=FALSE}
 basis("CHNOS")
@@ -1064,7 +1110,8 @@ Then, we calculate `r zc` from the formulas of the proteins.
 Next, point symbols are assigned according to domain (Archaea, Bacteria, Eukaryota); numbers inside the symbols show the ordering of *T*<sub>opt</sub> in three temperature ranges (0--35 °C, 37.5--60 °C, and 65--100 °C).
 
 ```{r rubisco_svg, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, out.width="100%", fig.keep='none', fig.ext='svg', custom.plot=TRUE, embed.tag=TRUE, echo=FALSE, results="hide", message=FALSE, fig.cap='Average oxidation state of carbon in Rubisco compared with optimal growth temperature of organisms. **This is an interactive image.** Move the mouse over the points to show the names of the organisms, and click to open a reference in a new window. (Made using [RSVGTipsDevice](https://cran.r-project.org/package=RSVGTipsDevice) with code that can be found in the source of this document.)', cache=TRUE, timeit=timeit}
-if(require("RSVGTipsDevice")) {
+if(!identical(class(try(find.package("RSVGTipsDevice"), silent=TRUE)), "try-error")) {
+  library(RSVGTipsDevice)
   datfile <- system.file("extdata/cpetc/rubisco.csv", package = "CHNOSZ")
   fastafile <- system.file("extdata/fasta/rubisco.fasta", package = "CHNOSZ")
   dat <- read.csv(datfile)
@@ -1099,7 +1146,7 @@ if(require("RSVGTipsDevice")) {
 }
 ```
 ```{r rubisco_ZC, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Average oxidation state of carbon in Rubisco compared with optimal growth temperature of organisms.", cache=TRUE, pngquant=pngquant, timeit=timeit}
-if(!require("RSVGTipsDevice")) {
+if(identical(class(try(find.package("RSVGTipsDevice"), silent=TRUE)), "try-error")) {
 datfile <- system.file("extdata/cpetc/rubisco.csv", package = "CHNOSZ")
 fastafile <- system.file("extdata/fasta/rubisco.fasta", package = "CHNOSZ")
 dat <- read.csv(datfile)
@@ -1134,7 +1181,7 @@ This basis strengthens the relationship between *n*&#773;<sub>`r o2`</sub> and `
 
 ```{r rubisco_O2, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, fig.cap="Compositions of proteins projected into different sets of basis species.", cache=TRUE, pngquant=pngquant, timeit=timeit}
 layout(matrix(1:4, nrow = 2))
-par(mgp=c(1.8, 0.5, 0))
+par(mgp = c(1.8, 0.5, 0))
 pl <- protein.length(aa)
 ZClab <- axis.label("ZC")
 nO2lab <- expression(bar(italic(n))[O[2]])
@@ -1780,7 +1827,7 @@ dat <- read.csv(file, as.is = TRUE)
 nrow(dat)
 ```
 
-Without additional information, there is often no clear strategy for "fixing" these entries, and they are provided as-is.
+Without additional information, there is often no clear strategy for "fixing" these entries, and they are provided as is.
 ```{marginfigure}
 See the [Numerical Tools from GEOPIG](http://geopig.asu.edu/tools) for SUPCRT updates (slop files), including corrections that have not yet been ported to CHNOSZ.
 ```
@@ -1869,7 +1916,7 @@ Some functions in CHNOSZ lie outside the main workflow described above.
 
 ## Regressing thermodynamic data
 
-<span style="color:green">`EOSregress()`</span> and related functions can be used to regress "equation of state" parameters (e.g. coefficients in the HKF equations) from heat capacity and volumetric data. See <span style="color:blue">`?EOSregress`</span> and the vignette, <span style="color:blue">*Regressing thermodynamic data*</span>.
+<span style="color:green">`EOSregress()`</span> and related functions can be used to regress "equation of state" parameters (e.g. coefficients in the HKF equations) from heat capacity and volumetric data. See <span style="color:blue">`?EOSregress`</span> and the vignette, [<span style="color:blue">*Regressing thermodynamic data*</span>](../eos-regress.html).
 
 ## Gibbs energy minimization
 
@@ -1941,3 +1988,8 @@ file.edit(system.file("doc/anintro.Rmd", package = "CHNOSZ"))
    ###   ###   ###   ###   ###   ###   ###   ###   ###   ###   ###   ###   ###
 ```
 </p>
+
+<!-- for finding what versions of packages are on R-Forge and winbuilder -->
+```{r sessionInfo}
+sessionInfo()
+```

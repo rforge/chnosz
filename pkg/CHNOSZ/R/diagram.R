@@ -12,7 +12,7 @@ diagram <- function(
   what="loga.equil", alpha=FALSE, normalize=FALSE, as.residue=FALSE, balance=NULL,
   groups=as.list(1:length(eout$values)), xrange=NULL,
   # plot dimensions
-  mar=NULL, yline=par("mgp")[1]+0.7, side=1:4,
+  mar=NULL, yline=par("mgp")[1]+0.5, side=1:4,
   # axes
   ylog=TRUE, xlim=NULL, ylim=NULL, xlab=NULL, ylab=NULL, 
   # sizes

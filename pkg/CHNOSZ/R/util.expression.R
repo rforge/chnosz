@@ -21,9 +21,10 @@ expr.species <- function(species, state="", log="", value=NULL) {
       # recover the coefficient
       if(elements[i]==1) coeff <- "" else coeff <- elements[i]
       # append the coefficient
-      # subscripts within subscripts (log) are too small
-      if(log != "") expr <- substitute(a*b, list(a=expr, b=coeff))
-      else expr <- substitute(a[b], list(a=expr, b=coeff))
+      ## subscripts within subscripts (log) are too small
+      #if(log != "") expr <- substitute(a*b, list(a=expr, b=coeff))
+      #else expr <- substitute(a[b], list(a=expr, b=coeff))
+      expr <- substitute(a[b], list(a=expr, b=coeff))
     } else {
       # for charged species, don't show "Z" but do show e.g. "+2"
       coeff <- elements[i]
@@ -49,7 +50,7 @@ expr.species <- function(species, state="", log="", value=NULL) {
     if(log %in% c("aq", "cr", "liq", "cr1", "cr2", "cr3", "cr4")) acity <- "a"
     else if(log %in% c("g", "gas")) acity <- "f"
     else stop(paste("'", log, "' is not a recognized state", sep=""))
-    logacity <- substitute(log*italic(a), list(a=acity))
+    logacity <- substitute(log~italic(a), list(a=acity))
     expr <- substitute(a[b], list(a=logacity, b=expr))
     # write a value if given
     if(!is.null(value)) {
@@ -248,3 +249,26 @@ describe.reaction <- function(reaction, iname=numeric(), states=NULL) {
   return(desc)
 }
 
+# make formatted text for activity ratio 20170217
+ratlab <- function(ion="K+") {
+  # the charge
+  Z <- makeup(ion)["Z"]
+  # the text for the exponent on aH+
+  exp.H <- as.character(Z)
+  # the expression for the ion and H+
+  expr.ion <- expr.species(ion)
+  expr.H <- expr.species("H+")
+  # the final expression
+  if(exp.H=="1") substitute(log~(italic(a)[expr.ion] / italic(a)[expr.H]), list(expr.ion=expr.ion, expr.H=expr.H))
+  else substitute(log~(italic(a)[expr.ion] / italic(a)[expr.H]^exp.H), list(expr.ion=expr.ion, expr.H=expr.H, exp.H=exp.H))
+}
+
+# make formatted text for thermodynamic system 20170217
+syslab <- function(system = c("K2O", "Al2O3", "SiO2", "H2O")) {
+  for(i in seq_along(system)) {
+    expr <- expr.species(system[i])
+    # use en dash here
+    if(i==1) lab <- expr else lab <- substitute(a*"\u2013"*b, list(a=lab, b=expr))
+  }
+  lab
+}

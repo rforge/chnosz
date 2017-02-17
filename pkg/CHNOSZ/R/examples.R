@@ -5,7 +5,7 @@
 examples <- function(do.png=FALSE) {
   # run all the examples in CHNOSZ documentation
   .ptime <- proc.time()
-  topics <- c("CHNOSZ-package", "thermo", "sideeffects", "examples",
+  topics <- c("thermo", "sideeffects", "examples",
     "util.args", "util.array", "util.blast", "util.character", 
     "util.data", "util.expression", "util.fasta", "util.formula", "util.matrix", 
     "util.misc", "util.program",
@@ -31,7 +31,7 @@ examples <- function(do.png=FALSE) {
 
 demos <- function(which=c("sources", "protein.equil", "add.obigt", "affinity", "NaCl", "density", 
   "ORP", "revisit", "findit", "ionize", "buffer", "protbuff", "yeastgfp", "mosaic",
-  "copper", "solubility", "wjd", "dehydration", "bugstab"), to.file=FALSE) {
+  "copper", "solubility", "wjd", "dehydration", "bugstab", "activity_ratios"), to.file=FALSE) {
   # run one or more demos from CHNOSZ with ask=FALSE, and return the value of the last one
   for(i in 1:length(which)) {
     # say something so the user sees where we are

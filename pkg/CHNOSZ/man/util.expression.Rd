@@ -7,6 +7,8 @@
 \alias{describe.basis}
 \alias{describe.property}
 \alias{describe.reaction}
+\alias{syslab}
+\alias{ratlab}
 \title{Functions to Express Chemical Formulas and Properties}
 \description{Generate expressions suitable for axis labels and plot legends describing chemical species, properties and reactions.}
 
@@ -20,6 +22,8 @@
   describe.property(property, value, digits = 1, oneline = FALSE,
     ret.val = FALSE)
   describe.reaction(reaction, iname = numeric(), states = NULL)
+  syslab(system = c("K2O", "Al2O3", "SiO2", "H2O"))
+  ratlab(ion = "K+")
 }
 
 \arguments{
@@ -40,6 +44,8 @@
   \item{reaction}{data frame, definition of reaction}
   \item{iname}{numeric, show names instead of formulas for these species}
   \item{states}{character, if \samp{all}, show states for all species}
+  \item{system}{character, thermodynamic components}
+  \item{ion}{character, an ion}
 }
 
 \details{
@@ -85,6 +91,14 @@ If none of those characters appears in the property, the expression is an empty 
 
   \code{describe.reaction} makes an expression summarizing a chemical reaction. The \code{reaction} data frame can be generated using \code{\link{subcrt}}. Based on the sign of their reaction coefficients, species are placed on the reactant (left) or product (right) side of the reaction, where the species with their coefficients are separated by plus signs; the two sides of the reaction are separated by an equals sign. Coefficients equal to 1 are not shown. Chemical formulas of species include a designation of physical state if \code{states} is \samp{all}. Names of species (as provided in \code{reaction}) are shown instead of chemical formulas for the species identified by \code{iname}.
 
+\code{syslab} formats the given thermodynamic components (using \code{expr.species}) and adds intervening en dashes.
+
+\code{ratlab} produces a expression for the activity ratio, viz. (activity of the ion) / [(activity of H+) ^ (charge of the ion)].
+
+}
+
+\seealso{
+\code{demo(activity_ratio)} for examples of \code{syslab} and \code{ratlab}.
 }
 
 \examples{\dontshow{data(thermo)}

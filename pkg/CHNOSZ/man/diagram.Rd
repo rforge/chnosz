@@ -10,7 +10,7 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
 \usage{
   diagram(eout, what = "loga.equil", alpha = FALSE, normalize = FALSE,
     as.residue = FALSE, balance=NULL, groups=as.list(1:length(eout$values)),
-    xrange=NULL, mar=NULL, yline=par("mgp")[1]+0.7, side=1:4,
+    xrange=NULL, mar=NULL, yline=par("mgp")[1]+0.5, side=1:4,
     ylog=TRUE, xlim=NULL, ylim=NULL, xlab=NULL, ylab=NULL,
     cex=par("cex"), cex.names=1, cex.axis=par("cex"),
     lty=NULL, lwd=par("lwd"), dotted=NULL,
@@ -199,28 +199,6 @@ diagram(a, fill="heat")
 title(main=paste("Fe-S-O, 200 degrees C, 1 bar",
   "After Helgeson, 1970", sep="\n"))
 
-## Mineral equilibrium activity diagram
-## After Bowers et al., 1984, p. 246
-# Consider the system denoted by BJH84 as 
-# HCl-H2O-CaO-CO2-MgO-(SiO2) at 300 deg C and 1000 bar
-# HCl, CO2, O2 have zero stoichiometric coeffs in the species
-# Ca+2, Mg+2 are going to be on the diagram
-# SiO2 will be conserved (the immobile component)
-# (try changing any of the 999's, the diagram will be unaffected)
-basis(c("HCl","H2O","Ca+2","CO2","Mg+2","SiO2","O2","H+"),
-      c(999,0,999,999,999,999,999,-7))
-# we have to tell CHNOSZ which species to include; there are
-# others that could be in this system
-species(c("quartz","talc","forsterite","tremolite","diopside",
-          "wollastonite","monticellite","merwinite"))
-# calculate the chemical affinities of formation reactions
-a <- affinity("Mg+2"=c(-12,-4),"Ca+2"=c(-8,0),T=300,P=1000)
-diagram(a)
-title(main=paste("HCl-H2O-CaO-CO2-MgO-(SiO2) at 300 degrees C,",
-  "1000 bar and pH=7. After Bowers et al., 1984", sep="\n"))
-# note: Bowers et al. use different variables (e.g. (a_Ca+2)/(a_H+)^2),
-# so the plot here is not an exact reproduction
-
 ## Temperature-Pressure: kayanite-sillimanite-andalusite
 # cf. Fig. 49 of Helgeson et al., 1978
 # this is a system of one component (Al2SiO5), but we need the same 
@@ -249,8 +227,6 @@ stopifnot(species()$name[d$predominant[99, 101]]=="sillimanite")
 \references{
 
   Aksu, S. and Doyle, F. M. (2001) Electrochemistry of copper in aqueous glycine solutions. \emph{J. Electrochem. Soc.} \bold{148}, B51--B57. \url{http://dx.doi.org/10.1149/1.1344532}
-
-  Bowers, T. S., Jackson, K. J. and Helgeson, H. C., 1984. \emph{Equilibrium Activity Diagrams for Coexisting Minerals and Aqueous Solutions at Pressures and Temperatures to 5 kb and 600} \eqn{^{\circ}}{degrees }\emph{C}. Springer-Verlag, Heidelberg, 397 p. \url{http://www.worldcat.org/oclc/224591948}
 
   Helgeson, H. C. (1970) A chemical and thermodynamic model of ore deposition in hydrothermal systems. \emph{Mineral. Soc. Amer. Spec. Pap.} \bold{3}, 155--186. \url{http://www.worldcat.org/oclc/583263}
 

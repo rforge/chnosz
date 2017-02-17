@@ -1,0 +1,61 @@
+## Equilibrium activity diagrams for minerals using activity ratios as variables
+## These are made with pH = 0 (activity of H+ = 1), so (activity of the ion) is equal to
+## (activity of the ion) / [(activity of H+) ^ (charge of the ion)]
+
+par(mfrow = c(2, 2))
+res <- 200
+fill <- "heat"
+
+## K2O-Al2O3-SiO2-H2O, 25 degree C, 1 bar
+## Steinmann et al., 1994 (http://ccm.geoscienceworld.org/content/42/2/197)
+## Garrels and Christ, p. 361 (http://www.worldcat.org/oclc/517586)
+## https://wwwbrr.cr.usgs.gov/projects/GWC_coupled/phreeqc/html/final-75.html
+# use add.obigt to get H4SiO4
+add.obigt()
+basis(c("Al+3", "H4SiO4", "K+", "H2O", "H+", "O2"))
+species(c("gibbsite", "kaolinite", "pyrophyllite", "k-feldspar", "muscovite"))
+a <- affinity(H4SiO4 = c(-6, 0, res), `K+` = c(0, 8, res))
+diagram(a, ylab = ratlab("K+"), fill = fill)
+title(main = syslab(c("K2O", "Al2O3", "SiO2", "H2O")))
+legend("topright", describe.property(c("T", "P"), c(25, 1)), bty = "n")
+# reset database
+data(thermo)
+
+## H2O-CaO-MgO-SiO2 at 300 degree C and 1000 bar
+## Helgeson et al., 1969, p. 136 (http://www.worldcat.org/oclc/902423149)
+## Bowers et al., 1984, p. 246 (http://www.worldcat.org/oclc/224591948)
+basis(c("H2O", "Ca+2", "Mg+2", "SiO2", "O2", "H+"))
+species(c("quartz", "talc", "chrysotile", "forsterite", "monticellite",
+          "merwinite", "wollastonite", "diopside", "tremolite"))
+# calculate the chemical affinities of formation reactions
+a <- affinity("Mg+2" = c(4, 9, res), "Ca+2" = c(5, 14, res), T = 300, P = 1000)
+diagram(a, xlab = ratlab("Mg+2"), ylab = ratlab("Ca+2"), fill = fill)
+title(main = syslab(c("H2O", "CaO", "MgO", "SiO2")))
+legend("bottomright", describe.property(c("T", "P"), c(300, 1000)), bty = "n")
+# note: Bowers et al. use more complicated variables
+# (involving the hydration numbers of H2O and the ion)
+# with accordingly different axis ranges
+
+## MgO-CaO-SiO2-H2O at 300 degree C and Psat
+## Russell et al., 2010 (http://dx.doi.org/10.1111/j.1472-4669.2010.00249.x)
+basis(c("Mg+2", "Ca+2", "SiO2", "H2O", "O2", "H+"))
+species(c("brucite", "chrysotile", "talc", "tremolite", "diopside", "akermanite"))
+a <- affinity(SiO2 = c(-10, 0, res), `Ca+2` = c(0, 20, res), T = 300)
+diagram(a, ylab = ratlab("Ca+2"), fill = fill)
+title(main = syslab(c("MgO", "CaO", "SiO2", "H2O")))
+legend("topright", describe.property(c("T", "P"), c(300, 85.84)), bty = "n")
+
+## CaO-MgO-SiO2-H2O and
+## CaO-Al2O3-MgO-SiO2-H2O at 300 degree C and 500 bar
+## Bach and Klein, 2009 (http://dx.doi.org/10.1016/j.lithos.2008.10.022)
+basis(c("Ca+2", "Al+3", "Mg+2", "SiO2", "H2O", "O2", "H+"))
+species(c("clinochlore,14a", "clinozoisite", "prehnite", "grossular"))
+a <- affinity(SiO2 = c(-5, 0, res), `Ca+2` = c(6, 11, res), T = 300, P = 500)
+diagram(a, ylab = ratlab("Ca+2"), balance = "Al+3", fill = fill)
+# (Hmmm... where is clinochlore? it doesn't appear on our diagram)
+species(delete = TRUE)
+species(c("brucite", "chrysotile", "talc", "tremolite", "diopside"))
+a <- affinity(SiO2 = c(-5, 0, res), `Ca+2` = c(6, 11, res), T = 300, P = 500)
+diagram(a, add = TRUE, col = "blue", col.names = "blue")
+title(main = syslab(c("CaO", "Al2O3", "MgO", "SiO2", "H2O")))
+legend("topright", describe.property(c("T", "P"), c(300, 500)), bty = "n")

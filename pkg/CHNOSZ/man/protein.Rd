@@ -58,7 +58,7 @@ species(proteins)
 a <- affinity(O2=c(-100, -65))
 # try normalize=FALSE to make Fig. 5a in the paper
 e <- equilibrate(a, normalize=TRUE)
-d <- diagram(e, ylim=c(-5, -1), names=organisms)
+d <- diagram(e, ylim=c(-5, -1), names=organisms, format.names=FALSE)
 # add water stability line
 abline(v=-83.1, lty=2)
 title(main="Surface-layer proteins, after Dick, 2008")

@@ -1,30 +1,46 @@
-CHANGES IN CHNOSZ 1.0.8-47 (2017-02-17)
+CHANGES IN CHNOSZ 1.0.8-48 (2017-02-17)
 ---------------------------------------
 
 DOCUMENTATION:
 
-- Replace anintro.Rnw (Sweave) with rewritten anintro.Rmd (knitr, Tufte
-  style).
+- Replace anintro.Rnw (using Sweave) with rewritten anintro.Rmd (using
+  knitr with Tufte style).
 
-- Add eos-regress.Rmd.
+- Add eos-regress.Rmd (Regressing thermodynamic data).
 
-- Demos: Move examples from help pages to protein.equil.R, add.obigt.R,
-  and affinity.R; add bugstab.R; update buffer.R and rename old buffer.R
-  to protbuff.R; remove nucleobase.R.
+- New demos: bugstab.R (potential diagrams for microbial proteins in
+  colorectal cancer), activity_ratios.R (mineral stability diagrams
+  with activity ratios on the axes).
 
-NEW DATA AND FEATURES:
+- Converted demos: move examples from help pages to protein.equil.R,
+  add.obigt.R, and affinity.R.
 
-- OBIGT.csv: Add data for citric acid cycle metabolites from Canovas and
-  Shock, 2016.
+- Updated and removed demos: update buffer.R (logfH2 set by mineral
+  buffers and aqueous species) and rename old buffer.R to protbuff.R
+  (proteins as buffers); remove nucleobase.R.
 
-- extdata: Add fasta/rubisco.fasta and cpetc/*.csv files SS98_Fig5a,
-  SS98_Fig5b, PM90 (all used by anintro.Rmd).
+CHANGES TO diagram():
+
+- For the `groups` argument, activities are multiplied by the balance
+  coefficients before the summation.
+
+- Draw smoother boundary lines (with contour(); `lty` is usable), at the
+  expense of not being precisely aligned with the grid used for plotting
+  colors. For the old behavior, use `dotted=0`.
+
+- Default of `legend.x` changed to NA (instead of making a legend, put
+  labels near the lines).
+
+- Field labels: apply formatting (subscripts and superscripts) to names
+  that parse as chemical formulas; use `format.names=FALSE` to disable.
+
+- Chemical formulas that are part of the axis labels (log activity or
+  fugacity) now have formatting applied.
+
+NEW FEATURES:
 
 - Add ZC.col() for generating a red-grey-blue color scale from
   numeric values.
-
-- For the `groups` argument in diagram(), activities are multiplied
-  by the balance coefficients before the summation.
 
 - Add "QEC" as a keyword for preset species in basis() (glutamine,
   glutamic acid, cysteine, H2O, oxygen).
@@ -36,13 +52,6 @@ NEW DATA AND FEATURES:
   (accession, name, organism) into columns of the output data frame
   (protein, abbrv, organism).
 
-- diagram() draws smoother boundary lines (with contour(); `lty` is
-  usable), at the expense of not being precisely aligned with the grid
-  used for plotting colors. For the old behavior, use `dotted=0`.
-
-- diagram() applies formatting (subscripts and superscripts) to names
-  that parse as chemical formulas; use `format.names=FALSE` to disable.
-
 - Add `...` argument to thermo.plot.new() (additional arguments for
   par()).
 
@@ -50,7 +59,7 @@ NEW DATA AND FEATURES:
   marks and lines; this is used in diagram() to redraw the axes on
   filled diagrams.
 
-- Add `...` argument to read.aaa() (additional arguments for
+- Add `...` argument to read.aa() (additional arguments for
   read.csv()).
 
 - seq2aa() removes newlines and whitespace before counting the
@@ -59,8 +68,16 @@ NEW DATA AND FEATURES:
 - read.fasta(): change argument `i` to `iseq`; this is used to select
   particular sequences to read from the file.
 
-- diagram(): default of `legend.x` changed to NA (instead of making a
-  legend, put labels near the lines).
+- Add syslab() and ratlab() to make formatted expressions for
+  sets of thermodynamic components and activity ratios.
+
+NEW DATA:
+
+- OBIGT.csv: Add data for citric acid cycle metabolites from Canovas and
+  Shock, 2016.
+
+- extdata: Add fasta/rubisco.fasta and cpetc/*.csv files SS98_Fig5a,
+  SS98_Fig5b, PM90 (all used by anintro.Rmd).
 
 CLEANUP AND BUG FIXES:
 

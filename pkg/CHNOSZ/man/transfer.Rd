@@ -71,9 +71,9 @@ Simulate a mass transfer process such as mineral weathering or sequential format
 \examples{\dontshow{data(thermo)}
 ## react potassium feldspar in a closed system
 ## after Steinmann et al., 1994 and Helgeson et al., 1969
-# load the secondary database to use H4SiO4
+# load the secondary database to use pseudo-H4SiO4 as a basis species
 add.obigt()
-basis(c("Al+3", "H4SiO4", "K+", "H2O", "H+", "O2"), c(0, -6, -6, 0, 0, 0))
+basis(c("Al+3", "pseudo-H4SiO4_25C", "K+", "H2O", "H+", "O2"), c(0, -6, -6, 0, 0, 0))
 species(c("k-feldspar", "muscovite", "pyrophyllite", "kaolinite", "gibbsite"))
 a <- affinity(H4SiO4=c(-6, -2), "K+"=c(-3, 8))
 diagram(a, fill="heat")

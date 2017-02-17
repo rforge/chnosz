@@ -49,6 +49,12 @@
 
   \code{add.obigt} reads data from the specified \code{file} and adds it to \code{\link{thermo}$obigt}. Set \code{force} to TRUE to replace species that exist in the thermodynamic database (each unique combination of a name and a state in the database is considered to be a unique species). \code{force}, if not specified, reverts to TRUE if the \code{file} is left at its default. Given the default setting of \code{E.units}, the function does not perform any unit conversions. If \code{E.units} is set to \samp{J}, then the thermodynamic parameters are converted from units of Joules to calories, as used in the CHNOSZ database. 
 
+  Notes on the secondary database added by \code{add.obigt} (OBIGT-2.csv):
+
+  \itemize{
+     \item pseudo-H4SiO4_25T and pseudo-H4SiO4-highT are approximate pseudospecies for H4SiO4. They are chosen to minimize the properties of the reaction H4SiO4 = SiO2 + 2H2O at two temperature conditions. The properties of the 25T species, calculated using \code{\link{subcrt}}, are valid only at 25 \eqn{^{\circ}}{°}C. The highT species, taken from Steffánson, 2001, is applicable near 300 \eqn{^{\circ}}{°}C (see Figure 3 of that paper). These pseudospecies can be used to make diagrams with H4SiO4 as a basis species, instead of SiO2(aq).
+  } 
+
 \code{mod.obigt} changes one or more of the properties of species or adds species to the thermodynamic database.
 These changes are lost if you reload the database by calling \code{\link{data}(thermo)} or if you quit the \R session without saving it.
 The name of the species to add or change must be supplied as the first argument of \code{...} or as a named argument (named \samp{name}).
@@ -90,7 +96,7 @@ If \code{key} is a list, it is interpreted as the result of a call to \code{subc
 }
 
 \seealso{
-  The default supplementary thermodynamic database for \code{add.obigt} (\code{\link{extdata}/thermo/OBIGT-2.csv}) is used in some of the example calculations in the help page for \code{\link{diagram}} and also in \code{\link{anim.TCA}}.
+  The secondary thermodynamic database for \code{add.obigt} (\code{\link{extdata}/thermo/OBIGT-2.csv}) is used in some of the example calculations in the help page for \code{\link{diagram}} and also in \code{\link{anim.TCA}}.
 
   \code{\link{mod.buffer}} for updating the list of available buffers.
 }
@@ -129,6 +135,8 @@ RH2obigt()
 \references{
 
   Richard, L. and Helgeson, H. C. (1998) Calculation of the thermodynamic properties at elevated temperatures and pressures of saturated and aromatic high molecular weight solid and liquid hydrocarbons in kerogen, bitumen, petroleum, and other organic matter of biogeochemical interest. \emph{Geochim. Cosmochim. Acta} \bold{62}, 3591--3636. \url{http://dx.doi.org/10.1016/S0016-7037(97)00345-1}
+
+  Stefánsson, Andri (2001) Dissolution of primary minerals of basalt in natural waters. I. Calculation of mineral solubilities from 0°C to 350°C \emph{Chem. Geol.} \bold{172}, 225--250. \url{http://dx.doi.org/10.1016/S0009-2541(00)00263-1}
 
 }
 

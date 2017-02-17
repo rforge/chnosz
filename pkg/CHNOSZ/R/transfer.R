@@ -809,7 +809,7 @@ feldspar <- function(which="closed",plot.it=FALSE) {
   basis(delete=TRUE)
   # SLS89 use H4SiO4 instead of SiO2 - use the secondary database
   add.obigt()
-  basis(c('Al+3','H4SiO4','K+','H2O','H+','O2'))
+  basis(c('Al+3','pseudo-H4SiO4_25C','K+','H2O','H+','O2'))
   # some of SLS89's initial conditions
   basis(c('K+','H4SiO4'),c(-6,-6))
   # the candidate species
@@ -818,7 +818,7 @@ feldspar <- function(which="closed",plot.it=FALSE) {
   # setup a diagram on which to plot a reaction path
   basis('pH',0)
   a <- affinity(H4SiO4=c(-6,-2),'K+'=c(-3,8))
-  diagram(a)
+  diagram(a, ylab=ratlab("K+"))
   # identify the basis species whose activities will
   # be plotted by transfer()
   plot <- c(2,3) 

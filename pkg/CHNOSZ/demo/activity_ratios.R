@@ -4,20 +4,20 @@
 
 par(mfrow = c(2, 2))
 res <- 200
-fill <- "heat"
+fill <- "terrain"
 
 ## K2O-Al2O3-SiO2-H2O, 25 degree C, 1 bar
 ## Steinmann et al., 1994 (http://ccm.geoscienceworld.org/content/42/2/197)
 ## Garrels and Christ, p. 361 (http://www.worldcat.org/oclc/517586)
 ## https://wwwbrr.cr.usgs.gov/projects/GWC_coupled/phreeqc/html/final-75.html
-# use add.obigt to get H4SiO4
+# use add.obigt to make H4SiO4 pseudospecies available as a basis species
 add.obigt()
-basis(c("Al+3", "H4SiO4", "K+", "H2O", "H+", "O2"))
-species(c("gibbsite", "kaolinite", "pyrophyllite", "k-feldspar", "muscovite"))
-a <- affinity(H4SiO4 = c(-6, 0, res), `K+` = c(0, 8, res))
+basis(c("Al+3", "pseudo-H4SiO4_25C", "K+", "H2O", "H+", "O2"))
+species(c("gibbsite", "muscovite", "kaolinite", "pyrophyllite", "k-feldspar"))
+a <- affinity(H4SiO4 = c(-6, -2, res), `K+` = c(-3, 6, res))
 diagram(a, ylab = ratlab("K+"), fill = fill)
 title(main = syslab(c("K2O", "Al2O3", "SiO2", "H2O")))
-legend("topright", describe.property(c("T", "P"), c(25, 1)), bty = "n")
+legend("bottomleft", describe.property(c("T", "P"), c(25, 1)), bty = "n")
 # reset database
 data(thermo)
 
@@ -25,8 +25,8 @@ data(thermo)
 ## Helgeson et al., 1969, p. 136 (http://www.worldcat.org/oclc/902423149)
 ## Bowers et al., 1984, p. 246 (http://www.worldcat.org/oclc/224591948)
 basis(c("H2O", "Ca+2", "Mg+2", "SiO2", "O2", "H+"))
-species(c("quartz", "talc", "chrysotile", "forsterite", "monticellite",
-          "merwinite", "wollastonite", "diopside", "tremolite"))
+species(c("quartz", "talc", "chrysotile", "forsterite", "tremolite",
+          "diopside", "wollastonite", "monticellite", "merwinite"))
 # calculate the chemical affinities of formation reactions
 a <- affinity("Mg+2" = c(4, 9, res), "Ca+2" = c(5, 14, res), T = 300, P = 1000)
 diagram(a, xlab = ratlab("Mg+2"), ylab = ratlab("Ca+2"), fill = fill)

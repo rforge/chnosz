@@ -71,48 +71,9 @@ if (!nzchar(Sys.which("pngquant"))) {
   dpi <- 72
 }
 
-## pandoc error is caused by non-existent figure in rubisco_svg chunk when RSVGTipsDevice is not available,
-## so extend knitr's hook_plot_custom to check for existence of figure file 20170216
-## first, we need to copy a couple of knitr's utility functions
-# if LHS is NULL, return the RHS
-`%n%` = function(x, y) if (is.null(x)) y else x
-# recycle some plot options such as fig.cap, out.width/height, etc when there
-# are multiple plots per chunk
-.recyle.opts = c('fig.cap', 'fig.scap', 'fig.env', 'fig.pos', 'fig.subcap',
-                 'out.width', 'out.height', 'out.extra', 'fig.link')
-# when passing options to plot hooks, reduce the recycled options to scalars
-reduce_plot_opts = function(options) {
-  i = options$fig.cur %n% 1L
-  for (o in .recyle.opts) {
-    v = options[[o]]
-    if ((n <- length(v)) == 0) next
-    if ((j <- i %% n) == 0) j = n
-    options[o] = list(v[j])
-  }
-  options
-}
-hook_plot_custom_checkfile = function(before, options, envir){
-  if (before) return() # run hook after the chunk
-  if (options$fig.show == 'hide') return() # do not show figures
-
-  ext = options$fig.ext %n% dev2ext(options$dev)
-  hook = knit_hooks$get('plot')
-
-  # do not show non-existent figure
-  if (!file.exists(fig_path(ext, options, 1))) return()
-
-  n = options$fig.num
-  if (n == 0L) n = options$fig.num = 1L # make sure fig.num is at least 1
-  res = unlist(lapply(seq_len(n), function(i) {
-    options$fig.cur = i
-    hook(fig_path(ext, options, i), reduce_plot_opts(options))
-  }), use.names = FALSE)
-  paste(res, collapse = '')
-}
-
 ## http://stackoverflow.com/questions/23852753/knitr-with-gridsvg
 ## Set up a chunk hook for manually saved plots.
-knit_hooks$set(custom.plot = hook_plot_custom_checkfile)
+knit_hooks$set(custom.plot = hook_plot_custom)
 
 ## hook to change <img /> to <embed /> -- required for interactive SVG
 hook_plot <- knit_hooks$get("plot")
@@ -131,28 +92,6 @@ knit_hooks$set(timeit = function(before) {
     }
 })
 timeit <- NULL
-
-## 20170216 workaround for R CMD check warning only on Windows (R-Forge, winbuilder):
-# * checking re-building of vignette outputs ... WARNING
-# Error in re-building vignettes:
-#  ...
-# Warning in get_engine(options$engine) :
-#  Unknown language engine 'marginfigure' (must be registered via knit_engines$set()).
-## 
-## from html.R in tufte package:
-knitr::knit_engines$set(marginfigure = function(options) {
-  options$type = 'marginnote'
-  if (is.null(options$html.tag)) options$html.tag = 'span'
-  options$html.before = marginnote_html()
-  eng_block = knitr::knit_engines$get('block')
-  eng_block(options)
-})
-marginnote_html = function(text = '', icon = '&#8853;') {
-  sprintf(paste0(
-    '<label for="tufte-mn-" class="margin-toggle">%s</label>',
-    '<input type="checkbox" id="tufte-mn-" class="margin-toggle">%s'
-  ), icon, text)
-}
 ```
 
 # First steps
@@ -1137,9 +1076,11 @@ To put the proteins in the right order, the IDs in the CSV file are matched to t
 Then, we calculate `r zc` from the formulas of the proteins.
 Next, point symbols are assigned according to domain (Archaea, Bacteria, Eukaryota); numbers inside the symbols show the ordering of *T*<sub>opt</sub> in three temperature ranges (0--35 °C, 37.5--60 °C, and 65--100 °C).
 
-<!--
-```{r rubisco_svg, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, out.width="100%", fig.keep='none', fig.ext='svg', custom.plot=TRUE, embed.tag=TRUE, echo=FALSE, results="hide", message=FALSE, fig.cap='Average oxidation state of carbon in Rubisco compared with optimal growth temperature of organisms. **This is an interactive image.** Move the mouse over the points to show the names of the organisms, and click to open a reference in a new window. (Made using [RSVGTipsDevice](https://cran.r-project.org/package=RSVGTipsDevice) with code that can be found in the source of this document.)', cache=TRUE, timeit=timeit}
-#if(suppressWarnings(require(RSVGTipsDevice))) {
+```{r rubisco_svg, echo=FALSE, results="hide", fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, out.width="100%", fig.ext='svg', custom.plot=TRUE, embed.tag=TRUE, fig.cap='Average oxidation state of carbon in Rubisco compared with optimal growth temperature of organisms. **This is an interactive image.** Move the mouse over the points to show the names of the organisms, and click to open a reference in a new window. (Made using [RSVGTipsDevice](https://cran.r-project.org/package=RSVGTipsDevice) with code that can be found in the source of this document.)'}
+## copies the premade SVG image to the knitr figure path
+file.copy("rubisco.svg", fig_path(".svg"))
+## the code for making the SVG image -- not "live" in the vignette because RSVGTipsDevice isn't available on Windows
+#if(require(RSVGTipsDevice)) {
 #  datfile <- system.file("extdata/cpetc/rubisco.csv", package = "CHNOSZ")
 #  fastafile <- system.file("extdata/fasta/rubisco.fasta", package = "CHNOSZ")
 #  dat <- read.csv(datfile)
@@ -1152,7 +1093,7 @@ Next, point symbols are assigned according to domain (Archaea, Bacteria, Eukaryo
 #  col <- match(dat$domain, c("A", "B", "E")) + 1
 #  # because the tooltip titles in the SVG file are shown by recent browsers,
 #  # we do not need to draw the tooltips explicitly, so set toolTipMode=0
-#  devSVGTips(fig_path('.svg'), toolTipMode=0, title="Rubisco")
+#  devSVGTips("rubisco.svg", toolTipMode=0, title="Rubisco")
 #  par(cex=1.4)
 #  # unfortunately, plotmath can't be used with devSVGTips,
 #  # so axis labels here don't contain italics.
@@ -1173,9 +1114,8 @@ Next, point symbols are assigned according to domain (Archaea, Bacteria, Eukaryo
 #  dev.off()
 #}
 ```
--->
-```{r rubisco_ZC, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Average oxidation state of carbon in Rubisco compared with optimal growth temperature of organisms.", cache=TRUE, pngquant=pngquant, timeit=timeit}
-#if(!suppressWarnings(require(RSVGTipsDevice))) {
+
+```{r rubisco_ZC, fig.keep="none"}
 datfile <- system.file("extdata/cpetc/rubisco.csv", package = "CHNOSZ")
 fastafile <- system.file("extdata/fasta/rubisco.fasta", package = "CHNOSZ")
 dat <- read.csv(datfile)
@@ -1193,9 +1133,6 @@ text(Topt, ZC, rep(1:9, 3), cex = 0.8)
 abline(v = c(36, 63), lty = 2, col = "grey")
 legend("topright", legend = c("Archaea", "Bacteria", "Eukaryota"),
        pch = c(2, 1, 0), col = 2:4, pt.cex = 2)
-#}
-```
-```{r rubisco_ZC, eval=FALSE, echo=2:18}
 ```
 
 Let's look at the different ways of representing the chemical compositions of the proteins.

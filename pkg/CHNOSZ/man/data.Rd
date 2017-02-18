@@ -90,14 +90,8 @@ This is sometimes a useful command to use during an interactive session, when pr
      \item The properties and parameters of some reference unfolded proteins used by Dick et al., 2006 are included here. Their names have dashes, instead of underscores, so that they are not confused with proteins whose properties are generated at runtime.
      \item The standard molal Gibbs energies and enthalpies of formation of the elements and entropies at 25 \eqn{^{\circ}}{°}C and 1 bar of aqueous metal-amino acid (alanate or glycinate) complexes reported by Shock and Koretsky, 1995 were recalculated by adding to their values the differences in the corresponding properties between the values for aqueous alanate and glycinate used by Shock and Koretsky, 1995, and those used by Amend and Helgeson, 1997b and Dick et al., 2006.
      \item The standard molal properties and equations-of-state parameters of four phase species (see below) of Fe(cr) were generated from heat capacity data given by Robie and Hemingway, 1995. 
+     \item \samp{pseudo-H4SiO4} is an approximate pseudospecies for H4SiO4. \samp{pseudo-H4SiO4} has thermodynamic properties that give zero properties for the reaction H4SiO4 = SiO2 + 2H2O at 25 \eqn{^{\circ}}{°}C, and HKF coefficients that are applicable to moderate temperatures (see the vignette \emph{Regressing thermodynamic data}).
   } 
-
-  Notes on the secondary database added by \code{add.obigt} (OBIGT-2.csv):
-
-  \itemize{
-     \item \samp{pseudo-H4SiO4} and \samp{pseudo-H4SiO4_Ste01} are approximate pseudospecies for H4SiO4. \samp{pseudo-H4SiO4} has thermodynamic properties that give zero properties for the reaction H4SiO4 = SiO2 + 2H2O at 25 \eqn{^{\circ}}{°}C, and HKF coefficients that are applicable to moderate temperatures (see the vignette `eos-regress.Rmd`). \samp{pseudo-H4SiO4_Ste01}, taken from Steffánson, 2001, is applicable near 300 \eqn{^{\circ}}{°}C (see Figure 3 of that paper). \samp{pseudo-H4SiO4} can be used to make diagrams with H4SiO4 as a basis species, instead of SiO2(aq).
-  } 
-
 
   These modifications are indicated in \code{OBIGT.csv} by having \samp{CHNOSZ} as one of the sources of data. Note also that some data appearing in the \acronym{slop98.dat} file (Shock et al., 1998) were corrected or modified as noted in that file, and are indicated in \code{OBIGT.csv} by having \samp{SLOP98} as one of the sources of data.
 
@@ -252,8 +246,6 @@ thermo$obigt$formula[runif(10)*n]
   Shock, E. L. and Koretsky, C. M. {1995} Metal-organic complexes in geochemical processes: Estimation of standard partial molal thermodynamic properties of aqueous complexes between metal cations and monovalent organic acid ligands at high pressures and temperatures. \emph{Geochim. Cosmochim. Acta} \bold{59}, 1497--1532. \url{http://dx.doi.org/10.1016/0016-7037(95)00058-8}
 
   Shock, E. L. et al. {1998} \emph{SLOP98.dat} (computer data file). http://geopig.asu.edu/supcrt92_data/slop98.dat, accessed on 2005-11-05. Current location: \url{http://geopig.asu.edu/sites/default/files/slop98.dat}.
-
-  Stefánsson, Andri (2001) Dissolution of primary minerals of basalt in natural waters. I. Calculation of mineral solubilities from 0°C to 350°C \emph{Chem. Geol.} \bold{172}, 225--250. \url{http://dx.doi.org/10.1016/S0009-2541(00)00263-1}
 
   Wagman, D. D., Evans, W. H., Parker, V. B., Schumm, R. H., Halow, I., Bailey, S. M., Churney, K. L. and Nuttall, R. L. (1982) The NBS tables of chemical thermodynamic properties. Selected values for inorganic and C\eqn{_1}{1} and C\eqn{_2}{2} organic substances in SI units. \emph{J. Phys. Chem. Ref. Data} \bold{11} (supp. 2), 1--392. \url{https://srd.nist.gov/JPCRD/jpcrdS2Vol11.pdf}
 

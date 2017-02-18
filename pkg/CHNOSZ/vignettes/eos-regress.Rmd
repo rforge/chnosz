@@ -7,6 +7,7 @@ output:
   tufte::tufte_html:
     tufte_features: ["background"]
     css: "vig.css"
+    toc: true
     mathjax: null
   tufte::tufte_handout:
     citation_package: natbib
@@ -95,7 +96,7 @@ Accordingly, numerical values for all of the *variables* in the equations (e.g. 
 
 Applying a linear model (`lm`), the *coefficients* in the model can be obtained.
 In this case, they correspond to the HKF parameters, e.g. `c1` (the intercept), `c2` and ω.
-The coefficients are constants, meaning that **the model is applicable only to neutral (uncharged) species**, for which the high-temperature derivatives of ω are 0.
+The coefficients **in this model** are constants, restricing application of the model to neutral (uncharged) species, for which the high-temperature derivatives of ω are 0.
 Further below, a procedure is described to iteratively solve the equations for charged species.
 
 # An example for neutral species
@@ -147,7 +148,7 @@ Be aware that the lines shown by <span style="color:green">`EOSplot()`</span> ar
 Note the second call to <span style="color:green">`EOSplot()`</span>, where the coefficients are not provided.
 This causes the data to be re-regressed, this time without the *T* < 600 K limitation.
 Although the overall fit, represented by the dotted line, is better, the fit to the low-temperature data is considerably worse.
-For nonelectroyltes, consider excluding extreme near-critical values from the regression (or modify the procedure to give them lower weight) in order to obtain more generally useful results.
+For nonelectrolytes, consider excluding extreme near-critical values from the regression (or modify the procedure to give them lower weight) in order to obtain more generally useful results.
 
 <span style="color:green">`EOScoeffs()`</span> is a small function to retrieve the HKF parameters from the database in CHNOSZ.
 The `stopifnot` expression tests that the regressed values are within 10% of the database values of `r c1`, `r c2` and ω for `r ch4`.
@@ -237,7 +238,7 @@ Because of these issues, some researchers are exploring alternatives to the HKF 
 # An example for charged species
 
 For this example, let's generate synthetic data for Na<sup>+</sup> using its parameters in the database.
-In the call to <span style="color:green">`subcrt()`</span> below, `convert=FALSE` means to take *T* in units of K.
+In the call to <span style="color:green">`subcrt()`</span> below, `convert = FALSE` means to take *T* in units of K.
 
 ```{r Nadat}
 T <- convert(seq(0, 600, 50), "K")
@@ -260,9 +261,9 @@ As before, the solid line is a fit to relatively low-temperature (*T* < 600 K) d
 The fits using constant ω are clearly not acceptable.
 
 There is, however, a way out.
-A different variable, `Cp_s_var`, can be used to specify the calculation of the "solvation" heat capacity in the HKF equations **using the temperature- and pressure-dependent corrections for charged species**. 
+A different variable, `Cp_s_var`, can be used to specify the calculation of the "solvation" heat capacity in the HKF equations using the temperature- and pressure-dependent corrections for charged species.
 To use this variable, the values of `r wPrTr` (omega at the reference temperature and pressure) and *Z* (charge) must be given, in addition to *T* and *P*.
-Of course, right now we **don't know** the value of `r wPrTr` -- it is the purpose of the regression to find it!
+Of course, right now we *don't know* the value of `r wPrTr`---it is the purpose of the regression to find it!
 But we can make a first guess using the value of ω found above.
 
 ```{r Navars1}
@@ -325,14 +326,14 @@ EOSplot(NaVdat, coefficients = coefficients, Z = 1, add = TRUE, lty = 2,
 
 Some mineral stability diagrams use the activity of `r h4sio4` as a variable.
 However, the primary species for dissolved silica in CHNOSZ is `r sio2`(aq) [@SHS89].
-The reaction with zero properties, `r h4sio4` = `r sio2`  + 2 `r h2o`, defines the properties of the pseudospecies `r h4sio4`.
+The pseudo-reaction with zero properties, `r h4sio4` = `r sio2`  + 2 `r h2o`, defines the properties of the pseudospecies `r h4sio4`.
 
 First we go about calculating the properties of `r sio2` + 2 `r h2o`.
 We do this over a range of *T* and *P*, but include many points near 25 °C to improve the fit of the regression in that region:
 `r op <- options(warn = -1)`
 ```{r SiO2_2H2O, message=FALSE}
 s_25C <- subcrt(c("SiO2", "H2O"), c(1, 2), T = 25)$out
-s_near25 <- subcrt(c("SiO2", "H2O"), c(1, 2), T = seq(20, 30, length.out = 50))$out
+s_near25 <- subcrt(c("SiO2", "H2O"), c(1, 2), T = seq(20, 30, length.out=50))$out
 s_lowT <- subcrt(c("SiO2", "H2O"), c(1, 2), T = seq(0, 100, 10))$out
 s_Psat <- subcrt(c("SiO2", "H2O"), c(1, 2))$out
 s_P500 <- subcrt(c("SiO2", "H2O"), c(1, 2), T = seq(0, 1000, 100), P = 500)$out
@@ -342,8 +343,9 @@ s_P1000 <- subcrt(c("SiO2", "H2O"), c(1, 2), T = seq(0, 1000, 100), P = 1000)$ou
 
 Now we can start making the new species, with thermodynamic properties calculated at 25 °C:
 ```{r new_H4SiO4}
-mod.obigt("new-H4SiO4", formula = "H4SiO4", ref1 = "this_vignette", date = today(),
-          G = s_25C$G, H = s_25C$H, S = s_25C$S, Cp = s_25C$Cp, V = s_25C$V, z = 0)
+mod.obigt("new-H4SiO4", formula = "H4SiO4", ref1 = "this_vignette",
+          date = today(), G = s_25C$G, H = s_25C$H, S = s_25C$S,
+          Cp = s_25C$Cp, V = s_25C$V, z = 0)
 ```
 
 To prepare for the regression, combine the calculated data and convert °C to K:
@@ -385,36 +387,38 @@ mod.obigt("new-H4SiO4", a1 = Vcoeffs[1]*10, a2 = Vcoeffs[2]/100,
 ```
 
 We just made a new `r h4sio4` pseudospecies.
-The database in CHNOSZ was previously updated with a `pseudo-H4SiO4` that was made using this procedure.
-The secondary database has a `pseudo-H4SiO4_Ste01` with properties of `r h4sio4` from @Ste01:
+In February 2017, the database in CHNOSZ was updated with a `pseudo-H4SiO4` that was made using this procedure.
+In addition, the secondary database has a `H4SiO4_Ste01` with properties of `r h4sio4` from @Ste01:
 ```{r width180, include=FALSE}
 options(width = 180)
 ```
 ```{r info_H4SiO4, message=FALSE}
 add.obigt()
-info(info(c("new-H4SiO4", "pseudo-H4SiO4", "pseudo-H4SiO4_Ste01")))
+info(info(c("new-H4SiO4", "pseudo-H4SiO4", "H4SiO4_Ste01")))
 ```
 ```{r width80, include=FALSE}
 ```
 
 ```{r subcrt_H4SiO4, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, echo=FALSE, results="hide", message=FALSE, dpi=dpi, out.width="100%", cache=TRUE, fig.cap="Comparison of H<sub>4</sub>SiO<sub>4</sub> pseudospecies.", pngquant=pngquant}
 s1 <- subcrt(c("pseudo-H4SiO4", "SiO2", "H2O"), c(-1, 1, 2))
-plot(s1$out$T, s1$out$G, type = "l", ylim = c(-200, 500),
+plot(s1$out$T, s1$out$G, type = "l", ylim = c(-100, 600),
   xlab = axis.label("T"), ylab = axis.label("DG0"))
 add.obigt()
-s2 <- subcrt(c("pseudo-H4SiO4_Ste01", "SiO2", "H2O"), c(-1, 1, 2))
+s2 <- subcrt(c("H4SiO4_Ste01", "SiO2", "H2O"), c(-1, 1, 2))
 lines(s2$out$T, s2$out$G, lty = 2)
 abline(h = 0, lty = 3)
 legend("topright", legend = c("pseudo-H4SiO4 (CHNOSZ)",
-  "pseudo-H4SiO4_Ste01", "\t(Stefánsson, 2001)"), lty = c(1, 2, NA), bty = "n")
+  "H4SiO4_Ste01", "\t(Stefánsson, 2001)"), lty = c(1, 2, NA), bty = "n")
 text(225, 250, describe.reaction(s1$reaction))
 ```
 
-Let's compare `pseudo-H4SiO4` (with the same properties as `new-H4SiO4`) and `pseudo-H4SiO4_Ste01` with the actual properties of `r sio2` + 2 `r h2o` as a function of temperature:
+Let's compare CHNOSZ's `pseudo-H4SiO4` (with the same properties as the `new-H4SiO4` we just made) and `H4SiO4_Ste01` from Stefánsson (2001) with the calculated properties of `r sio2` + 2 `r h2o` as a function of temperature:
 ```{r subcrt_H4SiO4, eval=FALSE}
 ```
 
-Neither pseudospecies is perfect, but `pseudo-H4SiO4` is preferable for making low-temperature mineral activity diagrams---see <span style="color:blue">`?transfer`</span> and <span style="color:blue">`demo(activity_ratios)`</span>.
+The large differences for `H4SiO4_Ste01` at low temperature agree with the comparison to Shock et al. (1989) shown in Figure 3 of Stefánsson (2001).
+Therefore, `H4SiO4_Ste01` should not be used _in CHNOSZ_ for making low-temperature mineral activity diagrams.
+Instead, the pseudospecies with properties calculated here, `pseudo-H4SiO4`, is preferable for use _in CHNOSZ_---see <span style="color:blue">`?transfer`</span> and <span style="color:blue">`demo(activity_ratios)`</span>.
 
 # Other possibilities
 

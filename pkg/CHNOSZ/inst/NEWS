@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-50 (2017-02-18)
+CHANGES IN CHNOSZ 1.0.8-51 (2017-02-18)
 ---------------------------------------
 
 DOCUMENTATION:
@@ -80,7 +80,7 @@ NEW DATA:
 - OBIGT.csv: Add H4SiO4 pseudospecies (pseudo-H4SiO4); see calculations
   in eos-regress.Rmd.
 
-- OBIGT-2.csv: Rename H4SiO4 to pseudo-H4SiO4_Ste01 (Steffánson, 2001).
+- OBIGT-2.csv: Rename H4SiO4 to H4SiO4_Ste01 (Steffánson, 2001).
 
 - extdata: Add fasta/rubisco.fasta and cpetc/*.csv files SS98_Fig5a,
   SS98_Fig5b, PM90 (all used by anintro.Rmd).

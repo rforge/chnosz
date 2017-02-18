@@ -49,6 +49,8 @@
 
   \code{add.obigt} reads data from the specified \code{file} and adds it to \code{\link{thermo}$obigt}. Set \code{force} to TRUE to replace species that exist in the thermodynamic database (each unique combination of a name and a state in the database is considered to be a unique species). \code{force}, if not specified, reverts to TRUE if the \code{file} is left at its default. Given the default setting of \code{E.units}, the function does not perform any unit conversions. If \code{E.units} is set to \samp{J}, then the thermodynamic parameters are converted from units of Joules to calories, as used in the CHNOSZ database. 
 
+  \code{add.obigt} affects the order of entries in \code{thermo}$obigt; therefore, it should be called before any \code{basis} or \code{species} definition. Also, there is no attempt made to keep the order of physical states in the database (aq-cr-liq-gas); the function simply adds new rows to the end of \code{thermo}$obigt. As a result, retrieving the properties of an added aqueous species using \code{\link{info}} requires an explicit \code{state="aq"} argument to that function if a species with the same name is in one of the cr, liq or gas states.
+
 \code{mod.obigt} changes one or more of the properties of species or adds species to the thermodynamic database.
 These changes are lost if you reload the database by calling \code{\link{data}(thermo)} or if you quit the \R session without saving it.
 The name of the species to add or change must be supplied as the first argument of \code{...} or as a named argument (named \samp{name}).
@@ -82,7 +84,11 @@ If \code{key} is a list, it is interpreted as the result of a call to \code{subc
 }
 
 \section{Warning}{
-  \code{add.obigt} affects the order of entries in \code{thermo}$obigt; therefore, it should be called before any \code{basis} or \code{species} definition. Also, there is no attempt made to keep the order of physical states in the database (aq-cr-liq-gas); the function simply adds new rows to the end of \code{thermo}$obigt. As a result, retrieving the properties of an added aqueous species using \code{\link{info}} requires an explicit \code{state="aq"} argument to that function if a species with the same name is in one of the cr, liq or gas states.
+  Cautionary advice about the secondary database added by \code{add.obigt} (OBIGT-2.csv):
+
+  \itemize{
+     \item \samp{H4SiO4_Ste01}, taken from Steffánson, 2001, is used in the vignette \emph{Regressing thermodynamic data} for comparison with the H4SiO4 pseudospecies made in CHNOSZ (\samp{pseudo-H4SiO4}). As with other species in OBIGT-2.csv, it is likely to be inconsistent with specific minerals and other species in the default database, so use it with care.
+  } 
 }
 
 \value{
@@ -129,6 +135,9 @@ RH2obigt()
 \references{
 
   Richard, L. and Helgeson, H. C. (1998) Calculation of the thermodynamic properties at elevated temperatures and pressures of saturated and aromatic high molecular weight solid and liquid hydrocarbons in kerogen, bitumen, petroleum, and other organic matter of biogeochemical interest. \emph{Geochim. Cosmochim. Acta} \bold{62}, 3591--3636. \url{http://dx.doi.org/10.1016/S0016-7037(97)00345-1}
+
+  Stefánsson, Andri (2001) Dissolution of primary minerals of basalt in natural waters. I. Calculation of mineral solubilities from 0°C to 350°C \emph{Chem. Geol.} \bold{172}, 225--250. \url{http://dx.doi.org/10.1016/S0009-2541(00)00263-1}
+
 
 }
 

@@ -1,8 +1,9 @@
-# Export all names
-exportPattern(".")
+# Export all names except those beginning with F_
+# (so we don't export F_h2o92 created below)
+exportPattern("^([^F]|F($|[^_])).*")
 
 # Load shared objects
-useDynLib(CHNOSZ)
+useDynLib(CHNOSZ, .registration = TRUE, .fixes = "F_")
 
 # Imports from default packages
 importFrom("grDevices", "dev.cur", "dev.off", "extendrange",
@@ -19,4 +20,3 @@ importFrom("utils", "browseURL", "capture.output", "combn", "demo",
 
 # Imports from colorspace
 importFrom("colorspace", "diverge_hcl")
-

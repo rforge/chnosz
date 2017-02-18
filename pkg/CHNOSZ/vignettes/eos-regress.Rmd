@@ -286,8 +286,8 @@ EOSplot(Nadat, coefficients = signif(coef(Nalm1), 6),
 EOScoeffs("Na+", "Cp")
 ```
 
-Alrighty! We managed to obtain EOS parameters from synthetic data for Na<sup>+</sup>.
-The regressed values of the EOS parameters (shown in the plot legend) are very close to the database values (printed by the call to <span style="color:green">`EOScoeffs()`</span>) used to generate the synthetic data.
+Alrighty! We managed to obtain HKF coefficients from synthetic data for Na<sup>+</sup>.
+The regressed values of the HKF coefficients (shown in the plot legend) are very close to the database values (printed by the call to <span style="color:green">`EOScoeffs()`</span>) used to generate the synthetic data.
 
 ## Doing it for volume
 
@@ -403,7 +403,6 @@ info(info(c("new-H4SiO4", "pseudo-H4SiO4", "H4SiO4_Ste01")))
 s1 <- subcrt(c("pseudo-H4SiO4", "SiO2", "H2O"), c(-1, 1, 2))
 plot(s1$out$T, s1$out$G, type = "l", ylim = c(-100, 600),
   xlab = axis.label("T"), ylab = axis.label("DG0"))
-add.obigt()
 s2 <- subcrt(c("H4SiO4_Ste01", "SiO2", "H2O"), c(-1, 1, 2))
 lines(s2$out$T, s2$out$G, lty = 2)
 abline(h = 0, lty = 3)

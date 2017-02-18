@@ -10,7 +10,7 @@ The package can be used interactively and in batch mode, through the use of R so
 
 \section{Getting Help}{
 The major features of the package are outlined in the Overview given below, with links to specific help topics.
-If you are a new user, the \sQuote{anintro} vignette (An introduction to CHNOSZ) may offer a more comfortable way to get started with using the package.
+See the vignette \emph{An Introduction to CHNOSZ} for more in-depth example of the usage the functions.
 The help pages have been given either keywords or \dQuote{concept index entries} which are visible to \code{\link{help.search}} (aka \code{??}).
 Use \code{??primary} to browse the most commonly used functions and \code{??secondary} to see other high-level, but less often-used functions.
 \code{??protein} shows functions for working with proteins, and \code{??extra} lists functions with extra functionality (beyond the main workflow).

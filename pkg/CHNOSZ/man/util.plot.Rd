@@ -7,7 +7,6 @@
 \alias{label.figure}
 \alias{water.lines}
 \alias{mtitle}
-\alias{residualsplot}
 \alias{ZC.col}
 \title{Functions to Create and Modify Plots}
 
@@ -33,7 +32,6 @@
     which = c("oxidation","reduction"), logaH2O = 0, lty = 2, lwd=1,
     col = par("fg"), xpoints = NULL, O2state="gas")
   mtitle(main, line=0, ...)
-  residualsplot(residuals, property = "Cp", model = "big")
   ZC.col(z)
 }
 
@@ -72,9 +70,6 @@
   \item{xpoints}{numeric, points to plot on \eqn{x}{x} axis}
   \item{O2state}{character, state of O2}
   \item{main}{character, text for plot title}
-  \item{residuals}{numeric, named vector of residuals to plot}
-  \item{property}{character, name of property}
-  \item{model}{character, name of model to use in plot title}
   \item{z}{numeric, set of values}
 }
 
@@ -104,8 +99,6 @@ With the default arguments (no labels specified), it plots only the axis lines a
 It loops over each element of \code{main} and places it on a separate margin line using \code{\link{mtext}}.
 The spacing of the last (bottom) line from the edge of the plot is specified by \code{line}.
 This function exists to facilitate using \code{\link{expression}}s in multiline titles (see \code{\link{revisit}} for an example.) 
-
-  \code{residualsplot} produces a \code{\link{barchart}} with options useful for plotting residuals of group contribution models for thermodynamic properties. It plots horizontal bars stacked with largest on top. The names of the \code{residuals} argument (i.e., the names of model species) are plotted across from each respective bar. The axis title is taken from the \code{property} (probably \samp{Cp} or \samp{V}), and the plot title includes the \code{model} name. See the \sQuote{xadditivity} vignette for examples of these plots.
 
 \code{ZC.col} returns colors from a diverging palette (red - light grey - blue) corresponding to the values in \code{z}.
 Red is associated with lower values of \code{z}.

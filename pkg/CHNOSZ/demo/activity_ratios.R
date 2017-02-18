@@ -10,16 +10,14 @@ fill <- "terrain"
 ## Steinmann et al., 1994 (http://ccm.geoscienceworld.org/content/42/2/197)
 ## Garrels and Christ, p. 361 (http://www.worldcat.org/oclc/517586)
 ## https://wwwbrr.cr.usgs.gov/projects/GWC_coupled/phreeqc/html/final-75.html
-# use add.obigt to make H4SiO4 pseudospecies available as a basis species
-add.obigt()
-basis(c("Al+3", "pseudo-H4SiO4_25C", "K+", "H2O", "H+", "O2"))
+# the pseudospecies H4SiO4 is used as a basis species
+# (see the vignette "Regressing thermodynamic data")
+basis(c("Al+3", "pseudo-H4SiO4", "K+", "H2O", "H+", "O2"))
 species(c("gibbsite", "muscovite", "kaolinite", "pyrophyllite", "k-feldspar"))
 a <- affinity(H4SiO4 = c(-6, -2, res), `K+` = c(-3, 6, res))
 diagram(a, ylab = ratlab("K+"), fill = fill)
 title(main = syslab(c("K2O", "Al2O3", "SiO2", "H2O")))
 legend("bottomleft", describe.property(c("T", "P"), c(25, 1)), bty = "n")
-# reset database
-data(thermo)
 
 ## H2O-CaO-MgO-SiO2 at 300 degree C and 1000 bar
 ## Helgeson et al., 1969, p. 136 (http://www.worldcat.org/oclc/902423149)

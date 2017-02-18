@@ -94,7 +94,6 @@ The examples below assume that the \eqn{\omega}{omega} parameter in the HKF func
 For charged species, the variables \code{Cp_s_var} and \code{V_s_var} can be used in the regressions.
 They correspond to the solvation contribution to heat capacity or volume, respectively, in the HKF EOS, divided by the value of \eqn{\omega}{omega} at the reference temperature and pressure.
 Because these variables are themselves a function of \code{omega.PrTr}, an iterative procedure is needed to perform the regression.
-See the \code{EOSregress} vignette for an example.
 
 Note that variables \code{QBorn} and \code{V_s_var} are both negated, so that the value of \eqn{\omega}{omega} has its proper sign in the corresponding equations.
 }
@@ -104,7 +103,7 @@ Note that variables \code{QBorn} and \code{V_s_var} are both negated, so that th
 }
 
 \seealso{
-The \code{EOSregress.Rmd} vignette has more references and examples.
+The vignette \emph{Regressing thermodynamic data} has more references and examples, including an iterative method to retrieve \code{omega.PrTr}.
 }
 
 \references{

@@ -146,7 +146,7 @@ However, if aqueous species are present with different balancing coefficients, t
 
 \seealso{ 
 Other examples are present in the help for \code{\link{protein}} and \code{\link{buffer}}, and even more can be found in \code{\link{demos}}.
-See the vignette hotspring.Rnw for an example of the \code{strip} charts.
+See the vignette \emph{Hot-spring proteins in CHNOSZ} for an example of the \code{strip} charts.
 }
 
 \examples{

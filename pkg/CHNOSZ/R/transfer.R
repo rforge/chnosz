@@ -805,12 +805,9 @@ feldspar <- function(which="closed",plot.it=FALSE) {
   # call feldspar("closed")
   # or feldspar("open")
   # setup conditions for feldspar reaction
-  #basis(c('Al+3','SiO2','K+','H2O','H+','O2'))
   basis(delete=TRUE)
-  # SLS89 use H4SiO4 instead of SiO2 - use the secondary database
-  add.obigt()
-  basis(c('Al+3','pseudo-H4SiO4_25C','K+','H2O','H+','O2'))
-  # some of SLS89's initial conditions
+  basis(c('Al+3','pseudo-H4SiO4','K+','H2O','H+','O2'))
+  # some of SLS94's initial conditions
   basis(c('K+','H4SiO4'),c(-6,-6))
   # the candidate species
   species(delete=TRUE)
@@ -822,7 +819,7 @@ feldspar <- function(which="closed",plot.it=FALSE) {
   # identify the basis species whose activities will
   # be plotted by transfer()
   plot <- c(2,3) 
-  # return to SLS89 initial conditions
+  # return to SLS94 initial conditions
   basis('pH',4)
   # start with miniscule amounts of all species
   species(1:5,-999)

@@ -577,7 +577,7 @@ Additional arguments are passed to R's plotting functions; here, we use `bty` to
 ## Mosaic diagrams {#Mosaic-diagrams}
 
 If sulfur is in the basis species, then we should consider that its speciation is sensitive to Eh and pH, as shown in the preceding diagram.
-Mosaic diagrams (or combined diagrams), which are often shown for oxide, sulfide, and carbonate minerals, account for speciation of the basis species.
+Mosaic diagrams, which are often shown for oxide, sulfide, and carbonate minerals, account for speciation of the basis species.
 These diagrams are made by constructing individual diagrams for the possible basis species.
 The individual diagrams are then combined, each one contributing to the final diagram only in the range of stability of the corresponding basis species.
 
@@ -1955,7 +1955,8 @@ file.edit(system.file("doc/anintro.Rmd", package = "CHNOSZ"))
 ```
 </p>
 
-<!-- for finding what versions of packages are on R-Forge and winbuilder -->
+<!-- for finding what versions of packages are on R-Forge and winbuilder
 ```{r sessionInfo}
 sessionInfo()
 ```
+-->

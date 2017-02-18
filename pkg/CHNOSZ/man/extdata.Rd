@@ -33,7 +33,6 @@
     \item \code{RT71.csv} pH titration measurements for unfolded lysozyme (\samp{LYSC_CHICK}) taken from Roxby and Tanford, 1971. pH is in the first column, net charge in the second. See \code{\link{ionize.aa}} for an example that uses this file.
     \item \code{SOJSH.csv} Experimental equilibrium constants for the reaction NaCl(aq) = Na+ + Cl- as a function of temperature and pressure taken from Fig. 1 of Shock et al., 1992. Data were extracted from the figure using g3data (\url{http://www.frantz.fi/software/g3data.php}). See \code{\link{water}} for an example that uses this file.
     \item \code{Cp.CH4.HW97.csv}, \code{V.CH4.HWM96.csv} Apparent molar heat capacities and volumes of CH4 in dilute aqueous solutions reported by Hnedkovsky and Wood, 1997 and Hnedkovsky et al., 1996. See \code{\link{EOSregress}} for examples that use these files.
-    \item \code{BKM60_Fig7.dat} Eh-pH values for normal, wet and waterlogged soils from Fig. 7 of Baas Becking et al., 1960. See the \sQuote{anintro} vignette for an example that uses this file.
     \item \code{SC10_Rainbow.csv} Values of temperature (\eqn{^{\circ}}{°}C), pH and logarithms of activity of \eqn{\mathrm{CO_2}}{CO2}, \eqn{\mathrm{H_2}}{H2}, \eqn{\mathrm{NH_4^+}}{NH4+}, \eqn{\mathrm{H_2S}}{H2S} and \eqn{\mathrm{CH_4}}{CH4} for mixing of seawater and hydrothermal fluid at Rainbow field (Mid-Atlantic Ridge), taken from Shock and Canovas, 2010.
     \item \code{SS98_Fig5a.csv}, \code{SS98_Fig5b.csv} Values of logarithm of fugacity of \eqn{\mathrm{O_2}}{O2} and pH as a function of temperature for mixing of seawater and hydrothermal fluid, digitized from Figs. 5a and b of Shock and Schulte, 1998.
     \item \code{rubisco.csv} UniProt IDs for Rubisco, ranges of optimal growth temperature of organisms, domain and name of organisms, and URL of reference for growth temperature, from Dick, 2014.
@@ -41,7 +40,7 @@
 
   Files in \code{fasta} contain protein sequences:
   \itemize{
-    \item \code{EF-Tu.aln} consists of aligned sequences (394 amino acids) of elongation factor Tu (EF-Tu). The sequences correspond to those taken from UniProtKB for ECOLI (\emph{Escherichia coli}), THETH (\emph{Thermus thermophilus}) and THEMA (\emph{Thermotoga maritima}), and reconstructed ancestral sequences taken from Gaucher et al., 2003 (maximum likelihood bacterial stem and mesophilic bacterial stem, and alternative bacterial stem). See the \sQuote{formation} vignette for an example that uses this file.
+    \item \code{EF-Tu.aln} consists of aligned sequences (394 amino acids) of elongation factor Tu (EF-Tu). The sequences correspond to those taken from UniProtKB for ECOLI (\emph{Escherichia coli}), THETH (\emph{Thermus thermophilus}) and THEMA (\emph{Thermotoga maritima}), and reconstructed ancestral sequences taken from Gaucher et al., 2003 (maximum likelihood bacterial stem and mesophilic bacterial stem, and alternative bacterial stem)
     \item \code{rubisco.csv} Sequences of Rubisco obtained from UniProt (see Dick, 2014).
   }
 
@@ -59,7 +58,7 @@
     \item \code{DS11.csv}, \code{DS13.csv}
       These two files contain amino acid compositions of metagenomically encoded proteins, averaged together according to functional annotation (DS11) or taxonomic affiliation (DS13).
       The data are from Dick and Shock, 2011 and 2013.
-      They are used in the vignette \file{hotspring.Rnw}.
+      They are used in the vignette \emph{Hot-spring proteins in CHNOSZ}.
     \item \code{microbial.aa.csv}
       Overall protein compositions of microbial species reported to be positively or negatively enriched in colorectal cancer.
       This file is taken from Dick, 2016.
@@ -92,8 +91,6 @@
   \itemize{
     \item \code{OBIGT-2.csv} contains supplementary thermodynamic data in the same format as the primary database in \code{data/OBIGT.csv}. Data for some entries in the primary database are taken from different literature sources in this file. The default action of \code{\link{add.obigt}} is to add the contents of this file to CHNOSZ's working database in \code{thermo$obigt}. See \code{\link{diagram}} and the code of \code{\link{anim.TCA}} for examples that use this file.
     \item \code{obigt_check.csv} contains the results of running \code{\link{check.obigt}} to check the internal consistency of entries in the primary and supplementary databases.
-    \item \code{groups_big.csv} Group contribution matrix: five structural groups on the columns ([-CH3],[-CH2-],[-CH2OH],[-CO-],[-COOH]) and 24 compounds on the rows (alkanes, alcohols, ketones, acids, multiply substituted compounds).
-    \item \code{groups_small.csv} Group contribution matrix: twelve bond-specific groups on the columns, and 25 compounds on the rows (as above, plus isocitrate). Group identity and naming conventions adapted from Benson and Buss (1958) and Domalski and Hearing (1993). See the \sQuote{xadditivity} vignette for examples that use this file and \code{groups_big.csv}.
     \item \code{RH98_Table15.csv} Group stoichiometries for high molecular weight crystalline and liquid organic compounds taken from Table 15 of Richard and Helgeson, 1998. The first three columns have the \code{compound} name, \code{formula} and physical \code{state} (\samp{cr} or \samp{liq}). The remaining columns have the numbers of each group in the compound; the names of the groups (columns) correspond to species in \code{\link{thermo}$obigt}. The compound named \samp{5a(H),14a(H)-cholestane} in the paper has been changed to \samp{5a(H),14b(H)-cholestane} here to match the group stoichiometry given in the table. See \code{\link{RH2obigt}} for a function that uses this file.
     \item \code{DLEN67.csv} Standard Gibbs energies of formation, in kcal/mol, from Dayhoff et al., 1967, for nitrogen (N2) plus 17 compounds shown in Fig. 2 of Dayhoff et al., 1964, at 300, 500, 700 and 1000 K.
   }

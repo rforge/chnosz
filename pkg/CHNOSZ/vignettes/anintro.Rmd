@@ -97,7 +97,7 @@ timeit <- NULL
 # First steps
 
 This document introduces the usage of CHNOSZ, a package for the [R software environment](http://r-project.org).
-For more information on R, see "[An Introduction to R](http://cran.r-project.org/manuals.html)" and the [Contributed Documentation](https://cran.r-project.org/other-docs.html) for R.
+For more information on R, see "[An Introduction to R](http://cran.r-project.org/manuals.html)" and the [contributed documentation](https://cran.r-project.org/other-docs.html) for R.
 
 CHNOSZ has been developed since 2006 to support research projects in geochemistry and compositional biology.
 The package provides functions and a thermodynamic database that can be used to calculate the stoichiometric and energetic properties of reactions among minerals and organic or inorganic aqueous species.
@@ -1256,7 +1256,7 @@ This agrees with the assessment shown in Figure 4 of @Dic09 (note that the old p
 ## An affinity baseline
 
 Because affinities of proteins often vary strongly with oxygen fugacity and other variables, it can be helpful to express the values as differences from a baseline.
-The following example compares the affinities of transcription factors involved in embryonic dorsal-ventral patterning with that of Sonic hedgehog (Shh) as a function of `r logfO2` and log*a*<sub>`r h2o`</sub> [@Dic15].
+The following example compares the affinities for formation of transcription factors involved in embryonic dorsal-ventral patterning with that of the morphogen, Sonic hedgehog (Shh), as a function of `r logfO2` and log*a*<sub>`r h2o`</sub> [@Dic15].
 We first list the UniProt names of Shh and 10 transcription factors, and get the `iprotein` indices (rownumbers of `thermo$protein`):
 ```{r Shh_pname}
 pname <- c("SHH", "OLIG2", "NKX22", "FOXA2", "IRX3",
@@ -1285,7 +1285,7 @@ pl <- protein.length(ip)
 for(i in seq_along(a$values)) a$values[[i]] <- a$values[[i]] / pl[i]
 ```
 
-Then, we calculate the relative affinities with Shh as the baseline:
+Then, we calculate the relative affinities, using Shh as the baseline:
 ```{r Shh_minusShh}
 a.Shh <- a$values[[1]]
 for(i in 1:length(a$values)) a$values[[i]] <- a$values[[i]] - a.Shh
@@ -1296,11 +1296,11 @@ We set `balance = 1` to plot the values as they are---without that, <span style=
 ```{marginfigure}
 See <span style="color:blue">`demo(Shh)`</span> for a plot with more interpretive labels and comments.
 ```
-For this plot, we highlight and label the proteins with the highest relative affinity at some combination of `logfO2` and log*a*<sub>`r h2o`</sub> along the transect.
+For this plot, we highlight and label the proteins with the highest relative affinity at some combination of `r logfO2` and log*a*<sub>`r h2o`</sub> along the transect.
 Those proteins are Olig2, Irx3, Nkx6.2, Dbx1, and Shh (numbers 2, 5, 7, 8, 1 in the set we have identified).
-The last few lines are used to set up the second (upper) *x* axis, using a label generated with <span style="color:green">`axis.label()`</span>:
+The last few lines are used to make a second *x* axis, using a label generated with <span style="color:green">`axis.label()`</span>:
 
-```{r Shh_diagram, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, fig.cap="Per-residue affinities of formation of transcription factors relative to Shh.", cache=TRUE, pngquant=pngquant, timeit=timeit}
+```{r Shh_diagram, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, fig.cap="Per-residue affinities for formation of transcription factors relative to Shh.", cache=TRUE, pngquant=pngquant, timeit=timeit}
 # line type, width, and color
 twc <- lapply(c(3, 1, 1), rep, length(pname))
 ihigh <- c(2, 5, 7, 8, 1)
@@ -1308,8 +1308,9 @@ twc[[1]][ihigh] <- 1
 twc[[2]][ihigh] <- 3
 col <- c("#f9a330", "#63c54e", "#f24e33", "#d4e94e", "#0f0f0f")
 twc[[3]][ihigh] <- col
+ylab <- substitute(italic(A) / 2.303 * italic(RT) * ", relative to Shh")
 diagram(a, balance = 1, ylim = c(-0.5, 4.5), xlim = c(0.5, -4.5),
-  lty = twc[[1]], lwd=twc[[2]], col = twc[[3]], names = NA)
+  lty = twc[[1]], lwd=twc[[2]], col = twc[[3]], names = NA, ylab = ylab)
 legend("topright", legend = c("Olig2", "Irx3", "Nkx6.2", "Dbx1", "Shh"),
   lwd = 2, col = col)
 par(usr = c(-70, -100, -0.5, 4.5), tcl = -0.3)
@@ -1460,7 +1461,7 @@ T <- c(50, 100)
 res <- 300
 a <- affinity(T = c(T, res), H2 = c(-8, -3, res), iprotein = ip)
 fill <- ZC.col(ZC(protein.formula(ip)))
-diagram(a, normalize = TRUE, fill = fill, names = 1:5)
+diagram(a, normalize = TRUE, fill = fill, names = 1:5, format.names = FALSE)
 T <- c(93.3, 79.4, 67.5, 65.3, 57.1)
 logaH2 <- c(-3.38, -4.14, -5.66, -7.47, -10.02)
 lines(T, logaH2, lty = 2, lwd = 2)
@@ -1470,7 +1471,7 @@ points(T, logaH2, pch = 21, bg = "white", cex = 1.5)
 ```
 Site numbers 1--5 correspond to a cooling gradient along the outflow channel of the hot spring.
 The colors represent the relative `r zc` of the proteins (red is more reduced).
-The points indicate the *T* and log*a*<sub>H<sub>2</sub></sub> that optimize a thermodynamic model for the relative abundances of phyla as estimated by taxonomic classification of metagenomic sequences [@DS13]:
+The points indicate the *T* and log*a*<sub>H<sub>2</sub></sub> that optimize a thermodynamic model for relative abundances of phyla that were estimated by taxonomic classification of metagenomic sequences [@DS13]:
 ```{r bison_transferase, eval=FALSE, echo=12:15}
 ```
 
@@ -2025,9 +2026,9 @@ file.edit(system.file("doc/anintro.Rmd", package = "CHNOSZ"))
 ```
 <p>
 ```{r the_end}
-  ######    ##   ##    ##   ##    ######     #####  #####
-##         ##---##    ## \ ##   ##    ##     \\       //
-######    ##   ##    ##   ##    ######    #####      #####
+   ######    ##   ##    ##   ##    ######     #####  #####
+ ##         ##---##    ## \ ##   ##    ##     \\       //
+ ######    ##   ##    ##   ##    ######    #####      #####
 ```
 </p>
 

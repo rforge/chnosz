@@ -39,16 +39,16 @@ See the comments in the source code for more information about each demo.
     \code{NaCl} \tab equilibrium constant for aqueous NaCl dissociation (Shock et al., 1992) \cr
     \code{density} \tab density of H2O, inverted from IAPWS-95 equations (\code{\link{rho.IAPWS95}}) \cr
     \code{ORP} \tab oxidation-reduction potential of redox standards as a function of temperature \cr
-    \code{revisit} \tab detailed example of usage of \code{\link{revisit}} \cr
-    \code{findit} \tab detailed example of usage of \code{\link{findit}} \cr
+    \code{revisit} \tab coefficient of variation of metastable equilibrium activities of proteins \cr
+    \code{findit} \tab minimize the standard deviation of logarithms of activities of sulfur species \cr
     \code{ionize} \tab ionize.aa(): contour plots of net charge and ionization properties of LYSC_CHICK \cr
     \code{buffer} \tab  minerals and aqueous species as buffers of hydrogen fugacity (Schulte and Shock, 1995) \cr
-    \code{protbuff} \tab ionized proteins as a chemical activity buffer (1. thiol peroxidases 2. sigma factors) \cr
-    \code{yeastgfp} \tab logfO2-logaH2O diagrams for model proteins based on YeastGFP localizations (Dick, 2009) \cr
+    \code{protbuff} \tab chemical activities buffered by thiol peroxidases or sigma factors \cr
+    \code{yeastgfp} \tab YeastGFP locations: log fO2 - log aH2O and log a - log fO2 diagrams (Dick, 2009) \cr
     \code{mosaic} \tab Eh-pH diagram with two sets of changing basis species (Garrels and Christ, 1965) \cr
     \code{copper} \tab another example of \code{\link{mosaic}}: complexation of Cu with glycine (Aksu and Doyle, 2001) \cr
     \code{solubility} \tab solubility of calcite (cf. Manning et al., 2013) or CO2(gas) (cf. Stumm and Morgan, 1996) \cr
-    \code{wjd} \tab run.wjd() with proteins: cell periphery of yeast \cr
+    \code{wjd} \tab Gibbs energy minimization: prebiological atmospheres and cell periphery of yeast \cr
     \code{dehydration} \tab log K of dehydration reactions; SVG file contains tooltips and links \cr
     \code{bugstab} \tab formation potential of microbial proteins in colorectal cancer (Dick, 2016) \cr
     \code{activity_ratios} \tab mineral stability plots with activity ratios on the axes \cr

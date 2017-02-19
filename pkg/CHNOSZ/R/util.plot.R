@@ -2,7 +2,7 @@
 # Functions to create and modify plots
 
 thermo.plot.new <- function(xlim,ylim,xlab,ylab,cex=par('cex'),mar=NULL,lwd=par('lwd'),side=c(1,2,3,4),
-  mgp=c(1.5,0.3,0),cex.axis=par('cex'),col=par('col'),yline=NULL,axs='i',do.box=TRUE,
+  mgp=c(1.7,0.3,0),cex.axis=par('cex'),col=par('col'),yline=NULL,axs='i',do.box=TRUE,
   las=1,xline=NULL, ...) {
   # start a new plot with some customized settings
   thermo <- get("thermo")

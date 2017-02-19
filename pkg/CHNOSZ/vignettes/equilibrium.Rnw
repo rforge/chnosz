@@ -634,7 +634,7 @@ species distribution). Although the caption to Fig. 3 of \citet{SB01}
 reads ``percent GSH that has been oxidized to GSSG'', the lines
 in their figure are closer to the black lines in the figure below.
 \end{itemize}
-<<glutathione, results="hide", message=FALSE, fig.width=5, fig.height=3.5>>=
+<<glutathione, results="hide", message=FALSE, fig.width=5, fig.height=4>>=
 basis(c("GSH", "NH3", "H2S", "H2O", "H+", "e-"))
 basis("pH", 7)
 species(c("GSH", "GSSG"))
@@ -652,19 +652,6 @@ mtext(side=2, "fraction of GSH oxidized to GSSG", las=0, line=2.6, col="blue", c
 mtext(side=2, "- - - - - - - - - - - - - - - - - - -", las=0, line=2.1, cex=0.8)
 legend("topleft", lty=1:3, legend=paste(mM, "mM GSH"))
 @
-\begin{itemize}
-\item Protein examples (with \texttt{normalize = TRUE}): 
-
-\begin{itemize}
-\item See ``Subcellular proteins'' in the vignette \emph{An introduction
-to CHNOSZ}, ``speciation diagram for ER.to.Golgi proteins'' in \texttt{?read.expr},
-and \texttt{demo(\textquotedbl{}yeastgfp\textquotedbl{})}, after \citet{Dic09}.
-\item Also see the vignette \emph{Hot-spring proteins in CHNOSZ}.
-\end{itemize}
-\item For systems of many proteins, equilibrium diagrams such as this can
-become very cluttered, and it may be desirable to use summary statistics
-to identify trends in the activities or affinities (see \texttt{revisit()}).
-\end{itemize}
 
 \subsection{Mosaic diagrams}
 

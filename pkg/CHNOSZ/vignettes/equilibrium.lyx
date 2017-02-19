@@ -2763,7 +2763,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<glutathione, results="hide", message=FALSE, fig.width=5, fig.height=3.5>>=
+<<glutathione, results="hide", message=FALSE, fig.width=5, fig.height=4>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -2856,77 +2856,6 @@ legend("topleft", lty=1:3, legend=paste(mM, "mM GSH"))
 \end_inset
 
 
-\end_layout
-
-\begin_layout Itemize
-Protein examples (with 
-\family typewriter
-normalize = TRUE
-\family default
-): 
-\begin_inset Separator latexpar
-\end_inset
-
-
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-See 
-\begin_inset Quotes eld
-\end_inset
-
-Subcellular proteins
-\begin_inset Quotes erd
-\end_inset
-
- in the vignette 
-\emph on
-An introduction to CHNOSZ
-\emph default
-, 
-\begin_inset Quotes eld
-\end_inset
-
-speciation diagram for ER.to.Golgi proteins
-\begin_inset Quotes erd
-\end_inset
-
- in 
-\family typewriter
-?read.expr
-\family default
-, and 
-\family typewriter
-demo("yeastgfp")
-\family default
-, after 
-\begin_inset CommandInset citation
-LatexCommand citet
-key "Dic09"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Itemize
-Also see the vignette 
-\emph on
-Hot-spring proteins in CHNOSZ
-\emph default
-.
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-For systems of many proteins, equilibrium diagrams such as this can become
- very cluttered, and it may be desirable to use summary statistics to identify
- trends in the activities or affinities (see 
-\family typewriter
-revisit()
-\family default
-).
 \end_layout
 
 \begin_layout Subsection

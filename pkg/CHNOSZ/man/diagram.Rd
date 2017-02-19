@@ -10,7 +10,7 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
 \usage{
   diagram(eout, what = "loga.equil", alpha = FALSE, normalize = FALSE,
     as.residue = FALSE, balance=NULL, groups=as.list(1:length(eout$values)),
-    xrange=NULL, mar=NULL, yline=par("mgp")[1]+0.5, side=1:4,
+    xrange=NULL, mar=NULL, yline=par("mgp")[1]+0.3, side=1:4,
     ylog=TRUE, xlim=NULL, ylim=NULL, xlab=NULL, ylab=NULL,
     cex=par("cex"), cex.names=1, cex.axis=par("cex"),
     lty=NULL, lwd=par("lwd"), dotted=NULL,

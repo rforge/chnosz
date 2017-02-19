@@ -18,7 +18,7 @@
 \usage{
   thermo.plot.new(xlim, ylim, xlab, ylab, cex = par("cex"),
     mar = NULL, lwd = par("lwd"), side = c(1,2,3,4), 
-    mgp = c(1.5, 0.3, 0), cex.axis = par("cex"), col = par("col"),
+    mgp = c(1.7, 0.3, 0), cex.axis = par("cex"), col = par("col"),
     yline = NULL, axs = "i", do.box = TRUE, las = 1,
     xline = NULL, ...)
   thermo.axis(lab = NULL, side = 1:4, line = 1.5, cex = par("cex"),

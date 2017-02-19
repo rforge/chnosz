@@ -217,7 +217,7 @@ element.potentials <- function(w, plot.it=FALSE, iplot=1:ncol(w$A)) {
     par(mfrow=c(length(iplot),1))
     for(i in iplot) {
       ylab <- as.expression(substitute(mu[x]/RT,list(x=colnames(ep)[i])))
-      plot(ep[,i],xlab="species combination",ylab=ylab)
+      plot(ep[,i],xlab="species combination",ylab=ylab, pch=19)
       title(main=paste("max difference (range) =",format(diff(range(ep[,i])),digits=2)))
     }
   }

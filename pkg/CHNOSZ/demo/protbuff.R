@@ -13,9 +13,10 @@ a <- affinity(return.buffer=TRUE, T=50)
 basis(c("CO2", "H2O", "NH3", "O2"), as.numeric(a[1:4]))
 a <- affinity(pH=c(4, 10, 300), T=c(40, 60, 300))
 e <- equilibrate(a, normalize=TRUE)
-diagram(e, fill=NULL, format.names=FALSE)
+fill <- ZC.col(ZC(protein.formula(species()$name)))
+diagram(e, fill=fill, format.names=FALSE)
 title(main="Thiol peroxidases from bacteria")
-legend("topleft", describe.basis(thermo$basis[-6,]))
+legend("topleft", describe.basis(thermo$basis[-6,]), bg="grey80", box.lwd=0)
 
 ## Buffer + ionization: relative stabilities
 ## of E. coli sigma factors on a T-pH diagram
@@ -33,11 +34,12 @@ logact <- affinity(return.buffer=TRUE, T=25)
 # stabilities as a function of T and pH
 basis(c("CO2", "NH3", "H2S", "O2"), as.numeric(logact))
 species(paste(proteins, "ECOLI", sep="_"))
-a <- affinity(pH=c(5, 10), T=c(10, 40))
-diagram(a, normalize=FALSE, fill="heat", format.names=FALSE)
-title(main="Relative stabilities of sigma factors in E. coli")
+a <- affinity(pH=c(5, 10, 300), T=c(10, 40, 300))
+fill <- ZC.col(ZC(protein.formula(species()$name)))
+diagram(a, normalize=FALSE, fill=fill, format.names=FALSE)
+title(main=expression("Sigma factors in"~italic("E. coli")))
 ptext <- c(describe.property("T", 25), 
   describe.basis(ibasis=c(2, 6), oneline=TRUE))
+legend("topleft", legend=c("preset conditions:", ptext), bg="grey80", box.lwd=0)
 btext <- describe.basis(ibasis=c(1, 3, 4, 5), oneline=TRUE)
-legend("bottomleft", legend=c("preset (input values):",
-  ptext, "buffered (results):", btext), bty="n")
+legend("bottomright", legend=c("buffered conditions:", btext), bg="grey80", box.lwd=0)

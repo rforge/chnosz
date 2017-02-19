@@ -34,8 +34,7 @@ for(i in 1:length(T)) {
 }
 legend("bottomleft",pch=unique(expt$pch),
   legend=c(unique(expt$source),tail(expt$source,1)))
-title(main=paste("NaCl(aq) = Na+ + Cl-\n",
-  "Psat and 500-4000 bar, after Shock et al., 1992"))
+mtitle(c(describe.reaction(s$reaction), expression(italic(P)[sat]~"or 500-4000 bar, after Shock et al., 1992")))
 # where do we diverge most from experiment?
 imaxdiff <- which.max(abs(logK - expt$logK))
 stopifnot(all.equal(c("Psat", 347.7),

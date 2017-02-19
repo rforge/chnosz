@@ -45,10 +45,10 @@ for(i in 1:4) {
   a <- affinity(O2=O2, H2O=H2O, iprotein=ip, T=37)
   names <- bugs$abbrv[ibug]
   d <- diagram(a, names=names, fill=col, as.residue=TRUE, tplot=FALSE, xlab=logfO2lab, ylab=logaH2Olab, format.names=FALSE)
-  if(i==1) title(main="fecal 16S rRNA", cex.main=1)
-  if(i==2) title(main="fecal metagenome (ZTV+14)", cex.main=1)
-  if(i==3) title(main="co-abundance groups", cex.main=1)
-  if(i==4) title(main="fecal metagenome (FLJ+15)", cex.main=1)
+  if(i==1) title(main="Fecal 16S rRNA", cex.main=1)
+  if(i==2) title(main="Fecal metagenome (ZTV+14)", cex.main=1)
+  if(i==3) title(main="Co-abundance groups", cex.main=1)
+  if(i==4) title(main="Fecal metagenome (FLJ+15)", cex.main=1)
   box()
   label.figure(LETTERS[i], yfrac=0.96, paren=FALSE, font=2, cex=1)
   # store locations of healthy bug zones
@@ -62,6 +62,6 @@ xs <- seq(O2[1], O2[2], length.out=O2[3])
 ys <- seq(H2O[1], H2O[2], length.out=H2O[3])
 hhh <- healthbugs[[1]] + healthbugs[[2]] + healthbugs[[3]] + healthbugs[[4]]
 image(xs, ys, hhh, col=c(red, lightred, neutral, lightblue, blue), useRaster=TRUE, xlab=logfO2lab, ylab=logaH2Olab)
-title(main="cumulative stability count")
+title(main="Cumulative stability count")
 box()
 label.figure("E", yfrac=0.96, paren=FALSE, font=2, cex=1)

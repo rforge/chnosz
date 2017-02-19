@@ -87,7 +87,7 @@ ZC <- ZC(species()$ispecies)
 col <- rep("red", length(prot))
 col[ZC > 0] <- "blue"
 e <- equilibrate(a, normalize=TRUE)
-d <- diagram(e, col=col, format.names=FALSE)
+d <- diagram(e, col=col)
 title(main="Bovine proteins, GSH/GSSG redox buffer")
 }
 

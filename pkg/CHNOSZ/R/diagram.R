@@ -174,6 +174,7 @@ diagram <- function(
     col.names <- rep(col.names, length.out=ngroups)
 
     ## make up some names for lines/fields if they are missing
+    is.pname <- FALSE
     if(missing(names)) {
       # properties of basis species or reactions?
       if(eout$property %in% c("G.basis", "logact.basis")) names <- rownames(eout$basis)
@@ -185,6 +186,7 @@ diagram <- function(
         else names <- as.character(eout$species$name)
         # remove non-unique organism or protein names
         if(all(grepl("_", names))) {
+          is.pname <- TRUE
           # everything before the underscore (the protein)
           pname <- gsub("_.*$", "", names)
           # everything after the underscore (the organism)
@@ -201,13 +203,10 @@ diagram <- function(
     }
 
     ## apply formatting to chemical formulas 20170204
-    if(format.names) {
+    if(all(grepl("_", names))) is.pname <- TRUE
+    if(format.names & !is.pname) {
       exprnames <- as.expression(names)
-      for(i in seq_along(exprnames)) {
-        # can the name be parsed as a chemical formula?
-        mtry <- suppressWarnings(try(makeup(exprnames[[i]]), TRUE))
-        if(!identical(class(mtry), "try-error")) exprnames[[i]] <- expr.species(exprnames[[i]])
-      }
+      for(i in seq_along(exprnames)) exprnames[[i]] <- expr.species(exprnames[[i]])
       names <- exprnames
     }
 

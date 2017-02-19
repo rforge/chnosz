@@ -17,10 +17,10 @@ test_that("other functions are calling palply() properly", {
     # CHNOSZ no longer has a large FASTA file to test this with 20170205
     #ff <- system.file("extdata/fasta/HTCC1062.faa.xz", package="CHNOSZ")
     #expect_message(aa <- read.fasta(ff), "read.fasta running 1354 calculations")
-    ip <- 1:nrow(thermo$protein)
     basis("CHNOS")
-    expect_message(a <- affinity(iprotein=rep(ip, 3)), "affinity running 1359 calculations")
-    expect_message(e <- equilibrate(a, normalize=TRUE), "equil.boltzmann running 1359 calculations")
+    ip <- 1:nrow(thermo$protein)
+    expect_message(a <- affinity(iprotein=rep(ip, 3)), "affinity running .* calculations")
+    expect_message(e <- equilibrate(a, normalize=TRUE), "equil.boltzmann running .* calculations")
     # test reaction method
     species(c("CO2", "acetic acid"))
     a <- affinity(O2=c(-90, -60, 1000))

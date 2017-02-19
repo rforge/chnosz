@@ -17,4 +17,5 @@ solubility      solubility of calcite or CO2(gas) as a function of pH
 wjd             Gibbs energy minimization: prebiological atmospheres and cell periphery of yeast
 dehydration     log K of dehydration reactions; SVG file contains tooltips and links
 bugstab         formation potential of microbial proteins in colorectal cancer
+Shh             affinities of transcription factors relative to Sonic hedgehog
 activity_ratios mineral stability plots with activity ratios on the axes

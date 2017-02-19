@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-53 (2017-02-19)
+CHANGES IN CHNOSZ 1.0.8-54 (2017-02-19)
 ---------------------------------------
 
 DOCUMENTATION:
@@ -11,7 +11,8 @@ DOCUMENTATION:
 
 - New demos: bugstab.R (potential diagrams for microbial proteins in
   colorectal cancer), activity_ratios.R (mineral stability diagrams
-  with activity ratios on the axes).
+  with activity ratios on the axes), Shh.R (affinities of
+  transcription factors relative to Sonic hedgehog).
 
 - Converted demos: move examples from help pages to protein.equil.R,
   add.obigt.R, and affinity.R.

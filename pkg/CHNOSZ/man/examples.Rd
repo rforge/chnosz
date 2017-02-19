@@ -16,7 +16,7 @@
   examples(do.png = FALSE)
   demos(which = c("sources", "protein.equil", "add.obigt", "affinity", "NaCl", "density",
     "ORP", "revisit", "findit", "ionize", "buffer", "protbuff", "yeastgfp", "mosaic",
-    "copper", "solubility", "wjd", "dehydration", "bugstab", "activity_ratios"),
+    "copper", "solubility", "wjd", "dehydration", "bugstab", "Shh", "activity_ratios"),
     to.file=FALSE)
 }
 
@@ -51,6 +51,7 @@ See the comments in the source code for more information about each demo.
     \code{wjd} \tab Gibbs energy minimization: prebiological atmospheres and cell periphery of yeast \cr
     \code{dehydration} \tab log K of dehydration reactions; SVG file contains tooltips and links \cr
     \code{bugstab} \tab formation potential of microbial proteins in colorectal cancer (Dick, 2016) \cr
+    \code{Shh} \tab affinities of transcription factors relative to Sonic hedgehog \cr
     \code{activity_ratios} \tab mineral stability plots with activity ratios on the axes \cr
   }
 

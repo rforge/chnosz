@@ -29,7 +29,7 @@ mtitle(c("CV of equilibrium activities of", expr))
 # calculate affinities in logfO2-logaH2O space
 a <- affinity(O2=c(-85, -65), H2O=c(-5, 5), iprotein=ip)
 # show the predominances
-diagram(a, normalize=TRUE, fill="heat", format.names=FALSE)
+diagram(a, normalize=TRUE, fill="heat")
 # calculate the equilibrium activities
 e <- equilibrate(a, loga.balance=0, normalize=TRUE)
 # show the coefficient of variation

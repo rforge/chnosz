@@ -16,19 +16,6 @@ species(prot4)
 a <- affinity(T=c(0, 200), O2=c(-80, -40))
 diagram(a)
 
-## one way to calculate the standard Gibbs energy of a 
-## reaction to form an ionized protein at 100 degrees and pH 8
-basis("CHNOS+")   # do this to auto-balance the formation reaction
-Gr.nonionized <- subcrt("LYSC_CHICK", 1, T=100)$out$G
-basis("pH", 8)
-pinfo <- protein.info("LYSC_CHICK", round.it=FALSE, T=100)
-Gr.ionization <- pinfo$G.Z - pinfo$G
-# standard Gibbs energy of the reaction
-# in cal/mol ionized protein:
-Gr.ionized <- Gr.nonionized + Gr.ionization
-# in cal/mol ionized residue:
-Gr.ionized_residue <- Gr.ionized/protein.length("LYSC_CHICK")
-
 ## Standard molal entropy of a protein reaction
 basis("CHNOS")
 # here we provide the reaction coefficients of the 
@@ -92,8 +79,7 @@ title(main="Bovine proteins, GSH/GSSG redox buffer")
 }
 
 \seealso{
-  For accessing, updating, and downloading amino acid compositions of proteins, see \code{\link{iprotein}}. 
-  For getting chemical formulas and stoichiometric coefficients in reactions of proteins, see \code{\link{protein.info}}.
+  For accessing, updating, and downloading amino acid compositions of proteins, see \code{\link{protein.info}}. 
 For more examples of metastable equilibrium calculations for proteins, see \code{\link{read.expr}}, \code{\link{more.aa}}, \code{\link{ionize.aa}}, and \code{\link{apc}} for reaction-path calculations.
 }
 

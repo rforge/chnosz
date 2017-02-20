@@ -1481,7 +1481,7 @@ a <- affinity(T=Tlim, H2=c(-7, -4))
 
 \begin_layout Plain Layout
 
-diagram(a, fill=NULL, names=1:5, normalize=TRUE, format.names=FALSE)
+diagram(a, fill=NULL, names=1:5, normalize=TRUE)
 \end_layout
 
 \begin_layout Plain Layout
@@ -1816,7 +1816,7 @@ for(j in 1:2) {
 
 \begin_layout Plain Layout
 
-    diagram(a, fill=NULL, names=1:5, normalize=TRUE, format.names=FALSE)
+    diagram(a, fill=NULL, names=1:5, normalize=TRUE)
 \end_layout
 
 \begin_layout Plain Layout

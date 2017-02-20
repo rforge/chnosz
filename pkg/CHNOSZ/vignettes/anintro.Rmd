@@ -1030,7 +1030,7 @@ Charged and uncharged sets of basis species are used to to activate and suppress
 The calculation of affinity for the ionized proteins returns multiple values (as a function of pH), but there is only one value of affinity returned for the nonionized proteins, so we need to use R's `as.numeric()` to avoid subtracting nonconformable arrays:
 
 ```{r protein_ionization, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, fig.cap='Affinity of ionization of proteins. See <span style="color:blue">demo(ionize)</span> for ionization properties calculated as a function of temperature and pH.', cache=TRUE, pngquant=pngquant, timeit=timeit}
-ip <- iprotein(c("CYC_BOVIN", "LYSC_CHICK", "MYG_PHYCA", "RNAS1_BOVIN"))
+ip <- protein.info(c("CYC_BOVIN", "LYSC_CHICK", "MYG_PHYCA", "RNAS1_BOVIN"))
 basis("CHNOS+")
 a_ion <- affinity(pH = c(0, 14), iprotein = ip)
 basis("CHNOS")
@@ -1050,7 +1050,7 @@ legend("topright", legend = a_ion$species$name,
 The affinity is always positive, showing the strong energetic drive for ionization of proteins in aqueous solution.
 The degrees of ionization of amino and carboxyl groups increase at low and high pH, respectively, giving rise to the U-shaped lines.
 
-There, we used the indices returned by <span style="color:green">`iprotein()`</span> in the `iprotein` argument of <span style="color:green">`affinity()`</span> to specify the proteins in the calculation.
+There, we used the indices returned by <span style="color:green">`protein.info()`</span> in the `iprotein` argument of <span style="color:green">`affinity()`</span> to specify the proteins in the calculation.
 That approach utilizes some optimizations that can be realized due to group additivity, and is useful for calculations involving many proteins.
 An alternative, but slower, approach is to identify the proteins to <span style="color:green">`species()`</span>; this produces results that are equivalent to using the `iprotein` argument:
 <!-- this is needed because the figure above might be cached, preventing the call to basis() there -->
@@ -1308,7 +1308,7 @@ twc[[1]][ihigh] <- 1
 twc[[2]][ihigh] <- 3
 col <- c("#f9a330", "#63c54e", "#f24e33", "#d4e94e", "#0f0f0f")
 twc[[3]][ihigh] <- col
-ylab <- substitute(italic(A) / 2.303 * italic(RT) * ", relative to Shh")
+ylab <- substitute(italic(A) / 2.303 * italic(RT) * " relative to Shh")
 diagram(a, balance = 1, ylim = c(-0.5, 4.5), xlim = c(0.5, -4.5),
   lty = twc[[1]], lwd=twc[[2]], col = twc[[3]], names = NA, ylab = ylab)
 legend("topright", legend = c("Olig2", "Irx3", "Nkx6.2", "Dbx1", "Shh"),
@@ -1461,7 +1461,7 @@ T <- c(50, 100)
 res <- 300
 a <- affinity(T = c(T, res), H2 = c(-8, -3, res), iprotein = ip)
 fill <- ZC.col(ZC(protein.formula(ip)))
-diagram(a, normalize = TRUE, fill = fill, names = 1:5, format.names = FALSE)
+diagram(a, normalize = TRUE, fill = fill, names = 1:5)
 T <- c(93.3, 79.4, 67.5, 65.3, 57.1)
 logaH2 <- c(-3.38, -4.14, -5.66, -7.47, -10.02)
 lines(T, logaH2, lty = 2, lwd = 2)

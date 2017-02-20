@@ -754,23 +754,10 @@ species("CSG",c("METVO", "METJA"))
 Although the basis species are defined, the temperature is not yet
 specified, so it is not immediately possible to calculate the ionization
 states of the proteins. That is why the coefficient on $\mathrm{H^{+}}$
-is zero in the output above. To see what the computed protein charges
-are at 25 $^{\circ}$C and 1 bar and at pH 7 (specified by the logarithm
-of activity of $\mathrm{H^{+}}$ in the basis species), try this:
-
-<<ProteinInfo>>=
-protein.info(species()$name)
-@
-
-Note that \texttt{affinity()} is called twice by \texttt{protein.info()};
-this so that both charges and standard Gibbs energies of ionization
-of the proteins can be calculated. The \texttt{Z} values in the table
-are the charges of the proteins computed using the ionization constants
-of sidechain and terminal groups, and the \texttt{G.Z} values are
-the calculated Gibbs energies of formation of the ionized proteins
-\citep{DLH06}. The \texttt{ZC} values are the average oxidation states
-of carbon of the proteins. Let us now calculate the chemical affinities
-of formation of the ionized proteins:
+is zero in the output above. Let us now calculate the chemical affinities
+of formation of the ionized proteins at 25 $^{\circ}$C, 1 bar, and
+pH = 7 (specified by the logarithm of activity of $\mathrm{H^{+}}$
+in the basis species):
 
 <<ProteinAffinity>>=
 a <- affinity()
@@ -1001,7 +988,7 @@ for CSG example we have been discussing.
 \begin{small}
 
 <<ProteinEquil, results="hide">>=
-protein <- iprotein(c("CSG_METVO", "CSG_METJA"))
+protein <- protein.info(c("CSG_METVO", "CSG_METJA"))
 basis("CHNOS+")
 swap.basis("O2", "H2")
 protein.equil(protein, loga.protein=-3)

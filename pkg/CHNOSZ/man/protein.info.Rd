@@ -14,9 +14,9 @@
 }
 
 \usage{
+  protein.info(protein, organism=NULL)
   protein.formula(protein, organism = NULL, residue = FALSE)
   protein.length(protein, organism = NULL)
-  protein.info(protein, T = 25, residue = FALSE, round.it = FALSE)
   protein.basis(protein, T = 25, normalize = FALSE)
   protein.equil(protein, T=25, loga.protein = 0, digits = 4)
   MP90.cp(protein, T)
@@ -29,25 +29,24 @@
   \item{residue}{logical, return per-residue values (those of the proteins divided by their lengths)?}
   \item{normalize}{logical, return per-residue values (those of the proteins divided by their lengths)?}
   \item{T}{numeric, temperature in \eqn{^{\circ}}{°}C}
-  \item{round.it}{logical, round the values in the output?}
   \item{loga.protein}{numeric, decimal logarithms of reference activities of proteins}
   \item{digits}{integer, number of significant digits (see \code{\link{signif}})}
 }
 
 \details{
-  These functions accept \code{protein} (and optionally \code{organism}) in the same way as \code{\link{ip2aa}}, that is, as a protein name (optionally with the \code{organism} part separated), one or more row numbers in \code{thermo$protein} that can be identified using \code{\link{iprotein}}, or a data frame in the format of \code{thermo$protein}.
+  These functions accept \code{protein} (and optionally \code{organism}) in the same way as \code{\link{ip2aa}}, that is, as a protein name (optionally with the \code{organism} part separated), one or more row numbers in \code{thermo$protein} that can be identified using \code{\link{protein.info}}, or a data frame in the format of \code{thermo$protein}.
+
+  \code{protein.info} returns the rownumber(s) of \code{thermo$protein} that match the protein names. The names can be supplied in the single \code{protein} argument or as separated \code{protein}s and \code{organism}s (without the underscore). Any protein not matched returns an NA and generates a message.
 
   \code{protein.formula} returns a stoichiometrix matrix representing the chemical formulas of the proteins that can be pased to e.g. \code{\link{mass}} or \code{\link{ZC}}. The amino acid compositions are multiplied by the output of \code{group.formulas} to generate the result. \code{group.formulas} returns the chemical formulas of each of the 20 common amino acid residues in proteins, as well as the terminal -H and -H (treated as the [H2O] group).
 
   \code{protein.length} returns the lengths (number of amino acids) of the proteins.
 
-  \code{protein.info} tabulates some properties of proteins. A data frame is returned with a row for each protein, and columns named \samp{protein}, \samp{length}, \samp{formula}, \samp{G}, \samp{Z}, \samp{G.Z} and \samp{ZC}, indicating the names of the proteins, their lengths, chemical formulas, and values of the standard molal Gibbs energy of the neutral (nonionized) proteins, net charges and standard molal Gibbs energy of the ionized proteins, and average oxidation states of carbon. \samp{Z} and \samp{G.Z} are calculated using \code{\link{ionize.aa}} with values of pH taken from \code{thermo$basis}; \samp{Z} and \samp{G.Z} become NA if the \code{\link{basis}} species are not loaded or \samp{H+} is not in the basis definition. \samp{ZC} is calculated using \code{\link{ZC}}. The value of \code{T} indicates the temperature at which to calculate the Gibbs energies and net charge. The values of standard Gibbs energy are shown in cal/mol; these and other numeric values are rounded at a set number of digits if \code{round.it} is TRUE. The values (including chemical formula but not \samp{ZC}) are divided by the lengths of the proteins if \code{residue} is TRUE.
-
   The following two functions depend on an existing definition of the basis species:
 
 \code{protein.basis} calculates the numbers of the basis species (i.e. opposite of the coefficients in the formation reactions) that can be combined to form the composition of each of the proteins.
 The basis species must be present in \code{thermo$basis}, and if \samp{H+} is among the basis species, the ionization states of the proteins are included.
-As with \code{protein.info}, the ionization state of the protein is calculated at the pH defined in \code{thermo$basis} and at the temperature specified by the \code{T} argument.
+The ionization state of the protein is calculated at the pH defined in \code{thermo$basis} and at the temperature specified by the \code{T} argument.
 If \code{normalize} is TRUE, the coefficients on the basis species are divided by the lengths of the proteins. 
 
   \code{protein.equil} produces a series of messages showing step-by-step a calculation of the chemical activities of proteins in metastable equilibrium. For the first protein, it shows the standard Gibbs energies of the reaction to form the nonionized protein from the basis species and of the ionization reaction of the protein (if \samp{H+} is in the basis), then the standard Gibbs energy/RT of the reaction to form the (possibly ionized) protein per residue. The per-residue values of \samp{logQstar} and \samp{Astar/RT} are also shown for the first protein. Equilibrium calculations are then performed, only if more than one protein is specified. This calculation applies the Boltzmann distribution to the calculation of the equilibrium degrees of formation of the residue equivalents of the proteins, then converts them to activities of proteins taking account of \code{loga.protein} and protein length. If the \code{protein} argument is numeric (indicating rownumbers in \code{thermo$protein}), the values of \samp{Astar/RT} are compared with the output of \code{\link{affinity}}, and those of the equilibrium degrees of formation of the residues and the chemical activities of the proteins with the output of \code{\link{diagram}}. If the values in any of these tests are are not \code{\link{all.equal}} an error is produced indicating a bug. 
@@ -57,24 +56,34 @@ If \code{normalize} is TRUE, the coefficients on the basis species are divided b
 
 \seealso{
 \code{\link{ionize.aa}} for an example that compares \code{MP90.cp} with heat capacities calculated in CHNOSZ at different temperatures and pHs.
-The functions for interacting with the database of amino acid compositions of proteins are documented at \code{\link{iprotein}}, and examples of relative stability calculations can be found on the \code{\link{protein}} help page.
 See also \code{demo{protein.equil}}.
 }
 
 \examples{\dontshow{data(thermo)}
+# search by name in thermo$protein
+ip1 <- protein.info("LYSC_CHICK")
+ip2 <- protein.info("LYSC", "CHICK")
+# these are the same
+stopifnot(all.equal(ip1, ip2))
+# two organisms with the same protein name
+ip3 <- protein.info("MYG", c("HORSE", "PHYCA"))
+# their amino acid compositions
+ip2aa(ip3)
+# their thermodynamic properties by group additivity
+aa2eos(ip2aa(ip3))
+
+# an example of an unrecognized protein name
+ip4 <- protein.info("MYGPHYCA")
+stopifnot(is.na(ip4))
+
 ## example for chicken lysozyme C
 # index in thermo$protein
-ip <- iprotein("LYSC_CHICK")
+ip <- protein.info("LYSC_CHICK")
 # amino acid composition
 ip2aa(ip)
 # length and chemical formula
 protein.length(ip)
 protein.formula(ip)
-# formula, Gibbs energy, average oxidation state of carbon
-protein.info(ip)
-# as above, now with charge and Gibbs energy of ionized protein at pH 7
-basis("CHNOS+")
-protein.info(ip)
 # group additivity for thermodynamic properties and HKF equation-of-state
 # parameters of non-ionized protein
 aa2eos(ip2aa(ip))
@@ -82,6 +91,7 @@ aa2eos(ip2aa(ip))
 # (subcrt uses the species name, not ip)
 subcrt("LYSC_CHICK")
 # affinity calculation, protein identified by ip
+basis("CHNOS+")
 affinity(iprotein=ip)
 # affinity calculation, protein loaded as a species
 species("LYSC_CHICK")
@@ -92,8 +102,8 @@ affinity()
 
 ## these are all the same
 protein.formula("P53_PIG")
-protein.formula(iprotein("P53_PIG"))
-protein.formula(ip2aa(iprotein("P53_PIG")))
+protein.formula(protein.info("P53_PIG"))
+protein.formula(ip2aa(protein.info("P53_PIG")))
 
 ## using protein.formula: average oxidation state of 
 ## carbon of proteins from different organisms (Dick, 2014)

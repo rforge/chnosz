@@ -1,10 +1,10 @@
-context("iprotein")
+context("add.protein")
 
 # clear out any prior database alterations
 suppressMessages(data(thermo))
 
 test_that("basic searches and conversions work as expected", {
-  expect_equal(iprotein(c("LYSC_CHICK", "MYGPHYCA")), c(6, NA))
+  expect_equal(protein.info(c("LYSC_CHICK", "MYGPHYCA")), c(6, NA))
   # factors causing problems again ...
   f <- system.file("extdata/protein/DS11.csv", package="CHNOSZ")
   aa <- read.csv(f)
@@ -16,10 +16,10 @@ test_that("basic searches and conversions work as expected", {
 })
 
 test_that("errors and messages occur in some circumstances", {
-  expect_message(iprotein(c("LYSC_CHICK", "MYGPHYCA")), "1 protein not matched")
+  expect_message(protein.info(c("LYSC_CHICK", "MYGPHYCA")), "1 protein not matched")
   expect_error(seq2aa("LYS_CHICK", "XXX"), "no characters match an amino acid")
   expect_error(add.protein(count.aa("AAA")), "not a data frame with the same columns as thermo\\$protein")
-  expect_message(add.protein(ip2aa(iprotein("CYC_BOVIN"))), "replaced 1 existing protein\\(s\\)")
+  expect_message(add.protein(ip2aa(protein.info("CYC_BOVIN"))), "replaced 1 existing protein\\(s\\)")
 })
 
 test_that("group additivity for proteins gives expected values", {

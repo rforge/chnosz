@@ -1,46 +1,19 @@
-# CHNOSZ/iprotein.R
+# CHNOSZ/add.protein.R
 # calculate properties of proteins 20061109 jmd
 # reorganize protein functions 20120513
 
-# iprotein - find rownumber in thermo$protein
+# add.protein - add amino acid counts to thermo$protein (returns iprotein)
 # ip2aa - select amino acid counts (data frame) from thermo$protein
 # aa2eos - perform group additivity calculations
 # seq2aa - calculate amino acid counts from a sequence
 # aasum - combine amino acid counts (sum, average, or weighted sum by abundance)
 # read.aa - read amino acid counts from a file
-# add.protein - add amino acid counts to thermo$protein (returns iprotein)
-
-iprotein <- function(protein, organism=NULL) {
-  # find the rownumber(s) of thermo$protein that matches
-  # 'protein' numeric (the rownumber itself)
-  # 'protein' character, e.g. LYSC_CHICK
-  # 'protein' and 'organism', e.g. 'LYSC', 'CHICK'
-  thermo <- get("thermo")
-  if(is.numeric(protein)) {
-    iproteins <- 1:nrow(thermo$protein)
-    protein[!protein %in% iproteins] <- NA
-    iprotein <- protein
-  } else {
-    # from here we'll search by protein/organism pairs
-    tp.po <- paste(thermo$protein$protein, thermo$protein$organism, sep="_")
-    if(is.null(organism)) my.po <- protein
-    else my.po <- paste(protein, organism, sep="_")
-    iprotein <- match(my.po, tp.po)
-  }
-  # tell the user about NA's
-  if(any(is.na(iprotein))) {
-    nNA <- sum(is.na(iprotein))
-    if(nNA==1) ptext <- "" else ptext <- "s"
-    message("iprotein: ", sum(is.na(iprotein)), " protein", ptext, " not matched")
-  }
-  return(iprotein)
-}
 
 ip2aa <- function(protein, organism=NULL, residue=FALSE) {
   # return amino acid counts (rows from thermo$protein)
   # or 'protein' if it is a data frame
   if(is.data.frame(protein)) return(protein)
-  iprotein <- iprotein(protein, organism)
+  iprotein <- protein.info(protein, organism)
   # drop NA matches
   iprotein <- iprotein[!is.na(iprotein)]
   out <- get("thermo")$protein[iprotein, ]
@@ -111,7 +84,7 @@ seq2aa <- function(protein, sequence) {
   colnames(caa) <- aminoacids(3)
   # a protein with no amino acids is sort of boring
   if(all(caa==0)) stop("no characters match an amino acid")
-  ip <- suppressMessages(iprotein(protein))
+  ip <- suppressMessages(protein.info(protein))
   # now make the data frame
   po <- strsplit(protein, "_")[[1]]
   aa <- data.frame(protein=po[1], organism=po[2], ref=NA, abbrv=NA, stringsAsFactors=FALSE)
@@ -168,7 +141,7 @@ add.protein <- function(aa) {
     stop("the value of 'aa' is not a data frame with the same columns as thermo$protein")
   # find any protein IDs that are duplicated
   po <- paste(aa$protein, aa$organism, sep="_")
-  ip <- suppressMessages(iprotein(po))
+  ip <- suppressMessages(protein.info(po))
   ipdup <- !is.na(ip)
   # now we're ready to go
   tp.new <- thermo$protein
@@ -183,7 +156,7 @@ add.protein <- function(aa) {
   thermo$protein <- tp.new
   assign("thermo", thermo, "CHNOSZ")
   # return the new rownumbers
-  ip <- iprotein(po)
+  ip <- protein.info(po)
   # make some noise
   if(!all(ipdup)) message("add.protein: added ", nrow(aa)-sum(ipdup), " new protein(s) to thermo$protein")
   if(any(ipdup)) message("add.protein: replaced ", sum(ipdup), " existing protein(s) in thermo$protein")

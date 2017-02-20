@@ -34,8 +34,6 @@
 \seealso{
   The amino acid composition in \code{aa} can be generated using e.g. \code{\link{ip2aa}}. 
 
-  \code{\link{protein.info}} and \code{\link{protein.basis}} use this function to compute the properties of ionized proteins.
-
   This function is called by \code{\link{A.ionization}} as part of a calculation of \code{\link{affinity}} if proteins are among the species of interest, \samp{H+} is in the basis, and \code{thermo$opt$ionize} is TRUE. 
 }
 
@@ -43,7 +41,7 @@
 ## Charge of LYSC_CHICK as a function of pH and T
 # After Fig. 10 of Dick et al., 2006
 # the rownumber of the protein in thermo$protein
-ip <- iprotein("LYSC_CHICK")
+ip <- protein.info("LYSC_CHICK")
 # its amino acid composition
 aa <- ip2aa(ip)
 # additive charges of unfolded protein at 25, 100, 150 degrees C

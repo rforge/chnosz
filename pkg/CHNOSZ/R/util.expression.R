@@ -7,6 +7,8 @@ expr.species <- function(species, state="", log="", value=NULL) {
   # that include subscripts, superscripts (if charged)
   # and optionally designations of states +/- loga or logf prefix
   if(length(species) > 1) (stop("more than one species"))
+  # convert to character so that "1", "2", etc. don't get converted to chemical formulas via makeup()
+  species <- as.character(species)
   # the counts of elements in the species:
   # here we don't care too much if an "element" is a real element
   # (listed in thermo$element), so we suppress warnings

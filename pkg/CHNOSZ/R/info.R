@@ -31,7 +31,7 @@ info.character <- function(species, state=NULL, check.protein=TRUE) {
   # since thermo$obigt$abbrv contains NAs, convert NA results to FALSE
   matches.species[is.na(matches.species)] <- FALSE
   # turn it in to no match if it's a protein in the wrong state
-  ip <- suppressMessages(iprotein(species))
+  ip <- suppressMessages(protein.info(species))
   if(any(matches.species) & !is.na(ip) & !is.null(state)) {
     matches.state <- matches.species & grepl(state, thermo$obigt$state)
     if(!any(matches.state)) matches.species <- FALSE

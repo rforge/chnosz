@@ -3241,77 +3241,16 @@ Although the basis species are defined, the temperature is not yet specified,
 \end_inset
 
  is zero in the output above.
- To see what the computed protein charges are at 25 
+ Let us now calculate the chemical affinities of formation of the ionized
+ proteins at 25 
 \begin_inset Formula $^{\circ}$
 \end_inset
 
-C and 1 bar and at pH 7 (specified by the logarithm of activity of 
+C, 1 bar, and pH = 7 (specified by the logarithm of activity of 
 \begin_inset Formula $\mathrm{H^{+}}$
 \end_inset
 
- in the basis species), try this:
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-<<ProteinInfo>>=
-\end_layout
-
-\begin_layout Plain Layout
-
-protein.info(species()$name)
-\end_layout
-
-\begin_layout Plain Layout
-
-@
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Note that 
-\family typewriter
-affinity()
-\family default
- is called twice by 
-\family typewriter
-protein.info()
-\family default
-; this so that both charges and standard Gibbs energies of ionization of
- the proteins can be calculated.
- The 
-\family typewriter
-Z
-\family default
- values in the table are the charges of the proteins computed using the
- ionization constants of sidechain and terminal groups, and the 
-\family typewriter
-G.Z
-\family default
- values are the calculated Gibbs energies of formation of the ionized proteins
- 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "DLH06"
-
-\end_inset
-
-.
- The 
-\family typewriter
-ZC
-\family default
- values are the average oxidation states of carbon of the proteins.
- Let us now calculate the chemical affinities of formation of the ionized
- proteins:
+ in the basis species):
 \end_layout
 
 \begin_layout Standard
@@ -4129,7 +4068,7 @@ status open
 
 \begin_layout Plain Layout
 
-protein <- iprotein(c("CSG_METVO", "CSG_METJA"))
+protein <- protein.info(c("CSG_METVO", "CSG_METJA"))
 \end_layout
 
 \begin_layout Plain Layout

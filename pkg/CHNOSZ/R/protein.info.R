@@ -2,11 +2,37 @@
 # calculate formulas and summarize properties of proteins
 # MP90.cp: additive heat capacity from groups of Makhatadze and Privalov, 1990
 # group.formulas: chemical makeup of the amino acid residues
+# protein.info: find rownumber in thermo$protein
 # protein.formula: chemical makeup of the indicated proteins
 # protein.length: lengths of the indicated proteins
-# protein.info: summarize properties of proteins
 # protein.basis: coefficients of basis species in formation reactions of [ionized] proteins [residues]
 # protein.equil: step-by-step example of protein equilibrium calculation
+
+protein.info <- function(protein, organism=NULL) {
+  # find the rownumber(s) of thermo$protein that matches
+  # 'protein' numeric (the rownumber itself)
+  # 'protein' character, e.g. LYSC_CHICK
+  # 'protein' and 'organism', e.g. 'LYSC', 'CHICK'
+  thermo <- get("thermo")
+  if(is.numeric(protein)) {
+    iproteins <- 1:nrow(thermo$protein)
+    protein[!protein %in% iproteins] <- NA
+    iprotein <- protein
+  } else {
+    # from here we'll search by protein/organism pairs
+    tp.po <- paste(thermo$protein$protein, thermo$protein$organism, sep="_")
+    if(is.null(organism)) my.po <- protein
+    else my.po <- paste(protein, organism, sep="_")
+    iprotein <- match(my.po, tp.po)
+  }
+  # tell the user about NA's
+  if(any(is.na(iprotein))) {
+    nNA <- sum(is.na(iprotein))
+    if(nNA==1) ptext <- "" else ptext <- "s"
+    message("iprotein: ", sum(is.na(iprotein)), " protein", ptext, " not matched")
+  }
+  return(iprotein)
+}
 
 MP90.cp <- function(protein, T) {
   # T (temperature, degrees C), protein (name of protein)
@@ -49,7 +75,6 @@ MP90.cp <- function(protein, T) {
   return(cnew)
 }
 
-
 group.formulas <- function() {
   # return a matrix with chemical formulas of residues
   # names of the sidechain groups
@@ -82,56 +107,6 @@ protein.length <- function(protein, organism=NULL) {
   # use rowSums on the columns containing amino acid counts
   pl <- as.numeric(rowSums(aa[, 6:25]))
   return(pl)
-}
-
-protein.info <- function(protein, T=25, residue=FALSE, round.it=FALSE) {
-  # make a table of selected properties for proteins
-  # listed in protein
-  aa <- ip2aa(protein)
-  pname <- paste(aa$protein, aa$organism, sep="_")
-  length <- protein.length(aa)
-  pf <- protein.formula(aa)
-  G <- unlist(subcrt(pname, T=T, property="G")$out)
-  Z <- rep(NA, length(pname))
-  G.Z <- rep(NA, length(pname))
-  ZC <- ZC(pf)
-  # run ionization calculations if we have H+
-  thermo <- get("thermo")
-  if(!is.null(thermo$basis)) {
-    iHplus <- match("H+", rownames(thermo$basis))
-    if(!is.na(iHplus)) {
-      pH <- -thermo$basis$logact[iHplus]
-      Z <- ionize.aa(aa, T=T, pH=pH)[1, ]
-      G.ionization <- ionize.aa(aa, T=T, pH=pH, property="G")[1, ]
-      G.Z <- G + G.ionization
-      # add charge to the chemical formulas
-      pf <- cbind(pf, Z)
-      iH <- match("H", colnames(pf))
-      pf[, iH] <- pf[, iH] + Z
-    }
-  }
-  # take care of residue conversion
-  if(residue) {
-    pf <- pf / length
-    G <- G / length
-    Z <- Z / length
-    G.Z <- G.Z / length
-    length <- length / length
-    # round the coefficients in the formulas
-    if(round.it) pf <- round(pf, 3)
-  }
-  # convert each protein formula to a single line
-  formula <- as.chemical.formula(round(pf, 3))
-  if(round.it) {
-    length <- round(length, 1)
-    G <- round(G, 3)
-    Z <- round(Z, 3)
-    G.Z <- round(G.Z, 3)
-    ZC <- round(ZC, 3)
-  }
-  out <- data.frame(protein=pname, length=length, formula=formula, G=G, Z=Z, G.Z=G.Z, ZC=ZC, stringsAsFactors=FALSE)
-  rownames(out) <- NULL
-  return(out)
 }
 
 protein.basis <- function(protein, T=25, normalize=FALSE) {

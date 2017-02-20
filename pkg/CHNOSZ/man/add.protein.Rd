@@ -1,5 +1,4 @@
-\name{iprotein}
-\alias{iprotein}
+\name{add.protein}
 \alias{ip2aa}
 \alias{aa2eos}
 \alias{seq2aa}
@@ -12,7 +11,6 @@
 }
 
 \usage{
-  iprotein(protein, organism=NULL)
   ip2aa(protein, organism=NULL, residue=FALSE)
   aa2eos(aa, state=get("thermo")$opt$state)
   seq2aa(protein, sequence)
@@ -41,8 +39,6 @@
 
   The first few functions provide low-level operations:
 
-  \code{iprotein} returns the rownumber(s) of \code{thermo$protein} that match the protein names. The names can be supplied in the single \code{protein} argument or as separated \code{protein}s and \code{organism}s (without the underscore). Any protein not matched returns an NA and generates a message.
-
   \code{ip2aa} returns the row(s) of \code{thermo$protein} that match the supplied protein names, OR the protein indices found by \code{iprotin}. Set \code{residue} to TRUE to return the per-residue composition (i.e. amino acid composition of the protein divided by total number of residues). For this function only, if the \code{protein} argument is a data frame, it is returned unchanged, except for possibly the per-residue calculation.
 
   \code{aa2eos} calculates the thermodynamic properties and equations-of-state parameters for the completely nonionized proteins using group additivity with parameters taken from Dick et al., 2006 (aqueous proteins) and LaRowe and Dick, 2012 (crystalline proteins and revised aqueous methionine sidechain group). The return value is a data frame in the same format as \code{thermo$obigt}. \code{state} indicates the physical state for the parameters used in the calculation (\samp{aq} or \samp{cr}).
@@ -63,22 +59,6 @@ The value returned by this function is the rownumbers of \code{thermo$protein} t
 
 \examples{
 \dontshow{data(thermo)}
-# search by name in thermo$protein
-ip1 <- iprotein("LYSC_CHICK")
-ip2 <- iprotein("LYSC", "CHICK")
-# these are the same
-stopifnot(all.equal(ip1, ip2))
-# two organisms with the same protein name
-ip3 <- iprotein("MYG", c("HORSE", "PHYCA"))
-# their amino acid compositions
-ip2aa(ip3)
-# their thermodynamic properties by group additivity
-aa2eos(ip2aa(ip3))
-
-# an example of an unrecognized protein name
-ip4 <- iprotein("MYGPHYCA")
-stopifnot(is.na(ip4))
-
 # manually adding a new protein
 # Human Gastric juice peptide 1
 aa <- seq2aa("GAJU_HUMAN", "LAAGKVEDSD")
@@ -91,9 +71,9 @@ as.chemical.formula(protein.formula(seq2aa("pentapeptide_test", "ANLSG")))
 }
 
 \seealso{
-\code{\link{read.fasta}} and \code{\link{uniprot.aa}} for getting amino acid compositions from a FASTA file or downloading them from UniProt.
+\code{\link{read.fasta}} and \code{\link{uniprot.aa}} for getting amino acid compositions from a FASTA file or downloading them from UniProt, and \code{\link{more.aa}} for getting amino acid compositions for model organisms from additional data files in the \code{\link{extdata}/protein} directory.
 
-\code{\link{protein.info}} for higher-level functions (chemical formulas, summaries of reaction coefficients and energies), \code{\link{more.aa}} for getting amino acid compositions for model organisms from additional data files in the \code{\link{extdata}/protein} directory, and \code{\link{read.expr}} for working with protein abundance and subcellular localization data.
+\code{\link{protein.info}} for protein-level functions (chemical formulas, summaries of reaction coefficients and energies), and \code{\link{read.expr}} for working with protein abundance and subcellular localization data.
 
 Examples of stability calculations for proteins are in \code{\link{protein}}.
 }

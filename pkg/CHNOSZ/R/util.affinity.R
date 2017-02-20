@@ -162,7 +162,7 @@ energy <- function(what,vars,vals,lims,T=get("thermo")$opt$Tr,P="Psat",IS=0,sout
       isprotein <- grepl("_", myspecies$name)
       if(any(isprotein)) {
         # the rownumbers in thermo$protein
-        ip <- iprotein(myspecies$name[isprotein])
+        ip <- protein.info(myspecies$name[isprotein])
         # get the affinity of ionization
         iHplus <- match("H+", rownames(mybasis))
         # as.numeric is needed in case the logact column is character mode

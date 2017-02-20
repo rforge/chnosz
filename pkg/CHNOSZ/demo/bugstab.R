@@ -2,13 +2,14 @@
 # based on "bugstab" function in Supporting Information of Dick, 2016
 # (http://dx.doi.org/10.7717/peerj.2238)
 
+# set up graphics device
+layout(cbind(matrix(sapply(list(c(1, 2), c(3, 4)), function(x) rep(rep(x, each=3), 3)), nrow=6, byrow=TRUE),
+             matrix(rep(c(0, 5, 5, 5, 5, 0), each=4), nrow=6, byrow=TRUE)))
+opar <- par(mar=c(3.3, 3.3, 1.5, 1.5), mgp=c(2.1, 0.7, 0), xaxs="i", yaxs="i", las=1, cex=0.9)
 # resolution for plots
 res <- 500
 # basis can be "QEC" or "CHNOS"
 basis <- "QEC"
-layout(cbind(matrix(sapply(list(c(1, 2), c(3, 4)), function(x) rep(rep(x, each=3), 3)), nrow=6, byrow=TRUE),
-             matrix(rep(c(0, 5, 5, 5, 5, 0), each=4), nrow=6, byrow=TRUE)))
-par(mar=c(3.3, 3.3, 1.5, 1.5), mgp=c(2.1, 0.7, 0), xaxs="i", yaxs="i", las=1, cex=0.9)
 # read bioproject ids, species names
 mfile <- system.file("extdata/abundance/microbes.csv", package="CHNOSZ")
 bugs <- read.csv(mfile, as.is=TRUE)
@@ -65,3 +66,7 @@ image(xs, ys, hhh, col=c(red, lightred, neutral, lightblue, blue), useRaster=TRU
 title(main="Cumulative stability count")
 box()
 label.figure("E", yfrac=0.96, paren=FALSE, font=2, cex=1)
+
+# reset graphics device to default
+par(opar)
+layout(1)

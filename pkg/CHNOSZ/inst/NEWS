@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-55 (2017-02-19)
+CHANGES IN CHNOSZ 1.0.8-56 (2017-02-20)
 ---------------------------------------
 
 DOCUMENTATION:
@@ -117,6 +117,9 @@ CLEANUP AND BUG FIXES:
 
 - Rename browse.refs() to thermo.refs(); remove URL browsing (except for
   summary table).
+
+- Rename iprotein() to protein.info(), replacing the previous function
+  of the same name.
 
 CHANGES IN CHNOSZ 1.0.8 (2016-05-28)
 ------------------------------------

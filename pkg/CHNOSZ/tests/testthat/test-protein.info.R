@@ -4,7 +4,7 @@ context("protein.info")
 suppressMessages(data(thermo))
 
 # test_that somehow affects capture.output so we set up the problem here
-protein <- iprotein(c("CSG_METVO", "CSG_METJA"))
+protein <- protein.info(c("CSG_METVO", "CSG_METJA"))
 suppressMessages(mod.obigt("[Met]", G=-35245, H=-59310))
 basis("CHNOS+")
 swap.basis("O2", "H2")

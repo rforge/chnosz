@@ -125,7 +125,7 @@ test_that("affinity() for proteins (with/without 'iprotein') returns same value 
   # first for nonionized protein
   basis("CHNOS")
   # try it with iprotein
-  ip <- iprotein("CSG_HALJP")
+  ip <- protein.info("CSG_HALJP")
   expect_equal(affinity(iprotein=ip)$values[[1]][1], A.2303RT.nonionized, tolerance=1e-6)
   # then with the protein loaded as a species
   species("CSG_HALJP")

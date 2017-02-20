@@ -19,7 +19,7 @@ test_that("errors and messages occur in some circumstances", {
   expect_message(protein.info(c("LYSC_CHICK", "MYGPHYCA")), "1 protein not matched")
   expect_error(seq2aa("LYS_CHICK", "XXX"), "no characters match an amino acid")
   expect_error(add.protein(count.aa("AAA")), "not a data frame with the same columns as thermo\\$protein")
-  expect_message(add.protein(ip2aa(protein.info("CYC_BOVIN"))), "replaced 1 existing protein\\(s\\)")
+  expect_message(add.protein(protein.info(protein.info("CYC_BOVIN"))), "replaced 1 existing protein\\(s\\)")
 })
 
 test_that("group additivity for proteins gives expected values", {

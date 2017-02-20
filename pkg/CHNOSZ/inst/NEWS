@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-56 (2017-02-20)
+CHANGES IN CHNOSZ 1.0.8-57 (2017-02-20)
 ---------------------------------------
 
 DOCUMENTATION:
@@ -120,6 +120,8 @@ CLEANUP AND BUG FIXES:
 
 - Rename iprotein() to protein.info(), replacing the previous function
   of the same name.
+
+- Merge ip2aa() with protein.info().
 
 CHANGES IN CHNOSZ 1.0.8 (2016-05-28)
 ------------------------------------

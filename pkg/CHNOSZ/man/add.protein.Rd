@@ -1,5 +1,4 @@
 \name{add.protein}
-\alias{ip2aa}
 \alias{aa2eos}
 \alias{seq2aa}
 \alias{aasum}
@@ -11,7 +10,6 @@
 }
 
 \usage{
-  ip2aa(protein, organism=NULL, residue=FALSE)
   aa2eos(aa, state=get("thermo")$opt$state)
   seq2aa(protein, sequence)
   aasum(aa, abundance = 1, average = FALSE, protein = NULL, organism = NULL)
@@ -22,7 +20,6 @@
 \arguments{
   \item{protein}{character, name of protein; numeric, indices of proteins (rownumbers of \code{\link{thermo}$protein})}
   \item{organism}{character, name of organism}
-  \item{residue}{logical, compute per-residue counts?}
   \item{aa}{data frame, amino acid composition in the format of \code{thermo$protein}}
   \item{state}{character, physical state}
   \item{sequence}{character, protein sequence}
@@ -37,9 +34,7 @@
 
   Often, the names of proteins are sufficient to set up calculations using functions such as \code{\link{subcrt}} or \code{\link{species}}. The names of proteins in CHNOSZ are distinguished from those of other chemical species by having an underscore character ("_") that separates two identifiers, referred to as the \code{protein} and \code{organism} (but any other meaning can be attached to these names). An example is \samp{LYSC_CHICK}. 
 
-  The first few functions provide low-level operations:
-
-  \code{ip2aa} returns the row(s) of \code{thermo$protein} that match the supplied protein names, OR the protein indices found by \code{iprotin}. Set \code{residue} to TRUE to return the per-residue composition (i.e. amino acid composition of the protein divided by total number of residues). For this function only, if the \code{protein} argument is a data frame, it is returned unchanged, except for possibly the per-residue calculation.
+  The first function provides low-level operations:
 
   \code{aa2eos} calculates the thermodynamic properties and equations-of-state parameters for the completely nonionized proteins using group additivity with parameters taken from Dick et al., 2006 (aqueous proteins) and LaRowe and Dick, 2012 (crystalline proteins and revised aqueous methionine sidechain group). The return value is a data frame in the same format as \code{thermo$obigt}. \code{state} indicates the physical state for the parameters used in the calculation (\samp{aq} or \samp{cr}).
 

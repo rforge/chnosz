@@ -1,12 +1,10 @@
 \encoding{UTF-8}
 \name{protein.info}
-\alias{group.formulas}
 \alias{protein.formula}
 \alias{protein.length}
 \alias{protein.info}
 \alias{protein.basis}
 \alias{protein.equil}
-\alias{MP90.cp}
 \title{Summaries of Thermodynamic Properties of Proteins}
 
 \description{
@@ -14,13 +12,11 @@
 }
 
 \usage{
-  protein.info(protein, organism=NULL)
+  protein.info(protein, organism=NULL, residue=FALSE)
   protein.formula(protein, organism = NULL, residue = FALSE)
   protein.length(protein, organism = NULL)
   protein.basis(protein, T = 25, normalize = FALSE)
   protein.equil(protein, T=25, loga.protein = 0, digits = 4)
-  MP90.cp(protein, T)
-  group.formulas()
 }
 
 \arguments{
@@ -34,15 +30,23 @@
 }
 
 \details{
-  These functions accept \code{protein} (and optionally \code{organism}) in the same way as \code{\link{ip2aa}}, that is, as a protein name (optionally with the \code{organism} part separated), one or more row numbers in \code{thermo$protein} that can be identified using \code{\link{protein.info}}, or a data frame in the format of \code{thermo$protein}.
+For character \code{protein}, \code{protein.info} returns the rownumber(s) of \code{thermo$protein} that match the protein names.
+The names can be supplied in the single \code{protein} argument (with an underscore) or as individual \code{protein}s and \code{organism}s.
+Any protein not matched returns an NA and generates a message.
 
-  \code{protein.info} returns the rownumber(s) of \code{thermo$protein} that match the protein names. The names can be supplied in the single \code{protein} argument or as separated \code{protein}s and \code{organism}s (without the underscore). Any protein not matched returns an NA and generates a message.
+For numeric \code{protein}, \code{protein.info} returns the corresponding row(s) of \code{thermo$protein}.
+Set \code{residue} to TRUE to return the per-residue composition (i.e. amino acid composition of the protein divided by total number of residues).
 
-  \code{protein.formula} returns a stoichiometrix matrix representing the chemical formulas of the proteins that can be pased to e.g. \code{\link{mass}} or \code{\link{ZC}}. The amino acid compositions are multiplied by the output of \code{group.formulas} to generate the result. \code{group.formulas} returns the chemical formulas of each of the 20 common amino acid residues in proteins, as well as the terminal -H and -H (treated as the [H2O] group).
+For dataframe \code{protein}, \code{protein.info} returns it unchanged, except for possibly the per-residue calculation.
 
-  \code{protein.length} returns the lengths (number of amino acids) of the proteins.
+The following functions accept any specification of protein(s) described above for \code{protein.info}:
 
-  The following two functions depend on an existing definition of the basis species:
+\code{protein.formula} returns a stoichiometrix matrix representing the chemical formulas of the proteins that can be pased to e.g. \code{\link{mass}} or \code{\link{ZC}}.
+The amino acid compositions are multiplied by the output of \code{\link{group.formulas}} to generate the result. 
+
+\code{protein.length} returns the lengths (number of amino acids) of the proteins.
+
+The following functions also depend on an existing definition of the basis species:
 
 \code{protein.basis} calculates the numbers of the basis species (i.e. opposite of the coefficients in the formation reactions) that can be combined to form the composition of each of the proteins.
 The basis species must be present in \code{thermo$basis}, and if \samp{H+} is among the basis species, the ionization states of the proteins are included.
@@ -50,13 +54,6 @@ The ionization state of the protein is calculated at the pH defined in \code{the
 If \code{normalize} is TRUE, the coefficients on the basis species are divided by the lengths of the proteins. 
 
   \code{protein.equil} produces a series of messages showing step-by-step a calculation of the chemical activities of proteins in metastable equilibrium. For the first protein, it shows the standard Gibbs energies of the reaction to form the nonionized protein from the basis species and of the ionization reaction of the protein (if \samp{H+} is in the basis), then the standard Gibbs energy/RT of the reaction to form the (possibly ionized) protein per residue. The per-residue values of \samp{logQstar} and \samp{Astar/RT} are also shown for the first protein. Equilibrium calculations are then performed, only if more than one protein is specified. This calculation applies the Boltzmann distribution to the calculation of the equilibrium degrees of formation of the residue equivalents of the proteins, then converts them to activities of proteins taking account of \code{loga.protein} and protein length. If the \code{protein} argument is numeric (indicating rownumbers in \code{thermo$protein}), the values of \samp{Astar/RT} are compared with the output of \code{\link{affinity}}, and those of the equilibrium degrees of formation of the residues and the chemical activities of the proteins with the output of \code{\link{diagram}}. If the values in any of these tests are are not \code{\link{all.equal}} an error is produced indicating a bug. 
-
-  \code{MP90.cp} takes \code{protein} (name of protein) and \code{T} (one or more temperatures in \eqn{^{\circ}}{°}C) and returns the additive heat capacity (J mol \eqn{^{-1}}{^-1}) of the unfolded protein using values of heat capacities of the residues taken from Makhatadze and Privalov, 1990. Those authors provided values of heat capacity at six points between 5 and 125 \eqn{^{\circ}}{°}C; this function interpolates (using \code{\link{splinefun}}) values at other temperatures.
-}
-
-\seealso{
-\code{\link{ionize.aa}} for an example that compares \code{MP90.cp} with heat capacities calculated in CHNOSZ at different temperatures and pHs.
-See also \code{demo{protein.equil}}.
 }
 
 \examples{\dontshow{data(thermo)}
@@ -68,9 +65,9 @@ stopifnot(all.equal(ip1, ip2))
 # two organisms with the same protein name
 ip3 <- protein.info("MYG", c("HORSE", "PHYCA"))
 # their amino acid compositions
-ip2aa(ip3)
+protein.info(ip3)
 # their thermodynamic properties by group additivity
-aa2eos(ip2aa(ip3))
+aa2eos(protein.info(ip3))
 
 # an example of an unrecognized protein name
 ip4 <- protein.info("MYGPHYCA")
@@ -80,13 +77,13 @@ stopifnot(is.na(ip4))
 # index in thermo$protein
 ip <- protein.info("LYSC_CHICK")
 # amino acid composition
-ip2aa(ip)
+protein.info(ip)
 # length and chemical formula
 protein.length(ip)
 protein.formula(ip)
 # group additivity for thermodynamic properties and HKF equation-of-state
 # parameters of non-ionized protein
-aa2eos(ip2aa(ip))
+aa2eos(protein.info(ip))
 # calculation of standard thermodynamic properties
 # (subcrt uses the species name, not ip)
 subcrt("LYSC_CHICK")
@@ -103,7 +100,7 @@ affinity()
 ## these are all the same
 protein.formula("P53_PIG")
 protein.formula(protein.info("P53_PIG"))
-protein.formula(ip2aa(protein.info("P53_PIG")))
+protein.formula(protein.info(protein.info("P53_PIG")))
 
 ## using protein.formula: average oxidation state of 
 ## carbon of proteins from different organisms (Dick, 2014)
@@ -138,8 +135,6 @@ title(main=paste("Average oxidation state of carbon in proteins",
 
 \references{
   Dick, J. M. (2014) Average oxidation state of carbon in proteins. \emph{J. R. Soc. Interface} \bold{11}, 20131095. \url{http://dx.doi.org/10.1098/rsif.2013.1095}
-
-  Makhatadze, G. I. and Privalov, P. L. (1990) Heat capacity of proteins. 1. Partial molar heat capacity of individual amino acid residues in aqueous solution: Hydration effect \emph{J. Mol. Biol.} \bold{213}, 375--384. \url{http://dx.doi.org/10.1016/S0022-2836(05)80197-4}
 }
 
 \concept{Protein thermodynamic modeling}

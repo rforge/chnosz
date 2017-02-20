@@ -420,7 +420,7 @@ A.ionization <- function(iprotein, vars, vals, T=get("thermo")$opt$Tr, P="Psat",
   # initialize output list
   out <- vector("list", length(iprotein))
   # get aa from iprotein
-  aa <- ip2aa(iprotein)
+  aa <- protein.info(iprotein)
   # calculate the values of A/2.303RT as a function of T-P-pH
   A <- ionize.aa(aa=aa, property="A", T=TPpH$T, P=TPpH$P, pH=TPpH$pH)
   if(transect) {

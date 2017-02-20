@@ -3,24 +3,10 @@
 # reorganize protein functions 20120513
 
 # add.protein - add amino acid counts to thermo$protein (returns iprotein)
-# ip2aa - select amino acid counts (data frame) from thermo$protein
 # aa2eos - perform group additivity calculations
 # seq2aa - calculate amino acid counts from a sequence
 # aasum - combine amino acid counts (sum, average, or weighted sum by abundance)
 # read.aa - read amino acid counts from a file
-
-ip2aa <- function(protein, organism=NULL, residue=FALSE) {
-  # return amino acid counts (rows from thermo$protein)
-  # or 'protein' if it is a data frame
-  if(is.data.frame(protein)) return(protein)
-  iprotein <- protein.info(protein, organism)
-  # drop NA matches
-  iprotein <- iprotein[!is.na(iprotein)]
-  out <- get("thermo")$protein[iprotein, ]
-  # compute per-residue counts
-  if(residue) out[, 5:25] <- out[, 5:25]/rowSums(out[, 6:25])
-  return(out)
-}
 
 aa2eos <- function(aa, state=get("thermo")$opt$state) {
   # display and return the properties of

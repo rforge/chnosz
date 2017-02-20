@@ -1951,7 +1951,7 @@ To run the tests, install and load the [**testthat**](https://cran.r-project.org
 ```{r test_package, eval=FALSE}
 test_package("CHNOSZ")
 ```
-Reading and running these tests can be useful for understanding the error conditions and other limitations of the functions.
+Reading and running these tests can be useful for understanding some of the error conditions and other limitations of the functions.
 
 # Functions outside the main workflow
 

@@ -45,7 +45,7 @@ info.character <- function(species, state=NULL, check.protein=TRUE) {
         # here we use a default state from thermo$opt$state
         if(is.null(state)) state <- thermo$opt$state
         # retrieve the amino acid composition
-        aa <- ip2aa(ip)
+        aa <- protein.info(ip)
         # add up protein properties
         eos <- aa2eos(aa, state)
         # the real assignment work 

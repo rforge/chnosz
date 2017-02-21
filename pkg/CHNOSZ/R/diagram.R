@@ -22,7 +22,7 @@ diagram <- function(
   # colors
   col=par("col"), col.names=par("col"), fill=NULL, 
   # labels
-  names=NULL, main=NULL, legend.x=NA, format.names=TRUE,
+  names=NULL, main=NULL, legend.x=NA, format.names=TRUE, adj=0.5, dy=0,
   # plotting controls
   add=FALSE, plot.it=TRUE, tplot=TRUE, ...
 ) {
@@ -242,17 +242,37 @@ diagram <- function(
       if(!add & !is.null(legend.x)) {
         # 20120521: use legend.x=NA to label lines rather than make legend
         if(is.na(legend.x)) {
+          maxvals <- do.call(pmax, pv)
           for(i in 1:length(plotvals)) {
+            # y-values for this line
             myvals <- as.numeric(plotvals[[i]])
             # don't take values that lie close to or above the top of plot
             myvals[myvals > ylim[1] + 0.95*diff(ylim)] <- ylim[1]
-            imax <- which.max(myvals)
-            # put labels on the maximum of the line, but avoid the sides of the plot
-            adj <- 0.5
-            if(xvalues[imax] > xlim[1] + 0.8*diff(xlim)) adj <- 1
-            if(xvalues[imax] < xlim[1] + 0.2*diff(xlim)) adj <- 0
-            # also include y-adjustment (labels bottom-aligned with the line)
-            text(xvalues[imax], plotvals[[i]][imax], labels=names[i], adj=c(adj, 0))
+            # the starting x-adjustment
+            thisadj <- adj
+            # if this line has any of the overall maximum values, use only those values
+            # (useful for labeling straight-line affinity comparisons 20170221)
+            is.max <- myvals==maxvals
+            if(any(is.max) & plotvar != "alpha") {
+              # put labels on the median x-position
+              imax <- median(which(is.max))
+            } else {
+              # put labels on the maximum of the line
+              # (useful for labeling alpha plots)
+              imax <- which.max(myvals)
+              # try to avoid the sides of the plot; take care of reversed x-axis
+              if(missing(adj)) {
+                if(sign(diff(xlim)) > 0) {
+                  if(xvalues[imax] > xlim[1] + 0.8*diff(xlim)) thisadj <- 1
+                  if(xvalues[imax] < xlim[1] + 0.2*diff(xlim)) thisadj <- 0
+                } else {
+                  if(xvalues[imax] > xlim[1] + 0.2*diff(xlim)) thisadj <- 0
+                  if(xvalues[imax] < xlim[1] + 0.8*diff(xlim)) thisadj <- 1
+                }
+              }
+            }
+            # also include y-offset (dy) and y-adjustment (labels bottom-aligned with the line)
+            text(xvalues[imax], plotvals[[i]][imax] + dy, labels=names[i], adj=c(thisadj, 0))
           }
         } else legend(x=legend.x, lty=lty, legend=names, col=col, cex=cex.names, lwd=lwd, ...)
       }

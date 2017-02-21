@@ -4068,7 +4068,7 @@ status open
 
 \begin_layout Plain Layout
 
-protein <- protein.info(c("CSG_METVO", "CSG_METJA"))
+protein <- pinfo(c("CSG_METVO", "CSG_METJA"))
 \end_layout
 
 \begin_layout Plain Layout

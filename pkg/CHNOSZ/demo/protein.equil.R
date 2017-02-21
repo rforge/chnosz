@@ -1,6 +1,6 @@
 ## steps in calculation of chemical activities of two proteins
 ## in metastable equilibrium, after Dick and Shock, 2011
-protein <- protein.info(c("CSG_METVO", "CSG_METJA"))
+protein <- pinfo(c("CSG_METVO", "CSG_METJA"))
 # clear out amino acid residues loaded by the example above
 # ( in affinity(iprotein=ip) )
 data(thermo)

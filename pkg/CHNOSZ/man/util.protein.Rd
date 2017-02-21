@@ -14,7 +14,7 @@
 }
 
 \arguments{
-  \item{protein}{proteins specified in any format usable by \code{\link{protein.info}}}
+  \item{protein}{proteins specified in any format usable by \code{\link{pinfo}}}
   \item{T}{numeric, temperature in \eqn{^{\circ}}{°}C}
 }
 

@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-57 (2017-02-20)
+CHANGES IN CHNOSZ 1.0.8-58 (2017-02-21)
 ---------------------------------------
 
 DOCUMENTATION:
@@ -38,6 +38,9 @@ CHANGES TO diagram():
 
 - Chemical formulas that are part of the axis labels (log activity or
   fugacity) now have formatting applied.
+
+- Add arguments `adj` and `dy` for x-alignment and y-offset of line
+  labels.
 
 NEW FEATURES:
 
@@ -118,10 +121,10 @@ CLEANUP AND BUG FIXES:
 - Rename browse.refs() to thermo.refs(); remove URL browsing (except for
   summary table).
 
-- Rename iprotein() to protein.info(), replacing the previous function
-  of the same name.
+- New function pinfo() merges functionality of old iprotein() and
+  ip2aa(), which have been removed (along with protein.info()).
 
-- Merge ip2aa() with protein.info().
+- Rename aa2eos() to protein.obigt().
 
 CHANGES IN CHNOSZ 1.0.8 (2016-05-28)
 ------------------------------------

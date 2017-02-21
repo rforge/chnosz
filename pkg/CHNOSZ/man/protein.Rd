@@ -79,7 +79,7 @@ title(main="Bovine proteins, GSH/GSSG redox buffer")
 }
 
 \seealso{
-  For accessing, updating, and downloading amino acid compositions of proteins, see \code{\link{protein.info}}. 
+  For accessing, updating, and downloading amino acid compositions of proteins, see \code{\link{pinfo}}. 
 For more examples of metastable equilibrium calculations for proteins, see \code{\link{read.expr}}, \code{\link{more.aa}}, \code{\link{ionize.aa}}, and \code{\link{apc}} for reaction-path calculations.
 }
 

@@ -3,64 +3,9 @@
 # reorganize protein functions 20120513
 
 # add.protein - add amino acid counts to thermo$protein (returns iprotein)
-# aa2eos - perform group additivity calculations
 # seq2aa - calculate amino acid counts from a sequence
 # aasum - combine amino acid counts (sum, average, or weighted sum by abundance)
 # read.aa - read amino acid counts from a file
-
-aa2eos <- function(aa, state=get("thermo")$opt$state) {
-  # display and return the properties of
-  # proteins calculated from amino acid composition
-  # the names of the protein backbone groups depend on the state
-  # [UPBB] for aq or [PBB] for cr
-  if(state=="aq") bbgroup <- "UPBB" else bbgroup <- "PBB"
-  # names of the AABB, sidechain and protein backbone groups
-  groups <- c("AABB", colnames(aa)[6:25], bbgroup)
-  # put brackets around the group names
-  groups <- paste("[", groups, "]", sep="")
-  # the rownumbers of the groups in thermo$obigt
-  groups_state <- paste(groups, state)
-  obigt <- get("thermo")$obigt
-  obigt_state <- paste(obigt$name, obigt$state)
-  igroup <- match(groups_state, obigt_state)
-  # the properties are in columns 8-20 of thermo$obigt
-  groupprops <- obigt[igroup, 8:20]
-  # the elements in each of the groups
-  groupelements <- i2A(igroup)
-  # a function to work on a single row of aa
-  eosfun <- function(aa) {
-    # numbers of groups: chains [=AABB], sidechains, protein backbone
-    nchains <- as.numeric(aa[, 5])
-    length <- sum(as.numeric(aa[, 6:25]))
-    npbb <- length - nchains
-    ngroups <- c(nchains, as.numeric(aa[, 6:25]), npbb)
-    # the actual adding and multiplying of thermodynamic properties
-    # hmm. seems like we have to split up the multiplication/transposition
-    # operations to get the result into multiple columns. 20071213
-    eos <- t(data.frame(colSums(groupprops * ngroups)))
-    # to get the formula, add up and round the group compositions 20090331
-    f.in <- round(colSums(groupelements * ngroups), 3)
-    # take out any elements that don't appear (sometimes S)
-    f.in <- f.in[f.in!=0]
-    # turn it into a formula
-    f <- as.chemical.formula(f.in)
-    # now the species name
-    name <- paste(aa$protein, aa$organism, sep="_")
-    # make some noise for the user
-    message("aa2eos: found ", appendLF=FALSE)
-    message(name, " (", f, ", ", appendLF=FALSE)
-    message(round(length, 3), " residues)")
-    ref <- aa$ref
-    header <- data.frame(name=name, abbrv=NA, formula=f, state=state, ref1=ref, ref2=NA, date=NA, stringsAsFactors=FALSE)
-    eosout <- cbind(header, eos)
-    return(eosout)
-  }
-  # loop over each row of aa
-  out <- lapply(1:nrow(aa), function(i) eosfun(aa[i, ]))
-  out <- do.call(rbind, out)
-  rownames(out) <- NULL
-  return(out)
-}
 
 seq2aa <- function(protein, sequence) {
   # remove newlines and whitespace
@@ -70,7 +15,7 @@ seq2aa <- function(protein, sequence) {
   colnames(caa) <- aminoacids(3)
   # a protein with no amino acids is sort of boring
   if(all(caa==0)) stop("no characters match an amino acid")
-  ip <- suppressMessages(protein.info(protein))
+  ip <- pinfo(protein)
   # now make the data frame
   po <- strsplit(protein, "_")[[1]]
   aa <- data.frame(protein=po[1], organism=po[2], ref=NA, abbrv=NA, stringsAsFactors=FALSE)
@@ -127,7 +72,7 @@ add.protein <- function(aa) {
     stop("the value of 'aa' is not a data frame with the same columns as thermo$protein")
   # find any protein IDs that are duplicated
   po <- paste(aa$protein, aa$organism, sep="_")
-  ip <- suppressMessages(protein.info(po))
+  ip <- pinfo(po)
   ipdup <- !is.na(ip)
   # now we're ready to go
   tp.new <- thermo$protein
@@ -142,7 +87,7 @@ add.protein <- function(aa) {
   thermo$protein <- tp.new
   assign("thermo", thermo, "CHNOSZ")
   # return the new rownumbers
-  ip <- protein.info(po)
+  ip <- pinfo(po)
   # make some noise
   if(!all(ipdup)) message("add.protein: added ", nrow(aa)-sum(ipdup), " new protein(s) to thermo$protein")
   if(any(ipdup)) message("add.protein: replaced ", sum(ipdup), " existing protein(s) in thermo$protein")

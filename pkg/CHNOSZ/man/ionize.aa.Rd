@@ -32,7 +32,7 @@
 }
 
 \seealso{
-  The amino acid composition in \code{aa} can be generated using \code{\link{protein.info}}.
+  The amino acid composition in \code{aa} can be generated using \code{\link{pinfo}}.
 
   This function is called by \code{\link{A.ionization}} as part of a calculation of \code{\link{affinity}} if proteins are among the species of interest, \samp{H+} is in the basis, and \code{thermo$opt$ionize} is TRUE. 
 }
@@ -41,9 +41,9 @@
 ## Charge of LYSC_CHICK as a function of pH and T
 # After Fig. 10 of Dick et al., 2006
 # the rownumber of the protein in thermo$protein
-ip <- protein.info("LYSC_CHICK")
+ip <- pinfo("LYSC_CHICK")
 # its amino acid composition
-aa <- protein.info(ip)
+aa <- pinfo(ip)
 # additive charges of unfolded protein at 25, 100, 150 degrees C
 # as a function of pH
 pH <- seq(0, 14, 0.1)
@@ -72,7 +72,7 @@ Cp.nonion <- subcrt("LYSC_CHICK", T=T)$out[[1]]$Cp
 plot(T, Cp.nonion, xlab=axis.label("T"), type="l",
   ylab=axis.label("Cp"), ylim=c(5000, 8000))
 # Cp of ionization and ionized protein
-aa <- protein.info(protein.info("LYSC_CHICK"))
+aa <- pinfo(pinfo("LYSC_CHICK"))
 for(pH in c(5, 9, 3)) {
   Cp.ionized <- Cp.nonion + ionize.aa(aa, "Cp", T=T, pH=pH)[, 1]
   lines(T, Cp.ionized, lty=2)

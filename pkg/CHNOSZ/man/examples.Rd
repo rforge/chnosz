@@ -80,8 +80,9 @@ See the comments in the source code for more information about each demo.
 
 \examples{
 \dontshow{data(thermo)}
+\dontshow{opar <- par(no.readonly=TRUE)}
 demos(c("ORP", "NaCl"))
-\dontshow{par(thermo$opar)}
+\dontshow{par(opar)}
 \dontrun{
 # use the following to run examples in all help topics
 examples()}

@@ -5,6 +5,8 @@ suppressMessages(data(thermo))
 
 test_that("errors come as expected, and output gives T and P in user's units", {
   expect_error(affinity(iprotein=7), "basis species are not defined")
+  expect_error(affinity(iprotein=NA), "has some NA values")
+  expect_error(affinity(iprotein=0), "are not rownumbers")
   basis("CHNOS")
   expect_error(affinity(), "species have not been defined")
   species("5a(H),14b(H)-cholestane")
@@ -125,7 +127,7 @@ test_that("affinity() for proteins (with/without 'iprotein') returns same value 
   # first for nonionized protein
   basis("CHNOS")
   # try it with iprotein
-  ip <- protein.info("CSG_HALJP")
+  ip <- pinfo("CSG_HALJP")
   expect_equal(affinity(iprotein=ip)$values[[1]][1], A.2303RT.nonionized, tolerance=1e-6)
   # then with the protein loaded as a species
   species("CSG_HALJP")

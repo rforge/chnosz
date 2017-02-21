@@ -31,7 +31,7 @@ info.character <- function(species, state=NULL, check.protein=TRUE) {
   # since thermo$obigt$abbrv contains NAs, convert NA results to FALSE
   matches.species[is.na(matches.species)] <- FALSE
   # turn it in to no match if it's a protein in the wrong state
-  ip <- suppressMessages(protein.info(species))
+  ip <- pinfo(species)
   if(any(matches.species) & !is.na(ip) & !is.null(state)) {
     matches.state <- matches.species & grepl(state, thermo$obigt$state)
     if(!any(matches.state)) matches.species <- FALSE
@@ -44,10 +44,8 @@ info.character <- function(species, state=NULL, check.protein=TRUE) {
       if(!is.na(ip)) {
         # here we use a default state from thermo$opt$state
         if(is.null(state)) state <- thermo$opt$state
-        # retrieve the amino acid composition
-        aa <- protein.info(ip)
         # add up protein properties
-        eos <- aa2eos(aa, state)
+        eos <- protein.obigt(ip, state=state)
         # the real assignment work 
         nrows <- suppressMessages(mod.obigt(eos))
         thermo <- get("thermo", "CHNOSZ")

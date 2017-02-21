@@ -166,7 +166,7 @@ This is sometimes a useful command to use during an interactive session, when pr
     }
 
     \item \code{thermo$protein}
-    Data frame of amino acid compositions of selected proteins. Many of the compositions were taken from the SWISS-PROT/UniProt online database (Boeckmann et al., 2003) and the protein and organism names usually follow the conventions adopted there. In some cases different isoforms of proteins are identified using modifications of the protein names; for example, \samp{MOD5.M} and \code{MOD5.N} proteins of \samp{YEAST} denote the mitochondrial and nuclear isoforms of this protein. See \code{\link{protein.info}} to search this data frame by protein name, and other functions to work with the amino acid compositions.
+    Data frame of amino acid compositions of selected proteins. Many of the compositions were taken from the SWISS-PROT/UniProt online database (Boeckmann et al., 2003) and the protein and organism names usually follow the conventions adopted there. In some cases different isoforms of proteins are identified using modifications of the protein names; for example, \samp{MOD5.M} and \code{MOD5.N} proteins of \samp{YEAST} denote the mitochondrial and nuclear isoforms of this protein. See \code{\link{pinfo}} to search this data frame by protein name, and other functions to work with the amino acid compositions.
     \tabular{lll}{
       \code{protein} \tab character \tab Identification of protein\cr
       \code{organism} \tab character \tab Identification of organism\cr

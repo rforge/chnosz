@@ -162,7 +162,7 @@ energy <- function(what,vars,vals,lims,T=get("thermo")$opt$Tr,P="Psat",IS=0,sout
       isprotein <- grepl("_", myspecies$name)
       if(any(isprotein)) {
         # the rownumbers in thermo$protein
-        ip <- protein.info(myspecies$name[isprotein])
+        ip <- pinfo(myspecies$name[isprotein])
         # get the affinity of ionization
         iHplus <- match("H+", rownames(mybasis))
         # as.numeric is needed in case the logact column is character mode
@@ -420,7 +420,7 @@ A.ionization <- function(iprotein, vars, vals, T=get("thermo")$opt$Tr, P="Psat",
   # initialize output list
   out <- vector("list", length(iprotein))
   # get aa from iprotein
-  aa <- protein.info(iprotein)
+  aa <- pinfo(iprotein)
   # calculate the values of A/2.303RT as a function of T-P-pH
   A <- ionize.aa(aa=aa, property="A", T=TPpH$T, P=TPpH$P, pH=TPpH$pH)
   if(transect) {

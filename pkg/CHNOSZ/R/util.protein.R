@@ -37,7 +37,7 @@ MP90.cp <- function(protein, T) {
             M.cp(Ti),N.cp(Ti),P.cp(Ti),Q.cp(Ti),R.cp(Ti),
             S.cp(Ti),T.cp(Ti),V.cp(Ti),W.cp(Ti),Y.cp(Ti))
     # get the protein composition
-    tt <- protein.info(protein.info(protein))[,6:25]
+    tt <- pinfo(pinfo(protein))[,6:25]
     cnew <- c(cnew, sum(cp * as.numeric(tt)) + sum(as.numeric(tt)) * UPBB.cp(Ti))
   }
   return(cnew)

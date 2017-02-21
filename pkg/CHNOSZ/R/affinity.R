@@ -49,7 +49,8 @@ affinity <- function(...,property=NULL,sout=NULL,exceed.Ttr=FALSE,
     # is needed here
     if(!is.null(iprotein)) {
       # check all proteins are available
-      if(!all(iprotein %in% 1:nrow(thermo$protein))) stop("some value(s) in iprotein not in rownumbers of thermo$protein")
+      if(any(is.na(iprotein))) stop("`iprotein` has some NA values")
+      if(!all(iprotein %in% 1:nrow(thermo$protein))) stop("some value(s) of `iprotein` are not rownumbers of thermo$protein")
       # add protein residues to the species list
       resnames <- c("H2O",aminoacids(3))
       # residue activities set to zero;

@@ -1,13 +1,14 @@
 # CHNOSZ/protein.info.R
 
 # calculate formulas and summarize properties of proteins
-# protein.info: find rownumber in thermo$protein
-# protein.formula: chemical makeup of the indicated proteins
+# pinfo: find rownumber in thermo$protein
 # protein.length: lengths of the indicated proteins
+# protein.formula: chemical makeup of the indicated proteins
+# protein.obigt: perform group additivity calculations
 # protein.basis: coefficients of basis species in formation reactions of [ionized] proteins [residues]
 # protein.equil: step-by-step example of protein equilibrium calculation
 
-protein.info <- function(protein, organism=NULL, residue=FALSE) {
+pinfo <- function(protein, organism=NULL, residue=FALSE) {
   # return the `protein` (possibly per residue) for:
   #   dataframe `protein`
   # return the rownumber(s) of thermo$protein for:
@@ -15,30 +16,24 @@ protein.info <- function(protein, organism=NULL, residue=FALSE) {
   #   character `protein` and `organism`, e.g. 'LYSC', 'CHICK'
   # return the row(s) of thermo$protein (possibly per residue) for:
   #   numeric `protein` (the rownumber itself)
-  thermo <- get("thermo")
+  t_p <- get("thermo")$protein
   if(is.data.frame(protein)) out <- protein
   if(is.numeric(protein)) {
     # drop NA matches to thermo$protein
-    iproteins <- 1:nrow(thermo$protein)
+    iproteins <- 1:nrow(t_p)
     protein[!protein %in% iproteins] <- NA
     # get amino acid counts
-    out <- thermo$protein[protein, ]
+    out <- t_p[protein, ]
   }
   if(is.data.frame(protein) | is.numeric(protein)) {
     # compute per-residue counts if requested
     if(residue) out[, 5:25] <- out[, 5:25]/rowSums(out[, 6:25])
   } else {
-    # from here we'll search by protein/organism pairs
-    tp.po <- paste(thermo$protein$protein, thermo$protein$organism, sep="_")
-    if(is.null(organism)) my.po <- protein
-    else my.po <- paste(protein, organism, sep="_")
-    iprotein <- match(my.po, tp.po)
-    # tell the user about NA's
-    if(any(is.na(iprotein))) {
-      nNA <- sum(is.na(iprotein))
-      if(nNA==1) ptext <- "" else ptext <- "s"
-      message("iprotein: ", sum(is.na(iprotein)), " protein", ptext, " not matched")
-    }
+    # search for protein or protein_organism in thermo$protein
+    t_p_names <- paste(t_p$protein, t_p$organism, sep="_")
+    if(is.null(organism)) my_names <- protein
+    else my_names <- paste(protein, organism, sep="_")
+    iprotein <- match(my_names, t_p_names)
     out <- iprotein
   }
   out
@@ -46,7 +41,7 @@ protein.info <- function(protein, organism=NULL, residue=FALSE) {
 
 protein.formula <- function(protein, organism=NULL, residue=FALSE) {
   # return a matrix with chemical formulas of proteins
-  aa <- protein.info(protein.info(protein, organism))
+  aa <- pinfo(pinfo(protein, organism))
   rf <- group.formulas()
   out <- as.matrix(aa[, 5:25]) %*% as.matrix(rf)
   if(residue) out <- out / rowSums(aa[, 6:25])
@@ -56,10 +51,65 @@ protein.formula <- function(protein, organism=NULL, residue=FALSE) {
 
 protein.length <- function(protein, organism=NULL) {
   # calculate the length(s) of proteins
-  aa <- protein.info(protein.info(protein, organism))
+  aa <- pinfo(pinfo(protein, organism))
   # use rowSums on the columns containing amino acid counts
   pl <- as.numeric(rowSums(aa[, 6:25]))
   return(pl)
+}
+
+protein.obigt <- function(protein, organism=NULL, state=get("thermo")$opt$state) {
+  # display and return the properties of
+  # proteins calculated from amino acid composition
+  aa <- pinfo(pinfo(protein, organism))
+  # the names of the protein backbone groups depend on the state
+  # [UPBB] for aq or [PBB] for cr
+  if(state=="aq") bbgroup <- "UPBB" else bbgroup <- "PBB"
+  # names of the AABB, sidechain and protein backbone groups
+  groups <- c("AABB", colnames(aa)[6:25], bbgroup)
+  # put brackets around the group names
+  groups <- paste("[", groups, "]", sep="")
+  # the rownumbers of the groups in thermo$obigt
+  groups_state <- paste(groups, state)
+  obigt <- get("thermo")$obigt
+  obigt_state <- paste(obigt$name, obigt$state)
+  igroup <- match(groups_state, obigt_state)
+  # the properties are in columns 8-20 of thermo$obigt
+  groupprops <- obigt[igroup, 8:20]
+  # the elements in each of the groups
+  groupelements <- i2A(igroup)
+  # a function to work on a single row of aa
+  eosfun <- function(aa) {
+    # numbers of groups: chains [=AABB], sidechains, protein backbone
+    nchains <- as.numeric(aa[, 5])
+    length <- sum(as.numeric(aa[, 6:25]))
+    npbb <- length - nchains
+    ngroups <- c(nchains, as.numeric(aa[, 6:25]), npbb)
+    # the actual adding and multiplying of thermodynamic properties
+    # hmm. seems like we have to split up the multiplication/transposition
+    # operations to get the result into multiple columns. 20071213
+    eos <- t(data.frame(colSums(groupprops * ngroups)))
+    # to get the formula, add up and round the group compositions 20090331
+    f.in <- round(colSums(groupelements * ngroups), 3)
+    # take out any elements that don't appear (sometimes S)
+    f.in <- f.in[f.in!=0]
+    # turn it into a formula
+    f <- as.chemical.formula(f.in)
+    # now the species name
+    name <- paste(aa$protein, aa$organism, sep="_")
+    # make some noise for the user
+    message("protein.obigt: found ", appendLF=FALSE)
+    message(name, " (", f, ", ", appendLF=FALSE)
+    message(round(length, 3), " residues)")
+    ref <- aa$ref
+    header <- data.frame(name=name, abbrv=NA, formula=f, state=state, ref1=ref, ref2=NA, date=NA, stringsAsFactors=FALSE)
+    eosout <- cbind(header, eos)
+    return(eosout)
+  }
+  # loop over each row of aa
+  out <- lapply(1:nrow(aa), function(i) eosfun(aa[i, ]))
+  out <- do.call(rbind, out)
+  rownames(out) <- NULL
+  return(out)
 }
 
 protein.basis <- function(protein, T=25, normalize=FALSE) {
@@ -67,7 +117,7 @@ protein.basis <- function(protein, T=25, normalize=FALSE) {
   # to form proteins (possibly per normalized by length) listed in protein
   # 20120528 renamed protein.basis from residue.info ...
   # what are the elemental compositions of the proteins
-  aa <- protein.info(protein.info(protein))
+  aa <- pinfo(pinfo(protein))
   pf <- protein.formula(aa)
   # what are the coefficients of the basis species in the formation reactions
   sb <- species.basis(pf)
@@ -94,7 +144,7 @@ protein.equil <- function(protein, T=25, loga.protein=0, digits=4) {
   message("protein.equil: temperature from argument is ", T, " degrees C")
   TK <- convert(T, "K")
   # get the amino acid compositions of the proteins
-  aa <- protein.info(protein.info(protein))
+  aa <- pinfo(pinfo(protein))
   # get some general information about the proteins
   pname <- paste(aa$protein, aa$organism, sep="_")
   plength <- protein.length(aa)

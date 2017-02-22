@@ -89,7 +89,7 @@
 
   Files in \code{thermo} contain additional thermodynamic data and group additivity definitions:
   \itemize{
-    \item \code{OBIGT-2.csv} contains supplementary thermodynamic data in the same format as the primary database. Data for some entries in the primary database are taken from different literature sources in this file. The default action of \code{\link{add.obigt}} is to add the contents of this file to CHNOSZ's working database in \code{thermo$obigt}. See \code{\link{diagram}} and the code of \code{\link{anim.TCA}} for examples that use this file.
+    \item \code{Ste01.csv} and \code{BZA10.csv} contain supplementary thermodynamic data taken from Stefansson (2001) and Bazarkina et al. (2010). They can be added to the database in the current session using \code{\link{add.obigt}}.
     \item \code{obigt_check.csv} contains the results of running \code{\link{check.obigt}} to check the internal consistency of entries in the primary and supplementary databases.
     \item \code{RH98_Table15.csv} Group stoichiometries for high molecular weight crystalline and liquid organic compounds taken from Table 15 of Richard and Helgeson, 1998. The first three columns have the \code{compound} name, \code{formula} and physical \code{state} (\samp{cr} or \samp{liq}). The remaining columns have the numbers of each group in the compound; the names of the groups (columns) correspond to species in \code{\link{thermo}$obigt}. The compound named \samp{5a(H),14a(H)-cholestane} in the paper has been changed to \samp{5a(H),14b(H)-cholestane} here to match the group stoichiometry given in the table. See \code{\link{RH2obigt}} for a function that uses this file.
     \item \code{DLEN67.csv} Standard Gibbs energies of formation, in kcal/mol, from Dayhoff et al., 1967, for nitrogen (N2) plus 17 compounds shown in Fig. 2 of Dayhoff et al., 1964, at 300, 500, 700 and 1000 K.
@@ -105,6 +105,8 @@
   Anderson, N. L. and Anderson, N. G. (2003) The human plasma proteome: History, character and diagnostic prospects (Vol. 1 (2002) 845-867). \emph{Molecular and Cellular Proteomics} \bold{2}, 50. \url{http://dx.doi.org/10.1074/mcp.A300001-MCP200}
 
   Baas Becking, L. G. M., Kaplan, I. R. and Moore, D. (1960) Limits of the natural environment in terms of pH and oxidation-reduction potentials. \emph{Journal of Geology} \bold{68}(3), 243--284. \url{http://www.jstor.org/stable/30059218} 
+
+  Bazarkina, E. F., Zotov, A. V. and Akinfiev, N. N. (2010) Pressure-dependent stability of cadmium chloride complexes: Potentiometric measurements at 1–1000 bar and 25°C. \emph{Geol. Ore Deposits} \bold{52}, 167--178. \url{http://dx.doi.org/10.1134/S1075701510020054}
 
   Benson, S. W. and Buss, J. H. (1958) Additivity rules for the estimation of molecular properties. Thermodynamic properties. \emph{J. Chem. Phys.} \bold{29}, 546--572. \url{http://dx.doi.org/10.1063/1.1744539}
 
@@ -155,6 +157,8 @@
   Shock, E. L., Oelkers, E. H., Johnson, J. W., Sverjensky, D. A. and Helgeson, H. C. (1992) Calculation of the thermodynamic properties of aqueous species at high pressures and temperatures: Effective electrostatic radii, dissociation constants and standard partial molal properties to 1000 \eqn{^{\circ}}{°}C and 5 kbar. \emph{J. Chem. Soc. Faraday Trans.} \bold{88}, 803--826. \url{http://dx.doi.org/10.1039/FT9928800803}
 
   Shock, E. L. and Schulte, M. D. (1998) Organic synthesis during fluid mixing in hydrothermal systems. \emph{J. Geophys. Res.} \bold{103}, 28513--28527. \url{http://dx.doi.org/10.1029/98JE02142}
+
+  Stefánsson, A. (2001) Dissolution of primary minerals of basalt in natural waters. I. Calculation of mineral solubilities from 0°C to 350°C \emph{Chem. Geol.} \bold{172}, 225--250. \url{http://dx.doi.org/10.1016/S0009-2541(00)00263-1}
 
   YeastGFP project. Yeast GFP Fusion Localization Database, http://yeastgfp.ucsf.edu; Current location: \url{http://yeastgfp.yeastgenome.org}
 

@@ -201,6 +201,20 @@ diagram(a, fill="heat")
 title(main=paste("Fe-S-O, 200 degrees C, 1 bar",
   "After Helgeson, 1970", sep="\n"))
 
+## pe-pH diagram for hydrated iron sulfides,
+## goethite and pyrite, after Majzlan et al., 2006
+basis(c("Fe+2", "SO4-2", "H2O", "H+", "e-"), 
+  c(0, log10(3), log10(0.75), 999, 999))
+species(c("rhomboclase", "ferricopiapite", "hydronium jarosite",
+  "goethite", "melanterite", "pyrite"))
+a <- affinity(pH=c(-1, 4, 256), pe=c(-5, 23, 256))
+d <- diagram(a, main="Fe-S-O-H, after Majzlan et al., 2006")
+# the first four species show up along the top of the diagram
+stopifnot(all.equal(unique(t(d$predominant)[256,]), 1:4))
+water.lines(yaxis="pe")
+text(3, 22, describe.basis(thermo$basis[2:3,], digits=2, oneline=TRUE))
+text(3, 21, describe.property(c("T", "P"), c(25, 1), oneline=TRUE))
+
 ## Temperature-Pressure: kayanite-sillimanite-andalusite
 # cf. Fig. 49 of Helgeson et al., 1978
 # this is a system of one component (Al2SiO5), but we need the same 
@@ -235,6 +249,8 @@ stopifnot(species()$name[d$predominant[99, 101]]=="sillimanite")
   Helgeson, H. C., Delany, J. M., Nesbitt, H. W. and Bird, D. K. (1978) Summary and critique of the thermodynamic properties of rock-forming minerals. \emph{Am. J. Sci.} \bold{278-A}, 1--229. \url{http://www.worldcat.org/oclc/13594862}
 
   LaRowe, D. E. and Helgeson, H. C. (2007) Quantifying the energetics of metabolic reactions in diverse biogeochemical systems: electron flow and ATP synthesis. \emph{Geobiology} \bold{5}, 153--168. \url{http://dx.doi.org/10.1111/j.1472-4669.2007.00099.x}
+
+  Majzlan, J., Navrotsky, A., McClesky, R. B. and Alpers, C. N. (2006) Thermodynamic properties and crystal structure refinement of ferricopiapite, coquimbite, rhomboclase, and Fe2(SO4)3(H2O)5. \emph{Eur. J. Mineral.} \bold{18}, 175--186. \url{http://dx.doi.org/10.1127/0935-1221/2006/0018-0175}
 
   Seewald, J. S. (1997) Mineral redox buffers and the stability of organic compounds under hydrothermal conditions. \emph{Mat. Res. Soc. Symp. Proc.} \bold{432}, 317--331. \url{http://dx.doi.org/10.1557/PROC-432-317}
 

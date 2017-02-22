@@ -718,11 +718,9 @@ to published figure.
 \begin{itemize}
 \item 2011-08-23 Initial version (CHNOSZ\_0.9-7)
 \item 2012-01-07 Use \texttt{add.obigt()} for superseded properties of methionine
-sidechain group.
+sidechain group (changed to \texttt{mod.obigt()} on 2016-12-21).
 \item 2014-02-01 Include results from 2013 paper and change VignetteEngine
 to knitr.
-\item 2016-12-21 As superseded methionine sidechain group has been removed
-from OBIGT-2.csv, use \texttt{mod.obigt()} to reproduce the calculations.
 \end{itemize}
 \bibliographystyle{unsrtnat}
 \bibliography{vig}

@@ -54,10 +54,10 @@ test_that("standard Gibbs energies of reactions involving aqueous species are co
   # 5S2O3-2 + H2O(l) + 4O2(aq) = 6SO4-2 + 2H+ + 4S(s)
   s.C7 <- subcrt(c("S2O3-2", "H2O", "O2", "SO4-2", "H+", "S"), c("aq", "liq", "aq", "aq", "aq", "cr"), c(-5, -1, -4, 6, 2, 4), T=T)
   sout.C7 <- s.C7$out
-  # from Amend and Shock, 2001 Table 8.3 Reaction E12
-  DG0.E12 <- c(132.52, 132.26, 132.29, 132.49, 132.74, 133.15, 133.98, 135.04, 136.31, 137.79, 141.97, 149.53)
-  # 4(2-)propanol(aq) + 3CO2(aq) + 2H2O(l) = 3CH4(aq) + 4lactic acid(aq)
-  sout.E12 <- subcrt(c("2-propanol", "CO2", "H2O", "CH4", "lactic acid"), c(-4, -3, -2, 3, 4), T=T)$out
+  ## from Amend and Shock, 2001 Table 8.3 Reaction E12
+  #DG0.E12 <- c(132.52, 132.26, 132.29, 132.49, 132.74, 133.15, 133.98, 135.04, 136.31, 137.79, 141.97, 149.53)
+  ## 4(2-)propanol(aq) + 3CO2(aq) + 2H2O(l) = 3CH4(aq) + 4lactic acid(aq)
+  #sout.E12 <- subcrt(c("2-propanol", "CO2", "H2O", "CH4", "lactic acid"), c(-4, -3, -2, 3, 4), T=T)$out
   # now the tests, tolerances set to lowest order of magnitute to pass
   expect_equal(sout.H2O$G/1000, DG0.H2O, tolerance=1e-4)
   expect_equal(sout.A1$G/1000, DG0.A1, tolerance=1e-4)

@@ -35,13 +35,13 @@ test_that("RH2obigt() gives group additivity results consistent with database va
 })
 
 test_that("add.obigt() replaces existing entries without changing species index", {
-  # store the original species index of Al+3
-  iAl <- info("Al+3", "aq")
-  # add supplemental database - includes Al+3
-  file <- system.file("extdata/thermo/OBIGT-2.csv", package="CHNOSZ")
+  # store the original species index of CdCl2
+  iCdCl2 <- info("CdCl2", "aq")
+  # add supplemental database - includes CdCl2
+  file <- system.file("extdata/thermo/BZA10.csv", package="CHNOSZ")
   isp <- add.obigt(file, force=TRUE)
-  # species index of Al+3 should not have changed
-  expect_equal(info("Al+3", "aq"), iAl)
+  # species index of CdCl2 should not have changed
+  expect_equal(info("CdCl2", "aq"), iCdCl2)
   # check that names of species modified are same as in file
   newdat <- read.csv(file, stringsAsFactors=FALSE)
   # the order isn't guaranteed ... just make sure they're all there

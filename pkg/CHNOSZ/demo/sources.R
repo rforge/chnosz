@@ -6,13 +6,8 @@ element.source <- thermo$element$source
 # sources in the primary thermodynamic database
 os1 <- thermo$obigt$ref1
 os2 <- thermo$obigt$ref2
-# sources also in the supplemental database (OBIGT-2.csv)
-add.obigt()
-os3 <- thermo$obigt$ref1
-os4 <- thermo$obigt$ref2
-data(thermo)
 # all of the thermodynamic data sources - some of them might be NA
-obigt.source <- unique(c(os1,os2,os3,os4))
+obigt.source <- unique(c(os1,os2))
 obigt.source <- obigt.source[!is.na(obigt.source)]
 # sources of protein compositions
 protein.source <- thermo$protein$ref

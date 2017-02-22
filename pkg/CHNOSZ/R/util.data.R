@@ -97,14 +97,9 @@ mod.obigt <- function(...) {
   return(ispecies)
 }
 
-add.obigt <- function(file=system.file("extdata/thermo/OBIGT-2.csv",package="CHNOSZ"),
-  force=FALSE,E.units="cal") {
+add.obigt <- function(file, force=FALSE, E.units="cal") {
   # add/replace entries in thermo$obigt from values saved in a file
   # only replace if force==TRUE
-  if(missing(file)) {
-    # we use force=TRUE for the default data file
-    if(missing(force)) force <- TRUE
-  }
   thermo <- get("thermo")
   to1 <- thermo$obigt
   id1 <- paste(to1$name,to1$state)
@@ -192,12 +187,6 @@ thermo.refs <- function(key=NULL) {
     ns1.2 <- sapply(x$key, function(x) length(which(thermo$obigt$ref2==x)) )
     ns1 <- ns1 + ns1.2
     ns1[ns1==0] <- ""
-    # count the times each source is listed in OBIGT-2.csv
-    o2 <- read.csv(system.file("extdata/thermo/OBIGT-2.csv", package = "CHNOSZ"))
-    ns2 <- sapply(x$key, function(x) length(which(o2$ref1==x)) )
-    ns2.2 <- sapply(x$key, function(x) length(which(o2$ref2==x)) )
-    ns2 <- ns2 + ns2.2
-    ns2[ns2==0] <- ""
     # count the times each source is listed in protein.csv
     npr <- sapply(x$key, function(x) length(which(thermo$protein$ref==x)) )
     npr[npr==0] <- ""
@@ -207,7 +196,7 @@ thermo.refs <- function(key=NULL) {
     nst <- sapply(x$key, function(x) length(which(stressdat[2,]==x)) )
     nst[nst==0] <- ""
     # append the counts to the table to be shown
-    x <- c(x,list(ns1=ns1,ns2=ns2,npr=npr,nst=nst))
+    x <- c(x,list(ns1=ns1,npr=npr,nst=nst))
     # title to display for web page
     title <- "Sources of Thermodynamic Data in CHNOSZ"
     ### the following is adapted from print.findFn in package 'sos'
@@ -233,7 +222,6 @@ thermo.refs <- function(key=NULL) {
     .cat("<h3>Click on column headers to sort</h3>")
     .cat("<h3>Columns 'n..' give number of times each reference appears in data tables:</h3>")
     .cat("ns1: 'ref1' and 'ref2' in data/OBIGT.csv<br>")
-    .cat("ns2: 'ref1' and 'ref2' in extdata/thermo/OBIGT-2.csv<br>")
     .cat("npr: 'ref' in data/protein.csv<br>")
     .cat("nst: second row in data/stress.csv<br><p>")
     ### start table and headers
@@ -408,12 +396,8 @@ check.obigt <- function() {
   # and among G, H, S values
   # 20110808 jmd replaces 'check=TRUE' argument of info()
   checkfun <- function(what) {
-    # looking at thermo$obigt or OBIGT-2.csv
+    # looking at thermo$obigt
     if(what=="OBIGT") to <- get("thermo")$obigt
-    else if(what=="OBIGT-2") {
-      file <- system.file("extdata/thermo/OBIGT-2.csv",package="CHNOSZ")
-      to <- read.csv(file,as.is=1:7)
-    }
     ntot <- nrow(to)
     # where to keep the results
     DCp <- DV <- DG <- rep(NA,ntot)
@@ -441,10 +425,8 @@ check.obigt <- function() {
     out <- data.frame(table=what,ispecies=1:ntot,name=to$name,state=to$state,DCp=DCp,DV=DV,DG=DG)
     return(out)
   }
-  # check both databases in CHNOSZ
-  out1 <- checkfun("OBIGT")
-  out2 <- checkfun("OBIGT-2")
-  out <- rbind(out1,out2)
+  # check OBIGT database in CHNOSZ
+  out <- checkfun("OBIGT")
   # set differences within a tolerance to NA
   out$DCp[abs(out$DCp) < 1] <- NA
   out$DV[abs(out$DV) < 1] <- NA

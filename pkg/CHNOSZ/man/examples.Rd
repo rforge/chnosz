@@ -14,7 +14,7 @@
 
 \usage{
   examples(do.png = FALSE)
-  demos(which = c("sources", "protein.equil", "add.obigt", "affinity", "NaCl", "density",
+  demos(which = c("sources", "protein.equil", "affinity", "NaCl", "density",
     "ORP", "revisit", "findit", "ionize", "buffer", "protbuff", "yeastgfp", "mosaic",
     "copper", "solubility", "wjd", "dehydration", "bugstab", "Shh", "activity_ratios"),
     to.file=FALSE)
@@ -34,7 +34,6 @@ See the comments in the source code for more information about each demo.
   \tabular{ll}{
     \code{sources} \tab cross-check the reference list with the thermodynamic database \cr
     \code{protein.equil} \tab chemical activities of two proteins in metastable equilibrium (Dick and Shock, 2011) \cr
-    \code{add.obigt} \tab a couple of diagrams using the secondary thermodynamic database \cr
     \code{affinity} \tab affinities of metabolic reactions and amino acid synthesis \cr
     \code{NaCl} \tab equilibrium constant for aqueous NaCl dissociation (Shock et al., 1992) \cr
     \code{density} \tab density of H2O, inverted from IAPWS-95 equations (\code{\link{rho.IAPWS95}}) \cr

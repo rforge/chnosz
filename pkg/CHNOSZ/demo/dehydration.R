@@ -14,9 +14,6 @@ T <- seq(1, 175)
 plot(range(T), c(-2, 1), type="n", xlab="T, &#176;C", ylab="log K")
 title(main="Dehydration reactions")
 
-# add.obigt is used to add malate and fumarate,
-# and epsomite and hexahydrite to thermo$obigt
-add.obigt()
 reactants <- c("[AABB]", "[AABB]", "malate-2", "goethite", "gypsum", "epsomite", "ethanol")
 products <- c("[UPBB]", "[PBB]", "fumarate-2", "hematite", "anhydrite", "hexahydrite", "ethylene")
 rstate <- c("aq", "cr", "aq", "cr", "cr", "cr", "aq")

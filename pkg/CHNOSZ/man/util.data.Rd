@@ -16,8 +16,7 @@
 }
 
 \usage{
-  add.obigt(file = system.file("extdata/thermo/OBIGT-2.csv", 
-    package = "CHNOSZ"), force = FALSE, E.units = "cal")
+  add.obigt(file, force = FALSE, E.units = "cal")
   mod.obigt(...)
   today()
   thermo.refs(key=NULL)
@@ -47,7 +46,12 @@
 
 \details{
 
-  \code{add.obigt} reads data from the specified \code{file} and adds it to \code{\link{thermo}$obigt}. Set \code{force} to TRUE to replace species that exist in the thermodynamic database (each unique combination of a name and a state in the database is considered to be a unique species). \code{force}, if not specified, reverts to TRUE if the \code{file} is left at its default. Given the default setting of \code{E.units}, the function does not perform any unit conversions. If \code{E.units} is set to \samp{J}, then the thermodynamic parameters are converted from units of Joules to calories, as used in the CHNOSZ database. 
+\code{\link{add.obigt}} is available to update the thermodynamic database in use in the running session.
+\code{add.obigt} reads data from the specified \code{file} and adds it to \code{\link{thermo}$obigt}.
+The format of this file must be the same as the OBIGT files provided with CHNOSZ.
+Set \code{force} to TRUE to replace species that exist in the thermodynamic database (each unique combination of a name and a state in the database is considered to be a different species).
+Given the default setting of \code{E.units}, the function does not perform any unit conversions.
+If \code{E.units} is set to \samp{J}, then the thermodynamic parameters are converted from units of Joules to calories, as used in the CHNOSZ database. 
 
   \code{add.obigt} affects the order of entries in \code{thermo}$obigt; therefore, it should be called before any \code{basis} or \code{species} definition. Also, there is no attempt made to keep the order of physical states in the database (aq-cr-liq-gas); the function simply adds new rows to the end of \code{thermo}$obigt. As a result, retrieving the properties of an added aqueous species using \code{\link{info}} requires an explicit \code{state="aq"} argument to that function if a species with the same name is in one of the cr, liq or gas states.
 
@@ -75,7 +79,8 @@ If \code{key} is a list, it is interpreted as the result of a call to \code{subc
 
   \code{checkGHS} compares G (standard molal Gibbs energy of formation from the elements) calculated from H (standard molal enthalpy of formation) and S (standard molal entropy) with reference (tabulated) values of G at 25 \eqn{^{\circ}}{°}C and 1 bar. A message is printed and the calculated difference is returned if it exceeds the value given in \code{thermo$opt$G.tol}, which has a default value of 100 cal/mol. The calculation requires that G, H and S, and the chemical formula of the species all be present. \code{checkEOS} and \code{checkGHS} are used by \code{\link{info}} when retrieving species parameters from the database.
 
-  \code{check.obigt} is a function to check self-consistency of each entry (with itself) in the thermodynamic database, using \code{checkEOS} and \code{checkGHS}. The function checks data in both \code{\link{thermo}$obigt} and \code{\link{extdata}/thermo/OBIGT-2.csv}. The output is a table listing only species that exceed at least one of the tolerance limits, giving the name of the database (OBIGT or OBIGT-2), the species index (rownumber in the database), species name and state, and DCp, DV and DG, for the calculated differences (only those above the tolerances are given). This function is used to generate the file found at \code{extdata/thermo/obigt_check.csv}.
+\code{check.obigt} is a function to check self-consistency of each entry (with itself) in the thermodynamic database, using \code{checkEOS} and \code{checkGHS}.
+The output is a table listing only species that exceed at least one of the tolerance limits, giving the species index (rownumber in `thermo$obigt`), species name and state, and DCp, DV and DG, for the calculated differences (only those above the tolerances are given). This function is used to generate the file found at \code{extdata/thermo/obigt_check.csv}.
 
   \code{obigt2eos} takes a data frame in the format of \code{thermo$obigt} of one or more rows, removes scaling factors from equations-of-state parameters, and applies new column names depending on the \code{state}. This function is used by both \code{\link{info}} and \code{\link{subcrt}} when retrieving entries from the thermodynamic database. If \code{fixGHS} is TRUE a missing one of G, H or S for any species is calculated from the other two and the chemical formula of the species (used by \code{subcrt} when retrieving database entries).
 
@@ -83,22 +88,12 @@ If \code{key} is a list, it is interpreted as the result of a call to \code{subc
 
 }
 
-\section{Warning}{
-  Cautionary advice about the secondary database added by \code{add.obigt} (OBIGT-2.csv):
-
-  \itemize{
-     \item \samp{H4SiO4_Ste01}, taken from Steffánson, 2001, is used in the vignette \emph{Regressing thermodynamic data} for comparison with the H4SiO4 pseudospecies made in CHNOSZ (\samp{pseudo-H4SiO4}). As with other species in OBIGT-2.csv, it is likely to be inconsistent with specific minerals and other species in the default database, so use it with care.
-  } 
-}
-
 \value{
   The values returned (\code{\link{invisible}}-y) by \code{mod.obigt} are the rownumbers of the affected species.
 }
 
 \seealso{
-  The secondary thermodynamic database for \code{add.obigt} (\code{\link{extdata}/thermo/OBIGT-2.csv}) is used in some of the example calculations in the help page for \code{\link{diagram}} and also in \code{\link{anim.TCA}}.
-
-  \code{\link{mod.buffer}} for updating the list of available buffers.
+  \code{\link{mod.buffer}}
 }
 
 \examples{\dontshow{data(thermo)}
@@ -135,9 +130,6 @@ RH2obigt()
 \references{
 
   Richard, L. and Helgeson, H. C. (1998) Calculation of the thermodynamic properties at elevated temperatures and pressures of saturated and aromatic high molecular weight solid and liquid hydrocarbons in kerogen, bitumen, petroleum, and other organic matter of biogeochemical interest. \emph{Geochim. Cosmochim. Acta} \bold{62}, 3591--3636. \url{http://dx.doi.org/10.1016/S0016-7037(97)00345-1}
-
-  Stefánsson, Andri (2001) Dissolution of primary minerals of basalt in natural waters. I. Calculation of mineral solubilities from 0°C to 350°C \emph{Chem. Geol.} \bold{172}, 225--250. \url{http://dx.doi.org/10.1016/S0009-2541(00)00263-1}
-
 
 }
 

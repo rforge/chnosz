@@ -176,13 +176,12 @@ data(thermo)         ## clear system settings
 
 # Thermodynamic database and chemical formulas
 
-An attempt has been made to provide a primary database (`OBIGT.csv`) that is internally consistent.
-That is an elusive goal, as the database includes datasets from many sources; you should be aware that certain combinations of datasets in CHNOSZ can generate inconsistencies.
+An attempt has been made to provide a primary database (OBIGT) that is internally consistent.
+That is an elusive goal, as the database includes datasets from many sources; you should be aware that certain combinations of datasets in CHNOSZ may generate inconsistencies.
 ```{marginfigure}
 For crucial problems, check not only the accuracy of entries in the database, but also the *suitability of the data* for your problem.
 If there are any doubts, consult the primary sources (see  <span style="color:blue">?`thermo.refs`</span>).
 ```
-Some datasets that are likely to introduce inconsistencies with the main database, but are useful for particular calculations, have been placed into a secondary data file (`OBIGT-2.csv`) that can be read with <span style="color:red">`add.obigt()`</span> ([see below](#adding-data)).
 
 ## The <span style="color:green">`info()`</span> function
 
@@ -717,7 +716,7 @@ To override that behavior, we set `balance = 1` to plot the affinities of the fo
 
 When making line plots, <span style="color:green">`diagram()`</span> automatically places the labels near the lines.
 The additional arguments `adj` and `dy` can be used to fine-tune the positions of the labels (they are used in a couple of examples below).
-If labeling of the lines is not desired, add e.g. `legend.x = "topright"` to make a legend instead, or `names = NULL` to not show the names at all.
+If labeling of the lines is not desired, add e.g. `legend.x = "topright"` to make a legend instead, or `names = NULL` to prevent any plotting of the names.
 
 ## Buffers
 
@@ -1343,7 +1342,7 @@ mtext(axis.label("O2"), line = 1.2)
 ```
 
 Among these proteins, Olig2 and Shh have the greatest affinities for formation at the extremes of oxidation and hydration state.
-This thermodynamic description suggests links between the chemical compositions of the proteins and their order of appearance along with chemical changes in developing embryos (Dick, 2015).
+This thermodynamic description highlights possible links between the chemical compositions of the proteins and their order of appearance along with chemical changes in developing embryos (Dick, 2015).
 
 ## Getting amino acid compositions
 
@@ -1807,28 +1806,18 @@ browseURL(ref$URL)  ## opens a link to worldcat.org
 
 ## Adding data
 
-Use <span style="color:red">`add.obigt()`</span> to add data to the database in the current session.
-
-Without any arguments, <span style="color:red">`add.obigt()`</span> adds data from the secondary data file (`OBIGT-2.csv`).
-There are ca. 300 species listed there, many of which are not present in the main database.
-However, many of these datasets include one or more species that are already present in the main database, but have different parameters.
-Therefore, these data could not be included in the main database without breaking internal consistency.
-Some of the datasets here may have incomplete or provisional data.
-Please check the data entries and references carefully!
-
-Given a file name, <span style="color:red">`add.obigt()`</span> adds data in that file to database in the running session.
+Use <span style="color:red">`add.obigt()`</span> to add data from a file to the database in the current session.
 The file must be a CSV (comma separated value) file with column headers that match those in the main database.
-To show the required format, we print here the first few lines of `OBIGT-2.csv`.
+To show the required format, take a look at `BZA10.csv`, a supplemental data file provided in CHNOSZ.
 Missing values are indicated by `NA`:
 ```{marginfigure}
 R's `read.csv()` has a useful option: `as.is = TRUE`.
 This prevents columns with character data from being read as factors (i.e. categorical data).
 Passing factors to functions that are designed for character data can give unexpected results or errors.
 ```
-```{r obigt_file, echo=1:2}
-file <- system.file("extdata/thermo/OBIGT-2.csv", package = "CHNOSZ")
+```{r BZA10, echo=1:2}
+file <- system.file("extdata/thermo/BZA10.csv", package = "CHNOSZ")
 dat <- read.csv(file, as.is = TRUE)
-head(dat, 3)
 ```
 
 The column names with a dot (`.`) refer to different sets of equations for calculating standard thermodynamic properties.
@@ -1888,7 +1877,7 @@ info(info("cyclohexane"))
 ## checkEOS: V of cyclohexane aq (1762) differs by 6.64 cm3 mol-1 from tabulated value
 ```
 
-The species with detected inconsistencies in `OBIGT.csv` and `OBIGT-2.csv` are listed in the file `obigt_check.csv`.
+The species with detected inconsistencies in OBIGT are listed in the file `obigt_check.csv`.
 ```{r check_obigt}
 file <- system.file("extdata/thermo/obigt_check.csv", package = "CHNOSZ")
 dat <- read.csv(file, as.is = TRUE)

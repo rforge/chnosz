@@ -59,10 +59,6 @@ Simulate a mass transfer process such as mineral weathering or sequential format
 
 }
 
-\section{Warning}{
-  \code{feldspar} loads the secondary database (using \code{\link{add.obigt}}); after using this function use \code{data(thermo)} to restore the primary database.
-}
-
 \value{
   \code{transfer} returns a list containing information about the conditions at each step: \code{basis}, data frame of the logarithms of activities of basis species, \code{species}, data frame of the logarithms of activities (moles for solids) of species, \code{alphas}, numeric vector of the values of the destruction exponent, \code{dmodes}, character vector of the destruction mode, \code{istables}, numeric vector of the index of the most stable product, \code{myaffs}, list of the affinities of the formation reactions of species, \code{didwork}, logical vector indicating whether the steps succeeded or failed.
 }

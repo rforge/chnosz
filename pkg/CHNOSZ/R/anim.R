@@ -7,9 +7,6 @@ anim.TCA <- function(redox=list(O2=c(-95,-60)),high.T=FALSE,
   # we depend on an empty png directory
   if(!"png" %in% dir()) stop("directory 'png' not present")
   else if(length(dir("png")) > 0) stop("directory 'png' not empty")
-  # add supplementary data (from default location of data/OBIGT-2.csv)
-  # which includes properties for the metabolites
-  add.obigt()
   # expand default logfO2 range if we're at high temperature
   if(high.T & missing(redox)) redox <- list(O2=c(-100,-40))
   # the name of 'redox' should be either O2 or H2

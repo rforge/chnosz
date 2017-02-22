@@ -3135,21 +3135,16 @@ Document history
 \family typewriter
 add.obigt()
 \family default
- for superseded properties of methionine sidechain group.
+ for superseded properties of methionine sidechain group (changed to 
+\family typewriter
+mod.obigt()
+\family default
+ on 2016-12-21).
 \end_layout
 
 \begin_layout Itemize
 2014-02-01 Include results from 2013 paper and change VignetteEngine to
  knitr.
-\end_layout
-
-\begin_layout Itemize
-2016-12-21 As superseded methionine sidechain group has been removed from
- OBIGT-2.csv, use 
-\family typewriter
-mod.obigt()
-\family default
- to reproduce the calculations.
 \end_layout
 
 \begin_layout Standard

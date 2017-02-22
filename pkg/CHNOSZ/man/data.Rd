@@ -23,8 +23,6 @@ It is created upon loading the package, through a call to \code{data(thermo)} in
 At any time, the user can restore the data object to its initial state by calling \code{data(thermo)}.
 This is sometimes a useful command to use during an interactive session, when previous definitions of basis species and species of interest are longer desired.
 
-  The function \code{\link{add.obigt}} is available to update the thermodynamic database in use in a running session. For example, one can run \code{add.obigt("mydata.csv")} after loading the package, and the data in that file will be added to the database. The format of this file must be the same as the OBIGT files provided with CHNOSZ. Although changes made using \code{add.obigt} are lost when the current \R session is closed, the data can always be restored the next time as long as the user has the \code{mydata.csv} (or other) file available.
-
   The first example below shows how to find the installation locations of OBIGT and other \code{*.csv} files. Making changes to these files is not recommended, because incompatible changes can leave the package unusable; also, the files will be overwritten whenver the package is installed (or updated). Instead, use these files as templates for creating your own database files.
 
 }
@@ -215,9 +213,7 @@ This is sometimes a useful command to use during an interactive session, when pr
 
 } % end of format
 
-\seealso{ 
-  \code{\link{add.obigt}} for thermodynamic data from local .csv files.
-}
+\seealso{ \code{\link{add.obigt}} }
 
 \examples{
 \dontshow{data(thermo)}

@@ -22,7 +22,7 @@ Finally, \code{??utilities} (one of the standard \R keywords) can be used to loc
 All thermodynamic data and examples are provided on an as-is basis.
 It is up to you to check not only the accuracy of the data, but also the \emph{suitability of the data AND computational techniques} for your problem.
 By combining data taken from different sources, it is possible to build an inconsistent and/or nonsensical calculation.
-An attempt has been made to provide a primary database (OBIGT.csv) that is internally consistent, but no guarantee can be made.
+An attempt has been made to provide a primary database (OBIGT) that is internally consistent, but no guarantee can be made.
 Where possible, data with known or suspected inconsistencies have been placed into a secondary database (OBIGT-2.csv) that should be regarded as experimental.
 If there is any doubt about the accuracy or suitability of data for a particular problem, please \emph{consult the primary sources} (see \code{\link{thermo.refs}}).
 Do not assume that by adding any species to your calculation (or to any of the examples), you will necessarily obtain a reasonable answer.

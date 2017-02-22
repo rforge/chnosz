@@ -24,8 +24,6 @@ examples <- function(do.png=FALSE) {
     if(plot.it) dev.off()
   }
   if(is.character(do.png)) dev.off()
-  # at the end we attempt to restore the old par() (active as of the first call of thermo.plot.new)
-  par(get("thermo")$opar)
   cat("Time elapsed: ", proc.time() - .ptime, "\n")
 }
 

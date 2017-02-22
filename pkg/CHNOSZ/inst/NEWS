@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-58 (2017-02-21)
+CHANGES IN CHNOSZ 1.0.8-59 (2017-02-22)
 ---------------------------------------
 
 DOCUMENTATION:
@@ -78,10 +78,10 @@ NEW FEATURES:
 
 NEW DATA:
 
-- OBIGT.csv: Add data for citric acid cycle metabolites from Canovas and
+- Canovas_aq.csv: Add data for citric acid cycle metabolites from Canovas and
   Shock, 2016.
 
-- OBIGT.csv: Add H4SiO4 pseudospecies (pseudo-H4SiO4); see calculations
+- CHNOSZ_aq.csv: Add H4SiO4 pseudospecies (pseudo-H4SiO4); see calculations
   in eos-regress.Rmd.
 
 - OBIGT-2.csv: Rename H4SiO4 to H4SiO4_Ste01 (Steffánson, 2001).
@@ -89,13 +89,9 @@ NEW DATA:
 - extdata: Add fasta/rubisco.fasta and cpetc/*.csv files SS98_Fig5a,
   SS98_Fig5b, PM90 (all used by anintro.Rmd).
 
-CLEANUP AND BUG FIXES:
+DATA CHANGES:
 
-- subcrt() returns `loggam` using the common logarithm; add
-  test-nonideal.R to check for consistency between loggam and logK
-  values returned by subcrt(). This also fixes the issue previously
-  noted for the first example in ?nonideal. Thanks to David T. Wang for
-  the bug report and test.
+- Split OBIGT.csv into multiple files according to author names.
 
 - OBIGT-2.csv: remove data for citric acid cycle metabolites from
   Dalla-Betta and Schulte, 2009; thioester species have been kept.
@@ -104,10 +100,20 @@ CLEANUP AND BUG FIXES:
   2006. Examples that require the old group additivity parameters
   modify the database using: `mod.obigt("[Met]", G=-35245, H=-59310)`.
 
-- Correct charge (-2) of NAD(red)-2 in OBIGT.csv. Thanks to Peter
+BUG FIXES:
+
+- Correct charge (-2) of NAD(red)-2 in LaRowe_aq.csv. Thanks to Peter
   Canovas.
 
 - Also correct charge (-2) of MgATP-2.
+
+- subcrt() returns `loggam` using the common logarithm; add
+  test-nonideal.R to check for consistency between loggam and logK
+  values returned by subcrt(). This also fixes the issue previously
+  noted for the first example in ?nonideal. Thanks to David T. Wang for
+  the bug report and test.
+
+OTHER CHANGES:
 
 - Remove msgout(), and replace previous calls to that function with
   message() from base R. As a result, the messages don't appear in Sweave

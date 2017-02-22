@@ -140,6 +140,7 @@ print(diff(w$F.Y))
 # used to calculate the chemical potentials of the elements
 stopifnot(nrow(invertible.combs(w$A))==76)
 # what the scatter in those chemical potentials looks like
+\dontshow{opar <- par(no.readonly=TRUE)}
 ep <- element.potentials(w, plot.it=TRUE)
 # the differences in chemical potentials / RT are all less than 0.01
 is.near.equil(w)  # TRUE
@@ -150,7 +151,7 @@ w <- wjd(imax=1)
 ep <- element.potentials(w, plot.it=TRUE)
 # and we're pretty far from equilibrium
 is.near.equil(w)  # FALSE
-\dontshow{par(thermo$opar)}
+\dontshow{par(opar)}
 
 ## test all of the guesses of inititial mole quantities
 ## provided by guess() using default bulk composition (H2NO)

@@ -22,7 +22,7 @@ bibliography: vig.bib
 link-citations: yes
 # The custom CSL file gives a build error on R-Forge (20170212):
 #   pandoc-citeproc: error while parsing the XML string
-#csl: elementa.csl
+csl: elementa.csl
 ---
 
 ```{r options, include=FALSE}
@@ -177,7 +177,7 @@ data(thermo)         ## clear system settings
 # Thermodynamic database and chemical formulas
 
 An attempt has been made to provide a primary database (`OBIGT.csv`) that is internally consistent.
-That is an elusive goal, as the database includes datasets from many sources, and you should be aware that certain combinations of datasets in CHNOSZ can generate inconsistencies.
+That is an elusive goal, as the database includes datasets from many sources; you should be aware that certain combinations of datasets in CHNOSZ can generate inconsistencies.
 ```{marginfigure}
 For crucial problems, check not only the accuracy of entries in the database, but also the *suitability of the data* for your problem.
 If there are any doubts, consult the primary sources (see  <span style="color:blue">?`thermo.refs`</span>).
@@ -983,9 +983,9 @@ Amino acid group additivity is used to obtain the thermodynamic properties of pr
 Therefore, CHNOSZ has a data file with amino acid compositions of selected proteins, as well as functions for reading and downloading amino acid sequence data.
 
 When proteins in CHNOSZ are identified by name, they include an underscore, such as in `LYSC_CHICK` (chicken lysozyme C).
-Use `pinfo()` to search for one or more proteins by name; multiple proteins from the same organism can be specified using the `organism` argument.
+Use <span style="color:green">`pinfo()`</span> to search for one or more proteins by name; multiple proteins from the same organism can be specified using the `organism` argument.
 The name search returns the rownumbers of `thermo$protein` (i.e. `iprotein`, the protein indices).
-Supply those protein indices to `pinfo()` to get the amino acid compositions:
+Supply those protein indices to <span style="color:green">`pinfo()`</span> to get the amino acid compositions:
 ```{r pinfo_LYSC_CHICK}
 p1 <- pinfo("LYSC_CHICK")
 p2 <- pinfo(c("SHH", "OLIG2"), "HUMAN")
@@ -1142,7 +1142,7 @@ file.copy("rubisco.svg", fig_path(".svg"))
 #}
 ```
 
-```{r rubisco_ZC, fig.keep="none"}
+```{r rubisco_ZC, fig.keep="none", message=FALSE}
 datfile <- system.file("extdata/cpetc/rubisco.csv", package = "CHNOSZ")
 fastafile <- system.file("extdata/fasta/rubisco.fasta", package = "CHNOSZ")
 dat <- read.csv(datfile)

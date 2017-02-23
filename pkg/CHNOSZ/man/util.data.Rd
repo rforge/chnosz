@@ -12,7 +12,9 @@
 \alias{RH2obigt}
 \title{Functions to Work with the Thermodynamic Database}
 \description{
-  Add species to or alter properties of species in the thermodynamic database or in the buffer definition table. Show references for sources of thermodynamic data in a web browser. Check internal consistency of individual entries in database.
+Add species to or alter properties of species in the thermodynamic database or in the buffer definition table.
+Show references for sources of thermodynamic data in a web browser.
+Check internal consistency of individual entries in database.
 }
 
 \usage{
@@ -89,23 +91,52 @@ The output is a table listing only species that exceed at least one of the toler
 }
 
 \value{
-  The values returned (\code{\link{invisible}}-y) by \code{mod.obigt} are the rownumbers of the affected species.
+The values returned (\code{\link{invisible}}-y) by \code{mod.obigt} are the rownumbers of the affected species.
 }
 
 \seealso{ \code{\link{thermo}}, \code{\link{mod.buffer}} }
 
 \examples{\dontshow{data(thermo)}
-## modify an existing species with fake properties
+## modify an existing species (example only)
 ialanine <- mod.obigt("alanine", state="cr", G=0, H=0, S=0)
 # we have made the values of G, H, and S inconsistent
-# with the elemental composition of alanine so the following 
-# produces a message about that
+# with the elemental composition of alanine, so the following 
+# now produces a message about that
 info(ialanine)
 ## add a species
 iCl2O <- mod.obigt("Cl2O", G=20970)
 info(iCl2O)
 # add a species with a name that is distinct from the formula
 mod.obigt("buckminsterfullerene", formula="C60", state="cr")
+# reset database
+data(thermo)
+
+# using add.obigt():
+# compare stepwise stability constants of cadmium chloride complexes
+# using data from Sverjensky et al., 1997 and Bazarkina et al., 2010
+Cdspecies <- c("Cd+2", "CdCl+", "CdCl2", "CdCl3-", "CdCl4-2")
+P <- c(1, seq(25, 1000, 25))
+SSH97 <- lapply(1:4, function(i) {
+  subcrt(c(Cdspecies[i], "Cl-", Cdspecies[i+1]),
+    c(-1, -1, 1), T=25, P=P)$out$logK
+})
+file <- system.file("extdata/thermo/BZA10.csv", package="CHNOSZ")
+add.obigt(file, force=TRUE)
+BZA10 <- lapply(1:4, function(i) {
+  subcrt(c(Cdspecies[i], "Cl-", Cdspecies[i+1]),
+    c(-1, -1, 1), T=25, P=P)$out$logK
+})
+data(thermo)
+matplot(P, do.call(cbind, SSH97), type="l")
+matplot(P, do.call(cbind, BZA10), type="l", add=TRUE, lwd=2)
+legend("topleft", legend=c("", "", "Sverjensky et al., 1997",
+  "Bazarkina et al., 2010"), lwd=c(0, 0, 1, 2), bty="n")
+# make reaction labels
+y <- c(1.8, 0.2, -0.5, -1)
+invisible(lapply(1:4, function(i) {
+  text(800, y[i], describe.reaction(subcrt(c(Cdspecies[i], "Cl-",
+    Cdspecies[i+1]), c(-1, -1, 1), T=25, P=1)$reaction))
+}))
 
 # citation information for Helgeson et al., 1998
 thermo.refs("HOK+98")
@@ -126,10 +157,11 @@ RH2obigt()
 }
 
 \references{
+Bazarkina, E. F., Zotov, A. V., and Akinfiev, N. N. (2010)  Pressure-dependent stability of cadmium chloride complexes: Potentiometric measurements at 1-1000 bar and 25°C. \emph{Geology of Ore Deposits} \bold{52}, 167--178. \url{http://dx.doi.org/10.1134/S1075701510020054}
 
-  Richard, L. and Helgeson, H. C. (1998) Calculation of the thermodynamic properties at elevated temperatures and pressures of saturated and aromatic high molecular weight solid and liquid hydrocarbons in kerogen, bitumen, petroleum, and other organic matter of biogeochemical interest. \emph{Geochim. Cosmochim. Acta} \bold{62}, 3591--3636. \url{http://dx.doi.org/10.1016/S0016-7037(97)00345-1}
+Richard, L. and Helgeson, H. C. (1998) Calculation of the thermodynamic properties at elevated temperatures and pressures of saturated and aromatic high molecular weight solid and liquid hydrocarbons in kerogen, bitumen, petroleum, and other organic matter of biogeochemical interest. \emph{Geochim. Cosmochim. Acta} \bold{62}, 3591--3636. \url{http://dx.doi.org/10.1016/S0016-7037(97)00345-1}
 
+Sverjensky, D. A., Shock, E. L., and Helgeson, H. C. (1997) Prediction of the thermodynamic properties of aqueous metal complexes to 1000 °C and 5 kbar. \emph{Geochim. Cosmochim. Acta} \bold{61}, 1359--1412. \url{http://dx.doi.org/10.1016/S0016-7037(97)00009-4}
 }
-
 
 \keyword{utilities}

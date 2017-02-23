@@ -130,6 +130,7 @@ data(thermo)
 After CHNOSZ is installed, type <span style="color:blue">`help.start()`</span> to browse the R help documents, then choose "Packages" followed by "CHNOSZ".
 That shows an index of the *manual* (help pages) for each function; many of the help pages include examples.
 There are also links to the *demos* (longer examples) and *vignettes* (more in-depth documentation; this document is a vignette).
+
 Suggestions for accessing the documentation are indicated here with <span style="color:blue">blue text</span>.
 For example, read <span style="color:blue">`?"CHNOSZ-package"`</span> to get an overview of the package and a list of features.
 

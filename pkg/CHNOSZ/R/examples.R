@@ -12,7 +12,7 @@ examples <- function(do.png=FALSE) {
     "util.seq", "util.units", "taxonomy", "info", "protein.info", "hkf", "water", "subcrt",
     "makeup", "basis", "swap.basis", "species", "affinity", "util.affinity", "equil.boltzmann", 
     "diagram", "buffer", "add.protein", "protein", "ionize.aa", "more.aa", "read.expr",
-    "objective", "revisit", "transfer", "anim", "EOSregress", "wjd")
+    "anim", "objective", "revisit", "transfer", "EOSregress", "wjd")
   plot.it <- FALSE
   if(is.character(do.png))
     png(paste(do.png,"%d.png",sep=""),width=500,height=500,pointsize=12)

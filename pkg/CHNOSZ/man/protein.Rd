@@ -2,20 +2,10 @@
 \alias{protein}
 \title{Examples of Calculations for Proteins}
 \description{
-  This page contains some examples of using the functions in CHNOSZ to calculate thermodynamic properties of and make diagrams for proteins.
+This page contains some examples of using the functions in CHNOSZ to calculate thermodynamic properties of and make diagrams for proteins.
 }
 
 \examples{\dontshow{data(thermo)}
-## thermodynamic properties and activity diagrams
-prot4 <- c("LYSC_CHICK", "BPT1_BOVIN", "CYC_BOVIN", "MYG_PHYCA")
-# aqueous protein properties (nonionized)
-subcrt(prot4, T=seq(0, 200, 10))$out
-# T-logfO2 activity diagram
-basis("CHNOS")
-species(prot4)
-a <- affinity(T=c(0, 200), O2=c(-80, -40))
-diagram(a)
-
 ## Standard molal entropy of a protein reaction
 basis("CHNOS")
 # here we provide the reaction coefficients of the 
@@ -23,9 +13,16 @@ basis("CHNOS")
 # the coefficients of the basis species in the reaction
 s <- subcrt(c("CSG_METTL", "CSG_METJA"), c(-1/530, 1/530),
   T=seq(0, 350, length.out=50))
+# note: this uses the properties of the nonionized proteins
 
-
-### Equilibrium activity diagrams
+## logfO2-pH potential diagram
+# with a charged basis, we calculate properties of ionized proteins
+basis("CHNOS+")
+aa <- read.aa(system.file("extdata/protein/DS11.csv", package = "CHNOSZ"))
+aa <- aa[grep("transferase", aa$protein), ]
+ip <- add.protein(aa)
+a <- affinity(pH=c(0, 14), O2=c(-64, -61), T=75, iprotein=ip)
+diagram(a)
 
 ## surface-layer proteins from Methanococcus and others
 ## as a function of oxygen fugacity, after Dick, 2008, Fig. 5b
@@ -71,10 +68,9 @@ species(prot, "BOVIN")
 a <- affinity(T=c(0, 200))
 # set line colors according to oxidation state of carbon
 ZC <- ZC(species()$ispecies)
-col <- rep("red", length(prot))
-col[ZC > 0] <- "blue"
+col <- ZC.col(ZC)
 e <- equilibrate(a, normalize=TRUE)
-d <- diagram(e, col=col)
+d <- diagram(e, col=col, lwd=3)
 title(main="Bovine proteins, GSH/GSSG redox buffer")
 }
 

@@ -80,12 +80,6 @@ legend("topleft", pch=1, legend="Ishihama et al., 2008")
 # "description" is the name of the column where we search for "kinase"
 expr.kinase <- read.expr(file, "ID", "emPAI", list(description="kinase"))
 
-## read.expr using a different data file,
-## from Anderson and Anderson, 2003
-file <- system.file("extdata/abundance/AA03.csv", package="CHNOSZ")
-# look for proteins described as "Complement"
-read.expr(file, "name", "log10(pg/ml)", list(description="Complement"))
-
 #############################
 ## examples using stress() ##
 #############################

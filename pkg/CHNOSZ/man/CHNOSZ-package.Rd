@@ -23,7 +23,6 @@ It is up to you to check not only the accuracy of the data, but also the \emph{s
 By combining data taken from different sources, it is possible to build an inconsistent and/or nonsensical calculation.
 An attempt has been made to provide a primary database (OBIGT) that is internally consistent, but no guarantee can be made.
 If there is any doubt about the accuracy or suitability of data for a particular problem, please consult the primary sources (see \code{\link{thermo.refs}}).
-Examples without a reference (and some with references) demonstrate experimental features of CHNOSZ.
 }
 
 \section{Overview}{

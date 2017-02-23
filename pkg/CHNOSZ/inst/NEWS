@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-60 (2017-02-22)
+CHANGES IN CHNOSZ 1.0.8-61 (2017-02-23)
 ---------------------------------------
 
 DOCUMENTATION:
@@ -87,6 +87,9 @@ NEW AND OLD DATA:
 - CHNOSZ_aq.csv: Add H4SiO4 pseudospecies (pseudo-H4SiO4); see calculations
   in eos-regress.Rmd.
 
+- Dick_aq.csv: Add data for aqueous phenanthrene and methylphenanthrene
+  from Dick et al., 2013.
+
 - Remove superseded data previously in OBIGT-2.csv: citric acid cycle
   metabolites from Dalla-Betta and Schulte, 2009.
 
@@ -99,8 +102,8 @@ NEW AND OLD DATA:
   used in tests, examples, or vignettes, from OBIGT-2.csv to
   extdata/thermo (Ste01.csv and BZA10.csv).
 
-- Remove other conflicting datasets previously in OBIGT-2.csv, including
-  aluminum species from Tagirov and Schott, 2001.
+- Remove other conflicting datasets previously in OBIGT-2.csv (21
+  sources).
 
 - extdata: Add fasta/rubisco.fasta and cpetc/*.csv files SS98_Fig5a,
   SS98_Fig5b, PM90 (all used by anintro.Rmd).

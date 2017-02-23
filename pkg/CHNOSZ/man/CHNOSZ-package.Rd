@@ -3,9 +3,8 @@
 \docType{package}
 \title{Chemical Thermodynamics and Activity Diagrams}
 \description{
-CHNOSZ is a package for thermodynamic calculations, primarily with applications in geochemistry and biochemistry.
+CHNOSZ is a package for thermodynamic calculations, primarily with applications in geochemistry and compositional biology.
 It can be used to calculate the standard molal thermodynamic properties and chemical affinities of reactions relevant to geobiochemical processes, and to visualize the equilibrium activities of species on chemical speciation and predominance diagrams.
-The package can be used interactively and in batch mode, through the use of R source files containing a sequence of commands.
 }
 
 \section{Getting Help}{
@@ -23,10 +22,7 @@ All thermodynamic data and examples are provided on an as-is basis.
 It is up to you to check not only the accuracy of the data, but also the \emph{suitability of the data AND computational techniques} for your problem.
 By combining data taken from different sources, it is possible to build an inconsistent and/or nonsensical calculation.
 An attempt has been made to provide a primary database (OBIGT) that is internally consistent, but no guarantee can be made.
-If there is any doubt about the accuracy or suitability of data for a particular problem, please \emph{consult the primary sources} (see \code{\link{thermo.refs}}).
-Do not assume that by adding any species to your calculation (or to any of the examples), you will necessarily obtain a reasonable answer.
-Do not assume that the examples are correct, or that they can be applied to your problem.
-As with the data, please \emph{compare the construction and output of the examples to the primary sources}, cited in the reference list in each help page.
+If there is any doubt about the accuracy or suitability of data for a particular problem, please consult the primary sources (see \code{\link{thermo.refs}}).
 Examples without a reference (and some with references) demonstrate experimental features of CHNOSZ.
 }
 
@@ -58,7 +54,7 @@ Examples without a reference (and some with references) demonstrate experimental
 
   \item Activity statistics (\bold{experimental}) - calculate summary statistics for equilibrium activities of species (\code{\link{revisit}}).
 
-  \item Multidimensional optimization (new in 0.9-3) (\bold{experimental}) - using an iterative gridded optimization, find a combination of chemical activities of basis species, temperature and/or pressure that maximize or minimize the value of a target statistic (\code{\link{findit}}).
+  \item Multidimensional optimization (\bold{experimental}) - using an iterative gridded optimization, find a combination of chemical activities of basis species, temperature and/or pressure that maximize or minimize the value of a target statistic (\code{\link{findit}}).
 
   \item Mass transfer calculations (\bold{experimental}) - calculate changes in solution composition and formation of secondary species as a function of incremental reaction of a mineral (or protein) (\code{\link{transfer}}).
 
@@ -67,38 +63,23 @@ Examples without a reference (and some with references) demonstrate experimental
   Here are some tips for new users:
 
   \itemize{
-    \item Install the package from CRAN using \code{\link{install.packages}} or its GUI menu equivalent. 
-    \item To begin working with the package after installation, type \code{\link{library}(CHNOSZ)} at the command line (or select the name of the package from the GUI menu).
-    \item Running the examples shown in the various help topics is a great way to become more familiar with the usage of the functions. From \code{\link{help.start}}, select \sQuote{Packages} then \sQuote{CHNOSZ} and then select a function of interest. Individual examples can be run by pasting the example block directly into the R console.
+    \item Running the examples shown in the various help topics is a good way to become more familiar with the usage of the functions. From \code{\link{help.start}}, select \sQuote{Packages} then \sQuote{CHNOSZ} and then select a function of interest. Individual examples can be run by pasting the example block directly into the R console.
     \item Type the command \code{\link{examples}()} to run all of the examples provided in CHNOSZ. This takes a few minutes depending on your system. If things go as expected, the entire set will run without any warnings or errors.
-    \item Some of the examples require internet or file access or user intervention, or are intentionally written to demonstrate conditions that lead to errors. This code is hidden from \R's package checking mechanism using the \code{dontrun} tag. You can experiment with \code{dontrun} examples by pasting the code to the R console.
-    \item A couple of other things to note about the examples: 1) There are some \code{\link{stopifnot}} statements that represent expected outcomes of the calculations; if the expectation is not met, the \code{stopifnot} statement causes an error. These tests are useful for checking the code during package development cycles, but are usually not of critical importance for the set-up of the problem (though they do sometimes employ useful programming tricks). 2) Commands written with an enclosing pair of parentheses \code{(z <- "like this one")} are used to display the result of an assignment operation (\code{\link{<-}}), the value of which is needed later in the calculation. In interactive use, the outermost pair of enclosing parentheses is generally not needed.
-    \item Also try out \code{\link{demos}()} to run the demos (some of these are longer running examples that are not part of the main help pages).
-    \item To learn how to update the thermodynamic database, look at its documentation in \code{\link{thermo}}.
+    \item Also try out \code{\link{demos}()} to run the demos (longer examples that are not part of the main help pages).
+    \item To learn how to update the thermodynamic database, look at \code{\link{add.obigt}}.
   }
 
 }
 
-
-\section{Compatibility}{
-  Starting with version 1.0.5-1, the package depends on \R version 3.1.0 or greater (for \code{extendInt} argument of \code{\link{uniroot}}, used in code{\link{rho.IAPWS95}}).
-  As of version 1.0.4 (release 1.0.5 on CRAN), the package depends on \R version 3.0.0 or greater (previous versions use \code{\link{Stangle}} to extract R code from vignettes when installing the source package, leading to failure processing hotspring.Rnw, which now uses knitr instead of Sweave).
-  Before version 1.0.4, the recommended version of \R was 2.14.0 or greater (to find vignettes in the \code{vignettes} directory, and for availability of \pkg{parallel} in the standard library).
-  As of version 0.9-9, the package depends on \R version 2.12.0 or greater (so useDynLib in the NAMESPACE can find the shared library on Windows).
-  Starting with version 0.9-6 of the package, the dependency was given as \R version 2.10.0 or greater (to read compressed data files).
-  Before version 0.9-6 of the package, the dependency was given as \R version 2.7.0 or greater (major update of the X11 device in 2.7.0).
-  Without accessing the compressed data files in \code{extdata} it should be possible to run CHNOSZ on Unix-alikes under \R versions 2.4.0 or greater (availability of the \samp{stringsAsFactors} argument of \code{\link{data.frame}}). 
-}
-
 \section{Acknowledgements}{
   This package would not exist without the leadership and encouragement of Professor Harold C. Helgeson.
-  Hal and his associates are in some way responsible for many of the equations and data contained in this package.
-  A direct contribution of code is the file \code{H2O92D.f}, taken from the SUPCRT92 distribution, with minor modifications (masking of WRITE and STOP statements) made for compatibility with an \R environment.
+  Hal and his students and collaborators are in some way responsible for many of the equations and data contained in this package.
+  A direct contribution of code is the file \code{H2O92D.f}, taken from the SUPCRT92 distribution, with minor modifications (masking of WRITE and STOP statements) made for compatibility with an \R environment and for allowing sub-zero degrees C calculations (keep valTP flag TRUE).
   The revised Helgeson-Kirkham-Flowers equations of state are used in this package, together with the thermodynamic properties and parameters for many species taken from numerous papers coauthored by Helgeson.
 
   Work on this package at U.C. Berkeley from ~2003--2008 was supported by research grants to HCH from the U.S. National Science Foundation and Department of Energy.
   In 2009--2011, development of this package was based upon work supported by the National Science Foundation under grant EAR-0847616.
-  The files in \code{extdata/bison} are excerpts of results of BLAST calculations made on the Saguaro high performance computer at ASU. 
+  The files in \code{extdata/bison} are derived from BLAST calculations made on the Saguaro high performance computer at Arizona State University. 
 }
 
 \section{Known Bugs}{
@@ -106,9 +87,8 @@ Examples without a reference (and some with references) demonstrate experimental
 
   The values generated by \code{\link{buffer}} may not be applied correctly by \code{\link{affinity}} in calculating the affinities of the formation reactions. (The values returned by \code{affinity(..., return.buffer=TRUE)} do appear to be correct in the examples).
 
-  There is an unidentified inconsistency in \code{\link{transfer}} causing the reaction boundaries in one of the examples (\code{apc("closed")}) to be offset from the stability diagram. OTOH, \code{feldspar("closed")} appears to work correctly.
-
-  Values of activity coefficients may be affected by an unidentified bug in \code{\link{nonideal}}.
+  There is an unidentified inconsistency in \code{\link{transfer}} causing the reaction boundaries in one of the examples (\code{apc("closed")}) to be offset from the stability diagram.
+  On the other hand, \code{feldspar("closed")} appears to work correctly.
 }
 
 \keyword{package}

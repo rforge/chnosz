@@ -2,7 +2,7 @@
 \alias{protein}
 \title{Examples of Calculations for Proteins}
 \description{
-  This page contains some examples of using the functions in CHNOSZ to calculate thermodynamic properties and relative stabilities of proteins.
+  This page contains some examples of using the functions in CHNOSZ to calculate thermodynamic properties of and make diagrams for proteins.
 }
 
 \examples{\dontshow{data(thermo)}
@@ -76,11 +76,6 @@ col[ZC > 0] <- "blue"
 e <- equilibrate(a, normalize=TRUE)
 d <- diagram(e, col=col)
 title(main="Bovine proteins, GSH/GSSG redox buffer")
-}
-
-\seealso{
-  For accessing, updating, and downloading amino acid compositions of proteins, see \code{\link{pinfo}}. 
-For more examples of metastable equilibrium calculations for proteins, see \code{\link{read.expr}}, \code{\link{more.aa}}, \code{\link{ionize.aa}}, and \code{\link{apc}} for reaction-path calculations.
 }
 
 \concept{Protein thermodynamic modeling}

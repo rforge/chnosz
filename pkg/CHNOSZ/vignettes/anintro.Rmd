@@ -22,7 +22,7 @@ bibliography: vig.bib
 link-citations: yes
 # The custom CSL file gives a build error on R-Forge (20170212):
 #   pandoc-citeproc: error while parsing the XML string
-csl: elementa.csl
+#csl: elementa.csl
 ---
 
 ```{r options, include=FALSE}
@@ -99,7 +99,7 @@ timeit <- NULL
 This document introduces the usage of CHNOSZ, a package for the [R software environment](http://r-project.org).
 For more information on R, see "[An Introduction to R](http://cran.r-project.org/manuals.html)" and the [contributed documentation](https://cran.r-project.org/other-docs.html) for R.
 
-CHNOSZ has been developed since 2006 to support research projects in geochemistry and compositional biology.
+CHNOSZ has been developed since 2006 as a tool for thermodynamic calculations in geochemistry and compositional biology.
 The package provides functions and a thermodynamic database that can be used to calculate the stoichiometric and energetic properties of reactions involving minerals and inorganic and/or organic aqueous species.
 These functions also enable calculations of chemical affinities and metastable equilibrium distributions of proteins.
 A major feature of the package is the production of diagrams to visualize the effects of changing temperature, pressure, and activities of basis species on the potential for reactions among various species.

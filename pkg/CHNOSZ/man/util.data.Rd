@@ -92,9 +92,7 @@ The output is a table listing only species that exceed at least one of the toler
   The values returned (\code{\link{invisible}}-y) by \code{mod.obigt} are the rownumbers of the affected species.
 }
 
-\seealso{
-  \code{\link{mod.buffer}}
-}
+\seealso{ \code{\link{thermo}}, \code{\link{mod.buffer}} }
 
 \examples{\dontshow{data(thermo)}
 ## modify an existing species with fake properties

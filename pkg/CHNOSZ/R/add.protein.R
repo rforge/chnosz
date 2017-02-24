@@ -5,7 +5,6 @@
 # add.protein - add amino acid counts to thermo$protein (returns iprotein)
 # seq2aa - calculate amino acid counts from a sequence
 # aasum - combine amino acid counts (sum, average, or weighted sum by abundance)
-# read.aa - read amino acid counts from a file
 
 seq2aa <- function(protein, sequence) {
   # remove newlines and whitespace
@@ -55,21 +54,12 @@ aasum <- function(aa, abundance=1, average=FALSE, protein=NULL, organism=NULL) {
   return(out)
 }
 
-read.aa <- function(file="protein.csv", ...) {
-  # 20090428 added colClasses here
-  # 20140128 added as.is=TRUE (in case numeric values are stored in ref or abbrv column)
-  aa <- read.csv(file, colClasses=c(rep("character", 2), NA, NA, rep("numeric", 21)), as.is=TRUE, ...)
-  if(!identical(colnames(aa), colnames(get("thermo")$protein)))
-    stop(paste("format of", file, "is incompatible with thermo$protein"))
-  return(aa)
-}
-
 add.protein <- function(aa) {
   # add a properly constructed data frame of 
   # amino acid counts to thermo$protein
   thermo <- get("thermo")
   if(!identical(colnames(aa), colnames(thermo$protein)))
-    stop("the value of 'aa' is not a data frame with the same columns as thermo$protein")
+    stop("'aa' does not have the same columns as thermo$protein")
   # find any protein IDs that are duplicated
   po <- paste(aa$protein, aa$organism, sep="_")
   ip <- pinfo(po)

@@ -8,7 +8,7 @@
 # protein.basis: coefficients of basis species in formation reactions of [ionized] proteins [residues]
 # protein.equil: step-by-step example of protein equilibrium calculation
 
-pinfo <- function(protein, organism=NULL, residue=FALSE) {
+pinfo <- function(protein, organism=NULL, residue=FALSE, regexp=FALSE) {
   # return the `protein` (possibly per residue) for:
   #   dataframe `protein`
   # return the rownumber(s) of thermo$protein for:
@@ -29,11 +29,19 @@ pinfo <- function(protein, organism=NULL, residue=FALSE) {
     # compute per-residue counts if requested
     if(residue) out[, 5:25] <- out[, 5:25]/rowSums(out[, 6:25])
   } else {
-    # search for protein or protein_organism in thermo$protein
-    t_p_names <- paste(t_p$protein, t_p$organism, sep="_")
-    if(is.null(organism)) my_names <- protein
-    else my_names <- paste(protein, organism, sep="_")
-    iprotein <- match(my_names, t_p_names)
+    # search for protein by regular expression
+    if(regexp) {
+      iprotein <- grepl(protein, t_p$protein)
+      iorganism <- iprotein
+      if(!is.null(organism)) iorganism <- grepl(organism, t_p$organism)
+      iprotein <- which(iprotein & iorganism)
+    } else {
+      # search for protein or protein_organism in thermo$protein
+      t_p_names <- paste(t_p$protein, t_p$organism, sep="_")
+      if(is.null(organism)) my_names <- protein
+      else my_names <- paste(protein, organism, sep="_")
+      iprotein <- match(my_names, t_p_names)
+    }
     out <- iprotein
   }
   out

@@ -14,7 +14,7 @@
 }
 
 \usage{
-  pinfo(protein, organism=NULL, residue=FALSE)
+  pinfo(protein, organism=NULL, residue=FALSE, regexp=FALSE)
   protein.length(protein, organism = NULL)
   protein.formula(protein, organism = NULL, residue = FALSE)
   protein.obigt(protein, organism = NULL, state=get("thermo")$opt$state)
@@ -26,6 +26,7 @@
   \item{protein}{character, names of proteins; numeric, species index of proteins; data frame; amino acid composition of proteins}
   \item{organism}{character, names of organisms}
   \item{residue}{logical, return per-residue values (those of the proteins divided by their lengths)?}
+  \item{regexp}{logical, find matches using regular expressions?}
   \item{normalize}{logical, return per-residue values (those of the proteins divided by their lengths)?}
   \item{state}{character, physical state}
   \item{T}{numeric, temperature in \eqn{^{\circ}}{°}C}
@@ -37,6 +38,9 @@
 For character \code{protein}, \code{pinfo} returns the rownumber(s) of \code{thermo$protein} that match the protein names.
 The names can be supplied in the single \code{protein} argument (with an underscore, denoting protein_organism) or as pairs of \code{protein}s and \code{organism}s.
 NA is returned for any unmatched proteins, including those for which no \code{organism} is given or that do not have an underscore in \code{protein}.
+
+Alternatively, if \code{regexp} is TRUE, the \code{protein} argument is used as a pattern (regular expression); rownumbers of all matches of \code{thermo$protein$protein} to this pattern are returned.
+When using \code{regexp}, the \code{organism} can optionally be provided to return only those entries that also match \code{thermo$protein$organism}.
 
 For numeric \code{protein}, \code{pinfo} returns the corresponding row(s) of \code{thermo$protein}.
 Set \code{residue} to TRUE to return the per-residue composition (i.e. amino acid composition of the protein divided by total number of residues).
@@ -115,7 +119,7 @@ protein.formula(pinfo(pinfo("P53_PIG")))
 # get amino acid compositions of microbial proteins 
 # generated from the RefSeq database 
 file <- system.file("extdata/refseq/protein_refseq.csv.xz", package="CHNOSZ")
-ip <- add.protein(read.aa(file))
+ip <- add.protein(read.csv(file, as.is=TRUE))
 # only use those organisms with a certain
 # number of sequenced bases
 ip <- ip[as.numeric(thermo$protein$abbrv[ip]) > 50000]
@@ -139,6 +143,41 @@ terms[15] <- paste("all", length(ip))
 axis(1, 1:15, terms, las=2)
 title(main=paste("Average oxidation state of carbon in proteins",
   "by taxID in NCBI RefSeq (after Dick, 2014)", sep="\n"))
+
+\dontshow{opar <- par(no.readonly=TRUE)}
+# using pinfo() with regexp=TRUE:
+# plot ZC and nH2O/residue of HOX proteins
+# basis species: glutamine-glutamic acid-cysteine-O2-H2O
+basis("QEC")
+# device setup
+par(mfrow=c(2, 2))
+# a red-blue scale from 1-13
+col <- ZC.col(1:13)
+# axis labels
+ZClab <- axis.label("ZC")
+nH2Olab <- expression(bar(italic(n))[H[2]*O])
+# loop over HOX gene clusters
+for(cluster in c("A", "B", "C", "D")) {
+  # get protein indices
+  pattern <- paste0("^HX", cluster)
+  ip <- pinfo(pattern, "HUMAN", regexp=TRUE)
+  # calculate ZC and nH2O/residue
+  thisZC <- ZC(protein.formula(ip))
+  thisH2O <- protein.basis(ip)[, "H2O"] / protein.length(ip)
+  # plot lines
+  plot(thisZC, thisH2O, type="l", xlab=ZClab, ylab=nH2Olab)
+  # the number of the HOX gene
+  pname <- pinfo(ip)$protein
+  nHOX <- as.numeric(gsub("[A-Za-z]*", "", pname))
+  # plot colored points
+  points(thisZC, thisH2O, pch=19, col=col[nHOX], cex=3.5)
+  points(thisZC, thisH2O, pch=19, col="white", cex=2.5)
+  # plot the number of the HOX gene
+  text(thisZC, thisH2O, nHOX)
+  # add title
+  title(main=paste0("HOX", cluster))
+}
+\dontshow{par(opar)}
 }
 
 \references{

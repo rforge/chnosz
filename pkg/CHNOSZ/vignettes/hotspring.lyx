@@ -482,12 +482,14 @@ status collapsed
 
 \begin_layout Plain Layout
 
-aa.annot <- read.aa(system.file("extdata/protein/DS11.csv", package="CHNOSZ"))
+aa.annot <- read.csv(system.file("extdata/protein/DS11.csv", package="CHNOSZ"),
+ as.is=TRUE)
 \end_layout
 
 \begin_layout Plain Layout
 
-aa.phyla <- read.aa(system.file("extdata/protein/DS13.csv", package="CHNOSZ"))
+aa.phyla <- read.csv(system.file("extdata/protein/DS13.csv", package="CHNOSZ"),
+ as.is=TRUE)
 \end_layout
 
 \begin_layout Plain Layout

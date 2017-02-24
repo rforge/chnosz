@@ -18,7 +18,8 @@ s <- subcrt(c("CSG_METTL", "CSG_METJA"), c(-1/530, 1/530),
 ## logfO2-pH potential diagram
 # with a charged basis, we calculate properties of ionized proteins
 basis("CHNOS+")
-aa <- read.aa(system.file("extdata/protein/DS11.csv", package = "CHNOSZ"))
+file <- system.file("extdata/protein/DS11.csv", package = "CHNOSZ")
+aa <- read.csv(file, as.is=TRUE)
 aa <- aa[grep("transferase", aa$protein), ]
 ip <- add.protein(aa)
 a <- affinity(pH=c(0, 14), O2=c(-64, -61), T=75, iprotein=ip)

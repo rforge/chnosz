@@ -101,7 +101,8 @@ test_that("'iprotein' gives consistent results on a transect", {
   basis(c("HCO3-", "H2O", "NH3", "HS-", "H2", "H+"),
     "aq", c(-3, 0, -4, -7, 999, 999))
   sites <- c("N", "S", "R", "Q", "P")
-  aa <- read.aa(system.file("extdata/protein/DS11.csv", package="CHNOSZ"))
+  file <- system.file("extdata/protein/DS11.csv", package="CHNOSZ")
+  aa <- read.csv(file, as.is=TRUE)
   ip <- add.protein(aa[1:5, ])
   # to reproduce, we need use the "old" parameters for [Met] from Dick et al., 2006
   mod.obigt("[Met]", G=-35245, H=-59310)

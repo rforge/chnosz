@@ -105,7 +105,7 @@ subcrt("ALAT1_HUMAN", c("cr", "aq"), c(-1, 1))
 # the amino acid composition can be saved for future use
 write.csv(aa, "saved.aa.csv", row.names=FALSE)
 # in another R session, the protein can be loaded without using uniprot.aa()
-aa <- read.aa("saved.aa.csv")
+aa <- read.csv("saved.aa.csv", as.is=TRUE)
 add.protein(aa)
 
 ## count amino acids in a sequence

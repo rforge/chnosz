@@ -1350,22 +1350,23 @@ This thermodynamic description highlights possible links between the chemical co
 In the Rubisco example above, we saw the use of <span style="color:green">`read.fasta()`</span> to read amino acid sequences from a FASTA file.
 There are several other methods for inputting amino acid compositions.
 
+R's `read.csv()` can be used to read amino acid compositions from a CSV file with the same columns that are present in `thermo$protein`.
+Note the use of `as.is = TRUE` to prevent reading character data as factors.
+The `nrows` argument can be added to read that number of rows:
+```{r read_csv}
+file <- system.file("extdata/protein/DS11.csv", package = "CHNOSZ")
+aa_bison <- read.csv(file, as.is = TRUE, nrows = 5)
+```
 <span style="color:green">`more.aa()`</span> retrieves amino acid composition of proteins in *Saccharomyces cerevisiae* and *Escherichia coli* from data files that are included with CHNOSZ:
 ```{r more_aa}
 aa_YML020W <- more.aa("YML020W", "Sce")
 aa_ILVE <- more.aa("ILVE", "Eco")
 ```
-<span style="color:green">`read.aa()`</span> is used to read amino acid compositions from a CSV file with the same columns that are present in `thermo$protein`.
-The `nrows` argument can be added to read that number of rows:
-```{r read_aa}
-aa_bison <- read.aa(system.file("extdata/protein/DS11.csv",
-                                package = "CHNOSZ"), nrows = 5)
-```
 <span style="color:green">`read.fasta()`</span> reads a FASTA file and returns the amino acid compositions of the sequences.
 The `iseq` argument can be used to read those sequences from the file:
 ```{r read_fasta, message=FALSE}
-aa_Ef <- read.fasta(system.file("extdata/fasta/EF-Tu.aln",
-                                package = "CHNOSZ"), iseq = 1:2)
+file <- system.file("extdata/fasta/EF-Tu.aln", package = "CHNOSZ")
+aa_Ef <- read.fasta(file, iseq = 1:2)
 ```
 <span style="color:green">`seq2aa()`</span> counts the amino acids in a user-supplied sequence and generates a data frame of the amino acid composition:
 ```{marginfigure}
@@ -1476,7 +1477,8 @@ We read a data file of amino acid compositions produced in that study, taking th
 Then we add the proteins and get their indices using <span style="color:red">`add.protein()`</span>, set the basis, calculate the affinities, and make a potential diagram with temperature and activity of dissolved hydrogen as variables:
 
 ```{r bison_transferase, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, fig.cap='Potential diagram for metagenomically identified sequences of transferases in Bison Pool hot spring. See also the vignette [<span style="color:blue">*Hot-spring proteins in CHNOSZ*</span>](hotspring.pdf).', cache=TRUE, pngquant=pngquant, timeit=timeit}
-aa <- read.aa(system.file("extdata/protein/DS11.csv", package = "CHNOSZ"))
+file <- system.file("extdata/protein/DS11.csv", package = "CHNOSZ")
+aa <- read.csv(file, as.is = TRUE)
 aa <- aa[grep("transferase", aa$protein), ]
 ip <- add.protein(aa)
 bspecies <- c("HCO3-", "H2O", "NH3", "HS-", "H2", "H+")
@@ -1492,12 +1494,12 @@ logaH2 <- c(-3.38, -4.14, -5.66, -7.47, -10.02)
 lines(T, logaH2, lty = 2, lwd = 2)
 points(T, logaH2, pch = 21, bg = "white", cex = 1.5)
 ```
-```{r bison_transferase, eval=FALSE, echo=1:11}
+```{r bison_transferase, eval=FALSE, echo=1:12}
 ```
 Site numbers 1--5 correspond to a cooling gradient along the outflow channel of the hot spring.
 The colors represent the relative `r zc` of the proteins (red is more reduced).
 The points indicate the *T* and log*a*<sub>H<sub>2</sub></sub> that optimize a thermodynamic model for relative abundances of phyla that were estimated by taxonomic classification of metagenomic sequences [@DS13]:
-```{r bison_transferase, eval=FALSE, echo=12:15}
+```{r bison_transferase, eval=FALSE, echo=13:16}
 ```
 
 # Experimental features

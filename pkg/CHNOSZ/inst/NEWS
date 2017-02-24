@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-63 (2017-02-24)
+CHANGES IN CHNOSZ 1.0.8-64 (2017-02-24)
 ---------------------------------------
 
 DOCUMENTATION:
@@ -63,9 +63,6 @@ NEW FEATURES:
 - With new default arguments, thermo.axis() only plots the axis tick
   marks and lines; this is used in diagram() to redraw the axes on
   filled diagrams.
-
-- Add `...` argument to read.aa() (additional arguments for
-  read.csv()).
 
 - seq2aa() removes newlines and whitespace before counting the
   letters in the sequence.
@@ -136,7 +133,8 @@ OTHER CHANGES:
   summary table).
 
 - New function pinfo() merges functionality of old iprotein() and
-  ip2aa(), which have been removed (along with protein.info()).
+  ip2aa(). Add `regexp` argument to control whether matches are made
+  using a regular expression.
 
 - Rename aa2eos() to protein.obigt().
 
@@ -144,6 +142,8 @@ OTHER CHANGES:
 
 - Remove stress() and stress.csv; move data from Tai et al., 2005 (used
   in an example in ?read.expr) to TBD+05.csv.
+
+- Remove read.aa() - replaced by read.csv() with as.is=TRUE.
 
 CHANGES IN CHNOSZ 1.0.8 (2016-05-28)
 ------------------------------------

@@ -132,8 +132,8 @@ sites located in the hot spring.
 
 <<proteins>>=
 # read the amino acid compositions
-aa.annot <- read.aa(system.file("extdata/protein/DS11.csv", package="CHNOSZ"))
-aa.phyla <- read.aa(system.file("extdata/protein/DS13.csv", package="CHNOSZ"))
+aa.annot <- read.csv(system.file("extdata/protein/DS11.csv", package="CHNOSZ"), as.is=TRUE)
+aa.phyla <- read.csv(system.file("extdata/protein/DS13.csv", package="CHNOSZ"), as.is=TRUE)
 @
 
 Here are the site names for the sampling locations (also referred

@@ -1,7 +1,6 @@
 \name{add.protein}
 \alias{add.protein}
 \alias{seq2aa}
-\alias{read.aa}
 \alias{aasum}
 \title{Amino Acid Compositions of Proteins}
 \description{
@@ -11,7 +10,6 @@
 \usage{
   add.protein(aa)
   seq2aa(protein, sequence)
-  read.aa(file = "protein.csv", ...)
   aasum(aa, abundance = 1, average = FALSE, protein = NULL, organism = NULL)
 }
 
@@ -19,7 +17,6 @@
   \item{aa}{data frame, amino acid composition in the format of \code{thermo$protein}}
   \item{protein}{character, name of protein; numeric, indices of proteins (rownumbers of \code{\link{thermo}$protein})}
   \item{sequence}{character, protein sequence}
-  \item{file}{character, path to file with amino acid compositions}
   \item{...}{additional arguments passed to \code{\link{read.csv}}}
   \item{abundance}{numeric, abundances of proteins}
   \item{average}{logical, return the weighted average of amino acid counts?}
@@ -40,8 +37,6 @@ Here, the \code{protein} argument indicates the name of the protein with an unde
 The amino acid compositions are multiplied by the indicated \code{abundance}; that argument is recycled to match the number of rows of \code{aa}.
 If \code{average} is TRUE the final sum is divided by the number of input compositions.
 The name used in the output is taken from the first row of \code{aa} or from \code{protein} and \code{organism} if they are specified.
-
-\code{read.aa} returns a data frame of amino acid composition based on the contents of the indicated \code{file}, which should be a CSV file with the same column names as \code{thermo$protein}.
 
 Given amino acid composition returned by the \code{*aa} functions described above, \code{add.protein} adds them to \code{thermo$protein} for use by other functions in CHNOSZ.
 The amino acid compositions of proteins in \code{aa} with the same name as one in \code{thermo$protein} are replaced.

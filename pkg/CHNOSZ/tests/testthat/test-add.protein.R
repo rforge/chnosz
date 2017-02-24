@@ -11,12 +11,12 @@ test_that("add.protein works as expected", {
   ip <- add.protein(aa)
   # the replaces the proteins (with the same ones)
   expect_error(ip <- add.protein(aa), "converting factors causes problems replacing protein data")
-  # ... should use read.csv(file, stringsAsFactors=FALSE)
+  # ... should use read.csv(file, as.is=TRUE)
 })
 
 test_that("errors and messages occur in some circumstances", {
   expect_error(seq2aa("LYS_CHICK", "XXX"), "no characters match an amino acid")
-  expect_error(add.protein(count.aa("AAA")), "not a data frame with the same columns as thermo\\$protein")
+  expect_error(add.protein(count.aa("AAA")), "does not have the same columns as thermo\\$protein")
   expect_message(add.protein(pinfo(pinfo("CYC_BOVIN"))), "replaced 1 existing protein\\(s\\)")
 })
 

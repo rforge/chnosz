@@ -1170,7 +1170,7 @@ Using the set of basis species we have seen before (CO<sub>2</sub>, NH<sub>3</su
 The calculation of *Z*<sub>C</sub>, which sums elemental ratios, is not affected by the choice of basis species.
 ```
 The `QEC` keyword to <span style="color:red">`basis()`</span> loads basis species including three amino acids (glutamine, glutamic acid, cysteine, `r h2o`, `r o2`).
-This basis strengthens the relationship between *n*&#773;<sub>`r o2`</sub> and `r zc`, but weakens that between *n*&#773;<sub>`r o2`</sub> and *n*&#773;<sub>`r h2o`</sub> (right plots).
+This basis strengthens the relationship between `r zc` and *n*&#773;<sub>`r o2`</sub>, but weakens that between `r zc` and *n*&#773;<sub>`r h2o`</sub> (right plots).
 
 ```{r rubisco_O2, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, fig.cap="Compositions of proteins projected into different sets of basis species.", cache=TRUE, pngquant=pngquant, timeit=timeit}
 layout(matrix(1:4, nrow = 2))
@@ -1183,9 +1183,9 @@ lapply(c("CHNOS", "QEC"), function(thisbasis) {
   basis(thisbasis)
   pb <- protein.basis(aa)
   nO2 <- pb[, "O2"] / pl
-  plot(nO2, ZC, pch = pch, col = col, xlab = nO2lab, ylab = ZClab)
+  plot(ZC, nO2, pch = pch, col = col, xlab = ZClab, ylab = nO2lab)
   nH2O <- pb[, "H2O"] / pl
-  plot(nO2, nH2O, pch = pch, col = col, xlab = nO2lab, ylab = nH2Olab)
+  plot(ZC, nH2O, pch = pch, col = col, xlab = ZClab, ylab = nH2Olab)
   mtext(thisbasis, font = 2)
 })
 ```
@@ -1820,7 +1820,7 @@ Passing factors to functions that are designed for character data can give unexp
 ```
 ```{r BZA10, echo=1:2}
 file <- system.file("extdata/thermo/BZA10.csv", package = "CHNOSZ")
-dat <- read.csv(file, as.is = TRUE)
+read.csv(file, as.is = TRUE)
 ```
 
 The column names with a dot (`.`) refer to different sets of equations for calculating standard thermodynamic properties.

@@ -1,7 +1,91 @@
 # CHNOSZ/basis.R
-# set up the basis species of a chemical system
+# set up the basis species of a thermodynamic system
 
-## various functions to work with basis species
+basis <- function(species=NULL, state=NULL, logact=NULL, delete=FALSE) {
+  thermo <- get("thermo")
+  ## delete the basis species if requested
+  oldbasis <- thermo$basis
+  if(delete) {
+    thermo$basis <- NULL
+    assign("thermo", thermo, "CHNOSZ")
+  }
+  ## return the basis definition if requested
+  if(is.null(species)) return(oldbasis)
+  ## from now on we need something to work with
+  if(length(species)==0) stop("species argument is empty")
+  # is the species one of the preset keywords?
+  if(species[1] %in% preset.basis()) return(preset.basis(species[1]))
+  # the species names/formulas have to be unique
+  if(!length(unique(species))==length(species)) stop("species names are not unique")
+  ## processing 'state' and 'logact' arguments
+  # they should be same length as species
+  if(!is.null(state)) state <- rep(state, length.out=length(species))
+  if(!is.null(logact)) logact <- rep(logact, length.out=length(species))
+  # results should be identical for
+  # basis(c('H2O','CO2','H2'), rep('aq',3), c(0,-3,-3))
+  # basis(c('H2O','CO2','H2'), c(0,-3,-3), rep('aq',3))
+  # first of all, do we have a third argument?
+  if(!is.null(logact)) {
+    # does the 3rd argument look like states?
+    if(is.character(logact[1])) {
+      # swap the arguments into their correct places
+      tmp <- logact
+      logact <- state
+      state <- tmp
+    }
+  } else {
+    # if the second argument is numeric, treat it like logacts
+    if(is.numeric(state[1])) {
+      logact <- state
+      state <- NULL
+    }
+  }
+  ## processing 'species' argument
+  # pH transformation
+  if("pH" %in% species) {
+    logact[species=="pH"] <- -logact[species=="pH"]
+    if(!is.null(logact)) species[species=="pH"] <- "H+"
+  }
+  # Eh and pe transformations
+  if("pe" %in% species) {
+    logact[species=="pe"] <- -logact[species=="pe"]
+    if(!is.null(logact)) species[species=="pe"] <- "e-"
+  }
+  if("Eh" %in% species) {
+    # 20090209 should be careful with this conversion as it's only for 25 deg C
+    # to be sure, just don't call species("Eh")
+    if(!is.null(logact)) logact[species=="Eh"] <- -convert(logact[species=="Eh"],"pe")
+    species[species=="Eh"] <- "e-"
+  }
+  ## if all species are in the existing basis definition, 
+  ## *and* at least one of state or logact is not NULL
+  ## modify the states and/or logacts of the existing basis species
+  if(all(species %in% rownames(oldbasis)) | all(species %in% oldbasis$ispecies)) 
+    if(!is.null(state) | !is.null(logact))
+      return(mod.basis(species, state, logact))
+  ## we're on to making a new basis definition
+  # use default logacts if they aren't present
+  if(is.null(logact)) logact <- rep(0, length(species))
+  # if species argument is numeric, it's species indices
+  if(is.numeric(species[1])) {
+    ispecies <- species
+    ina <- ispecies > nrow(thermo$obigt)
+  } else {
+    # get species indices using states from the argument, or default states
+    if(!is.null(state)) ispecies <- suppressMessages(info(species, state, check.it=FALSE))
+    else ispecies <- suppressMessages(info(species, check.it=FALSE))
+    # check if we got all the species
+    ina <- is.na(ispecies)
+    # info() returns a list if any of the species had multiple approximate matches
+    # we don't accept any of those
+    if(is.list(ispecies)) ina <- ina | sapply(ispecies,length) > 1
+  }
+  if(any(ina)) stop(paste("species not available:", paste(species[ina], "(", state[ina], ")", sep="", collapse=" ")))
+  # load new basis species
+  return(put.basis(ispecies, logact))
+}
+
+## non-exported functions
 
 # to add the basis to thermo$obigt
 put.basis <- function(ispecies, logact = rep(NA, length(ispecies))) {
@@ -128,91 +212,3 @@ preset.logact <- function(species) {
   logact[is.na(logact)] <- -3
   return(logact)
 }
-
-## the actual basis() function
-## delete, retrieve, define or modify the basis species of a thermodynamic system
-basis <- function(species=NULL, state=NULL, logact=NULL, delete=FALSE) {
-  thermo <- get("thermo")
-  ## delete the basis species if requested
-  oldbasis <- thermo$basis
-  if(delete) {
-    thermo$basis <- NULL
-    assign("thermo", thermo, "CHNOSZ")
-  }
-  ## return the basis definition if requested
-  if(is.null(species)) return(oldbasis)
-  ## from now on we need something to work with
-  if(length(species)==0) stop("species argument is empty")
-  # is the species one of the preset keywords?
-  if(species[1] %in% preset.basis()) return(preset.basis(species[1]))
-  # the species names/formulas have to be unique
-  if(!length(unique(species))==length(species)) stop("species names are not unique")
-  ## processing 'state' and 'logact' arguments
-  # they should be same length as species
-  if(!is.null(state)) state <- rep(state, length.out=length(species))
-  if(!is.null(logact)) logact <- rep(logact, length.out=length(species))
-  # results should be identical for
-  # basis(c('H2O','CO2','H2'), rep('aq',3), c(0,-3,-3))
-  # basis(c('H2O','CO2','H2'), c(0,-3,-3), rep('aq',3))
-  # first of all, do we have a third argument?
-  if(!is.null(logact)) {
-    # does the 3rd argument look like states?
-    if(is.character(logact[1])) {
-      # swap the arguments into their correct places
-      tmp <- logact
-      logact <- state
-      state <- tmp
-    }
-  } else {
-    # if the second argument is numeric, treat it like logacts
-    if(is.numeric(state[1])) {
-      logact <- state
-      state <- NULL
-    }
-  }
-  ## processing 'species' argument
-  # pH transformation
-  if("pH" %in% species) {
-    logact[species=="pH"] <- -logact[species=="pH"]
-    if(!is.null(logact)) species[species=="pH"] <- "H+"
-  }
-  # Eh and pe transformations
-  if("pe" %in% species) {
-    logact[species=="pe"] <- -logact[species=="pe"]
-    if(!is.null(logact)) species[species=="pe"] <- "e-"
-  }
-  if("Eh" %in% species) {
-    # 20090209 should be careful with this conversion as it's only for 25 deg C
-    # to be sure, just don't call species("Eh")
-    if(!is.null(logact)) logact[species=="Eh"] <- -convert(logact[species=="Eh"],"pe")
-    species[species=="Eh"] <- "e-"
-  }
-  ## if all species are in the existing basis definition, 
-  ## *and* at least one of state or logact is not NULL
-  ## modify the states and/or logacts of the existing basis species
-  if(all(species %in% rownames(oldbasis)) | all(species %in% oldbasis$ispecies)) 
-    if(!is.null(state) | !is.null(logact))
-      return(mod.basis(species, state, logact))
-  ## we're on to making a new basis definition
-  # use default logacts if they aren't present
-  if(is.null(logact)) logact <- rep(0, length(species))
-  # if species argument is numeric, it's species indices
-  if(is.numeric(species[1])) {
-    ispecies <- species
-    ina <- ispecies > nrow(thermo$obigt)
-  } else {
-    # get species indices using states from the argument, or default states
-    if(!is.null(state)) ispecies <- suppressMessages(info(species, state, check.it=FALSE))
-    else ispecies <- suppressMessages(info(species, check.it=FALSE))
-    # check if we got all the species
-    ina <- is.na(ispecies)
-    # info() returns a list if any of the species had multiple approximate matches
-    # we don't accept any of those
-    if(is.list(ispecies)) ina <- ina | sapply(ispecies,length) > 1
-  }
-  if(any(ina)) stop(paste("species not available:", paste(species[ina], "(", state[ina], ")", sep="", collapse=" ")))
-  # load new basis species
-  return(put.basis(ispecies, logact))
-}
-
-

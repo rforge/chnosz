@@ -122,10 +122,10 @@ water(c("QBorn", "YBorn", "XBorn"), T=T, P=2000)
 T <- convert(c(25, 100, 200, 300), "K")
 # use IAPWS-95 (experimental for now)
 thermo$opt$water <<- "IAPWS95"
-water(water.props(), T=T)
+#water(water.props(), T=T)
 # use SUPCRT92 (the default)
 thermo$opt$water <<- "SUPCRT92"
-water(water.props(), T=T)
+#water(water.props(), T=T)
 
 ## calculating Q Born function
 # after Table 22 of Johnson and Norton, 1991

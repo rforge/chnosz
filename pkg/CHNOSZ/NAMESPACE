@@ -1,6 +1,53 @@
-# Export all names except those beginning with F_
-# (so we don't export F_h2o92 created below)
-exportPattern("^([^F]|F($|[^_])).*")
+## Export all names except those beginning with F_
+## (so we don't export F_h2o92 created below)
+#exportPattern("^([^F]|F($|[^_])).*")
+
+# exports starting with functions used in vignettes, examples, demos, tests 20170224
+export(
+# anintro vignette
+  "info", "makeup", "as.chemical.formula", "ZC",
+  "subcrt", "T.units", "P.units", "E.units", "convert",
+  "axis.label", "expr.species", "basis", "describe.reaction",
+  "species", "affinity", "swap.basis", "diagram", "mosaic",
+  "water.lines", "mod.buffer", "thermo.plot.new",
+  "describe.property", "describe.basis", "equilibrate",
+  "aminoacids", "ZC.col",
+  "pinfo", "protein.length", "protein.formula",
+  "read.fasta", "protein.basis", "yeastgfp", "more.aa", "add.protein",
+  "unitize", "revisit", "seq2aa", "findit",
+  "thermo.refs", "mod.obigt", "today",
+# examples
+  "examples", "demos", "mtitle",
+  "list2array", "slice", "dimSums", "slice.affinity",
+  "def2gi", "read.blast", "id.blast",
+  "add.obigt", "RH2obigt",
+  "expr.property", "expr.units",
+  "mass", "entropy", "get.formula", "GHS", "water",
+  "i2A", "invertible.combs",
+  "dPdTtr", "Ttr",
+  "count.aa", "nucleic.complement", "nucleic.formula",
+  "rho.IAPWS95", "IAPWS95", "water.AW90", "WP02.auxiliary", "water.IAPWS95",
+  "getrank", "parent", "sciname", "allparents", "getnodes", "getnames",
+  "protein.obigt", "hkf", "cgl", "which.pmax",
+  "equil.boltzmann", "equil.reaction", "find.TP",
+  "ionize.aa", "MP90.cp", "aasum", "read.expr",
+  "anim.carboxylase",
+  "qqr", "RMSD", "CVRMSD", "spearman", "DGmix", "DDGmix", "DGtr",
+  "ratlab", "transfer", "draw.transfer",
+  "EOSregress", "EOScoeffs", "EOSplot", "EOSvar",
+  "wjd", "element.potentials", "is.near.equil", "guess", "run.wjd",
+# demos
+  "protein.equil", "palply",
+  "label.plot",
+  "equil.potentials", "basis.logact",
+  "label.figure", "syslab",
+# equilibrium vignette
+  "usrfig",
+# hotspring vignette
+  "strip"
+# no other functions used in tests
+# co-documented with above
+)
 
 # Load shared objects
 useDynLib(CHNOSZ, .registration = TRUE, .fixes = "F_")

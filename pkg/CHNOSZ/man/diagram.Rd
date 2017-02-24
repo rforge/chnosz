@@ -1,7 +1,7 @@
 \name{diagram}
 \alias{diagram}
 \alias{strip}
-\alias{find.tp}
+\alias{find.TP}
 \title{Equilibrium Chemical Activity Diagrams}
 \description{
 Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predominance) diagrams as a function of chemical activities of basis speecies, temperature and/or pressure.
@@ -19,7 +19,7 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
     add=FALSE, plot.it=TRUE, tplot=TRUE, ...)
   strip(affinity, ispecies = NULL, col = NULL, ns = NULL, 
     xticks = NULL, ymin = -0.2, xpad = 1, cex.names = 0.7)
-  find.tp(x)
+  find.TP(x)
 }
 
 \arguments{
@@ -128,7 +128,7 @@ Supplemental ticks can be added to the x-axis at the locations specified in \cod
 An inset dot-and-line plot is created below each strip if \code{ns} is given.
 This argument has the same format as \code{ispecies}, and can be used e.g. to display the relative numbers of species for comparison with the stability calculations.
 
-\code{find.tp} finds the locations in a matrix of integers that are surrounded by the greatest number of different values.
+\code{find.TP} finds the locations in a matrix of integers that are surrounded by the greatest number of different values.
 The function counts the unique values in a 3x3 grid around each point and returns a matrix of indices (similar to \code{\link{which}(..., arr.ind = TRUE)}) for the maximum count (ties result in more than one pair of indices).
 It can be used with the output from \code{diagram} for calculations in 2 dimensions to approximately locate the triple points on the diagram.
 
@@ -230,7 +230,7 @@ bexpr <- sapply(c("Al2O3", "SiO2", "H2O"), expr.species, simplify=FALSE)
 btext <- substitute(Al2O3 - SiO2 - H2O, unlist(bexpr))
 mtitle(c(as.expression(btext), "after Helgeson et al., 1978"))
 # find the approximate position of the triple point
-tp <- find.tp(d$predominant)
+tp <- find.TP(d$predominant)
 Ttp <- a$vals[[1]][tp[1, 2]]
 Ptp <- rev(a$vals[[2]])[tp[1, 1]]
 points(Ttp, Ptp, pch=10, cex=5)

@@ -38,11 +38,11 @@ If lots of package startup messages are created when running \code{\link[paralle
 
 
 \examples{
-caller.name()  # character(0)
-afun <- function() caller.name()
-afun()         # character(0)
-bfun <- function() afun()
-bfun()         # "bfun"
+#caller.name()  # character(0)
+#afun <- function() caller.name()
+#afun()         # character(0)
+#bfun <- function() afun()
+#bfun()         # "bfun"
 }
 
 \keyword{utilities}

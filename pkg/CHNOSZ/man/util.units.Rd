@@ -84,18 +84,18 @@ convert(10, "cal")
 # cm3bar to calories		
 convert(10, "calories")
 
-## examples showing unit settings
-T.units("C")  
-T1in <- envert(25, "C")         # no convertion
-T1out <- outvert(313.15, "K")   # K to C
-T.units("K") 
-T2in <- envert(298.15, "C")     # K to C
-T2out <- outvert(-233.15, "C")  # C to K
-# these are the same temperature (25 deg C)
-stopifnot(all.equal(T1in, T2in))
-# these are numerically equivalent (40 deg C / 40 K)
-stopifnot(all.equal(T1out, T2out))
-T.units("C")  # return to default
+### examples showing unit settings
+#T.units("C")  
+#T1in <- envert(25, "C")         # no convertion
+#T1out <- outvert(313.15, "K")   # K to C
+#T.units("K") 
+#T2in <- envert(298.15, "C")     # K to C
+#T2out <- outvert(-233.15, "C")  # C to K
+## these are the same temperature (25 deg C)
+#stopifnot(all.equal(T1in, T2in))
+## these are numerically equivalent (40 deg C / 40 K)
+#stopifnot(all.equal(T1out, T2out))
+#T.units("C")  # return to default
 }
 
 \keyword{utilities}

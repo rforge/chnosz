@@ -72,9 +72,6 @@ basis(c("ATP-4", "H+", "H2O", "HPO4-2", "O2", "NH3"))
 # cf Eq. 5.1-33: basis composition
 species(c("ATP-4", "H+", "H2O", "HPO4-2", "ADP-3", "HATP-3", "HADP-2",
   "H2PO4-"))
-# cf Eq. 5.1-32: elemental composition
-species.basis() \%*\% basis.elements()
-
 
 ### A different example
 

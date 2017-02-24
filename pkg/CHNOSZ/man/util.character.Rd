@@ -32,13 +32,13 @@ Convert between strings and character objects. Test for ability to become numeri
 }
 
 \examples{\dontshow{data(thermo)}
-## string to character
-s2c("hello world")
-s2c("hello world",sep=" ",keep.sep=FALSE)
-s2c("3.141592",sep=c(".","9"))
-# character to string
-c2s(aminoacids())
-c2s(aminoacids(),sep=".")
+### string to character
+#s2c("hello world")
+#s2c("hello world",sep=" ",keep.sep=FALSE)
+#s2c("3.141592",sep=c(".","9"))
+## character to string
+#c2s(aminoacids())
+#c2s(aminoacids(),sep=".")
 }
 
 \keyword{utilities}

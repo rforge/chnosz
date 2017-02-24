@@ -154,7 +154,7 @@ affinity <- function(...,property=NULL,sout=NULL,exceed.Ttr=FALSE,
       loga.protein <- rep(loga.protein,length.out=length(iprotein))
       protein.fun <- function(ip) {
         tpext <- as.numeric(thermo$protein[iprotein[ip],5:25])
-        return(Reduce("+", CHNOSZ::pprod(a[ires],tpext)) - loga.protein[ip])
+        return(Reduce("+", pprod(a[ires],tpext)) - loga.protein[ip])
       }
       # use another level of indexing to let the function
       # report on its progress

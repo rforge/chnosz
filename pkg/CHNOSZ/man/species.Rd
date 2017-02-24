@@ -41,9 +41,9 @@
 \examples{\dontshow{data(thermo)}
 # set up the basis species
 basis("CHNOS")
-# show the formation reactions of some species
-ispecies <- info(c("glutamic acid","phenylalanine"))
-species.basis(ispecies)
+## show the formation reactions of some species
+#ispecies <- info(c("glutamic acid","phenylalanine"))
+#species.basis(ispecies)
 # add, modify, delete species
 species(c("CO2","NH3"))  # aqueous species
 species(c("CO2","NH3"),"gas")  # gases

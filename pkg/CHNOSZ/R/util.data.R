@@ -190,13 +190,8 @@ thermo.refs <- function(key=NULL) {
     # count the times each source is listed in protein.csv
     npr <- sapply(x$key, function(x) length(which(thermo$protein$ref==x)) )
     npr[npr==0] <- ""
-    # count the times each source is listed in stress.csv
-    stressfile <- system.file("extdata/abundance/stress.csv", package="CHNOSZ")
-    stressdat <- read.csv(stressfile, check.names=FALSE, as.is=TRUE)
-    nst <- sapply(x$key, function(x) length(which(stressdat[2,]==x)) )
-    nst[nst==0] <- ""
     # append the counts to the table to be shown
-    x <- c(x,list(ns1=ns1,npr=npr,nst=nst))
+    x <- c(x,list(ns1=ns1,npr=npr))
     # title to display for web page
     title <- "Sources of Thermodynamic Data in CHNOSZ"
     ### the following is adapted from print.findFn in package 'sos'
@@ -222,8 +217,7 @@ thermo.refs <- function(key=NULL) {
     .cat("<h3>Click on column headers to sort</h3>")
     .cat("<h3>Columns 'n..' give number of times each reference appears in data tables:</h3>")
     .cat("ns1: 'ref1' and 'ref2' in data/OBIGT.csv<br>")
-    .cat("npr: 'ref' in data/protein.csv<br>")
-    .cat("nst: second row in data/stress.csv<br><p>")
+    .cat("npr: 'ref' in data/protein.csv<br><p>")
     ### start table and headers
     .cat("<table class='sortable' border='1'>\n<thead>")
     .cat("<tr>")

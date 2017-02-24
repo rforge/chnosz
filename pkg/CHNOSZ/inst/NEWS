@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-62 (2017-02-23)
+CHANGES IN CHNOSZ 1.0.8-63 (2017-02-24)
 ---------------------------------------
 
 DOCUMENTATION:
@@ -139,6 +139,11 @@ OTHER CHANGES:
   ip2aa(), which have been removed (along with protein.info()).
 
 - Rename aa2eos() to protein.obigt().
+
+- Remove anim.plasma() and AA03.csv.
+
+- Remove stress() and stress.csv; move data from Tai et al., 2005 (used
+  in an example in ?read.expr) to TBD+05.csv.
 
 CHANGES IN CHNOSZ 1.0.8 (2016-05-28)
 ------------------------------------

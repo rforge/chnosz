@@ -40,7 +40,6 @@ Here, the \code{protein} argument indicates the name of the protein with an unde
 The amino acid compositions are multiplied by the indicated \code{abundance}; that argument is recycled to match the number of rows of \code{aa}.
 If \code{average} is TRUE the final sum is divided by the number of input compositions.
 The name used in the output is taken from the first row of \code{aa} or from \code{protein} and \code{organism} if they are specified.
-This function is useful for calculating bulk amino acid compositions in stress response experiments or localization studies; see \code{\link{read.expr}} for examples of its use.
 
 \code{read.aa} returns a data frame of amino acid composition based on the contents of the indicated \code{file}, which should be a CSV file with the same column names as \code{thermo$protein}.
 

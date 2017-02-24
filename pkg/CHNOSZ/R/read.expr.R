@@ -1,24 +1,7 @@
 # CHNOSZ/read.expr.R
 # protein abundance and localization data from experiments
-# stress: protein identities from stress.csv
 # yeastgfp: protein localization and abundance from yeastgfp.csv
 # read.expr: protein abundance from other files (including in extdata/abundance)
-
-stress <- function(condition, organism) {
-  # get names of proteins from a stress response experiment
-  # extracted from get.protein() 20120519 jmd
-  # read the data file
-  stressfile <- system.file("extdata/abundance/stress.csv", package="CHNOSZ")
-  stressdat <- read.csv(stressfile, check.names=FALSE, as.is=TRUE)
-  imatch <- which(colnames(stressdat) == condition & stressdat[1, ] == organism)
-  if(length(imatch)==0) stop("didn't find proteins for ", organism, " in ", condition)
-  protein <- stressdat[3:nrow(stressdat), imatch]
-  protein <- protein[!is.na(protein)]
-  # stressdat[2, ]: the literature source of the data
-  message("stress: found ", length(protein), " proteins for ", organism, " in ", condition, " from ", stressdat[2, imatch])
-  out <- list(protein=protein, abundance=rep(1, length(protein)))
-  return(out)
-}
 
 yeastgfp <- function(location=NULL, exclusive=TRUE) {
   # return a list of ORFs and protein abundances for a subcellular location

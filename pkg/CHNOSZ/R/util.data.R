@@ -258,35 +258,6 @@ thermo.refs <- function(key=NULL) {
   }
 }
 
-obigt2eos <- function(obigt,state,fixGHS=FALSE) {
-  # remove scaling factors from EOS parameters
-  # and apply column names depending on the EOS
-  if(identical(state, "aq")) {
-    obigt[,13:20] <- t(t(obigt[,13:20]) * 10^c(-1,2,0,4,0,4,5,0))
-    colnames(obigt)[13:20] <- c('a1','a2','a3','a4','c1','c2','omega','Z') 
-  } else {
-    obigt[,13:20] <- t(t(obigt[,13:20]) * 10^c(0,-3,5,0,-5,0,0,0))
-    colnames(obigt)[13:20] <- c('a','b','c','d','e','f','lambda','T')
-  }
-  if(fixGHS) {
-    # fill in one of missing G, H, S
-    # for use esp. by subcrt because NA for one of G, H or S 
-    # will hamper calculations at high T
-    # which entries are missing just one
-    imiss <- which(rowSums(is.na(obigt[,8:10]))==1)
-    if(length(imiss) > 0) {
-      for(i in 1:length(imiss)) {
-        # calculate the missing value from the others
-        ii <- imiss[i]
-        GHS <- as.numeric(GHS(as.character(obigt$formula[ii]),G=obigt[ii,8],H=obigt[ii,9],S=obigt[ii,10]))
-        icol <- which(is.na(obigt[ii,8:10]))
-        obigt[ii,icol+7] <- GHS[icol]
-      }
-    }
-  }
-  return(obigt)
-}
-
 checkEOS <- function(eos, state, prop, ret.diff=FALSE) {
   # compare calculated properties from equation-of-state
   # parameters with reference (tabulated) values
@@ -484,4 +455,41 @@ RH2obigt <- function(compound=NULL, state="cr", file=system.file("extdata/thermo
     out <- rbind(out, cbind(thishead, thiseos))
   }
   return(out)
+}
+
+### unexported functions ###
+
+# Take a data frame in the format of thermo$obigt of one or more rows,
+#   remove scaling factors from equations-of-state parameters,
+#   and apply new column names depending on the state.
+# If fixGHS is TRUE a missing one of G, H or S for any species is calculated
+#   from the other two and the chemical formula of the species.
+# This function is used by both info and subcrt when retrieving entries from the thermodynamic database.
+obigt2eos <- function(obigt,state,fixGHS=FALSE) {
+  # remove scaling factors from EOS parameters
+  # and apply column names depending on the EOS
+  if(identical(state, "aq")) {
+    obigt[,13:20] <- t(t(obigt[,13:20]) * 10^c(-1,2,0,4,0,4,5,0))
+    colnames(obigt)[13:20] <- c('a1','a2','a3','a4','c1','c2','omega','Z') 
+  } else {
+    obigt[,13:20] <- t(t(obigt[,13:20]) * 10^c(0,-3,5,0,-5,0,0,0))
+    colnames(obigt)[13:20] <- c('a','b','c','d','e','f','lambda','T')
+  }
+  if(fixGHS) {
+    # fill in one of missing G, H, S
+    # for use esp. by subcrt because NA for one of G, H or S 
+    # will hamper calculations at high T
+    # which entries are missing just one
+    imiss <- which(rowSums(is.na(obigt[,8:10]))==1)
+    if(length(imiss) > 0) {
+      for(i in 1:length(imiss)) {
+        # calculate the missing value from the others
+        ii <- imiss[i]
+        GHS <- as.numeric(GHS(as.character(obigt$formula[ii]),G=obigt[ii,8],H=obigt[ii,9],S=obigt[ii,10]))
+        icol <- which(is.na(obigt[ii,8:10]))
+        obigt[ii,icol+7] <- GHS[icol]
+      }
+    }
+  }
+  return(obigt)
 }

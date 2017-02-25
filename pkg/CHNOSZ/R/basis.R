@@ -85,7 +85,7 @@ basis <- function(species=NULL, state=NULL, logact=NULL, delete=FALSE) {
   return(put.basis(ispecies, logact))
 }
 
-## non-exported functions
+### unexported functions ###
 
 # to add the basis to thermo$obigt
 put.basis <- function(ispecies, logact = rep(NA, length(ispecies))) {
@@ -212,3 +212,4 @@ preset.logact <- function(species) {
   logact[is.na(logact)] <- -3
   return(logact)
 }
+

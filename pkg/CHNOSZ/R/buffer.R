@@ -56,6 +56,8 @@ mod.buffer <- function(name,species=NULL,state=get("thermo")$opt$state,logact=-3
   return(invisible(thermo$buffers[thermo$buffers$name %in% name,]))
 }
 
+### unexported functions ###
+
 buffer <- function(logK=NULL,ibasis=NULL,logact.basis=NULL,is.buffer=NULL,balance='PBB') {
   thermo <- get("thermo")
   # if logK is NULL load the buffer species

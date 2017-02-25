@@ -99,7 +99,9 @@ Note that variables \code{QBorn} and \code{V_s_var} are both negated, so that th
 }
 
 \value{
-  For \code{EOSregress}, an object of class \dQuote{lm}. \code{EOSvar} and \code{EOScalc} both return numeric values. \code{EOScoeffs} returns a data frame.
+For \code{EOSregress}, an object of class \dQuote{lm}.
+\code{EOSvar} and \code{EOScalc} both return numeric values.
+\code{EOScoeffs} returns a data frame.
 }
 
 \seealso{

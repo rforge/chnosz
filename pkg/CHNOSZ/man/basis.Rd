@@ -1,9 +1,5 @@
 \name{basis}
 \alias{basis}
-\alias{put.basis}
-\alias{mod.basis}
-\alias{preset.basis}
-\alias{preset.logact}
 \title{Define Basis Species}
 \description{
 Define the basis species of a chemical system.
@@ -13,10 +9,6 @@ Get the reaction coefficients of basis species in formation reactions of species
 
 \usage{
   basis(species = NULL, state = NULL, logact = NULL, delete = FALSE)
-  put.basis(ispecies, logact)
-  mod.basis(species, state, logact)
-  preset.basis(key = NULL)
-  preset.logact(species)
 }
 
 \arguments{
@@ -24,8 +16,6 @@ Get the reaction coefficients of basis species in formation reactions of species
   \item{state}{character, physical states or names of buffers}
   \item{logact}{numeric, logarithms of activities or fugacities}
   \item{delete}{logical, delete the current basis species definition?}
-  \item{ispecies}{numeric, indices of species (rownumbers of \code{thermo$obigt})}
-  \item{key}{character, a keyword identifying a preset basis definition}
 }
 
 \details{
@@ -52,7 +42,7 @@ However, \code{\link{swap.basis}} can be used to change the species (the composi
 Call \code{basis} with \code{delete} set to TRUE to clear the basis definition.
 Any current basis definition (before being deleted) is returned by this call or by calling \code{basis} with all default arguments.
 
-If the value of \code{basis} is one of the keywords in the following table, the corresponding set of basis species is loaded (defined in \code{preset.basis}), and their activities set to reference values (defined in \code{preset.logact}).
+If the value of \code{basis} is one of the keywords in the following table, the corresponding set of basis species is loaded, and their activities are given preset values.
 This approach is used by many of the examples in the package.
 The basis species identified by these keywords are aqueous except for \eqn{\mathrm{H_2O}}{H2O} (liq), \eqn{\mathrm{O_2}}{O2} (gas) and \eqn{\mathrm{Fe_2O_3}}{Fe2O3} (hematite, cr1).
 
@@ -78,7 +68,7 @@ The basis species identified by these keywords are aqueous except for \eqn{\math
 }
 
 \value{
-\code{basis} returns the value of \code{thermo$basis} after any modifications; or, if \code{delete} is TRUE, its value before deletion.
+Returns the value of \code{thermo$basis} after any modifications; or, if \code{delete} is TRUE, its value before deletion.
 }
 
 \section{Side Effects}{

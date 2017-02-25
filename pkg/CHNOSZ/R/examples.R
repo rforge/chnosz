@@ -6,10 +6,10 @@ examples <- function(do.png=FALSE) {
   # run all the examples in CHNOSZ documentation
   .ptime <- proc.time()
   topics <- c("thermo", "sideeffects", "examples",
-    "util.args", "util.array", "util.blast", "util.character", "util.data", "util.expression",
-    "util.fasta", "util.formula", "util.matrix", "util.misc", "util.program", "util.seq", "util.units",
+    "util.array", "util.blast", "util.data", "util.expression",
+    "util.fasta", "util.formula", "util.matrix", "util.misc", "util.seq", "util.units",
     "util.water", "taxonomy", "info", "protein.info", "hkf", "water", "IAPWS95", "subcrt",
-    "makeup", "basis", "swap.basis", "species", "affinity", "util.affinity", "equil.boltzmann", 
+    "makeup", "basis", "swap.basis", "species", "affinity", "equil.boltzmann", 
     "diagram", "buffer", "nonideal", "add.protein", "protein", "ionize.aa", "more.aa", "read.expr",
     "anim", "objective", "revisit", "transfer", "EOSregress", "wjd")
   plot.it <- FALSE
@@ -46,3 +46,4 @@ demos <- function(which=c("sources", "protein.equil", "affinity", "NaCl", "densi
   }
   return(invisible(out))
 }
+

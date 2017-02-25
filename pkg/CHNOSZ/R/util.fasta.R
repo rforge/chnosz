@@ -1,49 +1,6 @@
 # CHNOSZ/util.fasta.R
 # read and manipulate FASTA sequence files
 
-grep.file <- function(file,pattern="",y=NULL,ignore.case=TRUE,startswith=">",lines=NULL,grep="grep") {
-  # return the line numbers of the file that contain
-  # the search term x and optionally don't contain y
-  sysgrep <- function(i) {
-    # 20091021 changed grep to egrep
-    sysexp <- paste(mycat,' "',file,'" | ',grep,' -n ',ic,' "',startswith,pattern[i],'"  | cut -f 1 -d ":"',sep="")
-    ix <- as.integer(system(sysexp,intern=TRUE))
-    return(ix)
-  }
-  Rgrep <- function(i) {
-    ix <- grep(pattern[i],lines,ignore.case=ignore.case)
-    if(!is.null(y)) {
-      iy <- grep(y,lines,ignore.case=ignore.case)
-      ix <- ix[!ix %in% iy] 
-    }
-    if(!is.null(startswith)) {
-      ihead <- which(substr(lines,1,1)==startswith)
-      ix <- ix[ix %in% ihead]
-    }
-    return(ix)
-  }
-  # use the system's grep if available and y is NULL
-  # TODO: include other *nix
-  if(is.null(y) & Sys.info()[[1]]=="Linux" & is.null(lines)) {
-    # figure out whether to use 'cat', 'zcat' or 'xzcat'
-    suffix <- substr(file,nchar(file)-2,nchar(file))
-    if(suffix==".gz") mycat <- "zcat"
-    else if(suffix==".xz") mycat <- "xzcat"
-    else mycat <- "cat"
-    # use the system grep
-    if(is.null(startswith)) startswith <- "" else startswith <- paste("^",startswith,".*",sep="")
-    if(ignore.case) ic <- "-i" else ic <- ""
-    out <- lapply(1:length(pattern), sysgrep)
-  } else {
-    # use R grep
-    if(is.null(lines)) lines <- readLines(file)
-    out <- lapply(1:length(pattern), Rgrep)
-  }
-  # make numeric (NA for ones that aren't matched)
-  out <- as.numeric(sapply(out,as.numeric))
-  return(as.numeric(out))
-}
-
 read.fasta <- function(file, iseq=NULL, ret="count", lines=NULL, ihead=NULL,
   start=NULL, stop=NULL, type="protein", id=NULL) {
   # read sequences from a fasta file

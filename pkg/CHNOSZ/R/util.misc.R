@@ -25,26 +25,6 @@ Ttr <- function(x,P=1,dPdT=NULL) {
   return(T + P / dPdT)
 }
 
-# which.balance is used by transfer(),
-# keep it as a global function
-which.balance <- function(species) {
-  # find the first basis species that
-  # is present in all species of interest
-  # ... it can be used to balance the system
-  nbasis <- function(species) return(ncol(species)-4)
-  ib <- NULL
-  nb <- 1
-  nbs <- nbasis(species)
-  for(i in 1:nbs) {
-    coeff <- species[,i]
-    if(length(coeff)==length(coeff[coeff!=0])) {
-      ib <- c(ib,i)
-      nb <- nb + 1
-    } else ib <- c(ib,NA)
-  }
-  return(ib[!is.na(ib)])
-}
-
 unitize <- function(logact=NULL,length=NULL,logact.tot=0) {
   # scale the logarithms of activities given in loga
   # so that the logarithm of total activity of residues
@@ -81,3 +61,23 @@ unitize <- function(logact=NULL,length=NULL,logact.tot=0) {
   # done!
 }
 
+### unexported functions ###
+
+# return, in order, which column(s) of species all have non-zero values.
+which.balance <- function(species) {
+  # find the first basis species that
+  # is present in all species of interest
+  # ... it can be used to balance the system
+  nbasis <- function(species) return(ncol(species)-4)
+  ib <- NULL
+  nb <- 1
+  nbs <- nbasis(species)
+  for(i in 1:nbs) {
+    coeff <- species[,i]
+    if(length(coeff)==length(coeff[coeff!=0])) {
+      ib <- c(ib,i)
+      nb <- nb + 1
+    } else ib <- c(ib,NA)
+  }
+  return(ib[!is.na(ib)])
+}

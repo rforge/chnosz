@@ -1,7 +1,7 @@
 \name{diagram}
 \alias{diagram}
 \alias{strip}
-\alias{find.TP}
+\alias{find.tp}
 \title{Equilibrium Chemical Activity Diagrams}
 \description{
 Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predominance) diagrams as a function of chemical activities of basis speecies, temperature and/or pressure.
@@ -19,7 +19,7 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
     add=FALSE, plot.it=TRUE, tplot=TRUE, ...)
   strip(affinity, ispecies = NULL, col = NULL, ns = NULL, 
     xticks = NULL, ymin = -0.2, xpad = 1, cex.names = 0.7)
-  find.TP(x)
+  find.tp(x)
 }
 
 \arguments{
@@ -28,7 +28,7 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
   \item{alpha}{logical, for speciation diagrams, plot degree of formation instead of activities?}
   \item{normalize}{logical, divide chemical affinities by balance coefficients (rescale to whole formulas)?}
   \item{as.residue}{logical, divide chemical affinities by balance coefficients (no rescaling)?}
-  \item{balance}{character, balancing constraint; see \code{\link{balance}}}
+  \item{balance}{character, balancing constraint; see \code{\link{equilibrate}}}
   \item{groups}{list of numeric, groups of species to consider as a single effective species}
   \item{xrange}{numeric, range of x-values between which predominance field boundaries are plotted}
   \item{mar}{numeric, margins of plot frame}
@@ -113,7 +113,7 @@ Some of the arguments have different effects when the output from \code{affinity
 If \code{what} is missing, option (1) is selected if the number of dimensions is 0 or 1, and option (3) is selected if the number of dimensions is 2.
 The latter is referred to as the maximum affinity method.
 In cases where it applies (see Warning), the maximum affinity method is much faster than an equilibrium calculation.
-\code{balance} is the option, sent to \code{\link{balance}}, that determines the balancing coefficients (this argument has no effect on the calculations of equilibrium activities.)
+\code{balance} is the option that determines the balancing coefficients (this argument has no effect on the calculations of equilibrium activities.)
 If \code{what} is the name of a basis species, it refers to option (2) above.
 A contour plot is made in the case of 2-D diagrams of the equilibrium activity of a basis species (see \code{\link{demos}("CO2Ac")}, and only the first species of interest is used in the calculation; a warning is produced if there is more than one.
 
@@ -128,7 +128,7 @@ Supplemental ticks can be added to the x-axis at the locations specified in \cod
 An inset dot-and-line plot is created below each strip if \code{ns} is given.
 This argument has the same format as \code{ispecies}, and can be used e.g. to display the relative numbers of species for comparison with the stability calculations.
 
-\code{find.TP} finds the locations in a matrix of integers that are surrounded by the greatest number of different values.
+\code{find.tp} finds the locations in a matrix of integers that are surrounded by the greatest number of different values.
 The function counts the unique values in a 3x3 grid around each point and returns a matrix of indices (similar to \code{\link{which}(..., arr.ind = TRUE)}) for the maximum count (ties result in more than one pair of indices).
 It can be used with the output from \code{diagram} for calculations in 2 dimensions to approximately locate the triple points on the diagram.
 
@@ -230,7 +230,7 @@ bexpr <- sapply(c("Al2O3", "SiO2", "H2O"), expr.species, simplify=FALSE)
 btext <- substitute(Al2O3 - SiO2 - H2O, unlist(bexpr))
 mtitle(c(as.expression(btext), "after Helgeson et al., 1978"))
 # find the approximate position of the triple point
-tp <- find.TP(d$predominant)
+tp <- find.tp(d$predominant)
 Ttp <- a$vals[[1]][tp[1, 2]]
 Ptp <- rev(a$vals[[2]])[tp[1, 1]]
 points(Ttp, Ptp, pch=10, cex=5)

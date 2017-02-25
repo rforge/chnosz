@@ -2,10 +2,9 @@
 \name{eos}
 \alias{hkf}
 \alias{cgl}
-\alias{gfun}
 \title{Equations of State}
 \description{
-  Calculate thermodynamic properties using the revised Helgeson-Kirkham-Flowers (HKF) equations of state for aqueous species, or using a generic heat capacity equation for crystalline, gas, and liquid species.
+Calculate thermodynamic properties using the revised Helgeson-Kirkham-Flowers (HKF) equations of state for aqueous species, or using a generic heat capacity equation for crystalline, gas, and liquid species.
 }
 
 \usage{
@@ -13,7 +12,6 @@
   hkf(property = NULL, T = 298.15, P = 1, ghs = NULL, eos = NULL,
     contrib = c("n","s","o"), H2O.PT = NULL, H2O.PrTr = NULL, 
     domega = TRUE)
-  gfun(rhohat, Tc, P, alpha, daldT, beta)
 }
 
 \arguments{
@@ -26,29 +24,31 @@
   \item{H2O.PT}{dataframe, values of the electrostatic properties of water at the temperature(s) and pressure(s) of interest}
   \item{H2O.PrTr}{dataframe, values of the electrostatic properties of water at the reference temperature and pressure}
   \item{domega}{logical, calculate the T and P derivatives of omega?}
-  \item{rhohat}{numeric, density of water (g/cm3)}
-  \item{Tc}{numeric, temperature (\eqn{^{\circ}}{°}C)}
-  \item{alpha}{numeric, coefficient of isobaric expansivity (K^-1)}
-  \item{daldT}{numeric, temperature derivative of coefficient of isobaric expansivity (K^-2)}
-  \item{beta}{numeric, coefficient of isothermal compressibility (bar^-1)}
 }
 
 \details{
+The equations of state permit the calculation of the standard molal properties of species as a function of temperature and pressure.
+The \code{property} argument is required and refers to one or more of \samp{G}, \samp{H}, \samp{S}, \samp{Cp} and \samp{V}, and for aqueous species only, \samp{kT} and \samp{E}.
+The units of these properties are the first ones shown in the description for \code{\link{subcrt}}.
+The names of the properties are matched without regard to case. 
 
-  The equations of state permit the calculation of the standard molal properties of species as a function of temperature and pressure. For interactive use, \code{\link{subcrt}} is usually more convenient than calling these functions directly. 
+\code{hkf} implements the revised HKF equations of state (Helgeson et al., 1981; Tanger and Helgeson, 1988; Shock and Helgeson, 1988).
+The equations-of-state parameters are \code{a1}, \code{a2}, \code{a3}, \code{a4}, \code{c1}, \code{c2}, \code{omega} and \code{Z}; the units of these parameters are as indicated for \code{\link{thermo}$obigt}, without the order of magnitude multipliers.
+Note that the equation-of-state parameter \code{Z} (appearing in the \eqn{g}{g}-function for the temperature derivatives of the omega parameter; Shock et al., 1992) is taken from \code{thermo$obigt} and \emph{not} from the \code{\link{makeup}} of the species.
+\code{H2O.PT} and \code{H2O.PrTr} are optional arguments that contain the electrostatic properties of \eqn{\mathrm{H_2O}}{H2O} required for the calculations.
+If either of these is \code{NULL} (the default), the required values are retrieved using \code{\link{water}}. 
 
-  The \code{property} argument is required and refers to one or more of \samp{G}, \samp{H}, \samp{S}, \samp{Cp} and \samp{V}, and for aqueous species only, \samp{kT} and \samp{E}. The units of these properties are the first ones shown in the description for \code{\link{subcrt}}. The names of the properties are matched without regard to case. 
+Unless \code{domega}, the value of which is recycled to the number of species (rows of ghs and eos), is FALSE for any of the species, the temperature and pressure derivatives of the \code{omega} parameter for charged species (where \code{Z != 0}) are calculated using the \eqn{g}{g}- and \eqn{f}{f}-functions described by Shock et al., 1992 and Johnson et al., 1992.
+This option is turned off when the IAPWS-95 equations are activated (see \code{\link{water}}).
 
-  The revised HKF equations of state (Helgeson et al., 1981; Tanger and Helgeson, 1988; Shock and Helgeson, 1988) are incorporated in \code{hkf}. The equations-of-state parameters are \code{a1}, \code{a2}, \code{a3}, \code{a4}, \code{c1}, \code{c2}, \code{omega} and \code{Z}; the units of these parameters are as indicated for \code{\link{thermo}$obigt}, \emph{sans} the order of magnitude multipliers. Note that the equation-of-state parameter \code{Z} (appearing in the \eqn{g}{g}-function for the temperature derivatives of the omega parameter; Shock et al., 1992) is taken from \code{thermo$obigt} and \emph{not} from the \code{\link{makeup}} of the species, although in most cases the two values are coincident. \code{H2O.PT} and \code{H2O.PrTr} are optional arguments that contain the electrostatic properties of \eqn{\mathrm{H_2O}}{H2O} required for the calculations. If either of these is \code{NULL} (the default), the required values are retrieved using \code{\link{water}}. 
-
-  Unless \code{domega}, the value of which is recycled to the number of species (rows of ghs and eos), is FALSE for any of the species, the temperature and pressure derivatives of the \code{omega} parameter for charged species (where \code{Z != 0}) are calculated using the \eqn{g}{g}- and \eqn{f}{f}-functions described by Shock et al., 1992 and Johnson et al., 1992, and coded here in \code{gfun}. This option is currently blocked when the IAPWS-95 equations are activated (see \code{\link{water}}).
-
-  The parameters in the \code{cgl} equations of state for crystalline, gas and liquid species (except liquid water) include \code{V}, \code{a}, \code{b}, \code{c}, \code{d}, \code{e}, \code{f} and \code{lambda}. The terms denoted by \code{a}, \code{b} and \code{c} correspond to the Maier-Kelley equation for heat capacity (Maier and Kelley, 1932); the additional terms are useful for representing heat capacities of minerals (Robie and Hemingway, 1995) and gaseous or liquid organic species (Helgeson et al., 1998). The standard molal volumes (\samp{V}) of species in these calculations are taken to be independent of temperature and pressure.
+The parameters in the \code{cgl} equations of state for crystalline, gas and liquid species (except liquid water) include \code{V}, \code{a}, \code{b}, \code{c}, \code{d}, \code{e}, \code{f} and \code{lambda}.
+The terms denoted by \code{a}, \code{b} and \code{c} correspond to the Maier-Kelley equation for heat capacity (Maier and Kelley, 1932); the additional terms are useful for representing heat capacities of minerals (Robie and Hemingway, 1995) and gaseous or liquid organic species (Helgeson et al., 1998).
+The standard molal volumes (\samp{V}) of species in these calculations are taken to be independent of temperature and pressure.
 
 For both \code{hkf} and \code{cgl}, if at least one equations-of-state parameter for a species is provided, any NA values of the other parameters are reset to zero.
 If all equations-of-state parameters are NA, but values of \samp{Cp} and/or \samp{V} are available, those values are used in the integration of \samp{G}, \samp{H} and \samp{S} as a function of temperature. 
 
-The \code{T} and \code{P} arguments (and \code{rhohat}, \code{Tc}, \code{alpha}, \code{daldT}, \code{beta} for \code{gfun}) should all be the same length; the functions perform no argument validating.
+The \code{T} and \code{P} arguments should all be the same length; the functions perform no argument validating.
 }
 
 \section{Warning}{
@@ -59,13 +59,13 @@ These temperature limits are stored in the thermodynamic database for some miner
 }
 
 \value{
-  A list of length equal to the number of species (i.e., number rows of supplied \code{ghs} and \code{eos} values). Each element of the list contains a dataframe, each column of which corresponds to one of the specified properties; the number of rows is equal to the number of pressure-temperature points.
+A list of length equal to the number of species (i.e., number rows of supplied \code{ghs} and \code{eos} values).
+Each element of the list contains a dataframe, each column of which corresponds to one of the specified properties; the number of rows is equal to the number of pressure-temperature points.
 }
 
 \seealso{
-  \code{\link{info}} for retrieving equations of state parameters from the thermodynamic database, \code{\link{water}} for equations of state of water, \code{\link{subcrt}} for calculations that use these equations.
+\code{\link{info}} for retrieving equations of state parameters from the thermodynamic database, \code{\link{water}} for equations of state of water, \code{\link{subcrt}} for interactive use of these equations.
 }
-
 
 \examples{
 \dontshow{data(thermo)}

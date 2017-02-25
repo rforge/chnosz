@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-65 (2017-02-24)
+CHANGES IN CHNOSZ 1.0.8-66 (2017-02-25)
 ---------------------------------------
 
 DOCUMENTATION:
@@ -20,6 +20,20 @@ DOCUMENTATION:
 - Updated and removed demos: update buffer.R (logfH2 set by mineral
   buffers and aqueous species) and rename old buffer.R to protbuff.R
   (proteins as buffers); remove nucleobase.R.
+
+NAMESPACE:
+
+- The NAMESPACE now exports selected functions, instead of all of them.
+
+- The following functions are no longer exported, nor documented in the
+  Rd files: thermo.axis, optimal.index, extremes, caller.name, lsub,
+  lsum, pprod, energy, energy.args, A.ionization, can.be.numeric, s2c,
+  c2s, eos.args, TP.args, state.args, info.approx, info.character,
+  info.text, info.numeric, count.charge, count.formulas, buffer,
+  mod.basis, put.basis, preset.basis, preset.logact, species.basis,
+  envert, outvert, which.balance, gfun, IAPWS95.residual,
+  IAPWS95.idealgas, obigt2eos, group.formulas, get.formula, get.objfun,
+  balance.
 
 CHANGES TO diagram():
 
@@ -48,7 +62,7 @@ NEW FEATURES:
   numeric values.
 
 - Add "QEC" as a keyword for preset species in basis() (glutamine,
-  glutamic acid, cysteine, H2O, oxygen).
+  glutamic acid, cysteine, H2O, O2).
 
 - More flexible parsing of chemical formulas for ZC() and other
   functions; e.g. `ZC(colMeans(protein.formula(1:4)))` now works.
@@ -103,7 +117,7 @@ NEW AND OLD DATA:
   sources).
 
 - extdata: Add fasta/rubisco.fasta and cpetc/*.csv files SS98_Fig5a,
-  SS98_Fig5b, PM90 (all used by anintro.Rmd).
+  SS98_Fig5b, PM90 (all used in anintro.Rmd).
 
 BUG FIXES:
 
@@ -144,6 +158,8 @@ OTHER CHANGES:
   in an example in ?read.expr) to TBD+05.csv.
 
 - Remove read.aa() - replaced by read.csv() with as.is=TRUE.
+
+- Remove grep.file().
 
 CHANGES IN CHNOSZ 1.0.8 (2016-05-28)
 ------------------------------------

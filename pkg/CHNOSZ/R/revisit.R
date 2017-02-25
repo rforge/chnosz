@@ -2,51 +2,6 @@
 # 20090415 functions related to diversity calculations
 # 20100929 merged draw.diversity and revisit
 
-optimal.index <- function(z, objective) {
-  # for a vector, returns the index of the optimum value
-  # for a matrix, returns the x, y coordinates of the optimum
-  # find the minimum or maximum? look at attribute of objfun
-  objfun <- get.objfun(objective)
-  optimum <- attributes(objfun)$optimum
-#  # do we care about the sign of the index?
-#  if(tolower(target) %in% c("sd", "sd.log", "cv", "cv.log", "rmsd", "cvrmsd")) 
-#    doabs <- TRUE else doabs <- FALSE
-#  if(doabs) z <- abs(z)
-  # the value of the optimum
-  if(optimum=="minimal") optval <- z[which.min(z)]
-  else optval <- z[which.max(z)]
-  # the index of the optimum
-  # (or indices if multiple instances of the optimum)
-  ret.val <- which(z==optval, arr.ind=TRUE)
-  return(ret.val)
-}
-
-extremes <- function(z, objective) {
-  # are we interested in a maximum or minimum?
-  objfun <- get.objfun(objective)
-  optimum <- attributes(objfun)$optimum
-#  # do we care about the sign of the index?
-#  if(tolower(target) %in% c("sd", "sd.log", "cv", "cv.log", "rmsd", "cvrmsd")) 
-#    doabs <- TRUE else doabs <- FALSE
-#  if(doabs) z <- abs(z)
-  # takes a matrix, returns the y as f(x) and x as f(y)
-  # trajectories of the optimum
-  y <- x <- numeric()
-  xres <- ncol(z)
-  yres <- nrow(z)
-  if(optimum=="minimal") {
-    for(i in 1:xres) y <- c(y, which.min(z[i,]))
-    for(i in 1:yres) x <- c(x, which.min(z[,i]))
-  } else {
-    for(i in 1:xres) y <- c(y, which.max(z[i,]))
-    for(i in 1:yres) x <- c(x, which.max(z[,i]))
-  }
-  # stop if we missed some
-  if(length(x)!=xres) stop("optima not found for all y")
-  if(length(y)!=yres) stop("optima not found for all x")
-  return(list(x=x, y=y))
-}
-
 revisit <- function(eout, objective = "CV", loga2 = NULL, loga0 = NULL, ispecies = NULL,
   col = par("fg"), yline = 2, ylim = NULL, cex = par("cex"),
   lwd = par("lwd"), mar = NULL, side = 1:4, xlim = NULL, labcex = 0.6,
@@ -262,4 +217,50 @@ revisit <- function(eout, objective = "CV", loga2 = NULL, loga0 = NULL, ispecies
   return(invisible(ret.val))
 }
 
+### unexported functions ###
+
+optimal.index <- function(z, objective) {
+  # for a vector, returns the index of the optimum value
+  # for a matrix, returns the x, y coordinates of the optimum
+  # find the minimum or maximum? look at attribute of objfun
+  objfun <- get.objfun(objective)
+  optimum <- attributes(objfun)$optimum
+#  # do we care about the sign of the index?
+#  if(tolower(target) %in% c("sd", "sd.log", "cv", "cv.log", "rmsd", "cvrmsd")) 
+#    doabs <- TRUE else doabs <- FALSE
+#  if(doabs) z <- abs(z)
+  # the value of the optimum
+  if(optimum=="minimal") optval <- z[which.min(z)]
+  else optval <- z[which.max(z)]
+  # the index of the optimum
+  # (or indices if multiple instances of the optimum)
+  ret.val <- which(z==optval, arr.ind=TRUE)
+  return(ret.val)
+}
+
+extremes <- function(z, objective) {
+  # are we interested in a maximum or minimum?
+  objfun <- get.objfun(objective)
+  optimum <- attributes(objfun)$optimum
+#  # do we care about the sign of the index?
+#  if(tolower(target) %in% c("sd", "sd.log", "cv", "cv.log", "rmsd", "cvrmsd")) 
+#    doabs <- TRUE else doabs <- FALSE
+#  if(doabs) z <- abs(z)
+  # takes a matrix, returns the y as f(x) and x as f(y)
+  # trajectories of the optimum
+  y <- x <- numeric()
+  xres <- ncol(z)
+  yres <- nrow(z)
+  if(optimum=="minimal") {
+    for(i in 1:xres) y <- c(y, which.min(z[i,]))
+    for(i in 1:yres) x <- c(x, which.min(z[,i]))
+  } else {
+    for(i in 1:xres) y <- c(y, which.max(z[i,]))
+    for(i in 1:yres) x <- c(x, which.max(z[,i]))
+  }
+  # stop if we missed some
+  if(length(x)!=xres) stop("optima not found for all y")
+  if(length(y)!=yres) stop("optima not found for all x")
+  return(list(x=x, y=y))
+}
 

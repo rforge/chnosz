@@ -13,7 +13,6 @@
 \alias{DDGmix}
 \alias{DGinf}
 \alias{DGtr}
-\alias{get.objfun}
 \title{Objective Functions}
 \description{
 Calculate statistical and thermodynamic quantities for activities of species.
@@ -34,7 +33,6 @@ These functions can be specified as objectives in \code{\link{revisit}} and \cod
   DDGmix(loga1, loga2)
   DGinf(a1, a2)
   DGtr(loga1, loga2, Astar)
-  get.objfun(objective)
 }
 
 \arguments{
@@ -43,7 +41,6 @@ These functions can be specified as objectives in \code{\link{revisit}} and \cod
   \item{loga2}{numeric, reference values of logarithms of activity}
   \item{a2}{numeric, reference values of activity}
   \item{Astar}{numeric, reference values of chemical affinity}
-  \item{objective}{character, name of objective function}
 }
 
 \details{
@@ -74,15 +71,9 @@ It is calculated as the sum over species of (G2-G1) where G1/RT = -a1*Astar + a1
 The equation used arises from integrating dG = -A/dxi = -A/dn where xi is the reaction progress variable, dn/dxi = 1 is the reaction coefficient on the species, and A = Astar - 2.303RTloga is the chemical affinity (Dick and Shock, 2013).
 
 Each objective function has an attribute (see \code{\link{attributes}} and \code{\link{structure}}) named \samp{optimum} that takes the value of \samp{minimal} (\code{SD}, \code{CV}, \code{RMSD}, \code{CVRMSD}, \code{DGmix}, \code{DDGmix}, \code{DGtr}) or \samp{maximal} (\code{logact}, \code{shannon}, \code{qqr}, \code{spearman}, \code{pearson}).
-This attribute is used in \code{\link{optimal.index}} and \code{\link{extremes}} to identify the conditions having optimal values of the objective functions.
-
-\code{get.objfun} returns the objective function named in \code{objective}, or produces an error if the function has no \samp{optimum} attribute.
-
 }
 
-\seealso{
-\code{\link{get.objfun}} for retrieving these functions by name, and \code{\link{revisit}} and \code{\link{findit}} for applications of these functions in chemical systems.
-}
+\seealso{ \code{\link{revisit}}, \code{\link{findit}} }
 
 \examples{
 \dontshow{data(thermo)}

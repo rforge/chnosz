@@ -228,6 +228,9 @@ equil.reaction <- function(Astar, n.balance, loga.balance) {
   return(logact)
 }
 
+### unexported functions ###
+
+# return a list containing the balancing coefficients (n) and a textual description (description)
 balance <- function(aout, balance=NULL) {
   ## generate n.balance from user-given or automatically identified basis species
   ## extracted from equilibrate() 20120929

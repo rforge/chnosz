@@ -1,8 +1,6 @@
 \name{revisit}
 \alias{revisit}
 \alias{richness}
-\alias{extremes}
-\alias{optimal.index}
 \title{Plots and Optima of Objective Functions}
 \description{
 Calculate values of an objective function from logarithms of activities of chemical species and (for some objectives) reference logarithms of activity.
@@ -15,8 +13,6 @@ Make line or contour plots showing the values of the objective function and the 
     cex = par("cex"), lwd = par("lwd"), mar = NULL, side = 1:4,
     xlim = NULL, labcex = 0.6, pch = 1, main = NULL, plot.it = NULL,
     add = FALSE, plot.optval = TRUE, style.2D = "contour", bg = par("bg"))
-  optimal.index(z, objective)
-  extremes(z, objective)
 }
 
 \arguments{
@@ -40,7 +36,6 @@ Make line or contour plots showing the values of the objective function and the 
   \item{add}{logical, add to an existing plot?}
   \item{plot.optval}{logical, show the location of the optimal value(s)?}
   \item{style.2D}{character, type of 2-D plot}
-  \item{z}{numeric, matrix of values (\samp{H} element of output from \code{revisit})}
   \item{bg}{character, background for \code{\link{points}}}
 }
 
@@ -67,7 +62,7 @@ If \code{plot.it} is TRUE, and \code{eout} is the output from \code{equilibrate}
 
 If \code{plot.optval} is TRUE, the location of the optimum (or optima) is indicated by a dashed vertical line(s) on a 1-D plot or a point(s) marked by an asterisk on a 2-D plot.
 Also, on 2-D plots, the locations of the optima at each grid line perpendicular to the \eqn{x}{x} and \eqn{y}{y} axes are plotted.
-These points follow major ridges or valleys, and are plotted as dashed lines colored green for the \eqn{x}{x} and blue for the \eqn{y}{y} values returned by \code{extremes}.
+These points follow major ridges or valleys, and are plotted as dashed lines colored green for the \eqn{x}{x} and blue for the \eqn{y}{y} values.
 
 An alternative source for the \code{eout} argument is any list of numeric values, each element of which corresponds to a different observation (such as a single species), all having the same dimensions (as vectors, matrices or higher-dimensional arrays)
 In this case, plotting is disabled, since the names of the variables are not in the input.
@@ -79,21 +74,15 @@ The name of the \samp{H} output value is the conventional symbol for the Shannon
 }
 
 \value{
-
 \code{revisit} returns a list containing at least an element named \samp{H}, giving the calculated values of the objective function.
 For 1 or 2 dimensions of varibility of chemical conditions, the output also contains the elements \code{ixopt} and \code{iyopt} (1-D and 2-D) and \code{iyopt} and \code{yopt} (2-D) indicating the positions and values of the optimum.
-For calculations in more than two dimensions, the output contains \code{iopt} which is a matrix 
-
-\code{optimum.index} returns the index (or indices) of the optimal values in \code{z} using \code{\link{array}(..., arr.ind=TRUE)}.
-\code{extremes} returns \eqn{x}{x} values that are the column numbers where the optimum is found for each row, and \eqn{y}{y} values that are the row numbers where the optimum is found for each column.
 The \samp{optimum} attribute of the \code{objective} function indicates whether minimal or maximal values are used.
-
+For calculations in more than two dimensions, the output contains \code{iopt}, a matrix.
 }
 
 \seealso{
-
-\code{demo("revisit")} shows calculations for a system of proteins. \code{\link{findit}} is a related function implementing a gridded search of chemical activities, temperature and/or pressure that optimize the objective function.
-
+\code{demo("revisit")} shows calculations for a system of proteins.
+\code{\link{findit}} is a related function implementing a gridded search of chemical activities, temperature and/or pressure that optimize the objective function.
 }
 
 \examples{\dontshow{data(thermo)}

@@ -1,7 +1,6 @@
 \name{util.plot}
 \alias{util.plot}
 \alias{thermo.plot.new}
-\alias{thermo.axis}
 \alias{label.plot}
 \alias{usrfig}
 \alias{label.figure}
@@ -21,8 +20,6 @@
     mgp = c(1.7, 0.3, 0), cex.axis = par("cex"), col = par("col"),
     yline = NULL, axs = "i", do.box = TRUE, las = 1,
     xline = NULL, ...)
-  thermo.axis(lab = NULL, side = 1:4, line = 1.5, cex = par("cex"),
-    lwd = par("lwd"), T = NULL, col = par("col"))
   label.plot(x, xfrac = 0.05, yfrac = 0.95, paren = FALSE,
     italic = FALSE, ...)
   usrfig()
@@ -53,8 +50,6 @@
   \item{las}{numeric, style for axis labels}
   \item{xline}{numeric, margin line on which to plot \eqn{x}{x}-axis name}
   \item{...}{further arguments passed to \code{par} or \code{mtext}}
-  \item{lab}{character, description of axis label}
-  \item{line}{numeric, margin line to plot axis label}
   \item{T}{numeric, temperature (K)}
   \item{x}{character, label to place on plot}
   \item{xfrac}{numeric, fractional location on \eqn{x}{x}-axis for placement of label}
@@ -70,6 +65,7 @@
   \item{xpoints}{numeric, points to plot on \eqn{x}{x} axis}
   \item{O2state}{character, state of O2}
   \item{main}{character, text for plot title}
+  \item{line}{numeric, margin line to place title}
   \item{z}{numeric, set of values}
 }
 
@@ -90,10 +86,6 @@ The location of the label is controlled by \code{xfrac} and \code{yfrac} (the fr
 
 \code{usrfig} returns the limits of the figure region in \dQuote{user} coordinates (i.e. the limits of the plot region, from \code{\link{par}("usr")}).
 It is a supporting function for \code{label.figure} but is also useful for other circumstances where information must be added at a particular location in a figure.
-
-\code{thermo.axis} is used to add axes and axis labels to plots, with some default style settings (rotation of numeric labels) and conversions between oxidation-reduction scales (called by \code{thermo.plot.new}).
-It also adds minor tick marks.
-With the default arguments (no labels specified), it plots only the axis lines and tick marks; this is useful for overplotting the axis on diagrams filled with colors.
 
 \code{mtitle} can be used to add a multi-line title to a plot.
 It loops over each element of \code{main} and places it on a separate margin line using \code{\link{mtext}}.

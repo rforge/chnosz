@@ -1,6 +1,9 @@
 # CHNOSZ/util.character.R
 # functions to work with character objects
 
+### unexported functions ###
+
+# join the elements of a character object into a character object of length 1 (a string)
 c2s <- function(x, sep=' ') {
   # make a string out of a character vector
   if(length(x) %in% c(0,1)) return(x)
@@ -8,6 +11,9 @@ c2s <- function(x, sep=' ') {
   return(s)
 }
 
+# split a string into elements of a character object of length n+1, where n is the number of separators in the string
+# default sep=NULL indicates a separator at every position of x
+# keep.sep is used to keep the separators in the output
 s2c <- function(x,sep=NULL,keep.sep=TRUE) {
   # recursively split 'x' according to separation strings in 'sep'
   do.split <- function(x,sep,keep.sep=TRUE) {
@@ -46,6 +52,7 @@ s2c <- function(x,sep=NULL,keep.sep=TRUE) {
   return(x)
 }
 
+# return a value of TRUE or FALSE for each element of x
 can.be.numeric <- function(x) {
   # return FALSE if length of argument is zero
   if(length(x)==0) return(FALSE)
@@ -59,4 +66,3 @@ can.be.numeric <- function(x) {
   options(oldopt)
   return(cb)
 }
-

@@ -6,6 +6,62 @@
 #   these functions expect arguments of length 1; 
 #   info() handles longer arguments
 
+info <- function(species=NULL, state=NULL, check.it=TRUE) {
+  ## return information for one or more species in thermo$obigt
+  ## if no species are requested, summarize the available data  20101129
+  thermo <- get("thermo")
+  if(is.null(species)) {
+    message("info: 'species' is NULL; summarizing information about thermodynamic data...")
+    message(paste("thermo$obigt has", nrow(thermo$obigt[thermo$obigt$state=="aq", ]), "aqueous,",
+      nrow(thermo$obigt), "total species"))
+    message(paste("number of literature sources: ", nrow(thermo$refs), ", elements: ",
+      nrow(thermo$element), ", buffers: ", length(unique(thermo$buffers$name)), sep=""))
+    message(paste("number of proteins in thermo$protein is", nrow(thermo$protein), "from",
+      length(unique(thermo$protein$organism)), "organisms"))
+    # print information about SGD.csv, ECO.csv, HUM.csv
+    more.aa(organism="Sce")
+    more.aa(organism="Eco")
+    #pdata.aa(organism="HUM")
+    # print information about yeastgfp.csv
+    yeastgfp()
+    return()
+  }
+  ## run info.numeric or info.character depending on the input type
+  if(is.numeric(species)) {
+    out <- lapply(species, info.numeric, check.it)
+    # if we different states the column names could be different
+    if(length(unique(unlist(lapply(out, names)))) > ncol(thermo$obigt)) {
+      # make them the same as thermo$obigt
+      out <- lapply(out, function(row) {
+        colnames(row) <- colnames(thermo$obigt); return(row)
+      }) 
+    }
+    # turn the list into a data frame
+    out <- do.call(rbind, out)
+  } else {
+    # state and species should be same length
+    if(!is.null(state)) {
+      lmax <- max(length(species), length(state))
+      state <- rep(state, length.out=lmax)
+      species <- rep(species, length.out=lmax)
+    }
+    # loop over the species
+    out <- sapply(seq_along(species), function(i) {
+      # first look for exact match
+      ispecies <- info.character(species[i], state[i])
+      # if no exact match and it's not a protein, show approximate matches (side effect of info.approx)
+      if(identical(ispecies, NA) & !grepl("_", species[i])) ispecies.notused <- info.approx(species[i], state[i])
+      # do not accept multiple matches
+      if(length(ispecies) > 1) ispecies <- NA
+      return(ispecies)
+    })
+  }
+  ## all done!
+  return(out)
+}
+
+### unexported functions ###
+
 info.text <- function(ispecies) {
   # a textual description of species name, formula, source, e.g.
   # CO2 [CO2(aq)] (SSW01, SHS89, 11.Oct.07)
@@ -171,59 +227,5 @@ info.approx <- function(species, state=NULL) {
   # if we got here there were no approximate matches
   message("info.approx: '", species, "' has no approximate matches")
   return(NA)
-}
-
-info <- function(species=NULL, state=NULL, check.it=TRUE) {
-  ## return information for one or more species in thermo$obigt
-  ## if no species are requested, summarize the available data  20101129
-  thermo <- get("thermo")
-  if(is.null(species)) {
-    message("info: 'species' is NULL; summarizing information about thermodynamic data...")
-    message(paste("thermo$obigt has", nrow(thermo$obigt[thermo$obigt$state=="aq", ]), "aqueous,",
-      nrow(thermo$obigt), "total species"))
-    message(paste("number of literature sources: ", nrow(thermo$refs), ", elements: ",
-      nrow(thermo$element), ", buffers: ", length(unique(thermo$buffers$name)), sep=""))
-    message(paste("number of proteins in thermo$protein is", nrow(thermo$protein), "from",
-      length(unique(thermo$protein$organism)), "organisms"))
-    # print information about SGD.csv, ECO.csv, HUM.csv
-    more.aa(organism="Sce")
-    more.aa(organism="Eco")
-    #pdata.aa(organism="HUM")
-    # print information about yeastgfp.csv
-    yeastgfp()
-    return()
-  }
-  ## run info.numeric or info.character depending on the input type
-  if(is.numeric(species)) {
-    out <- lapply(species, info.numeric, check.it)
-    # if we different states the column names could be different
-    if(length(unique(unlist(lapply(out, names)))) > ncol(thermo$obigt)) {
-      # make them the same as thermo$obigt
-      out <- lapply(out, function(row) {
-        colnames(row) <- colnames(thermo$obigt); return(row)
-      }) 
-    }
-    # turn the list into a data frame
-    out <- do.call(rbind, out)
-  } else {
-    # state and species should be same length
-    if(!is.null(state)) {
-      lmax <- max(length(species), length(state))
-      state <- rep(state, length.out=lmax)
-      species <- rep(species, length.out=lmax)
-    }
-    # loop over the species
-    out <- sapply(seq_along(species), function(i) {
-      # first look for exact match
-      ispecies <- info.character(species[i], state[i])
-      # if no exact match and it's not a protein, show approximate matches (side effect of info.approx)
-      if(identical(ispecies, NA) & !grepl("_", species[i])) ispecies.notused <- info.approx(species[i], state[i])
-      # do not accept multiple matches
-      if(length(ispecies) > 1) ispecies <- NA
-      return(ispecies)
-    })
-  }
-  ## all done!
-  return(out)
 }
 

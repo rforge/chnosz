@@ -1,3 +1,139 @@
+# CHNOSZ/makeup.R
+
+makeup <- function(formula, multiplier=1, sum=FALSE, count.zero=FALSE) {
+  # return the elemental makeup (counts) of a chemical formula
+  # that may contain suffixed and/or parenthetical subformulas and/or charge
+  # and negative or positive, fractional coefficients
+  # a matrix is processed by rows
+  if(is.matrix(formula)) 
+    return(lapply(seq_len(nrow(formula)), 
+      function(i) makeup(formula[i, ])))
+  # a named object or list of named objects is returned untouched
+  if(!is.null(names(formula))) return(formula)
+  if(is.list(formula) & !is.null(names(formula[[1]]))) return(formula)
+  # prepare to multiply the formula by the multiplier, if given
+  if(length(multiplier) > 1 & length(multiplier) != length(formula))
+    stop("multiplier does not have length = 1 or length = number of formulas")
+  multiplier <- rep(multiplier, length(formula))
+  # if the formula argument has length > 1, apply the function over each formula
+  if(length(formula) > 1) {
+    # get formulas for any species indices in the argument
+    formula <- get.formula(formula)
+    out <- lapply(seq_along(formula), function(i) {
+      makeup(formula[i], multiplier[i])
+    })
+    # if sum is TRUE, take the sum of all formulas
+    if(sum) {
+      out <- unlist(out)
+      out <- tapply(out, names(out), sum)
+    } else if(count.zero) {
+      # if count.zero is TRUE, all elements appearing in any 
+      # of the formulas are counted for each species
+      # first construct elemental makeup showing zero of each element
+      em0 <- unlist(out)
+      em0 <- tapply(em0, names(em0), sum)
+      em0[] <- 0
+      # then sum each formula and the zero vector,
+      # using tapply to group the elements
+      out <- lapply(out, function(x) {
+        xem <- c(x, em0)
+        tapply(xem, names(xem), sum)
+      })
+    }
+    return(out)
+  }
+  # if the formula argument is numeric,
+  # and if the thermo object is available,
+  # get the formula of that numbered species from thermo$obigt
+  if("CHNOSZ" %in% search()) {
+    thermo <- get("thermo", "CHNOSZ")
+    if(is.numeric(formula)) formula <- thermo$obigt$formula[formula]
+  }
+  # first deal with charge
+  cc <- count.charge(formula)
+  # count.elements doesn't know about charge so we need
+  # to explicate the elemental symbol for it
+  formula <- cc$uncharged
+  if(cc$Z != 0 ) formula <- paste(formula, "Z", cc$Z, sep="")
+  # now "Z" will be counted
+  # if there are no subformulas, just use count.elements
+  if(length(grep("(\\(|\\)|\\*|\\:)", formula))==0) {
+    out <- count.elements(formula)
+  } else {
+    # count the subformulas
+    cf <- count.formulas(formula)
+    # count the elements in each subformula
+    ce <- lapply(names(cf), count.elements)
+    # multiply elemental counts by respective subformula counts
+    mcc <- lapply(seq_along(cf), function(i) ce[[i]]*cf[i])
+    # unlist the subformula counts and sum them together by element
+    um <- unlist(mcc)
+    out <- tapply(um, names(um), sum)
+  }
+  # all done with the counting, now apply the multiplier
+  out <- out * multiplier
+  # complain if there are any elements that look strange
+  if("CHNOSZ" %in% search()) {
+    are.elements <- names(out) %in% thermo$element$element
+    if(!all(are.elements)) warning(paste("element(s) not in thermo$element:", 
+      paste(rownames(out)[!are.elements], collapse=" ") ))
+  }
+  # done!
+  return(out)
+}
+
+count.elements <- function(formula) {
+  # count the elements in a chemical formula   20120111 jmd
+  # this function expects a simple formula,
+  # no charge or parenthetical or suffixed subformulas
+  # regular expressions inspired by an answer on
+  # http://stackoverflow.com/questions/4116786/parsing-a-chemical-formula-from-a-string-in-c
+  #elementRegex <- "([A-Z][a-z]*)([0-9]*)"
+  elementSymbol <- "([A-Z][a-z]*)"
+  # here, element coefficients can be signed (+ or -) and have a decimal point
+  elementCoeff <- "((\\+|-|\\.|[0-9])*)"
+  elementRegex <- paste(elementSymbol, elementCoeff, sep="")
+  # stop if it doesn't look like a chemical formula 
+  validateRegex <- paste("^(", elementRegex, ")+$", sep="")
+  if(length(grep(validateRegex, formula)) == 0)
+    stop(paste("'",formula,"' is not a simple chemical formula", sep="", collapse="\n"))
+  # where to put the output
+  element <- character()
+  count <- numeric()
+  # from now use "f" for formula to make writing the code easier
+  f <- formula
+  # we want to find the starting positions of all the elemental symbols
+  # make substrings, starting at every position in the formula
+  fsub <- sapply(1:nchar(f), function(i) substr(f, i, nchar(f)))
+  # get the numbers (positions) that start with an elemental symbol
+  # i.e. an uppercase letter
+  ielem <- grep("^[A-Z]", fsub)
+  # for each elemental symbol, j is the position before the start of the next 
+  # symbol (or the position of the last character of the formula)
+  jelem <- c(tail(ielem - 1, -1), nchar(f))
+  # assemble the stuff: each symbol-coefficient combination
+  ec <- sapply(seq_along(ielem), function(i) substr(f, ielem[i], jelem[i]))
+  # get the individual element symbols and coefficients
+  myelement <- gsub(elementCoeff, "", ec)
+  mycount <- as.numeric(gsub(elementSymbol, "", ec))
+  # any missing coefficients are unity
+  mycount[is.na(mycount)] <- 1
+  # append to the output
+  element <- c(element, myelement)
+  count <- c(count, mycount)
+  # in case there are repeated elements, sum all of their counts
+  # (tapply hint from https://stat.ethz.ch/pipermail/r-help/2011-January/265341.html)
+  out <- tapply(count, element, sum)
+  # tapply returns alphabetical sorted list. keep the order appearing in the formula
+  out <- out[match(unique(element), names(out))]
+  return(out)
+}
+
+### unexported functions ###
+
+# returns a list with named elements
+#   `Z` - the numeric value of the charge
+#   `uncharged` - the original formula string excluding the charge
 count.charge <- function(formula) {
   # count the charge in a chemical formula   20120113 jmd
   # everything else is counted as the uncharged part of the formula
@@ -34,6 +170,7 @@ count.charge <- function(formula) {
   return(out)
 }
 
+# returns a numeric vector with names refering to each of the subformulas or the whole formula if there are no subformulas
 count.formulas <- function(formula) {
   # count the subformulas in a chemical formula   20120112 jmd
   # the formula may include multiple unnested parenthetical subformulas
@@ -131,131 +268,3 @@ count.formulas <- function(formula) {
   return(out)
 }
 
-count.elements <- function(formula) {
-  # count the elements in a chemical formula   20120111 jmd
-  # this function expects a simple formula,
-  # no charge or parenthetical or suffixed subformulas
-  # regular expressions inspired by an answer on
-  # http://stackoverflow.com/questions/4116786/parsing-a-chemical-formula-from-a-string-in-c
-  #elementRegex <- "([A-Z][a-z]*)([0-9]*)"
-  elementSymbol <- "([A-Z][a-z]*)"
-  # here, element coefficients can be signed (+ or -) and have a decimal point
-  elementCoeff <- "((\\+|-|\\.|[0-9])*)"
-  elementRegex <- paste(elementSymbol, elementCoeff, sep="")
-  # stop if it doesn't look like a chemical formula 
-  validateRegex <- paste("^(", elementRegex, ")+$", sep="")
-  if(length(grep(validateRegex, formula)) == 0)
-    stop(paste("'",formula,"' is not a simple chemical formula", sep="", collapse="\n"))
-  # where to put the output
-  element <- character()
-  count <- numeric()
-  # from now use "f" for formula to make writing the code easier
-  f <- formula
-  # we want to find the starting positions of all the elemental symbols
-  # make substrings, starting at every position in the formula
-  fsub <- sapply(1:nchar(f), function(i) substr(f, i, nchar(f)))
-  # get the numbers (positions) that start with an elemental symbol
-  # i.e. an uppercase letter
-  ielem <- grep("^[A-Z]", fsub)
-  # for each elemental symbol, j is the position before the start of the next 
-  # symbol (or the position of the last character of the formula)
-  jelem <- c(tail(ielem - 1, -1), nchar(f))
-  # assemble the stuff: each symbol-coefficient combination
-  ec <- sapply(seq_along(ielem), function(i) substr(f, ielem[i], jelem[i]))
-  # get the individual element symbols and coefficients
-  myelement <- gsub(elementCoeff, "", ec)
-  mycount <- as.numeric(gsub(elementSymbol, "", ec))
-  # any missing coefficients are unity
-  mycount[is.na(mycount)] <- 1
-  # append to the output
-  element <- c(element, myelement)
-  count <- c(count, mycount)
-  # in case there are repeated elements, sum all of their counts
-  # (tapply hint from https://stat.ethz.ch/pipermail/r-help/2011-January/265341.html)
-  out <- tapply(count, element, sum)
-  # tapply returns alphabetical sorted list. keep the order appearing in the formula
-  out <- out[match(unique(element), names(out))]
-  return(out)
-}
-
-makeup <- function(formula, multiplier=1, sum=FALSE, count.zero=FALSE) {
-  # return the elemental makeup (counts) of a chemical formula
-  # that may contain suffixed and/or parenthetical subformulas and/or charge
-  # and negative or positive, fractional coefficients
-  # a matrix is processed by rows
-  if(is.matrix(formula)) 
-    return(lapply(seq_len(nrow(formula)), 
-      function(i) makeup(formula[i, ])))
-  # a named object or list of named objects is returned untouched
-  if(!is.null(names(formula))) return(formula)
-  if(is.list(formula) & !is.null(names(formula[[1]]))) return(formula)
-  # prepare to multiply the formula by the multiplier, if given
-  if(length(multiplier) > 1 & length(multiplier) != length(formula))
-    stop("multiplier does not have length = 1 or length = number of formulas")
-  multiplier <- rep(multiplier, length(formula))
-  # if the formula argument has length > 1, apply the function over each formula
-  if(length(formula) > 1) {
-    # get formulas for any species indices in the argument
-    formula <- get.formula(formula)
-    out <- lapply(seq_along(formula), function(i) {
-      makeup(formula[i], multiplier[i])
-    })
-    # if sum is TRUE, take the sum of all formulas
-    if(sum) {
-      out <- unlist(out)
-      out <- tapply(out, names(out), sum)
-    } else if(count.zero) {
-      # if count.zero is TRUE, all elements appearing in any 
-      # of the formulas are counted for each species
-      # first construct elemental makeup showing zero of each element
-      em0 <- unlist(out)
-      em0 <- tapply(em0, names(em0), sum)
-      em0[] <- 0
-      # then sum each formula and the zero vector,
-      # using tapply to group the elements
-      out <- lapply(out, function(x) {
-        xem <- c(x, em0)
-        tapply(xem, names(xem), sum)
-      })
-    }
-    return(out)
-  }
-  # if the formula argument is numeric,
-  # and if the thermo object is available,
-  # get the formula of that numbered species from thermo$obigt
-  if("CHNOSZ" %in% search()) {
-    thermo <- get("thermo", "CHNOSZ")
-    if(is.numeric(formula)) formula <- thermo$obigt$formula[formula]
-  }
-  # first deal with charge
-  cc <- count.charge(formula)
-  # count.elements doesn't know about charge so we need
-  # to explicate the elemental symbol for it
-  formula <- cc$uncharged
-  if(cc$Z != 0 ) formula <- paste(formula, "Z", cc$Z, sep="")
-  # now "Z" will be counted
-  # if there are no subformulas, just use count.elements
-  if(length(grep("(\\(|\\)|\\*|\\:)", formula))==0) {
-    out <- count.elements(formula)
-  } else {
-    # count the subformulas
-    cf <- count.formulas(formula)
-    # count the elements in each subformula
-    ce <- lapply(names(cf), count.elements)
-    # multiply elemental counts by respective subformula counts
-    mcc <- lapply(seq_along(cf), function(i) ce[[i]]*cf[i])
-    # unlist the subformula counts and sum them together by element
-    um <- unlist(mcc)
-    out <- tapply(um, names(um), sum)
-  }
-  # all done with the counting, now apply the multiplier
-  out <- out * multiplier
-  # complain if there are any elements that look strange
-  if("CHNOSZ" %in% search()) {
-    are.elements <- names(out) %in% thermo$element$element
-    if(!all(are.elements)) warning(paste("element(s) not in thermo$element:", 
-      paste(rownames(out)[!are.elements], collapse=" ") ))
-  }
-  # done!
-  return(out)
-}

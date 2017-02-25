@@ -1,6 +1,5 @@
 \name{equilibrate}
 \alias{equilibrate}
-\alias{balance}
 \alias{equil.boltzmann}
 \alias{equil.reaction}
 \title{Equilibrium Chemical Activities of Species}
@@ -12,7 +11,6 @@ Calculate equilibrium chemical activities of species from the affinities of form
   equilibrate(aout, balance=NULL, loga.balance=NULL,
     ispecies=1:length(aout$values), normalize=FALSE, as.residue=FALSE,
     method=c("boltzmann", "reaction"))
-  balance(aout, balance=NULL)
   equil.boltzmann(Astar, n.balance, loga.balance)
   equil.reaction(Astar, n.balance, loga.balance)
 }
@@ -36,16 +34,17 @@ It takes as input \code{aout}, the output from \code{\link{affinity}}, which may
 The equilibrium chemical activities of species are calculated using either the \code{equil.reaction} or \code{equil.boltzmann} functions, the latter only if the balance is on one mole of species.
 
 As \code{aout} contains the chemical affinities of formation reactions of each species of interest, \code{equilibrate} in order to function needs to be provided constraints on how to balance the reactions representing transformations between the species.
-\code{balance} returns the balancing coefficients, where \code{balance} indicates the balancing constraints, according to the following scheme:
-\tabular{ll}{
-      \samp{NULL} \tab autoselect using \code{\link{which.balance}}\cr
-      \emph{name of basis species} \tab balance on this basis species\cr
-      \samp{length} \tab balance on length of proteins\cr
-      \samp{1} \tab balance on one mole of species\cr
-      \emph{numeric vector} \tab user-defined constraints\cr
+\code{balance} indicates the balancing constraints, according to the following scheme:
+
+\itemize{
+  \item \samp{NULL}: autoselect
+  \item \emph{name of basis species}: balance on this basis species
+  \item \samp{length}: balance on length of proteins
+  \item \samp{1}: balance on one mole of species
+  \item \emph{numeric vector}: user-defined constraints
 }
 
-The default value of NULL for \code{balance} indicates to select the first shared basis species in all formation reactions identified using \code{\link{which.balance}}, or if that fails, to set the balance to \samp{1}.
+The default value of NULL for \code{balance} indicates to select the first shared basis species in all formation reactions, or if that fails, to set the balance to \samp{1}.
 However, if all the species (as listed in code \code{aout$species}) are proteins (have an underscore character in their names), the default value of NULL for \code{balance} indicates to use \samp{length} as the balance.
 
 NOTE: the summation of activities assumes an ideal system, so \sQuote{molality} is implied by \sQuote{activity} in the following.
@@ -92,7 +91,6 @@ If \code{equil.boltzmann} is called with \code{balance} other than \samp{1}, it 
 \value{
 \code{equil.reaction} and \code{equil.boltzmann} each return a list with dimensions and length equal to those of \code{Astar}, giving the \code{\link{log10}} of the equilibrium activities of the species of interest.
 \code{equilibrate} returns a list, containing first the values in \code{aout}, to which are appended \code{m.balance} (the balancing coefficients if \code{normalize} is TRUE, a vector of \samp{1}s otherwise), \code{n.balance} (the balancing coefficients if \code{normalize} is FALSE, a vector of \samp{1}s otherwise), \code{loga.balance}, \code{Astar}, and \code{loga.equil} (the calculated equilibrium activities of the species).
-\code{balance} returns a list containing the balancing coefficients (\code{n}) and a textual description (\code{description}).
 }
 
 \examples{

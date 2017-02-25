@@ -1,6 +1,5 @@
 \name{species}
 \alias{species}
-\alias{species.basis}
 \title{Species of Interest}
 \description{
   Define the species of interest in a system; modify their physical states and logarithms of activities.
@@ -8,7 +7,6 @@
 
 \usage{
   species(species = NULL, state = NULL, delete = FALSE, index.return = FALSE)
-  species.basis(species = get("thermo")$species$ispecies)
 }
 
 \arguments{
@@ -26,8 +24,6 @@
   If \code{state} is \code{NULL} (the default), species in any state can be matched in the thermodynamic database. If there are multiple matches for a species, the one that is in the state given by \code{thermo$opt$state} is chosen, otherwise the matching (or \eqn{n}{n}'th matching duplicate) species is used. Note that the \code{state}s of species representing phases of minerals that undergo phase transitions are coded as \samp{cr1}, \samp{cr2}, \samp{cr3}, \code{...} (phases with increasing temperature). If \code{state} is \samp{cr} when one of these minerals is matched, all the phase species are added.
 
   To modify the logarithms of activities of species (logarithms of fugacities for gases) provide one or more numeric values of \code{species} referring to the rownumbers of the species dataframe, or \code{species} NULL, to modify all currently defined species. The values in \code{state}, if numeric, are interpreted as the logarithms of activities, or if character are interpreted as states to which the species should be changed. If \code{species} is numeric and \code{delete} is \code{TRUE}, the rows representing these species are deleted from the dataframe; if the only argument is \code{delete} and it is \code{TRUE}, all the species are removed.
-
-  \code{species.basis} is the function used by \code{species} to calculate the coefficients of reactions to form the species from the basis species. It accepts one or more species formulas or indices, and produces an error if either the basis species are not defined, or they do not contain all of the elements in any of the species.
 }
 
 \value{
@@ -41,9 +37,6 @@
 \examples{\dontshow{data(thermo)}
 # set up the basis species
 basis("CHNOS")
-## show the formation reactions of some species
-#ispecies <- info(c("glutamic acid","phenylalanine"))
-#species.basis(ispecies)
 # add, modify, delete species
 species(c("CO2","NH3"))  # aqueous species
 species(c("CO2","NH3"),"gas")  # gases

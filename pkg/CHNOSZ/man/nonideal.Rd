@@ -10,7 +10,7 @@ Calculate activity coefficients and non-ideal contributions to apparent standard
 }
 
 \arguments{
-  \item{species}{Names or indices of species for which to calculate nonideal properties (\code{nonideal}), or dataframe, species definition such as that in \code{\link{thermo}$species} (\code{which.balance})}
+  \item{species}{names or indices of species for which to calculate nonideal properties}
   \item{proptable}{list of dataframes of species properties}
   \item{IS}{numeric, ionic strength(s) used in nonideal calculations, mol kg\eqn{^{-1}}{^-1}}
   \item{T}{numeric, temperature (K) (\code{lines.water}, \code{nonideal})}
@@ -101,7 +101,7 @@ par(opar)
 }
 
 \references{
-  Alberty, R. A. (2003) \emph{Thermodynamics of Biochemical Reactions}, John Wiley & Sons, Hoboken, New Jersey, 397 p. \url{http://www.worldcat.org/oclc/51242181}
+Alberty, R. A. (2003) \emph{Thermodynamics of Biochemical Reactions}, John Wiley & Sons, Hoboken, New Jersey, 397 p. \url{http://www.worldcat.org/oclc/51242181}
 }
 
 \concept{Secondary thermodynamic modeling}

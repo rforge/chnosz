@@ -1,6 +1,22 @@
 # CHNOSZ/util-affinity.R
 # helper functions for affinity()
 
+slice.affinity <- function(affinity,d=1,i=1) {
+  # take a slice of affinity along one dimension
+  a <- affinity
+  for(j in 1:length(a$values)) {
+    # preserve the dimensions (especially: names(mydim))
+    # - fix for change in behavior of aperm in R-devel 2015-11-17
+    mydim <- dim(a$values[[j]])
+    a$values[[j]] <- as.array(slice(a$values[[j]],d=d,i=i))
+    # the dimension from which we take the slice vanishes
+    dim(a$values[[j]]) <- mydim[-d]
+  }
+  return(a)
+}
+
+### unexported functions ###
+
 energy <- function(what,vars,vals,lims,T=get("thermo")$opt$Tr,P="Psat",IS=0,sout=NULL,exceed.Ttr=FALSE,transect=FALSE) {
   # 20090329 extracted from affinity() and made to
   # deal with >2 dimensions (variables)
@@ -353,20 +369,6 @@ energy.args <- function(args) {
     args$vals[[Eh.var]] <- -pe
   }
   return(args)
-}
-
-slice.affinity <- function(affinity,d=1,i=1) {
-  # take a slice of affinity along one dimension
-  a <- affinity
-  for(j in 1:length(a$values)) {
-    # preserve the dimensions (especially: names(mydim))
-    # - fix for change in behavior of aperm in R-devel 2015-11-17
-    mydim <- dim(a$values[[j]])
-    a$values[[j]] <- as.array(slice(a$values[[j]],d=d,i=i))
-    # the dimension from which we take the slice vanishes
-    dim(a$values[[j]]) <- mydim[-d]
-  }
-  return(a)
 }
 
 A.ionization <- function(iprotein, vars, vals, T=get("thermo")$opt$Tr, P="Psat", pH=7, transect=FALSE) {

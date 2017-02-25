@@ -565,7 +565,7 @@ strip <- function(affinity, ispecies=NULL, col=NULL, ns=NULL,
   }
 }
 
-find.TP <- function(x) {
+find.tp <- function(x) {
   # find triple points in an matrix of integers  20120525 jmd
   # these are the locations closest to the greatest number of different values
   # rearrange the matrix in the same way that diagram() does for 2-D predominance diagrams

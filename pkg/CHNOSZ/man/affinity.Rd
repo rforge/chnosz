@@ -16,8 +16,8 @@ Calculate the chemical affinities of formation reactions of species.
   \item{property}{character, denoting the property to be calculated. Default is \samp{A}, for chemical affinity of formation reactions of species of interest}
   \item{sout}{list, output from \code{\link{subcrt}}}
   \item{exceed.Ttr}{logical, allow \code{\link{subcrt}} to compute properties for phases beyond their transition temperature?}
-  \item{return.buffer}{logical. If \code{TRUE}, and a \code{\link{buffer}} has been associated with one or more basis species in the system, return the values of the activities of the basis species calculated using the buffer (it is not necessary in this case to have defined any species of interest). Default is \code{FALSE}.}
-  \item{balance}{character. This argument is passed to \code{\link{buffer}} to identify a conserved basis species (or \samp{PBB}) in a chemical activity buffer. Default is \samp{PBB}.}
+  \item{return.buffer}{logical. If \code{TRUE}, and a \code{\link{buffer}} has been associated with one or more basis species in the system, return the values of the activities of the basis species calculated using the buffer. Default is \code{FALSE}.}
+  \item{balance}{character. This argument is used to identify a conserved basis species (or \samp{PBB}) in a chemical activity buffer. Default is \samp{PBB}.}
   \item{iprotein}{numeric, indices of proteins in \code{\link{thermo}$protein} for which to calculate properties}
   \item{loga.protein}{numeric, logarithms of activities of proteins identified in \code{iprotein}}
 }
@@ -30,18 +30,22 @@ Calculations are possible at single values of temperature, pressure, ionic stren
 
 Zero, one, or more leading arguments to the function identify which of the chemical activities of basis species, temperature, pressure and/or ionic strength to vary.
 The names of each of these arguments may be the formula of any of the basis species of the system, or \samp{T}, \samp{P}, \samp{pe}, \samp{pH}, \samp{Eh}, or \samp{IS} (but names may not be repeated).
-The names charged basis species such as \samp{K+} and \samp{SO4-2} should be quoted when used as arguments.
+The names of charged basis species such as \samp{K+} and \samp{SO4-2} should be quoted when used as arguments.
 The value of each argument is of the form \code{c(min, max)} or \code{c(min, max, res)} where \code{min} and \code{max} refer to the minimimum and maximum values of variable identified by the name of the argument, and \code{res} denotes the resolution, or number of points along which to do the calculations; \code{red} is assigned a default value of 128 if it is missing.
 For any arguments that refer to basis species, the numerical values are the logarithms of activity (or fugacity for gases) of that basis species.
-The units of \samp{T} and \samp{P} in \code{affinity} are those the user has set using \code{\link{T.units}} and \code{\link{P.units} }(on program start-up these are \eqn{^{\circ}}{°}C and bar, respectively). 
 
-If one or more buffers are assigned to the definition of \code{\link{basis}} species, \code{affinity} calls \code{\link{buffer}} to calculate the logarithms of activities of these basis species from the buffer.
+If \samp{T}, \samp{P}, and/or \samp{IS} are not among the \code{var}s, their constant values can be supplied in \code{T}, \code{P}, or \code{IS} (in mol kg\eqn{^{-1}}{^-1}).
+The units of \samp{T} and \samp{P} are those set by \code{\link{T.units}} and \code{\link{P.units}} (on program start-up these are \eqn{^{\circ}}{°}C and bar, respectively). 
+\code{sout}, if provided, replaces the call to \code{\link{subcrt}}, which can greatly speed up the calculations if this intermediate step is stored by other functions (e.g., \code{\link{transfer}}).
+\code{exceed.Ttr} is passed to \code{\link{subcrt}} so that the properties of mineral phases beyond their transition temperatures can optionally be calculated.
+
+If one or more buffers are assigned to the definition of \code{\link{basis}} species, the logarithms of activities of these basis species are taken from the buffer (see \code{\link{buffer}}).
 
 The \code{iprotein} and \code{loga.protein} arguments can be used to compute the chemical affinities of formation reactions of proteins that are not in the current \code{\link{species}} definition.
 \code{iprotein} contains the indices (rownumbers) of desired proteins in \code{\link{thermo}$protein}.
 This uses some optimizations to calculate the properties of many proteins in a fraction of the time it would take to calculate them individually.
 
-When the length(s) of the variables is(are) greater than 3, the function enters the \samp{transect} mode of operation (see \code{\link{energy}}).
+When the length(s) of the variables is(are) greater than 3, the function enters the \samp{transect} mode of operation.
 In this mode of operation, instead of performing the calculations on an \eqn{n}{n}-dimensional grid, the affinities are calculated on a transect of changing T, P, and/or chemical activity of basis species.
 
 The function can also be used to calculate other thermodynamic properties of formation reactions. 
@@ -61,8 +65,8 @@ However, if one or more of \code{pe}, \code{Eh} or \code{pH} is among the variab
 }
 
 \seealso{
-\code{\link{equilibrate}} for calculating of equilibrium activities of species, and \code{\link{diagram}} for plotting the results.
-The guts of the calculations involve \code{\link{energy.args}} and \code{\link{energy}}, which are not intended for normal user interaction.
+\code{\link{ionize.aa}}, activated if proteins are among the species of interest, \samp{H+} is in the basis, and \code{thermo$opt$ionize} is TRUE.
+\code{\link{equilibrate}} for using the results of \code{affinity} to calculate equilibrium activities of species, and \code{\link{diagram}} to plot the results.
 }
 
 \examples{

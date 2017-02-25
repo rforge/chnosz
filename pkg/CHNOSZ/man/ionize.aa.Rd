@@ -31,11 +31,7 @@
   The function returns a matrix (possibly with only one row or column) with number of rows corresponding to the longest of \code{T}, \code{P} or \code{pH} (values of any of these with shorter length are recycled) and a column for each of the amino acid compositions in \code{aa}.
 }
 
-\seealso{
-  The amino acid composition in \code{aa} can be generated using \code{\link{pinfo}}.
-
-  This function is called by \code{\link{A.ionization}} as part of a calculation of \code{\link{affinity}} if proteins are among the species of interest, \samp{H+} is in the basis, and \code{thermo$opt$ionize} is TRUE. 
-}
+\seealso{ \code{\link{pinfo}}, \code{\link{affinity}} }
 
 \examples{\dontshow{data(thermo)}
 ## Charge of LYSC_CHICK as a function of pH and T

@@ -47,7 +47,9 @@
 
   By default, for \code{take.first} equal to TRUE, \code{id.blast} performs a final filtering step (but \code{min.query} must be disabled). Only the first hit for each query sequence is kept.
 
-  \code{write.blast} takes a BLAST table (the output of \code{read.blast}) and writes to \code{outfile} a stripped-down BLAST file with empty values in the columns except for columns 1 (query sequence ID), 2 (hit sequence ID), 3 (similarity), 11 (E value). In the process, \code{\link{def2gi}} is used to extract the GI numbers for the hit sequences that are then kept in the second column. This function is used to reduce the size of the example BLAST files that are packaged with CHNOSZ (see the \sQuote{bison} section in \code{\link{extdata}}).
+\code{write.blast} takes a BLAST table (the output of \code{read.blast}) and writes to \code{outfile} a stripped-down BLAST file with empty values in the columns except for columns 1 (query sequence ID), 2 (hit sequence ID), 3 (similarity), 11 (E value).
+In the process, \code{\link{def2gi}} is used to extract the GI numbers for the hit sequences that are then kept in the second column.
+This function is used to reduce the size of the example BLAST files that are packaged with CHNOSZ (see the \sQuote{bison} section in \code{\link{extdata}}).
 
   \code{def2gi} extracts the GI number from a FASTA defline. 
 

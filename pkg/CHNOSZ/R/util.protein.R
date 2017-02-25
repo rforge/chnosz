@@ -1,6 +1,5 @@
 # CHNOSZ/util.protein.R
 # MP90.cp: additive heat capacity from groups of Makhatadze and Privalov, 1990
-# group.formulas: chemical makeup of the amino acid residues
 
 MP90.cp <- function(protein, T) {
   # T (temperature, degrees C), protein (name of protein)
@@ -42,6 +41,8 @@ MP90.cp <- function(protein, T) {
   }
   return(cnew)
 }
+
+### unexported functions ###
 
 group.formulas <- function() {
   # return a matrix with chemical formulas of residues

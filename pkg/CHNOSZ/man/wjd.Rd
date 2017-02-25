@@ -111,19 +111,18 @@ In the first example below, of the 76 combinations of species whose elemental co
 Alternatively to \code{B}, the initial guess of numbers of moles of species can be provided in \code{Y}; otherwise as many combinations of \code{Y} as returned from \code{run.guess} are tested until one is found that \code{is.near.equil}.
 The function gives an error if none of the guesses in \code{Y} is near equilibrium, within the tolerance set by \code{tol}.
 
-  \code{run.guess} is a wrapper function to call \code{guess} using the stoichiometric matrix \code{A} built from the \code{ispecies} indices in the thermodynamic database.
+\code{run.guess} is a wrapper function to call \code{guess} using the stoichiometric matrix \code{A} built from the \code{ispecies} indices in the thermodynamic database.
 
 \code{equil.potentials} returns the average (\code{\link{colMeans}}) of \code{element.potentials(w)}, or NULL if \code{is.near.equil(w, tol=tol)} is FALSE.
 The output of this function can be used as the \code{emu} argument for \code{\link{basis.logact}} to calculate the corresponding activities of the basis species.
 }
 
-
 \value{
-  \code{wjd} returns a list with the problem definition and results: elements \code{A}, \code{G0.RT}, \code{Y}, and \code{P} are as supplied in the arguments; the results are in \code{X} (final mole numbers of species), \code{F.Y} (Gibbs energy of the system at initial conditions and after each iteration), \code{lambda} (value used for \eqn{\lambda}{lambda} at each iteration), and \code{elements} (matrix of moles of elements at initial conditions and after each iteration; iterations on the columns and elements on the rows). The latter result is provided to assist in checking mass balance (mostly for debugging more than theoretical reasons).
+\code{wjd} returns a list with the problem definition and results: elements \code{A}, \code{G0.RT}, \code{Y}, and \code{P} are as supplied in the arguments; the results are in \code{X} (final mole numbers of species), \code{F.Y} (Gibbs energy of the system at initial conditions and after each iteration), \code{lambda} (value used for \eqn{\lambda}{lambda} at each iteration), and \code{elements} (matrix of moles of elements at initial conditions and after each iteration; iterations on the columns and elements on the rows).
 }
 
 \seealso{
-  \code{demo("wjd")} for a longer example, and \code{\link{invertible.combs}}, used by \code{element.potentials} to find combinations of species that are compositionally independent.
+\code{demo("wjd")} for a longer example, and \code{\link{invertible.combs}}, used by \code{element.potentials} to find combinations of species that are compositionally independent.
 }
 
 \examples{\dontshow{data(thermo)}
@@ -174,8 +173,7 @@ sum(w$X)  # <20
 }
 
 \references{
-  White, W. B., Johnson, S. M. and Dantzig, G. B. (1958) Chemical equilibrium in complex mixtures. \emph{J. Chem. Phys.} \bold{28}, 751--755. \url{http://dx.doi.org/10.1063/1.1744264}
+White, W. B., Johnson, S. M. and Dantzig, G. B. (1958) Chemical equilibrium in complex mixtures. \emph{J. Chem. Phys.} \bold{28}, 751--755. \url{http://dx.doi.org/10.1063/1.1744264}
 }
-
 
 \concept{Extra thermodynamic modeling}

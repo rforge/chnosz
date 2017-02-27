@@ -1,10 +1,12 @@
-CHANGES IN CHNOSZ 1.0.8-66 (2017-02-25)
+CHANGES IN CHNOSZ 1.0.8-67 (2017-02-27)
 ---------------------------------------
 
 DOCUMENTATION:
 
-- Replace anintro.Rnw (using Sweave) with rewritten anintro.Rmd (using
-  knitr with Tufte style).
+- Replace anintro.Rnw (Sweave) with rewritten anintro.Rmd (using knitr
+  with Tufte style).
+
+- Add obigt.Rmd (Thermodynamic data in CHNOSZ).
 
 - Add eos-regress.Rmd (Regressing thermodynamic data), including
   section on Making a pseudospecies: H4SiO4.

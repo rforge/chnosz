@@ -203,9 +203,10 @@ preset.basis <- function(key=NULL) {
 # logarithms of activities for preset basis definitions
 preset.logact <- function(species) {
   bases <- c("H2O", "CO2", "NH3", "H2S", "oxygen", "H+", "e-", "Fe2O3",
-             "cysteine", "glutamic acid", "glutamine")
+             "glutamine", "glutamic acid", "cysteine")
+  # values for QEC amino acids from Dick, 2017 (http://doi.org/10.1101/097667)
   logact <- c(0, -3, -4, -7, -80, -7, -7, 0,
-              -4, -4, -4)
+              -3.2, -4.5, -3.6)
   ibase <- match(species, bases)
   logact <- logact[ibase]
   # any unmatched species gets a logarithm of activity of -3

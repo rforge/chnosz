@@ -62,7 +62,7 @@ The basis species identified by these keywords are aqueous except for \eqn{\math
                         \eqn{\mathrm{NH_3}}{NH3}, \eqn{\mathrm{H_2S}}{H2S}, \eqn{\mathrm{O_2}}{O2} \cr
     \code{FeCHNOS+} \tab \eqn{\mathrm{Fe_2O_3}}{Fe2O3}, \eqn{\mathrm{CO_2}}{CO2}, \eqn{\mathrm{H_2O}}{H2O}, 
                          \eqn{\mathrm{NH_3}}{NH3}, \eqn{\mathrm{H_2S}}{H2S}, \eqn{\mathrm{O_2}}{O2}, \eqn{\mathrm{H^+}}{H+} \cr
-    \code{CEQ} \tab cysteine, glutamic acid, glutamine, \eqn{\mathrm{H_2O}}{H2O}, \eqn{\mathrm{O_2}}{O2} \cr
+    \code{QEC} \tab cysteine, glutamic acid, glutamine, \eqn{\mathrm{H_2O}}{H2O}, \eqn{\mathrm{O_2}}{O2} \cr
   }
 
 }

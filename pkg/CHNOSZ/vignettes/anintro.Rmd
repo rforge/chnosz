@@ -109,7 +109,7 @@ A major feature of the package is the production of diagrams to visualize the ef
 After starting R, install CHNOSZ by selecting the "Install packages from CRAN" or similar menu item in the R GUI or by using the following command:
 ```{marginfigure}
 Or, install the package from a package file, which you can download from [CRAN](https://cran.r-project.org/package=CHNOSZ) or (for the development version) from [R-Forge](https://r-forge.r-project.org/projects/chnosz/).
-This vignette depends on some features that are only available in the development version of CHNOSZ.
+This vignette depends on some features that are available only in the development version of CHNOSZ.
 ```
 ```{r install_CHNOSZ, eval=FALSE}
 install.packages("CHNOSZ")
@@ -470,7 +470,7 @@ rxnfun <- function(coeffs) {
 Now we're ready to calculate and plot the affinities.
 Here, we use R's `lapply()` to list the results at two values of logarithm of fugacity of CO<sub>2</sub>.
 We insert an empty reaction to get a line at zero affinity.
-R's handy `do.call()` and `rbind()` are used to turn the list into a data frame that can be plotted with R's `matplot()`.
+R's `do.call()` and `rbind()` are used to turn the list into a data frame that can be plotted with R's `matplot()`.
 There, we plot the negative affinities, equal to Gibbs energy, as shown in the plot of Mayumi et al. (2013).
 
 ```{r methanogenesis_plot, fig.margin=TRUE, fig.width=4.1, fig.height=4.1, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Gibbs energies of acetate oxidation and methanogenesis (after Mayumi et al., 2013).", cache=TRUE, pngquant=pngquant, timeit=timeit}
@@ -776,7 +776,7 @@ Under these conditions, the affinities of formation reactions of the minerals in
 ```
 
 Another example, based on Figure 6 of @SS95, is given in <span style="color:blue">`demo(buffer)`</span>.
-Here, values of log*f*<sub>H<sub>2</sub></sub> buffered by minerals or aqueous species are calculated using the two methods:
+Here, values of log*f*<sub>H<sub>2</sub></sub> buffered by minerals or set by equilibrium with given activities of aqueous species are calculated using the two methods:
 ```{r demo_buffer, eval=FALSE}
 demo(buffer)
 ```
@@ -812,7 +812,7 @@ For more information, see the vignette [<span style="color:blue">*Equilibrium in
 The method based on the Boltzmann equation is fast, but is applicable only to systems where the coefficient on the balanced basis species in each of the formation reactions is one.
 The reaction-matrix method is slower, but can be applied to systems were the balanced basis species has reaction coefficients other than one.
 
-```{r bjerrum_diagram, fig.margin=TRUE, fig.width=3, fig.height=6, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, cache=TRUE, fig.cap="Three views of carbonate speciation: affinity, metastable equilibrium activity, degree of formation.", pngquant=pngquant, timeit=timeit}
+```{r bjerrum_diagram, fig.margin=TRUE, fig.width=3, fig.height=6, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, cache=TRUE, fig.cap="Three views of carbonate speciation: affinity, activity, degree of formation.", pngquant=pngquant, timeit=timeit}
 par(mfrow = c(3, 1))
 basis("CHNOS+")
 species(c("CO2", "HCO3-", "CO3-2"))
@@ -846,7 +846,7 @@ To display the species distribution, or degree of formation, add `alpha = TRUE` 
 ```
 
 The possible reactions between species are all balanced on 1 C.
-Therefore, although pH alters the total activity of C, in a system with ideal mixing the total activity of C doesn't affect the relative activities of the species.
+Therefore, although pH alters the total activity of C, in a system with ideal mixing the total activity of C doesn't affect the relative activities of these species.
 ```{marginfigure}
 See <span style="color:blue">`demo(solubility)`</span> for calculations of the total activity of C in this ideal system; uncomment a line in the demo to run calculations for CO<sub>2</sub> instead of calcite.
 ```
@@ -973,8 +973,8 @@ It is interesting that there is more "going on" in the middle part of the diagra
 *Caveat lector*. These plots demonstrate some possibilities in CHNOSZ and are not necessarily realistic portrayals of this system.
 It does seem odd to balance on a fugacious component like `r o2` or `r h2o`.
 Unlike different choices of basis species, which are thermodynamically equivalent ([see above](#mosaicfun)), the choice of balance reflects extra-thermodynamic factors.
-For instance, the widespread rule of thumb for balancing mineral reactions on a component is unrealistic for processes where volume is conserved [@MD98].
-While choosing an inappropriate balance leads to infeasible models, consideration of the possibilities might give insight into the conditions affecting the dynamics of some systems.
+For instance, the widespread rule of thumb for balancing mineral reactions on a chemical component is unrealistic for processes where volume is conserved [@MD98].
+While choosing an inappropriate balance leads to infeasible models, consideration of the different possibilities might give insight into the conditions affecting the dynamics of some systems.
 
 # Proteins
 
@@ -1103,7 +1103,7 @@ To put the proteins in the right order, the IDs in the CSV file are matched to t
 Then, we calculate `r zc` from the formulas of the proteins.
 Next, point symbols are assigned according to domain (Archaea, Bacteria, Eukaryota); numbers inside the symbols show the ordering of *T*<sub>opt</sub> in three temperature ranges (0--35 °C, 37.5--60 °C, and 65--100 °C).
 
-```{r rubisco_svg, echo=FALSE, results="hide", fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, out.width="100%", fig.ext='svg', custom.plot=TRUE, embed.tag=TRUE, fig.cap='Average oxidation state of carbon in Rubisco compared with optimal growth temperature of organisms. **This is an interactive image.** Move the mouse over the points to show the names of the organisms, and click to open a reference in a new window. (Made using [RSVGTipsDevice](https://cran.r-project.org/package=RSVGTipsDevice) with code that can be found in the source of this document.)'}
+```{r rubisco_svg, echo=FALSE, results="hide", fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, out.width="100%", fig.ext='svg', custom.plot=TRUE, embed.tag=TRUE, fig.cap='Average oxidation state of carbon in Rubisco compared with optimal growth temperature of organisms. **This is an interactive image.** Move the mouse over the points to show the names of the organisms, and click to open a reference in a new window. (Made with [**RSVGTipsDevice**](https://cran.r-project.org/package=RSVGTipsDevice) using code that can be found in the source of this document.)'}
 ## copies the premade SVG image to the knitr figure path
 file.copy("rubisco.svg", fig_path(".svg"))
 ## the code for making the SVG image -- not "live" in the vignette because RSVGTipsDevice isn't available on Windows
@@ -1165,12 +1165,12 @@ legend("topright", legend = c("Archaea", "Bacteria", "Eukaryota"),
 Let's look at the different ways of representing the chemical compositions of the proteins.
 <span style="color:green">`protein.basis()`</span> returns the stoichiometry for the formation reaction of each proteins.
 Dividing by <span style="color:green">`protein.length()`</span> gives the per-residue reaction coefficients (*n*&#773;).
-Using the set of basis species we have seen before (CO<sub>2</sub>, NH<sub>3</sub>, H<sub>2</sub>S, `r h2o`, `r o2`) there is a noticeable correlation between *n*&#773;<sub>`r o2`</sub> and `r zc`, and also between *n*&#773;<sub>`r o2`</sub> and *n*&#773;<sub>`r h2o`</sub> (left plots).
+Using the set of basis species we have seen before (CO<sub>2</sub>, NH<sub>3</sub>, H<sub>2</sub>S, `r h2o`, `r o2`) there is a noticeable correlation between *n*&#773;<sub>`r o2`</sub> and `r zc`, but even more so between *n*&#773;<sub>`r h2o`</sub> and `r zc` (shown in the plots on the left).
 ```{marginfigure}
 The calculation of *Z*<sub>C</sub>, which sums elemental ratios, is not affected by the choice of basis species.
 ```
 The `QEC` keyword to <span style="color:red">`basis()`</span> loads basis species including three amino acids (glutamine, glutamic acid, cysteine, `r h2o`, `r o2`).
-This basis strengthens the relationship between `r zc` and *n*&#773;<sub>`r o2`</sub>, but weakens that between `r zc` and *n*&#773;<sub>`r h2o`</sub> (right plots).
+This basis strengthens the relationship between `r zc` and *n*&#773;<sub>`r o2`</sub>, but weakens that between `r zc` and *n*&#773;<sub>`r h2o`</sub> (shown in the plots on the right).
 
 ```{r rubisco_O2, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, fig.cap="Compositions of proteins projected into different sets of basis species.", cache=TRUE, pngquant=pngquant, timeit=timeit}
 layout(matrix(1:4, nrow = 2))
@@ -1481,9 +1481,8 @@ file <- system.file("extdata/protein/DS11.csv", package = "CHNOSZ")
 aa <- read.csv(file, as.is = TRUE)
 aa <- aa[grep("transferase", aa$protein), ]
 ip <- add.protein(aa)
-bspecies <- c("HCO3-", "H2O", "NH3", "HS-", "H2", "H+")
 basis(c("HCO3-", "H2O", "NH3", "HS-", "H2", "H+"))
-basis(c("HCO3-", "NH3", "HS-", "H+"), c(-3, -4, -7, -7.933))
+basis(c("HCO3-", "NH3", "HS-", "H+"), c(-3, -4, -7, -7.9))
 T <- c(50, 100)
 res <- 300
 a <- affinity(T = c(T, res), H2 = c(-8, -3, res), iprotein = ip)
@@ -1494,12 +1493,12 @@ logaH2 <- c(-3.38, -4.14, -5.66, -7.47, -10.02)
 lines(T, logaH2, lty = 2, lwd = 2)
 points(T, logaH2, pch = 21, bg = "white", cex = 1.5)
 ```
-```{r bison_transferase, eval=FALSE, echo=1:12}
+```{r bison_transferase, eval=FALSE, echo=1:11}
 ```
 Site numbers 1--5 correspond to a cooling gradient along the outflow channel of the hot spring.
 The colors represent the relative `r zc` of the proteins (red is more reduced).
 The points indicate the *T* and log*a*<sub>H<sub>2</sub></sub> that optimize a thermodynamic model for relative abundances of phyla that were estimated by taxonomic classification of metagenomic sequences [@DS13]:
-```{r bison_transferase, eval=FALSE, echo=13:16}
+```{r bison_transferase, eval=FALSE, echo=12:15}
 ```
 
 # Experimental features
@@ -1638,8 +1637,8 @@ This is similar to Figure 1.5 of Alberty (2003):
 </p>
 
 We have calculated the distribution of ATP species and average binding number of H<sup>+</sup> and Mg<sup>+2</sup> for given pH, pMg, ionic strength, and temperature.
-Equilibrium constants tabulated for specified ionic strength make an algebraic solution of the equilibrium distribution of species feasible, as shown by the Mathematica code in Alberty (2003).
-However, the required calculations can also be performed "on the fly" in CHNOSZ with reference to a conventional standard state.
+Apparent equilibrium constants tabulated for specified ionic strength make an algebraic solution of the equilibrium distribution of species feasible, as demonstrated by the Mathematica code in Alberty (2003).
+The required calculations can be performed "on the fly" in CHNOSZ by using the `IS` argument in <span style="color:green">`subcrt()`</span> or <span style="color:green">`affinity()`</span> to invoke the nonideality model on top of the standard Gibbs energies of species.
 
 ## Optimization of chemical activities
 
@@ -1654,7 +1653,7 @@ See <span style="color:blue">`?objective`</span> for more information.
 
 The concentrations of amino acids are affected by high-temperature reactions in hydrothermal vents (smokers).
 What are the metastable equilibrium states of amino acids under these conditions?
-Let's suppose that the major variables are oxygen fugacity, and activities of water (`r h2o`) and ammonia (NH<sub>3</sub>).
+Suppose that the major variables are oxygen fugacity, and activities of water (`r h2o`) and ammonia (NH<sub>3</sub>).
 Here we assign the (very large) range of logarithms of chemical activity of the basis species that we will explore:
 ```{r smoker_vars}
 vars <- list(O2 = c(-50, -25), NH3 = c(-15, 10), H2O = c(-15, 10))

@@ -3,13 +3,13 @@ protein.equil   chemical activities of two proteins in metastable equilibrium
 affinity        affinities of metabolic reactions and amino acid synthesis
 NaCl            equilibrium constant for aqueous NaCl dissociation
 density         density of H2O, inverted from IAPWS-95 equations
-ORP             oxidation-reduction potential of redox standards as a function of temperature
+ORP             temperature dependence of oxidation-reduction potential for redox standards
 revisit         coefficient of variation of metastable equilibrium activities of proteins
 findit          minimize the standard deviation of logarithms of activities of sulfur species
 ionize          ionize.aa(): contour plots of net charge and ionization properties of LYSC_CHICK
 buffer          minerals and aqueous species as buffers of hydrogen fugacity
 protbuff        chemical activities buffered by thiol peroxidases or sigma factors
-yeastgfp        YeastGFP locations: log fO2 - log aH2O and log a - log fO2 diagrams
+yeastgfp        subcellular locations: log fO2 - log aH2O and log a - log fO2 diagrams
 mosaic          Eh-pH diagram for iron oxides, sulfides and carbonate with two sets of changing basis species
 copper          another example of mosaic(): complexation of copper with glycine species
 solubility      solubility of calcite or CO2(gas) as a function of pH

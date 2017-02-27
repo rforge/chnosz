@@ -43,18 +43,18 @@ This is sometimes a useful command to use during an interactive session, when pr
       \code{Theta} \tab numeric \tab \eqn{\Theta}{Theta} in the revised HKF equations of state (K) [228]\cr 
       \code{Psi} \tab numeric \tab \eqn{\Psi}{Psi} in the revised HKF equations of state (bar) [2600]\cr
       \code{R} \tab numeric \tab Value of the gas constant (cal K\ifelse{latex}{\eqn{^{-1}}}{\ifelse{html}{\out{<sup>-1</sup>}}{^-1}} mol\ifelse{latex}{\eqn{^{-1}}}{\ifelse{html}{\out{<sup>-1</sup>}}{^-1}}) [1.9872]\cr
-      \code{cutoff} \tab numeric \tab Cutoff below which values are taken to be zero (see \code{\link{makeup}}) [1e-10]\cr
+      \code{cutoff} \tab numeric \tab Cutoff below which values are taken to be zero [1e-10] (see \code{\link{makeup}})\cr
       \code{E.units} \tab character \tab The user's units of energy ([\samp{cal}] or \samp{J})\cr
       \code{T.units} \tab character \tab The user's units of temperature ([\samp{C}] or \samp{K})\cr
       \code{P.units} \tab character \tab The user's units of pressure ([\samp{bar}] or \samp{MPa})\cr
       \code{state} \tab character \tab The default physical state for searching species [\samp{aq}]\cr
       \code{water} \tab character \tab Computational option for properties of water ([\samp{SUPCRT}] or \samp{IAPWS})\cr
       \code{online} \tab logical \tab Allow online searches of protein composition? Default [\code{NA}] is to ask the user.\cr
-      \code{G.tol} \tab numeric \tab Difference in value of G above which \code{\link{checkGHS}} produces a message (cal mol\ifelse{latex}{\eqn{^{-1}}}{\ifelse{html}{\out{<sup>-1</sup>}}{^-1}}) [100]\cr
-      \code{Cp.tol} \tab numeric \tab Difference in value of Cp above which \code{\link{checkEOS}} produces a message (cal K\ifelse{latex}{\eqn{^{-1}}}{\ifelse{html}{\out{<sup>-1</sup>}}{^-1}} mol\ifelse{latex}{\eqn{^{-1}}}{\ifelse{html}{\out{<sup>-1</sup>}}{^-1}}) [1]\cr
-      \code{V.tol} \tab numeric \tab Difference in value of V above which \code{\link{checkEOS}} produces a message (cm\ifelse{latex}{\eqn{^{3}}}{\ifelse{html}{\out{<sup>3</sup>}}{^3}} mol\ifelse{latex}{\eqn{^{-1}}}{\ifelse{html}{\out{<sup>-1</sup>}}{^-1}}) [1]\cr
+      \code{G.tol} \tab numeric \tab Difference in G above which \code{\link{checkGHS}} produces a message (cal mol\ifelse{latex}{\eqn{^{-1}}}{\ifelse{html}{\out{<sup>-1</sup>}}{^-1}}) [100]\cr
+      \code{Cp.tol} \tab numeric \tab Difference in Cp above which \code{\link{checkEOS}} produces a message (cal K\ifelse{latex}{\eqn{^{-1}}}{\ifelse{html}{\out{<sup>-1</sup>}}{^-1}} mol\ifelse{latex}{\eqn{^{-1}}}{\ifelse{html}{\out{<sup>-1</sup>}}{^-1}}) [1]\cr
+      \code{V.tol} \tab numeric \tab Difference in V above which \code{\link{checkEOS}} produces a message (cm\ifelse{latex}{\eqn{^{3}}}{\ifelse{html}{\out{<sup>3</sup>}}{^3}} mol\ifelse{latex}{\eqn{^{-1}}}{\ifelse{html}{\out{<sup>-1</sup>}}{^-1}}) [1]\cr
       \code{varP} \tab logical \tab Use variable-pressure standard state for gases? [\code{FALSE}] (see \code{\link{subcrt}})\cr
-      \code{IAPWS.sat} \tab character \tab State of \ifelse{latex}{\out{H$_2$O}}{\ifelse{html}{\out{H<sub>2</sub>O}}{H2O}} ([\samp{liquid}], \samp{vapor}, or \samp{}) for saturation properties (see \code{\link{water.IAPWS95}} and \code{\link{util.water}}) \cr
+      \code{IAPWS.sat} \tab character \tab State of \ifelse{latex}{\out{H$_2$O}}{\ifelse{html}{\out{H<sub>2</sub>O}}{H2O}} for saturation properties [\samp{liquid}] (see \code{\link{util.water}})\cr
       \code{paramin} \tab integer \tab Minimum number of calculations to launch parallel processes [1000] (see \code{\link{palply}}) \cr
       \code{ideal.H} \tab logical \tab Should \code{\link{nonideal}} ignore the proton? [\code{TRUE}] \cr
       \code{ideal.e} \tab logical \tab Should \code{\link{nonideal}} ignore the electron? [\code{TRUE}]
@@ -85,9 +85,6 @@ This is sometimes a useful command to use during an interactive session, when pr
   \itemize{
      \item Use corrected values of \eqn{a_2}{a2} and \eqn{a_4}{a4} for [-CH2NH2] (were incorrectly listed as zero in Table 6 of Dick et al., 2006).
      \item The standard molal thermodynamic properties and equations of state parameters of the aqueous electron are zero except for the standard molal entropy at 25 \eqn{^{\circ}}{°}C and 1 bar, which is the opposite of that for the element of charge (\code{Z}, see above).
-     \item The properties and parameters of some reference unfolded proteins used by Dick et al., 2006 are included here. Their names have dashes, instead of underscores, so that they are not confused with proteins whose properties are generated at runtime.
-     \item The standard molal Gibbs energies and enthalpies of formation of the elements and entropies at 25 \eqn{^{\circ}}{°}C and 1 bar of aqueous metal-amino acid (alanate or glycinate) complexes reported by Shock and Koretsky, 1995 were recalculated by adding to their values the differences in the corresponding properties between the values for aqueous alanate and glycinate used by Shock and Koretsky, 1995, and those used by Amend and Helgeson, 1997b and Dick et al., 2006.
-     \item The standard molal properties and equations-of-state parameters of four phase species (see below) of Fe(cr) were generated from heat capacity data given by Robie and Hemingway, 1995. 
      \item \samp{pseudo-H4SiO4} is an approximate pseudospecies for H4SiO4. \samp{pseudo-H4SiO4} has thermodynamic properties that give zero properties for the reaction H4SiO4 = SiO2 + 2H2O at 25 \eqn{^{\circ}}{°}C, and HKF coefficients that are applicable to moderate temperatures (see the vignette \emph{Regressing thermodynamic data}).
   } 
 
@@ -231,15 +228,11 @@ thermo$obigt$formula[runif(10)*n]
 
 \references{
 
-  Amend, J. P. and Helgeson, H. C. (1997b) Calculation of the standard molal thermodynamic properties of aqueous biomolecules at elevated temperatures and pressures. Part 1. L-\eqn{\alpha}{alpha}-amino acids. \emph{J. Chem. Soc., Faraday Trans.} \bold{93}, 1927--1941. \url{http://dx.doi.org/10.1039/a608126f}
-
   Cox, J. D., Wagman, D. D. and Medvedev, V. A., eds. (1989) \emph{CODATA Key Values for Thermodynamics}. Hemisphere Publishing Corporation, New York, 271 p. \url{http://www.worldcat.org/oclc/18559968}
 
   Dick, J. M., LaRowe, D. E. and Helgeson, H. C. (2006) Temperature, pressure, and electrochemical constraints on protein speciation: Group additivity calculation of the standard molal thermodynamic properties of ionized unfolded proteins. \emph{Biogeosciences} \bold{3}, 3110--336. \url{http://www.biogeosciences.net/3/311/2006/bg-3-311-2006.html}
 
   Johnson, J. W., Oelkers, E. H. and Helgeson, H. C. (1992) SUPCRT92: A software package for calculating the standard molal thermodynamic properties of minerals, gases, aqueous species, and reactions from 1 to 5000 bar and 0 to 1000\eqn{^{\circ}}{°}C. \emph{Comp. Geosci.} \bold{18}, 899--947. \url{http://dx.doi.org/10.1016/0098-3004(92)90029-Q}
-
-  Shock, E. L. and Koretsky, C. M. {1995} Metal-organic complexes in geochemical processes: Estimation of standard partial molal thermodynamic properties of aqueous complexes between metal cations and monovalent organic acid ligands at high pressures and temperatures. \emph{Geochim. Cosmochim. Acta} \bold{59}, 1497--1532. \url{http://dx.doi.org/10.1016/0016-7037(95)00058-8}
 
   Shock, E. L. et al. {1998} \emph{SLOP98.dat} (computer data file). http://geopig.asu.edu/supcrt92_data/slop98.dat, accessed on 2005-11-05. Current location: \url{http://geopig.asu.edu/sites/default/files/slop98.dat}.
 

@@ -1,0 +1,376 @@
+---
+title: "Thermodynamic data in [CHNOSZ](http://www.chnosz.net)"
+output:
+# change to html_document for full version
+  html_vignette:
+    mathjax: null
+# uncomment for full version
+#    theme: cosmo
+#    css: obigt.css
+vignette: >
+  %\VignetteIndexEntry{Thermodynamic data in CHNOSZ}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+bibliography: obigt.bib
+#csl: elementa.csl
+---
+
+<!-- The bare-bones version (small, for the package on CRAN) uses html_vignette. -->
+<!-- The full version (on chnosz.net) uses html_document; also uncomment the theme and css above,
+       the note under "Sources of data", and the "All at once" section below. -->
+
+```{r library_CHNOSZ, include=FALSE}
+library(CHNOSZ)
+```
+
+```{r data_thermo, include=FALSE}
+data(thermo)
+```
+
+```{r nspecies, include=FALSE}
+# assign the file name to a variable and print the file name and number of species
+setfile <- function(csvfile, dat=NULL) {
+  # assign csvfile outside this function
+  assign("csvfile", csvfile, parent.frame())
+  file <- system.file(paste0("extdata/OBIGT/", csvfile), package="CHNOSZ")
+  dat <- read.csv(file, as.is=TRUE)
+  paste0("`", csvfile, "` (", nrow(dat), ")")
+}
+```
+
+```{r filerefs, include=FALSE}
+filerefs <- function(csvfile, dat=NULL) {
+  # with dat, look for ref2 in dat
+  whichref <- "ref2"
+  # without dat, look for ref1 in csvfile
+  if(is.null(dat)) {
+    file <- system.file(paste0("extdata/OBIGT/", csvfile), package="CHNOSZ")
+    dat <- read.csv(file, as.is=TRUE)
+    whichref <- "ref1"
+  }
+  # count number of times each reference is used
+  tab <- table(dat[, whichref])
+  # warn if any keys aren't in thermo$ref$key
+  ikey <- match(names(tab), thermo$ref$key)
+  ina <- is.na(ikey)
+  if(any(ina)) cat(paste("**WARNING: key(s)", paste(names(tab)[ina], collapse=" "), "not found in `thermo$ref$key`**\n\n"))
+  # put the table in chronological order, according to thermo$ref
+  ikey <- na.omit(match(thermo$ref$key, names(tab)))
+  tab <- tab[ikey]
+  xxx <- lapply(seq_along(tab), function(i){
+    thiskey <- names(tab)[i]
+    # read thermo$ref$note
+    iref <- match(thiskey, thermo$ref$key)
+    note <- thermo$ref$note[iref]
+    if(note != "") note <- paste0(" *", note, "* ")
+    # use bullets for ref2
+    if(whichref=="ref2") bullet <- "- " else bullet <- ""
+    # convert key (e.g. LD12.2) to ref in OBIGT.bib (e.g. LD12)
+    thisref <- gsub("\\..*$", "", thiskey)
+    cat(bullet, "@", thisref, " -- ", tab[i], note, "\n\n", sep="")
+    # get ref2 if we're in the outer list
+    if(whichref!="ref2") filerefs(dat=dat[dat$ref1==thiskey, ])
+  })
+  # return all the species listed
+  paste(dat$name, dat$state)
+}
+```
+
+This vignette documents the sources of thermodynamic data in CHNOSZ.
+Most of the documentation here is automatically generated based on the references in `thermo$obigt` and the notes in `thermo$refs`.
+
+Note the following database conventions:
+
+- The combination of "name" and "state" defines a species in `thermo$obigt`.
+  A species can not be duplicated (this is checked when running `data(thermo)`).
+
+- English names of gases are used only for the gas state.
+  The dissolved species is named with the chemical formula.
+  Therefore, `info("oxygen")` refers to the gas, and `info("O2")` refers to the aqueous species.
+
+- The format of the data files (column names and thermodynamic properties; units and scaling) is described in `?thermo`.
+
+These abbreviations are used below:
+
+- Cp (heat capacity)
+
+- GHS (standard Gibbs energy, enthalpy, entropy)
+
+- HKF (Helgeson-Kirkham-Flowers equations)
+
+- REE (rare earth elements)
+
+- V (volume)
+
+The CSV data files are documented in the order that they are added to `thermo$obigt`.
+The primary sources (`ref1`) used in each data file are documented in chronological order.
+If any secondary sources are present (`ref2`), they are listed as bullet points under the primary source.
+
+Any additional comments (not automatically generated) are placed at the beginning of each section.
+
+# Sources of data {.tabset .tabset-fade .tabset-pills}
+
+<!-- uncomment for full version
+Use the tabs below to select the sources for viewing.
+Select "All at once" to show all sources.
+-->
+
+## Aqueous species {.tabset .tabset-fade .tabset-pills}
+
+### `r setfile("H2O_aq.csv")`
+```{r H2O_aq, results="asis", echo=FALSE}
+cat("This file contains H<sub>2</sub>O, *e*<sup>-</sup>, and H<sup>+</sup>. The properties of H<sub>2</sub>O are listed as NA; CHNOSZ calculates its properties using a Fortran subroutine taken from SUPRCT92 [@JOH92]. The properties of H<sup>+</sup> are 0. The properties of *e*<sup>+</sup>, except for *S*°,  are 0 (see `?thermo`).\n")
+```
+```{r used, include=FALSE}
+# initialize the list of used species
+used <- character()
+```
+```{r reflist, results="asis", echo=FALSE}
+used <- c(used, filerefs(csvfile))
+```
+
+### `r setfile("Shock_aq.csv")`
+```{r Shock_aq, results="asis", echo=FALSE}
+cat("The standard molal Gibbs energies and enthalpies of formation of the elements and entropies at 25 °C and 1 bar of aqueous metal-amino acid (alanate or glycinate) complexes reported by @SK95 were recalculated by adding the differences between values reported by @AH97b and @DLH06 for alanate or glycinate.")
+```
+
+```{r reflist, results="asis", echo=FALSE}
+```
+
+### `r setfile("Amend_aq.csv")`
+```{r reflist, results="asis", echo=FALSE}
+```
+
+### `r setfile("Schulte_aq.csv")`
+```{r reflist, results="asis", echo=FALSE}
+```
+
+### `r setfile("LaRowe_aq.csv")`
+```{r reflist, results="asis", echo=FALSE}
+```
+
+### `r setfile("Dick_aq.csv")`
+```{r reflist, results="asis", echo=FALSE}
+```
+
+### `r setfile("Canovas_aq.csv")`
+```{r reflist, results="asis", echo=FALSE}
+```
+
+### `r setfile("Tardy_aq.csv")`
+```{r reflist, results="asis", echo=FALSE}
+```
+
+### `r setfile("Tremaine_aq.csv")`
+```{r reflist, results="asis", echo=FALSE}
+```
+
+### `r setfile("Marini_aq.csv")`
+```{r reflist, results="asis", echo=FALSE}
+```
+
+### `r setfile("CHNOSZ_aq.csv")`
+```{r CHNOSZ_aq, results="asis", echo=FALSE}
+cat("The primary aqueous silica species in CHNSOZ is SiO<sub>2</sub> [@SHS89]. The pseudospecies H<sub>4</sub>SiO<sub>4</sub> is used to make activity diagrams with *a*<sub>H<sub>4</sub>SiO<sub>4</sub></sub> as a variable. The GHS and HKF parameters for this pseudospecies were calculated using CHNOSZ; see the vignette [*Regressing thermodynamic data*](eos-regress.html) for more information.")
+```
+
+```{r reflist, results="asis", echo=FALSE}
+```
+
+## Solids and crystalline species {.tabset .tabset-fade .tabset-pills}
+
+### `r setfile("Helgeson_cr.csv")`
+```{r reflist, results="asis", echo=FALSE}
+```
+
+### `r setfile("Shock_cr.csv")`
+```{r reflist, results="asis", echo=FALSE}
+```
+
+### `r setfile("Richard_cr.csv")`
+```{r reflist, results="asis", echo=FALSE}
+```
+
+### `r setfile("LaRowe_cr.csv")`
+```{r reflist, results="asis", echo=FALSE}
+```
+
+### `r setfile("Other_cr.csv")`
+```{r reflist, results="asis", echo=FALSE}
+```
+
+### `r setfile("CHNOSZ_cr.csv")`
+```{r CHNOSZ_cr, results="asis", echo=FALSE}
+cat("The standard molal properties and heat capacity parameters of four phases of Fe<sub>(*cr*)</sub> were generated from data given by @RH95.")
+```
+
+```{r reflist, results="asis", echo=FALSE}
+```
+
+## Liquids {.tabset .tabset-fade .tabset-pills}
+
+### `r setfile("Richard_liq.csv")`
+```{r reflist, results="asis", echo=FALSE}
+```
+
+### `r setfile("LaRowe_liq.csv")`
+```{r reflist, results="asis", echo=FALSE}
+```
+
+## Gases {.tabset .tabset-fade .tabset-pills}
+
+### `r setfile("Wagman_gas.csv")`
+```{r reflist, results="asis", echo=FALSE}
+```
+
+### `r setfile("Shock_gas.csv")`
+```{r reflist, results="asis", echo=FALSE}
+```
+
+### `r setfile("Richard_gas.csv")`
+```{r reflist, results="asis", echo=FALSE}
+```
+
+### `r setfile("Other_gas.csv")`
+```{r Other_gas, results="asis", echo=FALSE}
+cat('@Joh92a: "Parameters given provide smooth metastable extrapolation of one-bar steam properties predicted by the @HGK84 equation of state to temperatures < the saturation temperature (99.632°C)."')
+```
+
+```{r reflist, results="asis", echo=FALSE}
+```
+
+
+<!-- uncomment for full version
+
+## All at once
+
+### Aqueous species
+
+#### `r setfile("H2O_aq.csv")`
+```{r H2O_aq, results="asis", echo=FALSE}
+```
+```{r used2, include=FALSE}
+# initialize the list of used species
+used2 <- character()
+```
+```{r reflist2, results="asis", echo=FALSE}
+used2 <- c(used2, filerefs(csvfile))
+```
+
+#### `r setfile("Shock_aq.csv")`
+```{r Shock_aq, results="asis", echo=FALSE}
+```
+
+```{r reflist2, results="asis", echo=FALSE}
+```
+
+#### `r setfile("Amend_aq.csv")`
+```{r reflist2, results="asis", echo=FALSE}
+```
+
+#### `r setfile("Schulte_aq.csv")`
+```{r reflist2, results="asis", echo=FALSE}
+```
+
+#### `r setfile("LaRowe_aq.csv")`
+```{r reflist2, results="asis", echo=FALSE}
+```
+
+#### `r setfile("Dick_aq.csv")`
+```{r reflist2, results="asis", echo=FALSE}
+```
+
+#### `r setfile("Canovas_aq.csv")`
+```{r reflist2, results="asis", echo=FALSE}
+```
+
+#### `r setfile("Tardy_aq.csv")`
+```{r reflist2, results="asis", echo=FALSE}
+```
+
+#### `r setfile("Tremaine_aq.csv")`
+```{r reflist2, results="asis", echo=FALSE}
+```
+
+#### `r setfile("Marini_aq.csv")`
+```{r reflist2, results="asis", echo=FALSE}
+```
+
+#### `r setfile("CHNOSZ_aq.csv")`
+```{r CHNOSZ_aq, results="asis", echo=FALSE}
+```
+
+```{r reflist2, results="asis", echo=FALSE}
+```
+
+### Solids and crystalline species
+
+#### `r setfile("Helgeson_cr.csv")`
+```{r reflist2, results="asis", echo=FALSE}
+```
+
+#### `r setfile("Shock_cr.csv")`
+```{r reflist2, results="asis", echo=FALSE}
+```
+
+#### `r setfile("Richard_cr.csv")`
+```{r reflist2, results="asis", echo=FALSE}
+```
+
+#### `r setfile("LaRowe_cr.csv")`
+```{r reflist2, results="asis", echo=FALSE}
+```
+
+#### `r setfile("Other_cr.csv")`
+```{r reflist2, results="asis", echo=FALSE}
+```
+
+#### `r setfile("CHNOSZ_cr.csv")`
+```{r CHNOSZ_cr, results="asis", echo=FALSE}
+```
+
+```{r reflist2, results="asis", echo=FALSE}
+```
+
+### Liquids
+
+#### `r setfile("Richard_liq.csv")`
+```{r reflist2, results="asis", echo=FALSE}
+```
+
+#### `r setfile("LaRowe_liq.csv")`
+```{r reflist2, results="asis", echo=FALSE}
+```
+
+### Gases
+
+#### `r setfile("Wagman_gas.csv")`
+```{r reflist2, results="asis", echo=FALSE}
+```
+
+#### `r setfile("Shock_gas.csv")`
+```{r reflist2, results="asis", echo=FALSE}
+```
+
+#### `r setfile("Richard_gas.csv")`
+```{r reflist2, results="asis", echo=FALSE}
+```
+
+#### `r setfile("Other_gas.csv")`
+```{r Other_gas, results="asis", echo=FALSE}
+```
+
+```{r reflist2, results="asis", echo=FALSE}
+```
+
+```{r check_used_used2, results="asis", echo=FALSE}
+if(length(used) != length(used2)) cat(paste0("**WARNING: Tabbed list has ", length(used), " species but 'All at once list' has ", length(used2),".**\n\n"))
+```
+
+-->
+
+# Total count of species
+
+`r length(used)` of `r nrow(thermo$obigt)` species in `thermo$obigt` have been documented here.
+
+# References

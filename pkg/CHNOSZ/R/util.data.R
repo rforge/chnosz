@@ -238,6 +238,8 @@ thermo.refs <- function(key=NULL) {
     cat("thermo.refs: table of references is shown in browser\n")
   } else if(is.character(key)) {
     # return citation information for the given source(s)
+    # we omit the [S92] in "HDNB78 [S92]" etc.
+    key <- gsub("\ .*", "", key)
     ix <- match(key, x$key)
     ina <- is.na(ix)
     if(any(is.na(ix))) message(paste("thermo.refs: reference key(s)",

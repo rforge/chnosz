@@ -156,14 +156,12 @@ subcrt("alanine", T=seq(0, 5000, by=1000))
 # above the T, P limits for the H2O equations of state
 subcrt("alanine", T=c(2250, 2251), P=c(30000, 30001), grid="T")
 
-## heat capacity of Fe(cr)
-# compare calculated values of heat capacity with
-# values from Robie and Hemingway, 1995, (from which 
-# the parameters in the database were derived)
-# set the units
+## minerals with phase transitions
+# compare calculated values of heat capacity of iron with
+# values from Robie and Hemingway, 1995
 T.units("K")
 E.units("J")
-# we set pressure here otherwise subcrt goes for Psat (saturation 
+# we set pressure here otherwise subcrt uses Psat (saturation 
 # vapor pressure of H2O above 100 degrees C) which can not be 
 # calculated above the critical point of H2O (~647 K)
 s <- subcrt("Fe", T=seq(300, 1800, 20), P=1)

@@ -10,21 +10,17 @@
 \alias{buffers}
 \title{Thermodynamic Database and System Definition}
 \description{
+Data files provided with CHNOSZ are in the \code{data} and \code{extdata} directories of the package.
+The \code{*.csv} files under \code{data} and \code{extdata/OBIGT} are used to build the \code{thermo} data object on loading the package.
+Other data files, supporting the examples and vignettes, are documented separately at \code{\link{extdata}}. 
 
-  Please read the important Warning at \code{\link{CHNOSZ-package}}.
- 
-  The core data files provided with CHNOSZ are in the \code{data} directory of the package. These \code{*.csv} files are used to build the \code{thermo} data object on loading the package. Additional (extra) data files, supporting the examples and vignettes, are documented separately at \code{\link{extdata}}. 
-
-  The \code{thermo} object holds the thermodynamic database of properties of species, some thermodynamic constants and operational parameters for functions in CHNOSZ, the properties of elements, references to literature sources of thermodynamic data, compositions of chemical activity buffers, and amino acid compositions of proteins. The \code{thermo} object also holds intermediate data used in calculations, in particular the definitions of basis species and species of interest input by the user, and the calculated properties of \code{\link{water}} so that subsequent calculations at the same temperature-pressure conditions can be accelerated.
+The \code{thermo} object holds the thermodynamic database of properties of species, some thermodynamic constants and operational parameters for functions in CHNOSZ, the properties of elements, references to literature sources of thermodynamic data, compositions of chemical activity buffers, and amino acid compositions of proteins.
+The \code{thermo} object also holds intermediate data used in calculations, in particular the definitions of basis species and species of interest input by the user, and the calculated properties of \code{\link{water}} so that subsequent calculations at the same temperature-pressure conditions can be accelerated.
 
 The \code{thermo} object is a \code{\link{list}} composed of \code{\link{data.frame}}s or lists each representing a class of data.
 The object is created in an environment named \code{thermo}; see \code{\link{sideeffects}} for details.
-It is created upon loading the package, through a call to \code{data(thermo)} in \code{\link{.onAttach}}.
 At any time, the user can restore the data object to its initial state by calling \code{data(thermo)}.
 This is sometimes a useful command to use during an interactive session, when previous definitions of basis species and species of interest are longer desired.
-
-  The first example below shows how to find the installation locations of OBIGT and other \code{*.csv} files. Making changes to these files is not recommended, because incompatible changes can leave the package unusable; also, the files will be overwritten whenver the package is installed (or updated). Instead, use these files as templates for creating your own database files.
-
 }
 
 \usage{data(thermo)}
@@ -61,7 +57,10 @@ This is sometimes a useful command to use during an interactive session, when pr
 }
 
     \item \code{thermo$element}
-    Dataframe containing the thermodynamic properties of elements taken from Cox et al., 1989 and Wagman et al., 1982. The standard molal entropy (\eqn{S}(\code{Z})) at 25 \eqn{^{\circ}}{°}C and 1 bar for the element of charge (\code{Z}) was calculated from \eqn{S}(H2,g) + 2\eqn{S}(\code{Z}) =  2\eqn{S}(H+), where the standard molal entropies of H2,g and H+ were taken from Cox et al., 1989. The mass of \code{Z} is taken to be zero. Accessing this data frame using \code{\link{mass}} or \code{\link{entropy}} will select the first entry found for a given element; i.e., values from Wagman et al., 1982 will only be retrieved if the properties of the element are not found from Cox et al., 1989.
+  Dataframe containing the thermodynamic properties of elements taken from Cox et al., 1989 and Wagman et al., 1982.
+  The standard molal entropy (\eqn{S}(\code{Z})) at 25 \eqn{^{\circ}}{°}C and 1 bar for the element of charge (\code{Z}) was calculated from \eqn{S}(H2,g) + 2\eqn{S}(\code{Z}) =  2\eqn{S}(H+), where the standard molal entropies of H2,g and H+ were taken from Cox et al., 1989.
+  The mass of \code{Z} is taken to be zero.
+  Accessing this data frame using \code{\link{mass}} or \code{\link{entropy}} will select the first entry found for a given element; i.e., values from Wagman et al., 1982 will only be retrieved if the properties of the element are not found from Cox et al., 1989.
       \tabular{lll}{
       \code{element}  \tab character  \tab Symbol of element\cr
       \code{state}  \tab character \tab Stable state of element at 25 \eqn{^{\circ}}{°}C and 1 bar\cr
@@ -76,23 +75,32 @@ This is sometimes a useful command to use during an interactive session, when pr
 
     \item \code{thermo$obigt}
 
-  This dataframe is a thermodynamic database of standard molal thermodynamic properties and equations of state parameters of species. \acronym{OBIGT} is an acronym for \samp{OrganoBioGeoTherm}, which refers to a software package produced by Harold C. Helgeson and coworkers at the Laboratory of Theoretical Geochemistry and Biogeochemistry at the University of California, Berkeley. (There may be an additional meaning for the acronym: \dQuote{One BIG Table} of thermodynamic data.)
-
-  As of CHNOSZ version 0.7, the data in \code{OBIGT.csv} represent 179 minerals, 16 gases, and 294 aqueous (largely inorganic) species taken from the data file included in the \acronym{SUPCRT92} distribution (Johnson et al., 1992), an additional 14 minerals, 6 gases, and 1049 aqueous organic and inorganic species from the \acronym{slop98.dat} file (Shock et al., 1998), and approximately 50 other minerals, 175 crystalline organic and biochemical species, 220 organic gases, 300 organic liquids, 650 aqueous inorganic, organic, and biochemical species, and 40 organic groups taken from the recent literature. Each entry is referenced to one or two literature sources listed in \code{thermo$refs}. Use \code{\link{thermo.refs}} to lookup the citation information for the references.
-
-  Note the following additional modifications:
-
+  This dataframe is a thermodynamic database of standard molal thermodynamic properties and equations of state parameters of species.
+  Note the following database conventions:
   \itemize{
-     \item Use corrected values of \eqn{a_2}{a2} and \eqn{a_4}{a4} for [-CH2NH2] (were incorrectly listed as zero in Table 6 of Dick et al., 2006).
-     \item The standard molal thermodynamic properties and equations of state parameters of the aqueous electron are zero except for the standard molal entropy at 25 \eqn{^{\circ}}{°}C and 1 bar, which is the opposite of that for the element of charge (\code{Z}, see above).
-     \item \samp{pseudo-H4SiO4} is an approximate pseudospecies for H4SiO4. \samp{pseudo-H4SiO4} has thermodynamic properties that give zero properties for the reaction H4SiO4 = SiO2 + 2H2O at 25 \eqn{^{\circ}}{°}C, and HKF coefficients that are applicable to moderate temperatures (see the vignette \emph{Regressing thermodynamic data}).
+     \item The combination of \code{name} and \code{state} defines a species in \code{thermo$obigt}. A species can not be duplicated (this is checked when running \code{data(thermo)}).
+     \item English names of gases are used only for the gas state. The dissolved species is named with the chemical formula. Therefore, \code{info("oxygen")} refers to the gas, and \code{info("O2")} refers to the aqueous species.
   } 
 
-  These modifications are indicated in OBIGT by having \samp{CHNOSZ} as one of the sources of data. Note also that some data appearing in the \acronym{slop98.dat} file (Shock et al., 1998) were corrected or modified as noted in that file, and are indicated in OBIGT by having \samp{SLOP98} as one of the sources of data.
+  \samp{OrganoBioGeoTherm} is the name of a GUI program to use SUPCRT in Windows, produced in Harold C. Helgeson's Laboratory of Theoretical Geochemistry and Biogeochemistry at the University of California, Berkeley.
+  The \acronym{OBIGT} database was originally developed for that program, but has been ported to CHNOSZ, with additional modifications.
+  There may be an additional meaning for the acronym: \dQuote{One BIG Table} of thermodynamic data.
 
-  In order to represent thermodynamic data for minerals with phase transitions, the different phases of these minerals are represented as phase species that have states denoted by \samp{cr1}, \samp{cr2}, etc. The standard molar thermodynamic properties at 25 \eqn{^{\circ}}{°}C and 1 bar (\eqn{T_r}{Pr} and \eqn{P_r}{Pr}) of the \samp{cr2} phase species of minerals were generated by first calculating those of the \samp{cr1} phase species at the transition temperature (\eqn{T_{tr}}{Ttr}) and 1 bar then taking account of the volume and entropy of transition (the latter can be retrieved by combining the former with the Clausius-Clapeyron equation and values of \eqn{(dP/dT)} of transitions taken from the \acronym{SUPCRT92} data file) to calculate the standard molar entropy of the \samp{cr2} phase species at \eqn{T_{tr}}{Ttr}, and taking account of the enthalpy of transition (\eqn{{\Delta}H^{\circ}}{DeltaH0}, taken from the \acronym{SUPCRT92} data file) to calculate the standard molar enthalpy of the \samp{cr2} phase species at \eqn{T_{tr}}{Ttr}. The standard molar properties of the \samp{cr2} phase species at \eqn{T_{tr}}{Ttr} and 1 bar calculated in this manner were combined with the equations-of-state parameters of the species to generate values of the standard molar properties at 25 \eqn{^{\circ}}{°}C and 1 bar. This process was repeated as necessary to generate the standard molar properties of phase species represented by \samp{cr3} and \samp{cr4}, referencing at each iteration the previously calculated values of the standard molar properties of the lower-temperature phase species (i.e., \samp{cr2} and \samp{cr3}). A consequence of tabulating the standard molar thermodynamic properties of the phase species is that the values of \eqn{(dP/dT)} and \eqn{{\Delta}H^{\circ}}{DeltaH0} of phase transitions can be calculated using the equations of state and therefore do not need to be stored in the thermodynamic database. However, the transition temperatures (\eqn{T_{tr}}{Ttr}) generally can not be assessed by comparing the Gibbs energies of phase species and are tabulated in the database.
+  Each entry is referenced to one or two literature sources listed in \code{thermo$refs}.
+  Use \code{\link{thermo.refs}} to look up the citation information for the references.
+  \acronym{OBIGT} was initially built from the \acronym{SUPCRT92} (Johnson et al., 1992) and \acronym{slop98.dat} data files (Shock et al., 1998), and the references in those files are included here.
+  Some data in \acronym{slop98.dat} were corrected or modified as noted in that file; these modifications are indicated in OBIGT by having \samp{SLOP98} as one of the sources of data.
+  Other additions or modifications used in CHNOSZ are indicated by having \samp{CHNOSZ} as one of the sources of data.
+  See the vignette \emph{Thermodynamic data in CHNOSZ} for a complete description of the sources of data.
 
-  The identification of species and their standard molal thermodynamic properties at 25 \eqn{{^\circ}}{°}C and 1 bar are located in the first 12 columns of \code{thermo$obigt}:
+In order to represent thermodynamic data for minerals with phase transitions, the different phases of these minerals are represented as phase species that have states denoted by \samp{cr1}, \samp{cr2}, etc.
+The standard molar thermodynamic properties at 25 \eqn{^{\circ}}{°}C and 1 bar (\eqn{T_r}{Pr} and \eqn{P_r}{Pr}) of the \samp{cr2} phase species of minerals were generated by first calculating those of the \samp{cr1} phase species at the transition temperature (\eqn{T_{tr}}{Ttr}) and 1 bar then taking account of the volume and entropy of transition (the latter can be retrieved by combining the former with the Clausius-Clapeyron equation and values of \eqn{(dP/dT)} of transitions taken from the \acronym{SUPCRT92} data file) to calculate the standard molar entropy of the \samp{cr2} phase species at \eqn{T_{tr}}{Ttr}, and taking account of the enthalpy of transition (\eqn{{\Delta}H^{\circ}}{DeltaH0}, taken from the \acronym{SUPCRT92} data file) to calculate the standard molar enthalpy of the \samp{cr2} phase species at \eqn{T_{tr}}{Ttr}.
+The standard molar properties of the \samp{cr2} phase species at \eqn{T_{tr}}{Ttr} and 1 bar calculated in this manner were combined with the equations-of-state parameters of the species to generate values of the standard molar properties at 25 \eqn{^{\circ}}{°}C and 1 bar.
+This process was repeated as necessary to generate the standard molar properties of phase species represented by \samp{cr3} and \samp{cr4}, referencing at each iteration the previously calculated values of the standard molar properties of the lower-temperature phase species (i.e., \samp{cr2} and \samp{cr3}).
+A consequence of tabulating the standard molar thermodynamic properties of the phase species is that the values of \eqn{(dP/dT)} and \eqn{{\Delta}H^{\circ}}{DeltaH0} of phase transitions can be calculated using the equations of state and therefore do not need to be stored in the thermodynamic database.
+However, the transition temperatures (\eqn{T_{tr}}{Ttr}) generally can not be assessed by comparing the Gibbs energies of phase species and are tabulated in the database.
+
+The identification of species and their standard molal thermodynamic properties at 25 \eqn{{^\circ}}{°}C and 1 bar are located in the first 12 columns of \code{thermo$obigt}:
 
     \tabular{lll}{
       \code{name}     \tab character \tab Species name\cr
@@ -112,9 +120,13 @@ This is sometimes a useful command to use during an interactive session, when pr
     }
 
 
-   The meanings of the remaining columns depend on the physical state of a particular species. If it is aqueous, the values in these columns represent parameters in the revised HKF equations of state (see \code{\link{hkf}}), otherwise they denote parameters in a general equations for crystalline, gas and liquid species (see \code{\link{cgl}}). The names of these columns are compounded from those of the parameters in each of the equations of state (for example, column 13 is named \code{a1.a}). Scaling of the values by orders of magnitude is adopted for some of the parameters, following common usage in the literature.
+The meanings of the remaining columns depend on the physical state of a particular species.
+If it is aqueous, the values in these columns represent parameters in the revised HKF equations of state (see \code{\link{hkf}}), otherwise they denote parameters in a general equations for crystalline, gas and liquid species (see \code{\link{cgl}}).
+The names of these columns are compounded from those of the parameters in each of the equations of state (for example, column 13 is named \code{a1.a}).
+Scaling of the values by orders of magnitude is adopted for some of the parameters, following common usage in the literature.
 
-    Columns 13-20 for aqueous species (parameters in the revised HKF equations of state):
+Columns 13-20 for aqueous species (parameters in the revised HKF equations of state):
+
     \tabular{lll}{
       \code{a1} \tab numeric \tab \eqn{a_1\times10}{a1 * 10} (cal mol\eqn{^{-1}}{^-1} bar\eqn{^{-1}}{^-1})\cr
       \code{a2} \tab numeric \tab \eqn{a_2\times10^{-2}}{a2 * 10^{-2}} (cal mol\eqn{^{-1}}{^-1})\cr
@@ -124,10 +136,10 @@ This is sometimes a useful command to use during an interactive session, when pr
       \code{c2} \tab numeric \tab \eqn{c_2\times10^{-4}}{c2 * 10^-4} (cal mol\eqn{^{-1}}{^-1} K)\cr
       \code{omega} \tab numeric \tab \eqn{\omega\times10^{-5}}{omega * 10^-5} (cal mol\eqn{^{-1}}{^-1})\cr
       \code{Z}  \tab numeric \tab Charge
- 
     }
 
-    Columns 13-20 for crystalline, gas and liquid species (\eqn{Cp=a+bT+cT^{-2}+dT^{-0.5}+eT^2+fT^{\lambda}}{Cp = a + bT + cT^-2 + dT^-0.5 + eT^2 + fT^lambda}).
+Columns 13-20 for crystalline, gas and liquid species (\eqn{Cp=a+bT+cT^{-2}+dT^{-0.5}+eT^2+fT^{\lambda}}{Cp = a + bT + cT^-2 + dT^-0.5 + eT^2 + fT^lambda}).
+
     \tabular{lll}{
       \code{a} \tab numeric \tab \eqn{a} (cal K\eqn{^{-1}}{^-1} mol\eqn{^{-1}}{^-1})\cr
       \code{b} \tab numeric \tab \eqn{b\times10^3}{b * 10^3} (cal K\eqn{^{-2}}{^-2} mol\eqn{^{-1}}{^-1})\cr
@@ -140,12 +152,13 @@ This is sometimes a useful command to use during an interactive session, when pr
       \tab \tab temperature limit of validity of extrapolation (K)
     }
 
-    \item \code{thermo$source}
+    \item \code{thermo$refs}
     Dataframe of references to sources of thermodynamic data.
     \tabular{lll}{
       \code{key} \tab character \tab Source key\cr
       \code{author} \tab character \tab Author(s)\cr
       \code{year} \tab character \tab Year\cr
+      \code{note} \tab character \tab Short description of the compounds or species in this data source\cr
       \code{citation} \tab character \tab Citation (journal title, volume, and article number or pages; or book or report title)\cr
       \code{URL} \tab character \tab URL\cr
     }
@@ -221,23 +234,19 @@ system.file("extdata", package="CHNOSZ")
 ## exploring thermo$obigt
 # what physical states there are
 unique(thermo$obigt$state)
-# formulas of ten species at random
+# formulas of ten random species
 n <- nrow(thermo$obigt)
 thermo$obigt$formula[runif(10)*n]
 }
 
 \references{
+Cox, J. D., Wagman, D. D. and Medvedev, V. A., eds. (1989) \emph{CODATA Key Values for Thermodynamics}. Hemisphere Publishing Corporation, New York, 271 p. \url{http://www.worldcat.org/oclc/18559968}
 
-  Cox, J. D., Wagman, D. D. and Medvedev, V. A., eds. (1989) \emph{CODATA Key Values for Thermodynamics}. Hemisphere Publishing Corporation, New York, 271 p. \url{http://www.worldcat.org/oclc/18559968}
+Johnson, J. W., Oelkers, E. H. and Helgeson, H. C. (1992) SUPCRT92: A software package for calculating the standard molal thermodynamic properties of minerals, gases, aqueous species, and reactions from 1 to 5000 bar and 0 to 1000\eqn{^{\circ}}{°}C. \emph{Comp. Geosci.} \bold{18}, 899--947. \url{http://dx.doi.org/10.1016/0098-3004(92)90029-Q}
 
-  Dick, J. M., LaRowe, D. E. and Helgeson, H. C. (2006) Temperature, pressure, and electrochemical constraints on protein speciation: Group additivity calculation of the standard molal thermodynamic properties of ionized unfolded proteins. \emph{Biogeosciences} \bold{3}, 3110--336. \url{http://www.biogeosciences.net/3/311/2006/bg-3-311-2006.html}
+Shock, E. L. et al. {1998} \emph{SLOP98.dat} (computer data file). http://geopig.asu.edu/supcrt92_data/slop98.dat, accessed on 2005-11-05. Current location: \url{http://geopig.asu.edu/?q=tools}.
 
-  Johnson, J. W., Oelkers, E. H. and Helgeson, H. C. (1992) SUPCRT92: A software package for calculating the standard molal thermodynamic properties of minerals, gases, aqueous species, and reactions from 1 to 5000 bar and 0 to 1000\eqn{^{\circ}}{°}C. \emph{Comp. Geosci.} \bold{18}, 899--947. \url{http://dx.doi.org/10.1016/0098-3004(92)90029-Q}
-
-  Shock, E. L. et al. {1998} \emph{SLOP98.dat} (computer data file). http://geopig.asu.edu/supcrt92_data/slop98.dat, accessed on 2005-11-05. Current location: \url{http://geopig.asu.edu/sites/default/files/slop98.dat}.
-
-  Wagman, D. D., Evans, W. H., Parker, V. B., Schumm, R. H., Halow, I., Bailey, S. M., Churney, K. L. and Nuttall, R. L. (1982) The NBS tables of chemical thermodynamic properties. Selected values for inorganic and C\eqn{_1}{1} and C\eqn{_2}{2} organic substances in SI units. \emph{J. Phys. Chem. Ref. Data} \bold{11} (supp. 2), 1--392. \url{https://srd.nist.gov/JPCRD/jpcrdS2Vol11.pdf}
-
+Wagman, D. D., Evans, W. H., Parker, V. B., Schumm, R. H., Halow, I., Bailey, S. M., Churney, K. L. and Nuttall, R. L. (1982) The NBS tables of chemical thermodynamic properties. Selected values for inorganic and C\eqn{_1}{1} and C\eqn{_2}{2} organic substances in SI units. \emph{J. Phys. Chem. Ref. Data} \bold{11} (supp. 2), 1--392. \url{https://srd.nist.gov/JPCRD/jpcrdS2Vol11.pdf}
 }
 
 \concept{Thermodynamic data}

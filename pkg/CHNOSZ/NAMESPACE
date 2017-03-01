@@ -55,7 +55,9 @@ export(
   "feldspar", "apc", "EOSlab", "EOScalc",
   "basis.elements", "element.mu", "ibasis",
   "water.SUPCRT92", "water.props", "eqdata", "plot_findit",
-  "nonideal", "anim.TCA", "uniprot.aa", "run.guess"
+  "nonideal", "anim.TCA", "uniprot.aa", "run.guess",
+# added 20170301 or later
+  "GHS_Tr"
 )
 
 # Load shared objects

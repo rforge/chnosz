@@ -177,12 +177,11 @@ data(thermo)         ## clear system settings
 
 # Thermodynamic database and chemical formulas
 
-An attempt has been made to provide a primary database (OBIGT) that is internally consistent.
-That is an elusive goal, as the database includes datasets from many sources; you should be aware that certain combinations of datasets in CHNOSZ may generate inconsistencies.
-```{marginfigure}
+An attempt has been made to provide a primary database (OBIGT) that has no major inconsistencies.
+As the database includes datasets from many sources, it can not be guaranteed to be fully internally consistent.
 For crucial problems, check not only the accuracy of entries in the database, but also the *suitability of the data* for your problem.
-If there are any doubts, consult the primary sources (see  <span style="color:blue">?`thermo.refs`</span>).
-```
+If there are any doubts, consult the primary sources.
+Use <span style="color:blue">`thermo.refs()`</span> to show a list of references for the data; see also the vignette, [<span style="color:blue">*Thermodynamic data in CHNOSZ*</span>](obigt.html), for more information.
 
 ## The <span style="color:green">`info()`</span> function
 
@@ -1784,7 +1783,7 @@ thermo.refs(c(iATP, iMgATP))
 
 A character argument gives the source key(s):
 ```{r thermo_refs_character}
-thermo.refs(c("HDN+78", "MGN03"))
+thermo.refs(c("HDNB78", "MGN03"))
 ```
 
 If the argument holds the result of <span style="color:green">`subcrt()`</span>, references for all species in the reaction are returned:

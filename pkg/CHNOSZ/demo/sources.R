@@ -4,8 +4,9 @@ ref.source <- thermo$refs$key
 # sources of elemental data
 element.source <- thermo$element$source
 # sources in the primary thermodynamic database
-os1 <- thermo$obigt$ref1
-os2 <- thermo$obigt$ref2
+# we omit the [S92] in "HDNB78 [S92]" etc.
+os1 <- gsub("\ .*", "", thermo$obigt$ref1)
+os2 <- gsub("\ .*", "", thermo$obigt$ref2)
 # all of the thermodynamic data sources - some of them might be NA
 obigt.source <- unique(c(os1,os2))
 obigt.source <- obigt.source[!is.na(obigt.source)]

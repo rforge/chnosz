@@ -1,13 +1,15 @@
 key,author,year,note,citation,URL
 Kel60,"K. K. Kelley",1960,"gases Cp","U. S. Bureau of Mines Bull. 584",http://www.worldcat.org/oclc/693388901
-Kel60.1,"K. K. Kelley",1960,larnite,"U. S. Bureau of Mines Bull. 584",http://www.worldcat.org/oclc/693388901
-Kel60.2,"K. K. Kelley",1960,"gypsum Cp","U. S. Bureau of Mines Bull. 584",http://www.worldcat.org/oclc/693388901
+Kel60.1,"K. K. Kelley",1960,larnite Cp,"U. S. Bureau of Mines Bull. 584",http://www.worldcat.org/oclc/693388901
+Kel60.2,"K. K. Kelley",1960,"iron Cp","U. S. Bureau of Mines Bull. 584",http://www.worldcat.org/oclc/693388901
+Kel60.3,"K. K. Kelley",1960,"gypsum Cp","U. S. Bureau of Mines Bull. 584",http://www.worldcat.org/oclc/693388901
 Pan70,"L. B. Pankratz",1970,chlorargyrite,"U. S. Bureau of Mines Report of Investigations 7430",http://www.worldcat.org/oclc/14154245
 PK70,"L. B. Pankratz and E. G. King",1970,"bornite and chalcopyrite","U. S. Bureau of Mines Report of Investigations 7435",http://www.worldcat.org/oclc/14154292
 HDNB78,"H. C. Helgeson, J. M. Delany et al.",1978,"minerals and phase transitions","Am. J. Sci. 278A, 1-229",http://www.worldcat.org/oclc/13594862
 HDNB78.1,"H. C. Helgeson, J. M. Delany et al.",1978,"litharge S, V, and Cp parameters","Am. J. Sci. 278A, 1-229",http://www.worldcat.org/oclc/13594862
 RHF79,"R. A. Robie, B. S. Hemingway and J. R. Fisher",1979,"chlorargyrite, rutile, and titanite","U. S. Geological Survey Bull. 1452",http://pubs.er.usgs.gov/publication/b1452
 RHF79.1,"R. A. Robie, B. S. Hemingway and J. R. Fisher",1979,"dickite, fluorphlogopite, halloysite, and pyrope","U. S. Geological Survey Bull. 1452",http://pubs.er.usgs.gov/publication/b1452
+RHF79.2,"R. A. Robie, B. S. Hemingway and J. R. Fisher",1979,"iron","U. S. Geological Survey Bull. 1452",http://pubs.er.usgs.gov/publication/b1452
 PB82,"L. N. Plummer and E. Busenberg",1982,"aragonite and calcite","Geochim. Cosmochim. Acta 46, 1011-1040",http://dx.doi.org/10.1016/0016-7037(82)90056-4
 WEP+82,"D. D. Wagman, W. H. Evans et al.",1982,"gases GHS","J. Phys. Chem. Ref. Data 11, 1-392",http://dx.doi.org/10.1063/1.555661
 WEP+82.1,"D. D. Wagman, W. H. Evans et al.",1982,manganosite,"J. Phys. Chem. Ref. Data 11, 1-392",http://dx.doi.org/10.1063/1.555661
@@ -34,22 +36,32 @@ PK95,"V. B. Parker and I. L. Khodakovskii",1995,melanterite,"J. Phys. Chem. Ref.
 RH95,"R. A. Robie and B. S. Hemingway",1995,"gypsum GHS","U. S. Geological Survey Bull. 2131",http://pubs.er.usgs.gov/publication/b2131
 SK95,"E. L. Shock and C. M. Koretsky",1995,"metal-organic acid complexes","Geochim. Cosmochim. Acta 59, 1497-1532",http://dx.doi.org/10.1016/0016-7037(95)00058-8
 Sho95,"E. L. Shock",1995,"carboxylic acids","Am. J. Sci. 295, 496-580",http://dx.doi.org/10.2475/ajs.295.5.496
-Gur96,"S. Gurrieri",1996,sulfur,"personal communication",
 AH97b,"J. P. Amend and H. C. Helgeson",1997,"amino acids GHS","J. Chem. Soc., Faraday Trans. 93, 1927-1941",http://dx.doi.org/10.1039/A608126F
 DSM+97,"J. D. Dale, E. L. Shock et al.",1997,alkylphenols,"Geochim. Cosmochim. Acta 61, 4017-4024",http://dx.doi.org/10.1016/S0016-7037(97)00212-3
 MS97,"T. M. McCollom and E. L. Shock",1997,"MgSO<sub>4</sub>, NaSO<sub>4</sub><sup>-</sup>, and HCl","Geochim. Cosmochim. Acta 61, 4375-4391",http://dx.doi.org/10.1016/S0016-7037(97)00241-X
+MS97.1,"T. M. McCollom and E. L. Shock",1997,"sulfur","Geochim. Cosmochim. Acta 61, 4375-4391",http://dx.doi.org/10.1016/S0016-7037(97)00241-X
 SSB97,"E. L. Shock, D. C. Sassani and H. Betz",1997,"uranium species","Geochim. Cosmochim. Acta 61, 4245-4266",http://dx.doi.org/10.1016/S0016-7037(97)00240-8
+SSB97.1,"E. L. Shock, D. C. Sassani and H. Betz",1997,"uraninite","Geochim. Cosmochim. Acta 61, 4245-4266",http://dx.doi.org/10.1016/S0016-7037(97)00240-8
 SSH97,"D. A. Sverjensky, E. L. Shock and H. C. Helgeson",1997,"metal complexes","Geochim. Cosmochim. Acta 61, 1359-1412",http://dx.doi.org/10.1016/S0016-7037(97)00009-4
-SSW+97,"E. L. Shock, D. C. Sassani et al.",1997,"inorganic ions and hydroxide complexes","Geochim. Cosmochim. Acta 61, 907-950",http://dx.doi.org/10.1016/S0016-7037(96)00339-0
-SSW+97.1,"E. L. Shock, D. C. Sassani et al.",1997,"zincite and litharge","Geochim. Cosmochim. Acta 61, 907-950",http://dx.doi.org/10.1016/S0016-7037(96)00339-0
+SSWS97,"E. L. Shock, D. C. Sassani et al.",1997,"inorganic ions and hydroxide complexes","Geochim. Cosmochim. Acta 61, 907-950",http://dx.doi.org/10.1016/S0016-7037(96)00339-0
+SSWS97.1,"E. L. Shock, D. C. Sassani et al.",1997,"zincite and litharge","Geochim. Cosmochim. Acta 61, 907-950",http://dx.doi.org/10.1016/S0016-7037(96)00339-0
 TSD97,"Y. Tardy, R. Schaul, J. Duplay",1997,"humic acid, microflora, and plants","C. R. Acad. Sci. Paris 324, 969-976",http://dx.doi.org/10.1016/S1251-8050(97)83981-X
 HOKR98,"H. C. Helgeson, C. E. Owens et al.",1998,"organic molecules and groups","Geochim. Cosmochim. Acta 62, 985-1081",http://dx.doi.org/10.1016/S0016-7037(97)00219-6
-HS99,"J. R. Haas and E. L. Shock",1998,"chloroethylene species","Geochim. Cosmochim. Acta 63, 3429-3441",http://dx.doi.org/10.1016/S0016-7037(99)00276-8
 RH98,"L. Richard and H. C. Helgeson",1998,"organic molecules and groups","Geochim. Cosmochim. Acta 62, 3591-3636",http://dx.doi.org/10.1016/S0016-7037(97)00345-1
-SLOP98,"E. L. Shock et al.",1998,,"slop98.dat computer data file",http://geopig.asu.edu/?q=tools
-SLOP98.1,"E. L. Shock et al.",1998,"zincite and litharge; &quot;These data were used in @SSW+97, but were not tabulated in the paper.&quot;","slop98.dat computer data file",http://geopig.asu.edu/?q=tools
+SLOP98.1,"E. L. Shock et al.",1998,"zincite and litharge; &quot;These data were used in @SSWS97, but were not tabulated in the paper.&quot;","slop98.dat computer data file",http://geopig.asu.edu/?q=tools
 SLOP98.2,"E. L. Shock et al.",1998,"daphnite; &quot;G<sub>f</sub> and H<sub>f</sub> from @SS93a TMM&quot;","slop98.dat computer data file",http://geopig.asu.edu/?q=tools
-SS98a,"D. C. Sassani and E. L. Shock",1998,"platinum-group solids","Geochim. Cosmochim. Acta 62, 2643-2671",http://dx.doi.org/10.1016/S0016-7037(98)00049-0
+SLOP98.3,"E. L. Shock et al.",1998,"&quot;Corrected values based on data from @SH90 &quot;","slop98.dat computer data file",http://geopig.asu.edu/?q=tools
+SLOP98.4,"E. L. Shock et al.",1998,"&quot;Corrected values based on data from @SSH97 &quot;","slop98.dat computer data file",http://geopig.asu.edu/?q=tools
+SLOP98.5,"E. L. Shock et al.",1998,"&quot;Corrected values based on data from @SS93 &quot;","slop98.dat computer data file",http://geopig.asu.edu/?q=tools
+SLOP98.6,"E. L. Shock et al.",1998,"&quot;Corrected values based on data from @SK93 &quot;","slop98.dat computer data file",http://geopig.asu.edu/?q=tools
+SLOP98.7,"E. L. Shock et al.",1998,"&quot;Corrected values based on data from @Sho95 &quot;","slop98.dat computer data file",http://geopig.asu.edu/?q=tools
+SLOP98.8,"E. L. Shock et al.",1998,"&quot;These data were used in @SK95, but were not tabulated in the paper.&quot;","slop98.dat computer data file",http://geopig.asu.edu/?q=tools
+SLOP98.9,"E. L. Shock et al.",1998,"&quot;Corrected values based on data from @SK95 &quot;","slop98.dat computer data file",http://geopig.asu.edu/?q=tools
+SLOP98.10,"E. L. Shock et al.",1998,"&quot;Corrected values based on data from @HSS95 &quot;","slop98.dat computer data file",http://geopig.asu.edu/?q=tools
+SLOP98.11,"E. L. Shock et al.",1998,"&quot;Data and parameters as used by @MS97. &quot;","slop98.dat computer data file",http://geopig.asu.edu/?q=tools
+SS98a,"D. C. Sassani and E. L. Shock",1998,"platinum-group ions and complexes","Geochim. Cosmochim. Acta 62, 2643-2671",http://dx.doi.org/10.1016/S0016-7037(98)00049-0
+SS98a.1,"D. C. Sassani and E. L. Shock",1998,"platinum-group solids","Geochim. Cosmochim. Acta 62, 2643-2671",http://dx.doi.org/10.1016/S0016-7037(98)00049-0
+HS99,"J. R. Haas and E. L. Shock",1998,"chloroethylene species","Geochim. Cosmochim. Acta 63, 3429-3441",http://dx.doi.org/10.1016/S0016-7037(99)00276-8
 PSK99,"P. Prapaipong, E. L. Shock and C. M. Koretsky",1999,"metal-dicarboxylate complexes","Geochim. Cosmochim. Acta 63, 2547-2577",http://dx.doi.org/10.1016/S0016-7037(99)00146-5
 SAJ00,"R. E. Stoffregen, C. N. Alpers and J. L. Jambor",2000,"jarosite, natroalunite, and natrojarosite","Rev. Mineral. Geochem. 40, 453-479",http://dx.doi.org/10.2138/rmg.2000.40.9
 AP01,"J. P. Amend and A. V. Plyasunov",2001,carbohydrates,"Geochim. Cosmochim. Acta 65, 3901-3917",http://dx.doi.org/10.1016/S0016-7037(01)00707-4

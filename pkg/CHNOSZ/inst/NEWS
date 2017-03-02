@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-68 (2017-03-01)
+CHANGES IN CHNOSZ 1.0.8-69 (2017-03-02)
 ---------------------------------------
 
 DOCUMENTATION:
@@ -94,6 +94,10 @@ NEW FEATURES:
   and database values of transition temperatures and heat capacity
   parameters, and GHS at Tr of the low-temperature phase.
 
+- Add extdata/supcrt/ directory with files read.supcrt.R, compare.R,
+  newnames.csv; used to compare data in SUPCRT and slop files
+  (http://geopig.asu.edu/?q=tools) to data in thermo$obigt.
+
 NEW AND OLD DATA:
 
 - Split OBIGT.csv and OBIGT-2.csv into multiple files according to
@@ -128,6 +132,10 @@ NEW AND OLD DATA:
 
 - extdata: Add fasta/rubisco.fasta and cpetc/*.csv files SS98_Fig5a,
   SS98_Fig5b, PM90 (all used in anintro.Rmd).
+
+- Replace data for sulfur (cr) from Gurrieri, 1996, personal
+  communication with that "as used by" McCollom and Shock, 1997 (from
+  slop98.dat).
 
 BUG FIXES:
 

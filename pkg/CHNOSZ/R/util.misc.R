@@ -45,6 +45,8 @@ GHS_Tr <- function(ispecies, Htr) {
     if(thisinfo$state!=thiscr | thisinfo$name!=name) stop(paste("species", thisis, "is not", name, thiscr))
     # if we're above cr1, calculate the equivalent GHS at Tr
     if(i > 1) {
+      # set the starting GHS to 0 (in case they're NA - we only need the increments over temperature)
+      thisinfo$G <- thisinfo$H <- thisinfo$S <- 0
       # the HS increments from 298.15 to Ttr
       HSinc <- cgl(c("H", "S"), T=c(298.15, Ttr), ghs=thisinfo, eos=thisinfo)
       Hf_Tr <- c(Hf_Tr, Hf - diff(HSinc[[1]]$H))

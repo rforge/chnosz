@@ -71,7 +71,7 @@ if (!nzchar(Sys.which("pngquant"))) {
 ```
 
 
-This vignette demonstrates [<span style="color:green">`EOSregress()`</span>](http://www.chnosz.net/manual/EOSregress.html) and related functions for the regression of heat capacity and volumetric data to obtain "equations of state" coefficients.
+This [vignette](index.html) demonstrates <span style="color:blue">`EOSregress()`</span> and related functions for the regression of heat capacity and volumetric data to obtain "equations of state" coefficients.
 
 # A note on the equations
 

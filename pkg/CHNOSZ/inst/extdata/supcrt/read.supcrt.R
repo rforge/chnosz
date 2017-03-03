@@ -1,4 +1,4 @@
-# read.subcrt.R
+# read.supcrt.R
 # read thermodynamic data in SUPCRT format
 
 # import values from supcrt files (e.g., slop98.dat)

@@ -14,7 +14,7 @@ vignette: >
 bibliography: obigt.bib
 # so that these appear in the bibliography
 nocite: | 
-  @SPRONS92, @SLOP98, @CHNOSZ
+  @SPRONS92, @SLOP98, @SLOP07, @SLOP15, @CHNOSZ
 # 20170212: comment the csl line to build package on R-Forge, to avoid
 # getting an error there (pandoc-citeproc: error while parsing the XML string)
 #csl: elementa.csl
@@ -64,7 +64,8 @@ filerefs <- function(csvfile, dat=NULL, message=FALSE) {
   ina <- is.na(ikey)
   if(any(ina)) cat(paste("**WARNING: key(s)", paste(names(tab)[ina], collapse=" "), "not found in `thermo$ref$key`**\n\n"))
   # put the table in chronological order, according to thermo$ref
-  ikey <- na.omit(match(thermo$ref$key, keys))
+  #ikey <- na.omit(match(thermo$ref$key, keys))
+  ikey <- order(match(keys, thermo$ref$key)) # works for duplicated keys (e.g. "Sho92" and "Sho92 [S98]")
   tab <- tab[ikey]
   keys <- keys[ikey]
   xxx <- lapply(seq_along(tab), function(i){
@@ -102,8 +103,8 @@ With the CHNOSZ package attached, use `?thermo` in R to view the documentation f
 
 Most of the documentation here is automatically generated based on the citations in `thermo$obigt` and the notes in `thermo$refs`.
 The sections below correspond to CSV data files loaded by `data(thermo)`.
-In each section, the primary sources (`ref1`) are documented in chronological order.
-If any secondary sources are present (`ref2`), they are listed as bullet points under the primary source.
+In each section, the primary references (`ref1`) are documented in chronological order.
+If any secondary references are present (`ref2`), they are listed as bullet points under the primary source.
 Additional symbols show whether the data were present in the earliest of sprons92.dat (ø), slop98.dat (\*), slop07.dat (†), or slop15.dat (‡).
 
 Any additional comments are placed at the beginning of each section.
@@ -119,7 +120,7 @@ Select "All at once" to show all sections.
 
 ### `r setfile("H2O_aq.csv")`
 ```{r H2O_aq, results="asis", echo=FALSE}
-cat('This file contains H<sub>2</sub>O, *e*<sup>-</sup>, and H<sup>+</sup>. The properties of H<sub>2</sub>O are listed as NA; CHNOSZ calculates its properties using a Fortran subroutine taken from SUPRCT92 [@JOH92]. The properties of the proton (H<sup>+</sup>) are 0. The properties of the electron (*e*<sup>-</sup>) are 0, except for *S*°, which is the opposite of *S*° for the "element" of charge (Z, see `?thermo`).\n')
+cat('This file contains H<sub>2</sub>O, *e*<sup>-</sup>, and H<sup>+</sup>. The properties of H<sub>2</sub>O are listed as NA; CHNOSZ calculates its properties using a Fortran subroutine taken from SUPRCT92 [@JOH92]. The properties of the proton (H<sup>+</sup>) are 0. The properties of the electron (*e*<sup>-</sup>) are 0, except for *S*°, which is the opposite of *S*° for the "element" of charge (Z; see `?thermo`).\n')
 ```
 ```{r used, include=FALSE}
 # initialize the list of used species

@@ -8,8 +8,10 @@
 # different.csv - entries that have different data in SUPCRT datafile and thermo$obigt; the numerical differences are given here
 
 # read the SUPCRT/slop file
-#sfile <- "SPRONS92.jmd" # SPRONS92.DAT edited to add separator line after aq block
-sfile <- "slop98.jmd" # slop98.dat edited to add separator line, and other changes to make read.supcrt work
+#sfile <- "SPRONS92.edit" # SPRONS92.DAT edited to add separator line after aq block
+#sfile <- "slop98.edit"  # slop98.dat edited to add separator line, and other changes to make read.supcrt work
+sfile <- "slop07.edit"  # slop07.dat edited to remove non-ASCII characters in header (dashes in page ranges)
+                       # and extra characters in ref: lines (DAPHNITE,14A and URANINITE)
 source("read.supcrt.R")
 sdat <- read.supcrt(sfile)
 
@@ -113,18 +115,22 @@ oout$ref2[is.na(oout$ref2)] <- ""
 oout$ref2 <- paste0(oout$ref1, ",", oout$ref2)
 oout$ref1 <- sout$ref1
 # the columns with numeric data
-icol <- c(8:10, 12:15, 20)
 icol <- 8:20
 for(i in icol) {
   # put the difference in oout
   oout[, i] <- round(oout[, i] - as.numeric(sout[, i]), 4)
 }
-# find whether each entry has the same or different data
-isame <- numeric()
+# find whether each entry has the same, almost the same, or different data
+ialmost <- isame <- numeric()
 for(i in 1:nrow(oout)) {
   issame <- all(sapply(sapply(na.omit(as.numeric(oout[i, icol])), all.equal, 0), isTRUE))
   if(issame) isame <- c(isame, i)
+  isalmost <- all(sapply(na.omit(abs(as.numeric(oout[i, icol])) < c(1000, 1000, 10, 10, 10, 1, 1, 1, 1, 1, 1, 1, 1)), isTRUE))
+  if(isalmost) ialmost <- c(ialmost, i)
 }
 # write the difference between matching entries
 write.csv(oout[isame, ], "same.csv", quote=c(1, 2, 5, 6))
-write.csv(oout[-isame, ], "different.csv", quote=c(1, 2, 5, 6))
+write.csv(oout[setdiff(ialmost, isame), ], "almost.csv", quote=c(1, 2, 5, 6))
+write.csv(oout[-ialmost, ], "diffs.csv", quote=c(1, 2, 5, 6))
+# write the values from the SUPCRT file for the different entries
+write.csv(sout[-ialmost, ], "different.csv", quote=c(1, 2, 5, 6))

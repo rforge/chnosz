@@ -186,21 +186,21 @@ Use <span style="color:blue">`thermo.refs()`</span> to show a list of references
 ## The <span style="color:green">`info()`</span> function
 
 <span style="color:green">`info()`</span> provides an interface to the thermodynamic database packaged with CHNOSZ.
-Suppose you are interested in the thermodynamic properties of aqueous ethylene.
+Suppose you are interested in the thermodynamic properties of aqueous methane.
 You can search for the species by name:
-```{r info_ethylene}
-info("ethylene")
+```{r info_methane}
+info("methane")
 ```
 
-Multiple entries exist for ethylene; the index of the `aq` (aqueous) species is returned by default.
+Multiple entries exist for methane; the index of the `aq` (aqueous) species is returned by default.
 A second argument can be used to specify a different physical state:
-```{r info_ethylene_gas}
-info("ethylene", "gas")
+```{r info_methane_gas}
+info("methane", "gas")
 ```
 
-Knowing that aqueous ethylene is species number 88 in the database, you can again use <span style="color:green">`info()`</span> to retrieve the set of standard molal thermodynamic properties and equations of state parameters:
-```{r info_88}
-info(88)
+Knowing that aqueous methane is species number 77 in the database, you can again use <span style="color:green">`info()`</span> to retrieve the set of standard molal thermodynamic properties and equations of state parameters:
+```{r info_77}
+info(77)
 ```
 
 This number can be used as an argument (`ispecies`) for other functions in CHNOSZ to uniquely identify any species; some commonly used functions also accept the species names.
@@ -233,22 +233,22 @@ The messages may be useful for browsing the database, but owing to their ambiguo
 
 ## Counting elements, chemical formulas, <span style="color:green">`ZC()`</span>
 
-Continuing with the example of ethylene, let's look at its chemical formula:
-```{r info_88_formula}
-info(88)$formula
+Continuing with the example of methane, let's look at its chemical formula:
+```{r info_77_formula}
+info(77)$formula
 ```
 
 We can use <span style="color:green">`makeup()`</span> to count the elements in the formula, followed by <span style="color:green">`as.chemical.formula()`</span> to rewrite the formula on one line:
-```{r makeup_88}
-makeup(88)
-as.chemical.formula(makeup(88))
+```{r makeup_77}
+makeup(77)
+as.chemical.formula(makeup(77))
 ```
 
 For organic species, a simple calculation of the average oxidation state of carbon (`r zc`) is possible given the species index, chemical formula, or elemental count:
-```{r ZC_88}
-ZC(88)
-ZC(info(88)$formula)
-ZC(makeup(88))
+```{r ZC_77}
+ZC(77)
+ZC(info(77)$formula)
+ZC(makeup(77))
 ```
 
 # Calculating thermodynamic properties

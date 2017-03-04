@@ -128,7 +128,8 @@ EOScalc <- function(coefficients, T, P, ...) {
 }
 
 EOSplot <- function(exptdata, var=NULL, T.max=9999, T.plot=NULL,
-  fun.legend="topleft", coefficients=NULL, add=FALSE, lty=1, ...) {
+  fun.legend="topleft", coefficients=NULL, add=FALSE,
+  lty=par("lty"), col=par("col"), ...) {
   # plot experimental and modelled volumes and heat capacities
   # first figure out the property (Cp or V) from the exptdata
   prop <- colnames(exptdata)[3]
@@ -170,7 +171,7 @@ EOSplot <- function(exptdata, var=NULL, T.max=9999, T.plot=NULL,
   message("EOSplot: plotting line for P=", P, " bar")
   xs <- seq(xlim[1], xlim[2], length.out=200)
   calc.X <- EOScalc(coefficients, xs, P, ...)
-  lines(xs, calc.X, lty=lty)
+  lines(xs, calc.X, lty=lty, col=col)
   # make legend
   if(!is.null(fun.legend) & !add) {
     # 20161101: negate QBorn and V_s_var

@@ -86,6 +86,8 @@ filerefs <- function(csvfile, dat=NULL, message=FALSE) {
     # replace SLOP98 with slop98.dat, etc.
     # (we don't actually cite them here to keep the year from showing -- it's annoying to see e.g. "slop98.dat (1998)")
     citemark <- "@"
+    if(thisref=="SLOP15") { thisref <- "slop15.dat"; citemark <- "" }
+    if(thisref=="SLOP07") { thisref <- "slop07.dat"; citemark <- "" }
     if(thisref=="SLOP98") { thisref <- "slop98.dat"; citemark <- "" }
     if(thisref=="SPRONS92") { thisref <- "sprons92.dat"; citemark <- "" }
     if(thisref=="CHNOSZ") { citemark <- "" }
@@ -131,6 +133,10 @@ used <- c(used, filerefs(csvfile))
 ```
 
 ### `r setfile("Shock_aq.csv")`
+```{r Shock_aq, results="asis", echo=FALSE}
+cat("Note: ZnCl4-2 was present in sprons92.dat but not in slop98.dat or later files, and is not included in CHNOSZ.")
+```
+
 ```{r reflist, results="asis", echo=FALSE}
 ```
 
@@ -147,10 +153,6 @@ used <- c(used, filerefs(csvfile))
 ```
 
 ### `r setfile("Dick_aq.csv")`
-```{r Dick_aq, results="asis", echo=FALSE}
-cat("Corrected values of HKF parameters *a*<sub>2</sub> and *a*<sub>4</sub> for [-CH2NH2] are used here; they were incorrectly printed as zero in Table 6 of @DLH06.")
-```
-
 ```{r reflist, results="asis", echo=FALSE}
 ```
 
@@ -159,10 +161,6 @@ cat("Corrected values of HKF parameters *a*<sub>2</sub> and *a*<sub>4</sub> for 
 ```
 
 ### `r setfile("Marini_aq.csv")`
-```{r reflist, results="asis", echo=FALSE}
-```
-
-### `r setfile("Canovas_aq.csv")`
 ```{r reflist, results="asis", echo=FALSE}
 ```
 
@@ -178,7 +176,7 @@ cat("The primary aqueous silica species in CHNSOZ is SiO<sub>2</sub> [@SHS89]. T
 
 ### `r setfile("Helgeson_cr.csv")`
 ```{r Helgeson_cr, results="asis", echo=FALSE}
-cat("Note: chamosite,7A, witherite, and ZnCl4-2 were present in sprons92.dat but not in slop98.dat, and are not included in CHNOSZ.")
+cat("Note: chamosite,7A and witherite were present in sprons92.dat but not in slop98.dat or later files, and are not included in CHNOSZ.")
 ```
 
 ```{r reflist, results="asis", echo=FALSE}
@@ -197,6 +195,10 @@ cat("Note: chamosite,7A, witherite, and ZnCl4-2 were present in sprons92.dat but
 ```
 
 ### `r setfile("Majzlan_cr.csv")`
+```{r Majzlan_cr, results="asis", echo=FALSE}
+cat("Note: parameters used here for goethite differ slightly from those listed in slop files [@Sho09].")
+```
+
 ```{r reflist, results="asis", echo=FALSE}
 ```
 
@@ -233,10 +235,6 @@ cat("Note: chamosite,7A, witherite, and ZnCl4-2 were present in sprons92.dat but
 ```
 
 ### `r setfile("Other_gas.csv")`
-```{r Other_gas, results="asis", echo=FALSE}
-cat('"Parameters given provide smooth metastable extrapolation of one-bar steam properties predicted by the @HGK84 equation of state to temperatures < the saturation temperature (99.632 C)." -- @Joh92a')
-```
-
 ```{r reflist, results="asis", echo=FALSE}
 ```
 
@@ -259,6 +257,9 @@ used2 <- c(used2, filerefs(csvfile))
 ```
 
 #### `r setfile("Shock_aq.csv")`
+```{r Shock_aq, results="asis", echo=FALSE}
+```
+
 ```{r reflist2, results="asis", echo=FALSE}
 ```
 
@@ -275,9 +276,6 @@ used2 <- c(used2, filerefs(csvfile))
 ```
 
 #### `r setfile("Dick_aq.csv")`
-```{r Dick_aq, results="asis", echo=FALSE}
-```
-
 ```{r reflist2, results="asis", echo=FALSE}
 ```
 
@@ -286,10 +284,6 @@ used2 <- c(used2, filerefs(csvfile))
 ```
 
 #### `r setfile("Marini_aq.csv")`
-```{r reflist2, results="asis", echo=FALSE}
-```
-
-#### `r setfile("Canovas_aq.csv")`
 ```{r reflist2, results="asis", echo=FALSE}
 ```
 
@@ -322,6 +316,9 @@ used2 <- c(used2, filerefs(csvfile))
 ```
 
 #### `r setfile("Majzlan_cr.csv")`
+```{r Majzlan_cr, results="asis", echo=FALSE}
+```
+
 ```{r reflist2, results="asis", echo=FALSE}
 ```
 
@@ -358,9 +355,6 @@ used2 <- c(used2, filerefs(csvfile))
 ```
 
 #### `r setfile("Other_gas.csv")`
-```{r Other_gas, results="asis", echo=FALSE}
-```
-
 ```{r reflist2, results="asis", echo=FALSE}
 ```
 

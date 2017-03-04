@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-70 (2017-03-03)
+CHANGES IN CHNOSZ 1.0.8-71 (2017-03-04)
 ---------------------------------------
 
 DOCUMENTATION:
@@ -101,7 +101,12 @@ NEW FEATURES:
 NEW AND OLD DATA:
 
 - Split OBIGT.csv and OBIGT-2.csv into multiple files according to
-  author names. All files are now under extdata/OBIGT/.
+  author names. All files are now under extdata/OBIGT/. Conflicting data
+  from OBIGT-2.csv were removed (see below).
+
+- Citations in OBIGT now have a suffix (e.g. [S92] or [S98]) if the data
+  were first present in sprons92.dat from SUPCRT, slop98.dat, or later
+  versions of the slop data files (http://geopig.asu.edu/?q=tools).
 
 - Canovas_aq.csv: Add data for citric acid cycle metabolites from Canovas and
   Shock, 2016.
@@ -124,18 +129,22 @@ NEW AND OLD DATA:
   used in tests, examples, or vignettes, from OBIGT-2.csv to
   extdata/thermo (Ste01.csv and BZA10.csv).
 
-- Remove other conflicting datasets previously in OBIGT-2.csv (21
-  sources).
+- Remove other conflicting datasets (i.e. that provide different data
+  for a species already in the database) previously listed in
+  OBIGT-2.csv (21 sources).
 
 - Replace GHS for iron (c2, c3) calculated in CHNOSZ with values derived
   from sprons92.dat.
 
-- extdata: Add fasta/rubisco.fasta and cpetc/*.csv files SS98_Fig5a,
-  SS98_Fig5b, PM90 (all used in anintro.Rmd).
-
 - Replace data for sulfur (cr) from Gurrieri, 1996, personal
   communication with that "as used by" McCollom and Shock, 1997 (from
   slop98.dat).
+
+- Update selected nonelectrolytes with data from Plyasunov and Shock,
+  2001, as listed in slop07.dat (http://geopig.asu.edu/?q=tools).
+
+- extdata: Add fasta/rubisco.fasta and cpetc/*.csv files SS98_Fig5a,
+  SS98_Fig5b, PM90 (all used in anintro.Rmd).
 
 BUG FIXES:
 

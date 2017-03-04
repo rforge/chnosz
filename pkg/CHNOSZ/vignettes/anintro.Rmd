@@ -199,7 +199,7 @@ info("methane", "gas")
 ```
 
 Knowing that aqueous methane is species number 77 in the database, you can again use <span style="color:green">`info()`</span> to retrieve the set of standard molal thermodynamic properties and equations of state parameters:
-```{r info_77}
+```{r info_77, message=FALSE}
 info(77)
 ```
 
@@ -234,7 +234,7 @@ The messages may be useful for browsing the database, but owing to their ambiguo
 ## Counting elements, chemical formulas, <span style="color:green">`ZC()`</span>
 
 Continuing with the example of methane, let's look at its chemical formula:
-```{r info_77_formula}
+```{r info_77_formula, message=FALSE}
 info(77)$formula
 ```
 
@@ -245,7 +245,7 @@ as.chemical.formula(makeup(77))
 ```
 
 For organic species, a simple calculation of the average oxidation state of carbon (`r zc`) is possible given the species index, chemical formula, or elemental count:
-```{r ZC_77}
+```{r ZC_77, message=FALSE}
 ZC(77)
 ZC(info(77)$formula)
 ZC(makeup(77))
@@ -342,8 +342,8 @@ logK <- data.frame(T, CO2, CO, CH4)
 matplot(logK[, 1], logK[, -1], type = "l", col = 1, lty = 1,
         xlab = axis.label("T"), ylab = axis.label("logK"))
 text(80, -1.7, expr.species("CO2"))
-text(270, -2.2, expr.species("CO"))
-text(310, -2.4, expr.species("CH4"))
+text(240, -2.37, expr.species("CO"))
+text(300, -2.57, expr.species("CH4"))
 ```
 ```{r CO2_logK, eval=FALSE}
 ```
@@ -915,11 +915,11 @@ diagram(e, alpha = TRUE, groups = groups, col = 1:5)
 # plot only alcohols
 names <- within(species(), name[-ia] <- "")$name
 lty <- ifelse(names == "", 0, 1)
-diagram(e, alpha = TRUE, ylim = c(0, 0.5), lty = lty, names = names)
+diagram(e, alpha = TRUE, ylim = c(0, 0.53), lty = lty, names = names)
 # plot only ketones
 names <- within(species(), name[-ik] <- "")$name
 lty <- ifelse(names == "", 0, 1)
-diagram(e, alpha = TRUE, ylim = c(0, 0.13), lty = lty, names = names)
+diagram(e, alpha = TRUE, ylim = c(0, 0.15), lty = lty, names = names)
 ```
 
 That makes a diagram that is similar to Figure 6b of Shock and Schulte (1998).

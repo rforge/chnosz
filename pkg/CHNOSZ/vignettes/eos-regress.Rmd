@@ -123,45 +123,43 @@ Cpdat$Cp <- convert(Cpdat$Cp, "cal")
 Cpdat$P <- convert(Cpdat$P, "bar")
 ```
 
-```{r EOSregress_hide, fig.margin = TRUE, fig.cap = "Heat capacity of aqueous methane.", fig.width=3.5, fig.height=3.5, cache=TRUE, results="hide", message=FALSE, echo=FALSE, dpi=dpi, out.width=672, out.height=336, pngquant=pngquant}
+Next, we specify the terms in the HKF equations and perform the regression using <span style="color:green">`EOSregress()`</span>.
+In the second call to <span style="color:green">`EOSregress()`</span> below, only for *T* < 600 K are included in the regression.
+The coefficients here correspond to `r c1`, `r c2` and ω in the HKF equations.
+
+```{r EOSregress}
 var <- c("invTTheta2", "TXBorn")
-Cplm <- EOSregress(Cpdat, var, T.max = 600)
-EOSplot(Cpdat, coefficients = round(Cplm$coefficients, 1))
-EOSplot(Cpdat, add = TRUE, lty = 3)
+Cplm_high <- EOSregress(Cpdat, var)
+Cplm_low <- EOSregress(Cpdat, var, T.max = 600)
+Cplm_low$coefficients
 ```
 
-Next, we specify the terms in the HKF equations and perform the regression, using data below 600 K.
-The terms in `Cplm` correspond to `r c1`, `r c2` and ω in the HKF equations.
-We use <span style="color:green">`EOSplot()`</span> to plot the data and fitted line and show the coefficients in the legend.
+```{r EOSplot, fig.margin = TRUE, fig.cap = "Heat capacity of aqueous methane.", fig.width=3.5, fig.height=3.5, cache=TRUE, results="hide", message=FALSE, echo=FALSE, dpi=dpi, out.width=672, out.height=336, pngquant=pngquant}
+EOSplot(Cpdat, coefficients = round(Cplm_low$coefficients, 1))
+EOSplot(Cpdat, coeficients = Cplm_high, add = TRUE, lty = 3)
+PS01_data <- EOScoeffs("CH4", "Cp")
+EOSplot(Cpdat, coefficients = PS01_data, add = TRUE, lty=2, col="blue")
+```
 
-```{r EOSregress, eval=FALSE}
-var <- c("invTTheta2", "TXBorn")
-Cplm <- EOSregress(Cpdat, var, T.max = 600)
-EOSplot(Cpdat, coefficients = round(Cplm$coefficients, 1))
-EOSplot(Cpdat, add = TRUE, lty = 3)
+We can use <span style="color:green">`EOSplot()`</span> to plot the data and fitted lines and show the coefficients in the legend.
+The solid line shows the fit to the lower-temperature data.
+The fit to all data, represented by the dotted line, doesn't capture the low-temperature trends in the data.
+
+```{r EOSplot, eval=FALSE}
 ```
 
 ```{marginfigure}
 Be aware that the lines shown by <span style="color:green">`EOSplot()`</span> are calculated for a single pressure only, despite the temperature- and pressure-dependence of the data and regressions.
 ```
 
-Note the second call to <span style="color:green">`EOSplot()`</span>, where the coefficients are not provided.
-This causes the data to be re-regressed, this time without the *T* < 600 K limitation.
-Although the overall fit, represented by the dotted line, is better, the fit to the low-temperature data is considerably worse.
-For nonelectrolytes, consider excluding extreme near-critical values from the regression (or modify the procedure to give them lower weight) in order to obtain more generally useful results.
+<span style="color:green">`EOScoeffs()`</span> is a small function that is used to retrieve the HKF parameters in the database in CHNOSZ.
+The dashed blue line shows calculated values for methane using these parameters, which are from @PS01.
+Compare the database values with the regressed values shown in the legend of figure above.
+Some differences are expected as the values in the database are derived from different regression techniques applied to different sets of data:
 
-<span style="color:green">`EOScoeffs()`</span> is a small function to retrieve the HKF parameters from the database in CHNOSZ.
-The `stopifnot` expression tests that the regressed values are within 10% of the database values of `r c1`, `r c2` and ω for `r ch4`.
-
-```{r Cpcoeffs}
-Cpcoeffs_database <- EOScoeffs("CH4", "Cp")
-diff_coeffs <- Cplm$coefficients - Cpcoeffs_database
-stopifnot(all(abs(diff_coeffs / Cpcoeffs_database) < 0.1))
-Cpcoeffs_database
+```{r Cpcoeffs, message=FALSE}
+EOScoeffs("CH4", "Cp")
 ```
-
-Compare the database values [from @SH90] with the regressed values in the legend of figure above.
-Some differences are expected as the values in the database are derived from earlier experimental data.
 
 ## Setting the value of omega
 
@@ -194,7 +192,7 @@ Because we are dealing with volumes, the units of ω are converted according to 
 
 ```{r Vdat_non}
 QBorn <- EOSvar("QBorn", T = Vdat$T, P = Vdat$P)
-Vomega <- convert(Cplm$coefficients[["TXBorn"]], "cm3bar")
+Vomega <- convert(Cplm_low$coefficients[["TXBorn"]], "cm3bar")
 V_sol <- Vomega * QBorn
 V_non <- Vdat$V - V_sol
 Vdat_non <- data.frame(T = Vdat$T, P = Vdat$P, V = V_non)
@@ -204,7 +202,7 @@ Next, regress the non-solvation volume using the non-solvation terms in the HKF 
 As with `r Cp0`, also get the values of the parameters from the database for comparison with the regression results.
 
 
-```{r Vdat_non_regress}
+```{r Vdat_non_regress, message=FALSE}
 var <- "invTTheta"
 Vnonlm <- EOSregress(Vdat_non, var, T.max = 450)
 Vcoeffs <- round(c(Vnonlm$coefficients, QBorn = Vomega), 1)

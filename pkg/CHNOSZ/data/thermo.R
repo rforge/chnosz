@@ -10,7 +10,7 @@ if(!"CHNOSZ" %in% search()) {
 local({
   # create obigt data frame
   sources_aq <- paste0(c("H2O", "Shock", "Amend", "Schulte", "LaRowe", "Dick",
-                         "Tremaine", "Marini", "Canovas", "CHNOSZ"), "_aq")
+                         "Tremaine", "Marini", "CHNOSZ"), "_aq")
   sources_cr <- paste0(c("Helgeson", "Shock", "Tardy", "Richard", "Majzlan", "LaRowe", "Other"), "_cr")
   sources_liq <- paste0(c("Richard", "LaRowe"), "_liq")
   sources_gas <- paste0(c("Wagman", "Shock", "Richard", "Other"), "_gas")

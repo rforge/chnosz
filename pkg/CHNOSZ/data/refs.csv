@@ -25,7 +25,8 @@ SH90,"E. L. Shock and H. C. Helgeson",1990,"organic species","Geochim. Cosmochim
 Joh92a,"J. W. Johnson",1992,"steam, Cp represented by Maier-Kelley equation","personal communication",
 SPRONS92.1,"H. C. Helgeson et al.",1992,"titanite; @BH83 + &quot;Gibbs free energies and enthalpies were corrected to be consistent with updated values of Gibbs free energies of Ca<sup>2+</sup> and CO<sub>3</sub><sup>2-</sup> [@SH88] together with the solubilities of calcite and aragonite reported by @PB82 &quot;","slop98.dat computer data file",
 SPRONS92.2,"H. C. Helgeson et al.",1992,"Ca-bearing minerals; &quot;Gibbs free energies and enthalpies were corrected to be consistent with updated values of Gibbs free energies of Ca<sup>2+</sup> and CO<sub>3</sub><sup>2-</sup> [@SH88] together with the solubilities of calcite and aragonite reported by @PB82 &quot;","slop98.dat computer data file",
-Sho92,"E. L. Shock",1992,dipeptides,"Geochim. Cosmochim. Acta 56, 3481-3491",http://dx.doi.org/10.1016/0016-7037(92)90392-V
+SPRONS92.3,"H. C. Helgeson et al.",1992,"&quot;Parameters given provide smooth metastable extrapolation of one-bar steam properties predicted by the @HGK84 equation of state to temperatures < the saturation temperature (99.632 C).&quot;","slop98.dat computer data file",
+Sho92,"E. L. Shock",1992,"diglycine, alanylglycine, leucylglycine, and diketopiperazine","Geochim. Cosmochim. Acta 56, 3481-3491",http://dx.doi.org/10.1016/0016-7037(92)90392-V
 Sho93,"E. L. Shock",1993,"ethylacetate and acetamide","Geochim. Cosmochim. Acta 57, 3341-3349",http://dx.doi.org/10.1016/0016-7037(93)90542-5
 Sho93.1,"E. L. Shock",1993,"carbon monoxide and ethylene","Geochim. Cosmochim. Acta 57, 3341-3349",http://dx.doi.org/10.1016/0016-7037(93)90542-5
 SK93,"E. L. Shock and C. M. Koretsky",1993,"metal-acetate complexes","Geochim. Cosmochim. Acta 57, 4899-4922",http://dx.doi.org/10.1016/0016-7037(93)90128-J
@@ -35,6 +36,7 @@ HSS95,"J. R. Haas, E. L. Shock and D. C. Sassani",1995,"complexes of rare earth 
 PK95,"V. B. Parker and I. L. Khodakovskii",1995,melanterite,"J. Phys. Chem. Ref. Data 24, 1699-1745",http://dx.doi.org/10.1063/1.555964
 RH95,"R. A. Robie and B. S. Hemingway",1995,"gypsum GHS","U. S. Geological Survey Bull. 2131",http://pubs.er.usgs.gov/publication/b2131
 SK95,"E. L. Shock and C. M. Koretsky",1995,"metal-organic acid complexes","Geochim. Cosmochim. Acta 59, 1497-1532",http://dx.doi.org/10.1016/0016-7037(95)00058-8
+SK95.1,"E. L. Shock and C. M. Koretsky",1995,"alanate, glycinate and their complexes not included in later slop files.","Geochim. Cosmochim. Acta 59, 1497-1532",http://dx.doi.org/10.1016/0016-7037(95)00058-8
 Sho95,"E. L. Shock",1995,"carboxylic acids","Am. J. Sci. 295, 496-580",http://dx.doi.org/10.2475/ajs.295.5.496
 AH97b,"J. P. Amend and H. C. Helgeson",1997,"amino acids GHS","J. Chem. Soc., Faraday Trans. 93, 1927-1941",http://dx.doi.org/10.1039/A608126F
 DSM+97,"J. D. Dale, E. L. Shock et al.",1997,alkylphenols,"Geochim. Cosmochim. Acta 61, 4017-4024",http://dx.doi.org/10.1016/S0016-7037(97)00212-3
@@ -47,6 +49,7 @@ SSWS97,"E. L. Shock, D. C. Sassani et al.",1997,"inorganic ions and hydroxide co
 SSWS97.1,"E. L. Shock, D. C. Sassani et al.",1997,"zincite and litharge","Geochim. Cosmochim. Acta 61, 907-950",http://dx.doi.org/10.1016/S0016-7037(96)00339-0
 TSD97,"Y. Tardy, R. Schaul, J. Duplay",1997,"humic acid, microflora, and plants","C. R. Acad. Sci. Paris 324, 969-976",http://dx.doi.org/10.1016/S1251-8050(97)83981-X
 HOKR98,"H. C. Helgeson, C. E. Owens et al.",1998,"organic molecules and groups","Geochim. Cosmochim. Acta 62, 985-1081",http://dx.doi.org/10.1016/S0016-7037(97)00219-6
+HOKR98.1,"H. C. Helgeson, C. E. Owens et al.",1998,"amino acids","Geochim. Cosmochim. Acta 62, 985-1081",http://dx.doi.org/10.1016/S0016-7037(97)00219-6
 RH98,"L. Richard and H. C. Helgeson",1998,"organic molecules and groups","Geochim. Cosmochim. Acta 62, 3591-3636",http://dx.doi.org/10.1016/S0016-7037(97)00345-1
 SLOP98.1,"E. L. Shock et al.",1998,"zincite and litharge; &quot;These data were used in @SSWS97, but were not tabulated in the paper.&quot;","slop98.dat computer data file",http://geopig.asu.edu/?q=tools
 SLOP98.2,"E. L. Shock et al.",1998,"daphnite; &quot;G<sub>f</sub> and H<sub>f</sub> from @SS93a TMM&quot;","slop98.dat computer data file",http://geopig.asu.edu/?q=tools
@@ -59,8 +62,6 @@ SLOP98.8,"E. L. Shock et al.",1998,"&quot;These data were used in @SK95, but wer
 SLOP98.9,"E. L. Shock et al.",1998,"&quot;Corrected values based on data from @SK95 &quot;","slop98.dat computer data file",http://geopig.asu.edu/?q=tools
 SLOP98.10,"E. L. Shock et al.",1998,"&quot;Corrected values based on data from @HSS95 &quot;","slop98.dat computer data file",http://geopig.asu.edu/?q=tools
 SLOP98.11,"E. L. Shock et al.",1998,"&quot;Data and parameters as used by @MS97. &quot;","slop98.dat computer data file",http://geopig.asu.edu/?q=tools
-SLOP07.1,"E. L. Shock et al.",2007,"corrected charge of Pu(Oxal)+2","slop07.dat computer data file",http://geopig.asu.edu/?q=tools
-SLOP07.2,"E. L. Shock et al.",2007,"high-temperature HKF parameters from @AP01","slop07.dat computer data file",http://geopig.asu.edu/?q=tools
 SS98a,"D. C. Sassani and E. L. Shock",1998,"platinum-group ions and complexes","Geochim. Cosmochim. Acta 62, 2643-2671",http://dx.doi.org/10.1016/S0016-7037(98)00049-0
 SS98a.1,"D. C. Sassani and E. L. Shock",1998,"platinum-group solids","Geochim. Cosmochim. Acta 62, 2643-2671",http://dx.doi.org/10.1016/S0016-7037(98)00049-0
 HS99,"J. R. Haas and E. L. Shock",1998,"chloroethylene species","Geochim. Cosmochim. Acta 63, 3429-3441",http://dx.doi.org/10.1016/S0016-7037(99)00276-8
@@ -71,29 +72,26 @@ AP01,"J. P. Amend and A. V. Plyasunov",2001,carbohydrates,"Geochim. Cosmochim. A
 AS01,"J. P. Amend and E. L. Shock",2001,"NO and N<sub>2</sub>O","FEMS Microbiol. Rev. 25, 175-243",http://dx.doi.org/10.1016/S0168-6445(00)00062-0
 AS01.1,"J. P. Amend and E. L. Shock",2001,"selenium and molybdenite","FEMS Microbiol. Rev. 25, 175-243",http://dx.doi.org/10.1016/S0168-6445(00)00062-0
 MVT01,"L. Mercury, P. Vieillard. and Y. Tardy",2001,"ice polymorphs","Appl. Geochem. 16, 161-181",http://dx.doi.org/10.1016/S0883-2927(00)00025-1
-PS01,"A. V. Plyasunov and E. L. Shock",2001,"CO<sub>2</sub>, argon, benzene, cyclohexane, and xenon","Geochim. Cosmochim. Acta 65, 3879-3900",http://dx.doi.org/10.1016/S0016-7037(01)00678-0
+PS01,"A. V. Plyasunov and E. L. Shock",2001,"aqueous nonelectrolytes","Geochim. Cosmochim. Acta 65, 3879-3900",http://dx.doi.org/10.1016/S0016-7037(01)00678-0
 Ric01,"L. Richard",2001,"organic sulfur compounds","Geochim. Cosmochim. Acta 65, 3827-3877",http://dx.doi.org/10.1016/S0016-7037(01)00761-X
 SSW01,"M. D. Schulte, E. L. Shock and R. H. Wood",2001,"AsH<sub>3</sub>, CF<sub>4</sub>, CH<sub>3</sub>F, Cl<sub>2</sub>, ClO<sub>2</sub>, N<sub>2</sub>O, NF<sub>3</sub>, NO, PH<sub>3</sub>, and SF<sub>6</sub>","Geochim. Cosmochim. Acta 65, 3919-3930",http://dx.doi.org/10.1016/S0016-7037(01)00717-7
 MGN03,"J. Majzlan, K.-D. Grevel and A. Navrotsky",2003,"goethite, lepidocrocite, and maghemite GHS","Am. Mineral. 88, 855-859",http://dx.doi.org/10.2138/am-2003-5-614
 MLS+03,"J. Majzlan, B. E. Lang et al.",2003,"goethite, lepidocrocite, and maghemite Cp","Am. Mineral. 88, 846-854",http://dx.doi.org/10.2138/am-2003-5-613
 MSB+04,"J. Majzlan, R. Stevens et al.",2004,"hydronium jarosite","Phys. Chem. Mineral. 31, 518-531",http://dx.doi.org/10.1007/s00269-004-0405-z
 SR04,"M. D. Schulte and K. L. Rogers",2004,"alkane thiols","Geochim. Cosmochim. Acta 68, 1087-1097",http://dx.doi.org/10.1016/j.gca.2003.06.001
+HPT06,"B. Hawrylak, R. Palepu and P. R. Tremaine",2006,"methyldiethanolamine and methyldiethanolammonium chloride","J. Chem. Thermodynamics 38, 988-1007",http://dx.doi.org.ezproxy1.lib.asu.edu/10.1016/j.jct.2005.10.013
+LH06a,"D. E. LaRowe and H. C. Helgeson",2006,"nucleic-acid bases, nucleosides, and nucleotides","Geochim. Cosmochim. Acta 70, 4680-4724",http://dx.doi.org/10.1016/j.gca.2006.04.010
+LH06a.1,"D. E. LaRowe and H. C. Helgeson",2006,"citric acid and citrate","Geochim. Cosmochim. Acta 70, 4680-4724",http://dx.doi.org/10.1016/j.gca.2006.04.010
+LH06b,"D. E. LaRowe and H. C. Helgeson",2006,"Mg-complexed adenosine nucleotides (ATP), NAD, and NADP","Thermochim. Acta 448, 82-106",http://dx.doi.org/10.1016/j.tca.2006.06.008
+LH06b.1,"D. E. LaRowe and H. C. Helgeson",2006,"pyridine and piperidine","Thermochim. Acta 448, 82-106",http://dx.doi.org/10.1016/j.tca.2006.06.008
 DLH06,"J. M. Dick, D. E. LaRowe and H. C. Helgeson",2006,"amino acid, protein, and organic groups","Biogeosciences 3, 311-336",http://dx.doi.org/10.5194/bg-3-311-2006
 DLH06.1,"J. M. Dick, D. E. LaRowe and H. C. Helgeson",2006,"amino acids HKF parameters","Biogeosciences 3, 311-336",http://dx.doi.org/10.5194/bg-3-311-2006
 DLH06.2,"J. M. Dick, D. E. LaRowe and H. C. Helgeson",2006,"Gly-X-Gly tripeptides","Biogeosciences 3, 311-336",http://dx.doi.org/10.5194/bg-3-311-2006
-HPT06,"B. Hawrylak, R. Palepu and P. R. Tremaine",2006,"methyldiethanolamine and methyldiethanolammonium chloride","J. Chem. Thermodynamics 38, 988-1007",http://dx.doi.org.ezproxy1.lib.asu.edu/10.1016/j.jct.2005.10.013
-LH06a,"D. E. LaRowe and H. C. Helgeson",2006,"nucleic-acid bases, nucleosides, and nucleotides","Geochim. Cosmochim. Acta 70, 4680-4724",http://dx.doi.org/10.1016/j.gca.2006.04.010
-LH06b,"D. E. LaRowe and H. C. Helgeson",2006,"Mg-complexed adenosine nucleotides (ATP), NAD, and NADP","Thermochim. Acta 448, 82-106",http://dx.doi.org/10.1016/j.tca.2006.06.008
-LH06b.1,"D. E. LaRowe and H. C. Helgeson",2006,"pyridine and piperidine","Thermochim. Acta 448, 82-106",http://dx.doi.org/10.1016/j.tca.2006.06.008
 MNM+06,"J. Majzlan, A. Navrotsky et al.",2006,"coquimbite, ferricopiapite, rhomboclase","Eur. J. Mineral. 18, 175-186",http://dx.doi.org/10.1127/0935-1221/2006/0018-0175
-CHNOSZ.1,"J. M. Dick",2017,"GHS (T<sub>r</sub>) of the phase that is stable at 298.15 K was combined with H<sub>tr</sub> and the Cp coefficients to calculate the metastable GHS (T<sub>r</sub>) of the phases that are stable at higher temperatures.","CHNOSZ package documentation",http://chnosz.net
-CHNOSZ.2,"J. M. Dick",2017,"The standard molal Gibbs energies and enthalpies of formation from the elements and entropies at 25 &deg;C and 1 bar of aqueous metal-amino acid (alanate or glycinate) complexes reported by @SK95 were recalculated by adding the differences between values reported by @AH97b and @DLH06 for alanate or glycinate.","CHNOSZ package documentation",http://chnosz.net
-CHNOSZ.3,"J. M. Dick",2017,pseudo-H<sub>4</sub>SiO<sub>4</sub>,"CHNOSZ package documentation",http://chnosz.net
-CHNOSZ.4,"J. M. Dick",2017,"AuCl4- renamed to AuCl4-3","CHNOSZ package documentation",http://chnosz.net
-CHNOSZ.5,"J. M. Dick",2017,"leucylglycine not in slop98.dat","CHNOSZ package documentation",http://chnosz.net
-CHNOSZ.6,"J. M. Dick",2017,"charge of NpO2(Oxal), La(Succ)+, NH4(Succ)-, and NpO2(Succ) as listed by @PSK99","CHNOSZ package documentation",http://chnosz.net
 Dic07,"J. M. Dick",2007,"glutathione, cystine, and cystine sidechain","Ph.D. Dissertation, U.C. Berkeley",
 MA07,"L. Marini and M. Accornero",2007,"metal-arsenate and metal-arsenite complexes","Environ. Geol. 52, 1343-1363",http://dx.doi.org/10.1007/s00254-006-0578-5
+SLOP07.1,"E. L. Shock et al.",2007,"corrected charge of Pu(Oxal)+2","slop07.dat computer data file",http://geopig.asu.edu/?q=tools
+SLOP07.2,"E. L. Shock et al.",2007,"high-temperature HKF parameters from @AP01","slop07.dat computer data file",http://geopig.asu.edu/?q=tools
 Ric08,"L. Richard",2008,alkenes,"personal communication",
 GM09,"K.-D. Grevel and J. Majzlan",2009,"kieserite, starkeyite, hexahydrite, and epsomite","Geochim. Cosmochim. Acta 73, 6805 - 6815",http://dx.doi.org/10.1016/j.gca.2009.08.005
 HRMNS09,"H. C. Helgeson, L. Richard et al.",2009,kerogens,"Geochim. Cosmochim. Acta 73, 594-695",http://dx.doi.org/10.1016/j.gca.2008.03.004
@@ -101,9 +99,21 @@ AML10,"M. Accornero, L. Marini and M. Lelli",2010,"metal-chromate complexes","Ap
 MA10,"L. Marini and M. Accornero",2010,"corrected values","Environ. Earth Sci. 59, 1601-1606",http://dx.doi.org/10.1007/s12665-009-0369-x
 Sch10,"M. Schulte",2010,"organic sulfides","Aquat. Geochem. 16, 621-637",http://dx.doi.org/10.1007/s10498-010-9102-3
 RG11,"L. Richard and X. Gaona",2011,"organic iodine compounds","Geochim. Cosmochim. Acta 75, 7304-7350",http://dx.doi.org/10.1016/j.gca.2011.07.030
-LD12,"D. E. LaRowe and J. M. Dick",2012,"amino acids and protein groups","Geochim. Cosmochim. Acta 80, 70-91",http://10.1016/j.gca.2011.11.041
-LD12.1,"D. E. LaRowe and J. M. Dick",2012,"methionine and methionine sidechain GHS","Geochim. Cosmochim. Acta 80, 70-91",http://10.1016/j.gca.2011.11.041
+LD12,"D. E. LaRowe and J. M. Dick",2012,"4-hydroxyproline, 5-hydroxylysine, 4 dipeptides, and sidechain and backbone groups in proteins","Geochim. Cosmochim. Acta 80, 70-91",http://10.1016/j.gca.2011.11.041
+LD12.1,"D. E. LaRowe and J. M. Dick",2012,"updated and corrected parameters for cysteine, glycine, leucine, and methionine","Geochim. Cosmochim. Acta 80, 70-91",http://10.1016/j.gca.2011.11.041
+LD12.2,"D. E. LaRowe and J. M. Dick",2012,"methionine GHS","Geochim. Cosmochim. Acta 80, 70-91",http://10.1016/j.gca.2011.11.041
+LD12.3,"D. E. LaRowe and J. M. Dick",2012,"methionine sidechain GHS","Geochim. Cosmochim. Acta 80, 70-91",http://10.1016/j.gca.2011.11.041
 DEH+13,"J. M. Dick, K. A. Evans et al.",2013,"phenanthrene and methylphenanthrene isomers","Geochim. Cosmochim. Acta 122, 247-266",http://dx.doi.org/10.1016/j.gca.2013.08.020
+SLOP15.1,"E. L. Shock et al.",2015,"&quot;Enthalpy changed to be compatible with the equation &Delta;H=&Delta;G+T&Delta;S for the formation reaction from elements.&quot;","slop15.dat computer data file",http://geopig.asu.edu/?q=tools
+SLOP15.2,"E. L. Shock et al.",2015,"&quot;Enthalpy changed to be compatible with the equation &Delta;H=&Delta;G+T&Delta;S for the formation reaction from elements. See footnote h in table 2 of @SSH97.&quot;","slop15.dat computer data file",http://geopig.asu.edu/?q=tools
 CS16,"P. A. Canovas III and E. L. Shock",2016,"citric acid cycle metabolites","Geochim. Cosmochim. Acta 195, 293-322",http://dx.doi.org/10.1016/j.gca.2016.08.028
-CS16.1,"P. A. Canovas III and E. L. Shock",2016,"citric acid species HKF a<sub>1</sub>-a<sub>4</sub> parameters","Geochim. Cosmochim. Acta 195, 293-322",http://dx.doi.org/10.1016/j.gca.2016.08.028
+CS16.1,"P. A. Canovas III and E. L. Shock",2016,"citric acid species HKF a<sub>1</sub>--a<sub>4</sub> parameters","Geochim. Cosmochim. Acta 195, 293-322",http://dx.doi.org/10.1016/j.gca.2016.08.028
 UniProt,"The UniProt Consortium",2017,,"The UniProt knowledgebase",http://www.uniprot.org/
+CHNOSZ.1,"J. M. Dick",2017,"GHS (T<sub>r</sub>) of the phase that is stable at 298.15 K was combined with H<sub>tr</sub> and the Cp coefficients to calculate the metastable GHS (T<sub>r</sub>) of the phases that are stable at higher temperatures.","CHNOSZ package documentation",http://chnosz.net
+CHNOSZ.2,"J. M. Dick",2017,"alanate and glycinate: GHS as used by @DLH06","CHNOSZ package documentation",http://chnosz.net
+CHNOSZ.3,"J. M. Dick",2017,"metal-amino acid complexes: GHS were recalculated by adding the differences between values from @AH97b and @DLH06 for alanate or glycinate to the properties of the complexes reported by @SK95.","CHNOSZ package documentation",http://chnosz.net
+CHNOSZ.4,"J. M. Dick",2017,pseudo-H<sub>4</sub>SiO<sub>4</sub>,"CHNOSZ package documentation",http://chnosz.net
+CHNOSZ.5,"J. M. Dick",2017,"AuCl4- renamed to AuCl4-3","CHNOSZ package documentation",http://chnosz.net
+CHNOSZ.6,"J. M. Dick",2017,"dipeptides not included in slop files after slop98.dat","CHNOSZ package documentation",http://chnosz.net
+CHNOSZ.7,"J. M. Dick",2017,"charge of NpO2(Oxal), La(Succ)+, NH4(Succ)-, and NpO2(Succ) as listed by @PSK99","CHNOSZ package documentation",http://chnosz.net
+CHNOSZ.8,"J. M. Dick",2017,"Incorrect values of HKF *a*<sub>1</sub>--*a*<sub>4</sub> parameters for [-CH2NH2] were printed in Table 6 of @DLH06; corrected values are used here","CHNOSZ package documentation",http://chnosz.net

@@ -20,7 +20,7 @@ Possible models include the Helgeson-Kirkham-Flowers (HKF) equations of state, o
   EOScalc(coefficients, T, P, ...)
   EOSplot(exptdata, var = NULL, T.max = 9999, T.plot = NULL, 
     fun.legend = "topleft", coefficients = NULL, add = FALSE,
-    lty = 1, ...)
+    lty = par("lty"), col=par("col"), ...)
   EOSlab(var, coeff = "")
   EOScoeffs(species, property, P=1)
   Cp_s_var(T = 298.15, P = 1, omega.PrTr = 0, Z = 0)
@@ -38,7 +38,8 @@ Possible models include the Helgeson-Kirkham-Flowers (HKF) equations of state, o
   \item{fun.legend}{character, where to place legend on plot}
   \item{coefficients}{dataframe, coefficients to use to make line on plot}
   \item{add}{logical, add lines to an existing plot?}
-  \item{lty}{numeric, line style}
+  \item{lty}{line style}
+  \item{col}{color of lines}
   \item{coeff}{numeric, value of equation of state parameter for plot legend}
   \item{species}{character, name of aqueous species}
   \item{property}{character, \samp{Cp} or \samp{V}}
@@ -127,11 +128,8 @@ d$P <- convert(d$P, "bar")
 var <- c("invTTheta2", "TXBorn")
 # perform regression, with a temperature limit
 EOSlm <- EOSregress(d, var, T.max=600)
-# the result is within 10% of the accepted
-# values of c1, c2 and omega for CH4(aq)
+# get the database values of c1, c2 and omega for CH4(aq)
 CH4coeffs <- EOScoeffs("CH4", "Cp")
-dcoeffs <- EOSlm$coefficients - CH4coeffs
-stopifnot(all(abs(dcoeffs/CH4coeffs) < 0.1))
 ## make plots comparing the regressions
 ## with the accepted EOS parameters of CH4
 par(mfrow=c(2,2))

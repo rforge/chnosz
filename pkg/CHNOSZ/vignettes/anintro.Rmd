@@ -22,7 +22,7 @@ bibliography: vig.bib
 link-citations: yes
 # The custom CSL file gives a build error on R-Forge (20170212):
 #   pandoc-citeproc: error while parsing the XML string
-#csl: elementa.csl
+csl: elementa.csl
 ---
 
 ```{r options, include=FALSE}
@@ -338,7 +338,7 @@ CO <- subcrt(c("CO", "CO"), c("gas", "aq"), c(-1, 1), T = T)$out$logK
 CH4 <- subcrt(c("CH4", "CH4"), c("gas", "aq"), c(-1, 1), T = T)$out$logK
 logK <- data.frame(T, CO2, CO, CH4)
 ```
-```{r CO2_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Equilibrium constants calculated for dissolution of CO<sub>2</sub>, CO, and CH<sub>4</sub>.", cache=TRUE, pngquant=pngquant, timeit=timeit}
+```{r CO2_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Calculated equilibrium constants for dissolution of CO<sub>2</sub>, CO, and CH<sub>4</sub>.", cache=TRUE, pngquant=pngquant, timeit=timeit}
 matplot(logK[, 1], logK[, -1], type = "l", col = 1, lty = 1,
         xlab = axis.label("T"), ylab = axis.label("logK"))
 text(80, -1.7, expr.species("CO2"))
@@ -523,7 +523,7 @@ species(c("H2S", "HS-", "HSO4-", "SO4-2"))
 
 Aqueous species are assigned default activities of 10<sup>-3</sup> (`logact` is -3).
 Now, we can use <span style="color:green">`affinity()`</span> to calculate the affinities of the formation reactions of each of the species.
-R's `unlist()` is used here simply to turn the list of values of affinity into a numeric object that can be printed in a couple of lines (note that the names correspond to `ispecies` above):
+R's `unlist()` is used here to turn the list of values of affinity into a numeric object that can be printed in a couple of lines (note that the names correspond to `ispecies` above):
 ```{marginfigure}
 The values returned by <span style="color:green">`affinity()`</span> are dimensionless, i.e. *A*/2.303*RT*.
 ```
@@ -915,11 +915,11 @@ diagram(e, alpha = TRUE, groups = groups, col = 1:5)
 # plot only alcohols
 names <- within(species(), name[-ia] <- "")$name
 lty <- ifelse(names == "", 0, 1)
-diagram(e, alpha = TRUE, ylim = c(0, 0.53), lty = lty, names = names)
+diagram(e, alpha = TRUE, ylim = c(0, 0.32), lty = lty, names = names)
 # plot only ketones
 names <- within(species(), name[-ik] <- "")$name
 lty <- ifelse(names == "", 0, 1)
-diagram(e, alpha = TRUE, ylim = c(0, 0.15), lty = lty, names = names)
+diagram(e, alpha = TRUE, ylim = c(0, 0.16), lty = lty, names = names)
 ```
 
 That makes a diagram that is similar to Figure 6b of Shock and Schulte (1998).
@@ -1342,7 +1342,7 @@ mtext(axis.label("O2"), line = 1.2)
 ```
 
 Among these proteins, Olig2 and Shh have the greatest affinities for formation at the extremes of oxidation and hydration state.
-This thermodynamic description highlights possible links between the chemical compositions of the proteins and their order of appearance along with chemical changes in developing embryos (Dick, 2015).
+This thermodynamic description highlights possible links between the chemical compositions of the proteins and their patterns of expression along with chemical changes in developing embryos (Dick, 2015).
 
 ## Getting amino acid compositions
 
@@ -1767,6 +1767,9 @@ There is a danger of using too many, or unrepresentative variables, but in some 
 The database in CHNOSZ lists one or two sources for each entry, and citation information for the sources is listed in `thermo$refs`.
 You can locate and view the references with <span style="color:green">`thermo.refs()`</span>.
 Running the function without any arguments opens a browser window with the complete table of references.
+```{marginfigure}
+See the vignette, [<span style="color:blue">*Thermodynamic data in CHNOSZ*</span>](obigt.html), for a more nicely formatted presentation of the sources of thermodynamic data, along with notes and additional comments.
+```
 Where available, links to the web page for the articles and books are displayed:
 ```{r thermo_refs_table, eval=FALSE}
 thermo.refs()  ## shows table in a browser
@@ -2010,7 +2013,7 @@ cref <- citation("CHNOSZ")
 print(cref, style = "html")
 ```
 
-If you have bug reports, questions that haven't been answered in the documentation, or contributions of code or data, please contact the maintainer:
+If you have found a bug or have questions that aren't answered in the documentation please contact the maintainer:
 
 ```{r maintainer_CHNOSZ}
 maintainer("CHNOSZ")
@@ -2039,10 +2042,11 @@ View the R Markdown source of this document [on R-Forge](https://r-forge.r-proje
 ```{r file_edit_anintro, eval=FALSE}
 file.edit(system.file("doc/anintro.Rmd", package = "CHNOSZ"))
 ```
+
 <p>
 ```{r the_end}
    ######    ##   ##    ##   ##    ######     #####  #####
- ##         ##---##    ## \ ##   ##    ##     \\       //
+ ##         ##===##    ## \\##   ##    ##     \\       //
  ######    ##   ##    ##   ##    ######    #####      #####
 ```
 </p>

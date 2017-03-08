@@ -13,6 +13,7 @@
 #sfile <- "slop07.edit"  # slop07.dat edited to remove non-ASCII characters in header (dashes in page ranges)
                        # and extra characters in ref: lines (DAPHNITE,14A and URANINITE)
 sfile <- "slop15.edit"
+
 source("read.supcrt.R")
 sdat <- read.supcrt(sfile)
 
@@ -127,7 +128,7 @@ for(i in 1:nrow(oout)) {
   issame <- all(sapply(sapply(na.omit(as.numeric(oout[i, icol])), all.equal, 0), isTRUE))
   if(issame) isame <- c(isame, i)
   # G, H, S, Cp, V, a1, a2, a3, a4, c1, c2, omega, T
-  isalmost <- all(sapply(na.omit(abs(as.numeric(oout[i, icol])) < c(800, 800, 5, 10, 10, 1, 1, 1, 1, 0.5, 0.5, .1, 1)), isTRUE))
+  isalmost <- all(sapply(na.omit(abs(as.numeric(oout[i, icol])) < c(500, 500, 2, 1, 1, 0.1, 1, 1, 1, 0.5, 0.5, .1, 1)), isTRUE))
   if(isalmost) ialmost <- c(ialmost, i)
 }
 # write the difference between matching entries

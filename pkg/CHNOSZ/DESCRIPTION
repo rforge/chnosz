@@ -1,20 +1,22 @@
-Date: 2017-03-04
+Date: 2017-03-08
 Package: CHNOSZ
-Version: 1.0.8-71
+Version: 1.0.8-72
 Title: Chemical Thermodynamics and Activity Diagrams
 Author: Jeffrey Dick
 Maintainer: Jeffrey Dick <j3ffdick@gmail.com>
 Depends: R (>= 3.1.0)
 Suggests: limSolve, testthat, knitr, rmarkdown, tufte, RSVGTipsDevice
 Imports: grDevices, graphics, stats, utils, colorspace
-Description: Functions and data sets to support chemical thermodynamic modeling in biochemistry
-  and low-temperature geochemistry. The features include calculation of the standard molal
-  thermodynamic properties and chemical affinities of reactions involving minerals and/or
-  biomolecules; a database of thermodynamic properties of aqueous, crystalline and gaseous
-  species; amino acid group additivity for the standard molal thermodynamic properties of
-  neutral and ionized proteins; use of the revised Helgeson-Kirkham-Flowers equations of state
-  for aqueous species; construction of equilibrium activity diagrams as a function of
-  temperature, pressure, and chemical activities or fugacities of basis species.
+Description: Tools for thermodynamic calculations in compositional biology and
+  low-temperature geochemistry. Thermodynamic properties are taken from a database
+  including aqueous species, minerals, and biomolecules, or from amino acid group
+  additivity for proteins. High-temperature properties are calculated using the
+  revised Helgeson-Kirkham-Flowers equations of state for aqueous species. Functions
+  are provided to define a system using basis species, automatically balance reactions,
+  calculate the chemical affinities of reactions for selected species, and plot the
+  results on potential diagrams or equilibrium activity diagrams. Experimental functions
+  calculate activity coefficients for aqueous species or optimize multiple thermodynamic
+  variables using an objective function for chemical activities.
 License: GPL (>= 2)
 BuildResaveData: no
 ZipData: no

@@ -22,7 +22,7 @@ bibliography: vig.bib
 link-citations: yes
 # The custom CSL file gives a build error on R-Forge (20170212):
 #   pandoc-citeproc: error while parsing the XML string
-csl: elementa.csl
+#csl: elementa.csl
 ---
 
 ```{r options, include=FALSE}

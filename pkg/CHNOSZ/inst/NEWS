@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-72 (2017-03-08)
+CHANGES IN CHNOSZ 1.0.8-73 (2017-03-09)
 ---------------------------------------
 
 DOCUMENTATION:
@@ -100,19 +100,20 @@ NEW FEATURES:
 
 NEW AND OLD DATA:
 
-- Split OBIGT.csv and OBIGT-2.csv into multiple files according to
-  author names. All files are now under extdata/OBIGT/. Conflicting data
-  from OBIGT-2.csv were removed (see below).
+- Split OBIGT.csv and OBIGT-2.csv into multiple files according to type
+  of substance (inorganic, organic, or biotic). All files are now under
+  extdata/OBIGT/. Conflicting data from OBIGT-2.csv were removed (see
+  below).
 
 - Citations in OBIGT now have a suffix (e.g. [S92] or [S98]) if the data
   were first present in sprons92.dat from SUPCRT, slop98.dat, or later
   versions of the slop data files (http://geopig.asu.edu/?q=tools).
 
-- Canovas_aq.csv: Add data for citric acid cycle metabolites from Canovas and
-  Shock, 2016.
+- Canovas_aq.csv: Add data for citric acid cycle metabolites from
+  Canovas and Shock, 2016.
 
-- CHNOSZ_aq.csv: Add H4SiO4 pseudospecies (pseudo-H4SiO4); see calculations
-  in eos-regress.Rmd.
+- CHNOSZ_aq.csv: Add H4SiO4 pseudospecies (pseudo-H4SiO4); see
+  calculations in eos-regress.Rmd.
 
 - Dick_aq.csv: Add data for aqueous phenanthrene and methylphenanthrene
   from Dick et al., 2013.
@@ -162,8 +163,8 @@ BUG FIXES:
 OTHER CHANGES:
 
 - Remove msgout(), and replace previous calls to that function with
-  message() from base R. As a result, the messages don't appear in Sweave
-  vignettes, but can be turned on or off in knitr vignettes.
+  message() from base R. As a result, the messages don't appear in
+  Sweave vignettes, but can be turned on or off in knitr vignettes.
 
 - Remove HTCC1062.faa.xz.
 

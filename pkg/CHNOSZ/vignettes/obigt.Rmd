@@ -39,7 +39,9 @@ setfile <- function(csvfile, dat=NULL) {
   assign("csvfile", csvfile, parent.frame())
   file <- system.file(paste0("extdata/OBIGT/", csvfile), package="CHNOSZ")
   dat <- read.csv(file, as.is=TRUE)
-  paste0("`", csvfile, "` (", nrow(dat), ")")
+  # the class of substance, followed by number of species
+  class <- gsub("_.*", "", csvfile)
+  paste0("`", class, "` (", nrow(dat), ")")
 }
 ```
 
@@ -131,35 +133,19 @@ used <- character()
 used <- c(used, filerefs(csvfile))
 ```
 
-### `r setfile("Shock_aq.csv")`
-```{r Shock_aq, results="asis", echo=FALSE}
+### `r setfile("inorganic_aq.csv")`
+```{r inorganic_aq, results="asis", echo=FALSE}
 cat("Note: ZnCl4-2 was present in sprons92.dat but not in slop98.dat or later files, and is not included in CHNOSZ.")
 ```
 
 ```{r reflist, results="asis", echo=FALSE}
 ```
 
-### `r setfile("Amend_aq.csv")`
+### `r setfile("organic_aq.csv")`
 ```{r reflist, results="asis", echo=FALSE}
 ```
 
-### `r setfile("Schulte_aq.csv")`
-```{r reflist, results="asis", echo=FALSE}
-```
-
-### `r setfile("LaRowe_aq.csv")`
-```{r reflist, results="asis", echo=FALSE}
-```
-
-### `r setfile("Dick_aq.csv")`
-```{r reflist, results="asis", echo=FALSE}
-```
-
-### `r setfile("Tremaine_aq.csv")`
-```{r reflist, results="asis", echo=FALSE}
-```
-
-### `r setfile("Marini_aq.csv")`
+### `r setfile("biotic_aq.csv")`
 ```{r reflist, results="asis", echo=FALSE}
 ```
 
@@ -173,67 +159,32 @@ cat("The primary aqueous silica species in CHNSOZ is SiO<sub>2</sub> [@SHS89]. T
 
 ## Solids {.tabset .tabset-pills}
 
-### `r setfile("Helgeson_cr.csv")`
-```{r Helgeson_cr, results="asis", echo=FALSE}
-cat("Note: chamosite,7A and witherite were present in sprons92.dat but not in slop98.dat or later files, and are not included in CHNOSZ.")
-```
-
-```{r reflist, results="asis", echo=FALSE}
-```
-
-### `r setfile("Shock_cr.csv")`
-```{r reflist, results="asis", echo=FALSE}
-```
-
-### `r setfile("Tardy_cr.csv")`
-```{r reflist, results="asis", echo=FALSE}
-```
-
-### `r setfile("Richard_cr.csv")`
-```{r reflist, results="asis", echo=FALSE}
-```
-
-### `r setfile("Majzlan_cr.csv")`
-```{r Majzlan_cr, results="asis", echo=FALSE}
+### `r setfile("inorganic_cr.csv")`
+```{r inorganic_cr, results="asis", echo=FALSE}
+cat("Note: chamosite,7A and witherite were present in sprons92.dat but not in slop98.dat or later files, and are not included in CHNOSZ.\n\n")
 cat("Note: parameters used here for goethite differ slightly from those listed in the slop files [@Sho09].")
 ```
 
 ```{r reflist, results="asis", echo=FALSE}
 ```
 
-### `r setfile("LaRowe_cr.csv")`
-```{r reflist, results="asis", echo=FALSE}
-```
-
-### `r setfile("Other_cr.csv")`
+### `r setfile("organic_cr.csv")`
 ```{r reflist, results="asis", echo=FALSE}
 ```
 
 ## Liquids {.tabset .tabset-pills}
 
-### `r setfile("Richard_liq.csv")`
-```{r reflist, results="asis", echo=FALSE}
-```
-
-### `r setfile("LaRowe_liq.csv")`
+### `r setfile("organic_liq.csv")`
 ```{r reflist, results="asis", echo=FALSE}
 ```
 
 ## Gases {.tabset .tabset-pills}
 
-### `r setfile("Wagman_gas.csv")`
+### `r setfile("inorganic_gas.csv")`
 ```{r reflist, results="asis", echo=FALSE}
 ```
 
-### `r setfile("Shock_gas.csv")`
-```{r reflist, results="asis", echo=FALSE}
-```
-
-### `r setfile("Richard_gas.csv")`
-```{r reflist, results="asis", echo=FALSE}
-```
-
-### `r setfile("Other_gas.csv")`
+### `r setfile("organic_gas.csv")`
 ```{r reflist, results="asis", echo=FALSE}
 ```
 
@@ -255,34 +206,18 @@ used2 <- character()
 used2 <- c(used2, filerefs(csvfile))
 ```
 
-#### `r setfile("Shock_aq.csv")`
-```{r Shock_aq, results="asis", echo=FALSE}
+#### `r setfile("inorganic_aq.csv")`
+```{r inorganic_aq, results="asis", echo=FALSE}
 ```
 
 ```{r reflist2, results="asis", echo=FALSE}
 ```
 
-#### `r setfile("Amend_aq.csv")`
+#### `r setfile("organic_aq.csv")`
 ```{r reflist2, results="asis", echo=FALSE}
 ```
 
-#### `r setfile("Schulte_aq.csv")`
-```{r reflist2, results="asis", echo=FALSE}
-```
-
-#### `r setfile("LaRowe_aq.csv")`
-```{r reflist2, results="asis", echo=FALSE}
-```
-
-#### `r setfile("Dick_aq.csv")`
-```{r reflist2, results="asis", echo=FALSE}
-```
-
-#### `r setfile("Tremaine_aq.csv")`
-```{r reflist2, results="asis", echo=FALSE}
-```
-
-#### `r setfile("Marini_aq.csv")`
+#### `r setfile("biotic_aq.csv")`
 ```{r reflist2, results="asis", echo=FALSE}
 ```
 
@@ -295,65 +230,30 @@ used2 <- c(used2, filerefs(csvfile))
 
 ### Solids
 
-#### `r setfile("Helgeson_cr.csv")`
-```{r Helgeson_cr, results="asis", echo=FALSE}
+#### `r setfile("inorganic_cr.csv")`
+```{r inorganic_cr, results="asis", echo=FALSE}
 ```
 
 ```{r reflist2, results="asis", echo=FALSE}
 ```
 
-#### `r setfile("Shock_cr.csv")`
-```{r reflist2, results="asis", echo=FALSE}
-```
-
-#### `r setfile("Tardy_cr.csv")`
-```{r reflist2, results="asis", echo=FALSE}
-```
-
-#### `r setfile("Richard_cr.csv")`
-```{r reflist2, results="asis", echo=FALSE}
-```
-
-#### `r setfile("Majzlan_cr.csv")`
-```{r Majzlan_cr, results="asis", echo=FALSE}
-```
-
-```{r reflist2, results="asis", echo=FALSE}
-```
-
-#### `r setfile("LaRowe_cr.csv")`
-```{r reflist2, results="asis", echo=FALSE}
-```
-
-#### `r setfile("Other_cr.csv")`
+#### `r setfile("organic_cr.csv")`
 ```{r reflist2, results="asis", echo=FALSE}
 ```
 
 ### Liquids
 
-#### `r setfile("Richard_liq.csv")`
-```{r reflist2, results="asis", echo=FALSE}
-```
-
-#### `r setfile("LaRowe_liq.csv")`
+#### `r setfile("organic_liq.csv")`
 ```{r reflist2, results="asis", echo=FALSE}
 ```
 
 ### Gases
 
-#### `r setfile("Wagman_gas.csv")`
+#### `r setfile("inorganic_gas.csv")`
 ```{r reflist2, results="asis", echo=FALSE}
 ```
 
-#### `r setfile("Shock_gas.csv")`
-```{r reflist2, results="asis", echo=FALSE}
-```
-
-#### `r setfile("Richard_gas.csv")`
-```{r reflist2, results="asis", echo=FALSE}
-```
-
-#### `r setfile("Other_gas.csv")`
+#### `r setfile("organic_gas.csv")`
 ```{r reflist2, results="asis", echo=FALSE}
 ```
 

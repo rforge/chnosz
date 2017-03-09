@@ -198,9 +198,9 @@ A second argument can be used to specify a different physical state:
 info("methane", "gas")
 ```
 
-Knowing that aqueous methane is species number 77 in the database, you can again use <span style="color:green">`info()`</span> to retrieve the set of standard molal thermodynamic properties and equations of state parameters:
-```{r info_77, message=FALSE}
-info(77)
+Knowing that aqueous methane is species number 910 in the database, you can again use <span style="color:green">`info()`</span> to retrieve the set of standard molal thermodynamic properties and equations of state parameters:
+```{r info_910, message=FALSE}
+info(910)
 ```
 
 This number can be used as an argument (`ispecies`) for other functions in CHNOSZ to uniquely identify any species; some commonly used functions also accept the species names.
@@ -234,21 +234,21 @@ The messages may be useful for browsing the database, but owing to their ambiguo
 ## Counting elements, chemical formulas, <span style="color:green">`ZC()`</span>
 
 Continuing with the example of methane, let's look at its chemical formula:
-```{r info_77_formula, message=FALSE}
-info(77)$formula
+```{r info_910_formula, message=FALSE}
+info(910)$formula
 ```
 
 We can use <span style="color:green">`makeup()`</span> to count the elements in the formula, followed by <span style="color:green">`as.chemical.formula()`</span> to rewrite the formula on one line:
-```{r makeup_77}
-makeup(77)
-as.chemical.formula(makeup(77))
+```{r makeup_910}
+makeup(910)
+as.chemical.formula(makeup(910))
 ```
 
 For organic species, a simple calculation of the average oxidation state of carbon (`r zc`) is possible given the species index, chemical formula, or elemental count:
-```{r ZC_77, message=FALSE}
-ZC(77)
-ZC(info(77)$formula)
-ZC(makeup(77))
+```{r ZC_910, message=FALSE}
+ZC(910)
+ZC(info(910)$formula)
+ZC(makeup(910))
 ```
 
 # Calculating thermodynamic properties

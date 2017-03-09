@@ -9,11 +9,10 @@ if(!"CHNOSZ" %in% search()) {
 
 local({
   # create obigt data frame
-  sources_aq <- paste0(c("H2O", "Shock", "Amend", "Schulte", "LaRowe", "Dick",
-                         "Tremaine", "Marini", "CHNOSZ"), "_aq")
-  sources_cr <- paste0(c("Helgeson", "Shock", "Tardy", "Richard", "Majzlan", "LaRowe", "Other"), "_cr")
-  sources_liq <- paste0(c("Richard", "LaRowe"), "_liq")
-  sources_gas <- paste0(c("Wagman", "Shock", "Richard", "Other"), "_gas")
+  sources_aq <- paste0(c("H2O", "inorganic", "organic", "biotic", "CHNOSZ"), "_aq")
+  sources_cr <- paste0(c("inorganic", "organic"), "_cr")
+  sources_liq <- paste0(c("organic"), "_liq")
+  sources_gas <- paste0(c("inorganic", "organic"), "_gas")
   OBIGTdir <- system.file("extdata/OBIGT/", package="CHNOSZ")
   # need explicit "/" for Windows
   sourcefiles <- paste0(OBIGTdir, "/", c(sources_aq, sources_cr, sources_liq, sources_gas), ".csv")

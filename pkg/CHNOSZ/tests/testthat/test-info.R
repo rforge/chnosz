@@ -1,7 +1,6 @@
 context("info")
 
 test_that("info.character() produces expected results and messages", {
-  expect_equal(info.character("methane"), 77)
   expect_equal(info.character("acetate", "cr"), NA)
   expect_message(info.character("acetate", "cr"), "only 'aq' is available")
   expect_message(info.character("methane", "cr"), "only 'aq' 'liq' 'gas' are available")

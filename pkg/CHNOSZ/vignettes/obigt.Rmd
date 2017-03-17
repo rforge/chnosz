@@ -41,6 +41,7 @@ setfile <- function(csvfile, dat=NULL) {
   dat <- read.csv(file, as.is=TRUE)
   # the class of substance, followed by number of species
   class <- gsub("_.*", "", csvfile)
+  substr(class, 1, 1) <- toupper(substr(class, 1, 1))
   paste0("`", class, "` (", nrow(dat), ")")
 }
 ```

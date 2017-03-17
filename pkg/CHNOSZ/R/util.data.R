@@ -171,7 +171,7 @@ thermo.refs <- function(key=NULL) {
   # list: the output of subcrt()
   ## first retrieve the sources table
   thermo <- get("thermo")
-  x <- thermo$refs
+  x <- thermo$refs[order(thermo$refs$note), ]
   ## show a table in the browser if 'key' is NULL 
   if(is.null(key)) {
     # create the html links
@@ -181,49 +181,95 @@ thermo.refs <- function(key=NULL) {
     x$citation[notlinked] <- cite[notlinked]
     # remove the last (URL) component
     #x$URL <- NULL
-    x <- x[1:4]
-    # count the times each source is listed in OBIGT.csv
-    ns1 <- sapply(x$key, function(x) length(which(thermo$obigt$ref1==x)) )
-    ns1.2 <- sapply(x$key, function(x) length(which(thermo$obigt$ref2==x)) )
-    ns1 <- ns1 + ns1.2
-    ns1[ns1==0] <- ""
-    # count the times each source is listed in protein.csv
-    npr <- sapply(x$key, function(x) length(which(thermo$protein$ref==x)) )
-    npr[npr==0] <- ""
+    x <- x[1:5]
+    # count the number of times each source is cited in thermo$obigt
+    # e.g. if key is "Kel60" we match "Kel60 [S92]" but not "Kel60.1 [S92]"
+    # http://stackoverflow.com/questions/6713310/how-to-specify-space-or-end-of-string-and-space-or-start-of-string
+    # we also have to escape keys with "+" signs
+    ns1 <- sapply(x$key, function(x) sum(grepl(gsub("+", "\\+", paste0(x, "($|\\s)"), fixed=TRUE), thermo$obigt$ref1)) )
+    ns2 <- sapply(x$key, function(x) sum(grepl(gsub("+", "\\+", paste0(x, "($|\\s)"), fixed=TRUE), thermo$obigt$ref2)) )
+    number <- ns1 + ns2
+    number[number==0] <- ""
+    # now that we're using the sortTable() from w3schools.com, numbers are sorted like text
+    # add leading zeros to make the numbers sortable 20170317
+    # (the zeros disappear somewhere in the rendering of the page)
+    number <- formatC(number, width = 3, format = "d", flag = "0")
     # append the counts to the table to be shown
-    x <- c(x,list(ns1=ns1,npr=npr))
+    x <- c(list(number=number), x)
     # title to display for web page
     title <- "Sources of Thermodynamic Data in CHNOSZ"
     ### the following is adapted from print.findFn in package 'sos'
     f0 <- tempfile()
     File <- paste(f0, ".html", sep="")
-    Dir <- dirname(File)
-    js <- system.file("extdata/js", "sorttable.js", package = "CHNOSZ")
-    file.copy(js, Dir)
+    #Dir <- dirname(File)
+    #js <- system.file("extdata/js", "sorttable.js", package = "CHNOSZ")
+    #file.copy(js, Dir)
     ## Sundar's original construction:
     con <- file(File, "wt")
     on.exit(close(con))
     .cat <- function(...)
       cat(..., "\n", sep = "", file = con, append = TRUE)
     ## start
-    cat("<html>", file = con)
+    cat('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+                "http://www.w3.org/TR/html4/strict.dtd">\n', file = con)
+    .cat("<html>")
     .cat("<head>")
     .cat("<title>", title, "</title>")
-    .cat("<script src=sorttable.js type='text/javascript'></script>")
+    # sorttable.js is "Blocked for security reasons" in Gmail 20170317
+    #.cat("<script src=sorttable.js type='text/javascript'></script>")
+    # https://www.w3schools.com/howto/howto_js_sort_table.asp
+    .cat('<script type="text/javascript">
+	  function sortTable(n) {
+	    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+	    table = document.getElementById("thermorefs");
+	    switching = true;
+	    dir = "asc";
+	    while (switching) {
+	      switching = false;
+	      rows = table.getElementsByTagName("TR");
+	      for (i = 1; i < (rows.length - 1); i++) {
+		shouldSwitch = false;
+		x = rows[i].getElementsByTagName("TD")[n];
+		y = rows[i + 1].getElementsByTagName("TD")[n];
+		if (dir == "asc") {
+		  if (x.innerHTML > y.innerHTML) {
+		    shouldSwitch= true;
+		    break;
+		  }
+		} else if (dir == "desc") {
+		  if (x.innerHTML < y.innerHTML) {
+		    shouldSwitch= true;
+		    break;
+		  }
+		}
+	      }
+	      if (shouldSwitch) {
+		rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+		switching = true;
+		switchcount ++;
+	      } else {
+		if (switchcount == 0 && dir == "asc") {
+		  dir = "desc";
+		  switching = true;
+		}
+	      }
+	    }
+	  }
+</script>')
     .cat("</head>")
     ### boilerplate text
+    .cat("<body>")
     .cat("<h1>Listing of all entries in thermo$refs</h1>")
-    .cat("<h3>Click on hyperlinked references to open URL in new window</h3>")
-    .cat("<h3>Click on column headers to sort</h3>")
-    .cat("<h3>Columns 'n..' give number of times each reference appears in data tables:</h3>")
-    .cat("ns1: 'ref1' and 'ref2' in data/OBIGT.csv<br>")
-    .cat("npr: 'ref' in data/protein.csv<br><p>")
+    .cat("<h3>Click on hyperlinked references to open URL in new window.</h3>")
+    .cat("<h3>Click on column headers to sort.</h3>")
+    .cat("<h3>Column 'number' gives number of times each reference appears in thermo$obigt.</h3>")
     ### start table and headers
-    .cat("<table class='sortable' border='1'>\n<thead>")
+    .cat("<table id='thermorefs' border='1'>")
     .cat("<tr>")
-    .cat(sprintf("  <th>%s</th>\n</tr>",
-                 paste(names(x), collapse = "</th>\n  <th>")))
-    .cat("</thead>\n<tbody>")
+    #.cat(sprintf("  <th>%s</th>\n</tr>",
+    #             paste(names(x), collapse = "</th>\n  <th>")))
+    for(i in 1:length(x)) .cat(sprintf('  <th onclick="sortTable(%s)">%s</th>', i-1, names(x)[i]))
+    .cat("</tr>")
     ### now preparing the body of the table
     paste.list <- c(lapply(x, as.character), sep = "</td>\n  <td>")
     tbody.list <- do.call("paste", paste.list)
@@ -231,7 +277,7 @@ thermo.refs <- function(key=NULL) {
     tbody <- sub("<td><a", "<td class=link><a", tbody, useBytes = TRUE)
     .cat(tbody)
     ### finish it!
-    .cat("</tbody></table></body></html>")
+    .cat("</table></body></html>")
     ### end adaptation from print.findFn
     # show table in browser
     browseURL(File)

@@ -197,7 +197,7 @@ thermo.refs <- function(key=NULL) {
     # append the counts to the table to be shown
     x <- c(list(number=number), x)
     # title to display for web page
-    title <- "Sources of Thermodynamic Data in CHNOSZ"
+    title <- "References for thermodynamic data in CHNOSZ"
     ### the following is adapted from print.findFn in package 'sos'
     f0 <- tempfile()
     File <- paste(f0, ".html", sep="")
@@ -259,10 +259,10 @@ thermo.refs <- function(key=NULL) {
     .cat("</head>")
     ### boilerplate text
     .cat("<body>")
-    .cat("<h1>Listing of all entries in thermo$refs</h1>")
-    .cat("<h3>Click on hyperlinked references to open URL in new window.</h3>")
-    .cat("<h3>Click on column headers to sort.</h3>")
-    .cat("<h3>Column 'number' gives number of times each reference appears in thermo$obigt.</h3>")
+    .cat('<h1>References for thermodynamic data in <a href="http://chnosz.net"><font color="red">CHNOSZ</font></a></h1>')
+    .cat("<h3>Click on a column header to sort, or on a citation to open the URL in new window.</h3>")
+    .cat("<h4>Column 'number' gives the number of times each reference appears in thermo$obigt.</h4>")
+    .cat('<p>See also the vignette <a href="http://chnosz.net/vignettes/obigt.html">Thermodynamic data in CHNOSZ</a>.</p>')
     ### start table and headers
     .cat("<table id='thermorefs' border='1'>")
     .cat("<tr>")

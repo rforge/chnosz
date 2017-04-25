@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-75 (2017-03-20)
+CHANGES IN CHNOSZ 1.0.8-76 (2017-04-25)
 ---------------------------------------
 
 DOCUMENTATION:
@@ -109,13 +109,13 @@ NEW AND OLD DATA:
   were first present in sprons92.dat from SUPCRT, slop98.dat, or later
   versions of the slop data files (http://geopig.asu.edu/?q=tools).
 
-- Canovas_aq.csv: Add data for citric acid cycle metabolites from
+- biotic_aq.csv: Add data for citric acid cycle metabolites from
   Canovas and Shock, 2016.
 
 - CHNOSZ_aq.csv: Add H4SiO4 pseudospecies (pseudo-H4SiO4); see
   calculations in eos-regress.Rmd.
 
-- Dick_aq.csv: Add data for aqueous phenanthrene and methylphenanthrene
+- organic_aq.csv: Add data for aqueous phenanthrene and methylphenanthrene
   from Dick et al., 2013.
 
 - Remove superseded data previously in OBIGT-2.csv: citric acid cycle
@@ -149,7 +149,7 @@ NEW AND OLD DATA:
 
 BUG FIXES:
 
-- Correct charge (-2) of NAD(red)-2 in LaRowe_aq.csv. Thanks to Peter
+- Correct charge (-2) of NAD(red)-2 in biotic_aq.csv. Thanks to Peter
   Canovas.
 
 - Also correct charge (-2) of MgATP-2.
@@ -159,6 +159,10 @@ BUG FIXES:
   values returned by subcrt(). This also fixes the issue previously
   noted for the first example in ?nonideal. Thanks to David T. Wang for
   the bug report and test.
+
+- NaN values from equilibrate() are now preserved by diagram(),
+  producing unlabeled blank (white) fields rather than being
+  mistakenly labeled with the first species.
 
 OTHER CHANGES:
 

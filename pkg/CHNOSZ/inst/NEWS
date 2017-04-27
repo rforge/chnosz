@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-76 (2017-04-25)
+CHANGES IN CHNOSZ 1.0.8-77 (2017-04-27)
 ---------------------------------------
 
 DOCUMENTATION:
@@ -161,8 +161,8 @@ BUG FIXES:
   the bug report and test.
 
 - NaN values from equilibrate() are now preserved by diagram(),
-  producing unlabeled blank (white) fields rather than being
-  mistakenly labeled with the first species.
+  producing unlabeled fields rather than being mistakenly labeled with
+  the first species. Thanks to Grayson Boyer for the bug report.
 
 OTHER CHANGES:
 

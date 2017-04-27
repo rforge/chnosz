@@ -20,7 +20,7 @@ diagram <- function(
   # line styles
   lty=NULL, lwd=par("lwd"), dotted=NULL, 
   # colors
-  col=par("col"), col.names=par("col"), fill=NULL, 
+  col=par("col"), col.names=par("col"), fill=NULL, col.NA="black",
   # labels
   names=NULL, main=NULL, legend.x=NA, format.names=TRUE, adj=0.5, dy=0,
   # plotting controls
@@ -315,8 +315,10 @@ diagram <- function(
         zs <- out
         for(i in 1:nrow(zs)) zs[i,] <- out[nrow(zs)+1-i,]
         zs <- t(zs)
-        breaks <- c(0,1:nspecies) + 0.5
-        image(x=xs, y=ys, z=zs, col=fill, add=TRUE, breaks=breaks, useRaster=TRUE)
+        breaks <- c(-1, 0, 1:nspecies) + 0.5
+        # use col.NA for NA values
+        zs[is.na(zs)] <- 0
+        image(x=xs, y=ys, z=zs, col=c(col.NA, fill), add=TRUE, breaks=breaks, useRaster=TRUE)
       }
       ## curve plot function
       # 20091116 replaced plot.curve with plot.line; different

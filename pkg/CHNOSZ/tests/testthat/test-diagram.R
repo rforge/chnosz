@@ -85,3 +85,16 @@ test_that("diagram() handles 2D plots with different x and y resolution and warn
   #expect_equal(diagram(a), diagram(a, plot.it=FALSE))
   expect_warning(diagram(a, what="CO2", plot.it=FALSE), "showing only first species in 2-D property diagram")
 })
+
+test_that("NaN values from equilibrate() are preserved (as NA in predominance calculation)", {
+  # example provided by Grayson Boyer 20170411
+  basis(c("H2", "O2", "CO2"), c(-7.19, -60, -2.65))
+  species(c("n-hexadecanol", "n-hexadecanoic acid", "n-octadecanol", "n-octadecanoic acid"), c("liq", "liq", "liq", "liq"))
+  a <- affinity("H2" = c(-12, 0), "O2" = c(-90, -50), T=30)
+  e <- equilibrate(a, balance = 1)
+  d <- diagram(e, plot.it = FALSE)
+  # equilibrate() here with default "boltzmann" method produces
+  # NaN at very high O2 + low H2 or very low O2 + high H2 
+  expect_equal(d$predominant[1, 128], as.numeric(NA))
+  expect_equal(d$predominant[128, 1], as.numeric(NA))
+})

@@ -12,9 +12,7 @@ yeastgfp <- function(location=NULL, exclusive=TRUE) {
   # yeastgfp preprocessing
   ygfp <- read.csv(yfile)
   # convert factors to numeric w/o NA coercion warnings
-  warn <- options(warn=-1)
-  ygfp$abundance <- as.numeric(as.character(ygfp$abundance))
-  options(warn)
+  ygfp$abundance <- as.numeric.nowarn(as.character(ygfp$abundance))
   # if location is NULL, just report on the content of the file
   # and return the names of the locations
   if(is.null(location)) {

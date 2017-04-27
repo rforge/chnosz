@@ -156,7 +156,7 @@ get.formula <- function(formula) {
   # return the values in the argument, or chemical formula(s) 
   # for values that are species indices
   # for numeric values, get the formulas from those rownumbers of thermo$obigt
-  i <- suppressWarnings(as.numeric(formula))
+  i <- as.integer.nowarn(formula)
   # we can't have more than the number of rows in thermo$obigt
   thermo <- get("thermo")
   iover <- i > nrow(thermo$obigt)

@@ -244,7 +244,7 @@ makeup(910)
 as.chemical.formula(makeup(910))
 ```
 
-For organic species, a simple calculation of the average oxidation state of carbon (`r zc`) is possible given the species index, chemical formula, or elemental count:
+For organic species, a calculation of the average oxidation state of carbon (`r zc`) is possible given the species index, chemical formula, or elemental count:
 ```{r ZC_910, message=FALSE}
 ZC(910)
 ZC(info(910)$formula)
@@ -281,7 +281,7 @@ See also <span style="color:blue">`demo(density)`</span>.
 subcrt("water", T = c(400, 500, 600), P = c(200, 400, 600), grid = "P")$out$water
 ```
 
-```{r subcrt_water_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Isothermal contours of density (g cm<sup>-3</sup>) and pressure (bar) of H<sub>2</sub>O.", cache=TRUE, pngquant=pngquant, timeit=timeit}
+```{r subcrt_water_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, fig.cap="Isothermal contours of density (g cm<sup>-3</sup>) and pressure (bar) of water.", cache=TRUE, pngquant=pngquant, timeit=timeit}
 substuff <- subcrt("water", T=seq(0,1000,100), P=c(NA, seq(1,500,1)), grid="T")
 water <- substuff$out$water
 plot(water$P, water$rho, type = "l")
@@ -545,8 +545,9 @@ That is, running <span style="color:green">`affinity()`</span>`$values` again wo
 ```
 
 ```{r EhpH_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE, fig.cap="Aqueous sulfur species at 25 °C.", pngquant=pngquant, timeit=timeit}
-a <- affinity(pH = c(0, 12), Eh = c(-1, 1))
+a <- affinity(pH = c(0, 12), Eh = c(-0.5, 1))
 diagram(a, fill = "heat")
+water.lines()
 ```
 
 Now we can calculate the affinities on an Eh-pH grid:
@@ -555,8 +556,10 @@ Now we can calculate the affinities on an Eh-pH grid:
 
 ## Potential diagrams
 
-Given values of affinity, the <span style="color:green">`diagram()`</span> function uses the maximum affinity method to make a potential diagram (i.e. a Pourbaix diagram):
-```{r EhpH_plot, echo=2, eval=FALSE}
+Given values of affinity, the <span style="color:green">`diagram()`</span> function uses the maximum affinity method to make a potential diagram (i.e. a Pourbaix diagram).
+Areas corresponding to Eh-pH conditions beyond the stability limits of water are colored slate gray.
+A second function, <span style="color:green">`water.lines()`</span>, is used to draw lines at the water stability limits:
+```{r EhpH_plot, echo=-1, eval=FALSE}
 ```
 
 Note that the calculation of affinity implies a non-equilibrium reference state of equal activities of species ([see above](#species-of-interest)).
@@ -572,7 +575,7 @@ The names of species that can be parsed as chemical formulas are formatted with 
 The default colors for diagrams shown on the screen use R's `heat.colors()` palette.
 Some arguments in <span style="color:green">`diagram()`</span> can be used to control the color, labels, and lines, and title.
 The `tplot` argument turns off plot customizations used in CHNOSZ.
-Additional arguments are passed to R's plotting functions; here, we use `bty` to remove the box around the plot:
+Additional arguments are passed to R's plotting functions; here, we use `bty` to remove the box around the plot.
 ```{r EhpH_plot_color, echo=TRUE, eval=FALSE}
 ```
 
@@ -618,15 +621,16 @@ We use <span style="color:green">`mosaic()`</span> to generate and combine diagr
 The key argument is `bases`, which identifies the candidate basis species, starting with the one in the current basis.
 The other arguments, like those of <span style="color:green">`affinity()`</span>, specify the ranges of the variables; `res` indicates the grid resolution to use for each variable (the default is 128).
 The first call to <span style="color:green">`diagram()`</span> plots the species of interest; the second adds the predominance fields of the basis species.
-Finally, <span style="color:green">`water.lines()`</span> is used to add the stability limits of water at the given temperature.
+We turn off the gray coloring beyond the water stability limits (`limit.water`) but plot the lines using <span style="color:green">`water.lines()`</span>:
 
-```{r copper_mosaic, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", message=FALSE, cache=TRUE, fig.cap="Copper minerals and aqueous complexes with chloride, 25 °C.", pngquant=pngquant, timeit=timeit}
+```{r copper_mosaic, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", message=FALSE, cache=TRUE, fig.cap="Copper minerals and aqueous complexes with chloride, 200 °C.", pngquant=pngquant, timeit=timeit}
 T <- 200
 res <- 200
 bases <- c("H2S", "HS-", "HSO4-", "SO4-2")
 m1 <- mosaic(bases, blend = TRUE, pH = c(0, 12, res), Eh=c(-1.2, 0.75, res), T=T)
-diagram(m1$A.species, lwd = 2, fill = NA)
-diagram(m1$A.bases, add = TRUE, col = "blue", col.names = "blue", lty = 2)
+diagram(m1$A.species, lwd = 2, fill = NA, limit.water = FALSE)
+diagram(m1$A.bases, add = TRUE, col = "blue", col.names = "blue", lty = 2,
+        limit.water = FALSE)
 water.lines("pH", "Eh", T = convert(T, "K"), col = "red", lwd = 2, lty = 2)
 ```
 
@@ -646,8 +650,10 @@ mosaicfun <- function(newvar, T = 200) {
   if (names(newvar) == "O2") basis("O2", "gas")
   mosaicargs <- c(list(bases), blend=TRUE, pH=list(c(-2, 12, res)), newvar, T=T)
   m1 <- do.call(mosaic, mosaicargs)
-  diagram(m1$A.species, lwd = 2, fill = rev(topo.colors(10)))
-  diagram(m1$A.bases, add = TRUE, col = "blue", col.names = "blue", lty = 3)
+  diagram(m1$A.species, lwd = 2, fill = rev(topo.colors(10)),
+          limit.water = FALSE)
+  diagram(m1$A.bases, add = TRUE, col = "blue", col.names = "blue", lty = 3,
+          limit.water = FALSE)
   swap.basis(names(newvar), "e-")
 }
 par(mfrow = c(1, 3))

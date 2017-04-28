@@ -27,7 +27,7 @@
     italic = FALSE, ...)
   water.lines(xaxis = "pH", yaxis = "Eh", T = 298.15, P = "Psat", 
     which = c("oxidation","reduction"), logaH2O = 0, lty = 2, lwd=1,
-    col = par("fg"), xpoints = NULL, O2state="gas")
+    col = par("fg"), xpoints = NULL, O2state="gas", plot.it = TRUE)
   mtitle(main, line=0, ...)
   ZC.col(z)
 }
@@ -64,6 +64,7 @@
   \item{lty}{numeric, line type}
   \item{xpoints}{numeric, points to plot on \eqn{x}{x} axis}
   \item{O2state}{character, state of O2}
+  \item{plot.it}{logical, plot the lines?}
   \item{main}{character, text for plot title}
   \item{line}{numeric, margin line to place title}
   \item{z}{numeric, set of values}

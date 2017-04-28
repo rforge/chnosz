@@ -66,67 +66,66 @@ label.figure <- function(x, xfrac=0.05, yfrac=0.95, paren=FALSE, italic=FALSE, .
 }
 
 water.lines <- function(xaxis='pH', yaxis='Eh', T=298.15, P='Psat', which=c('oxidation','reduction'),
-  logaH2O=0, lty=2, lwd=1, col=par('fg'), xpoints=NULL, O2state="gas") {
+  logaH2O=0, lty=2, lwd=1, col=par('fg'), xpoints=NULL, O2state="gas", plot.it=TRUE) {
   # draw water stability limits
-  # if we're on an Eh-pH diagram, or logfO2-pH diagram,
-  # or logfO2-T or Eh-T
-  # calculate them exactly (nicer looking lines), otherwise 
-  # (TODO) add them using affinity() and diagram()
-  
-  # get the x and y limits from the current plot
-  pu <- par('usr')
-  xlim <- pu[1:2]
-  ylim <- pu[3:4]
-  # exact lines
-  # warning: Eh calculations are reliable only at a single T
+  # for Eh-pH, logfO2-pH, logfO2-T or Eh-T diagrams
+  # (i.e. redox variable is on the y axis)
+  y.oxidation <- y.reduction <- NULL
+  # if they are not provided, get the x points from the plot limits
+  if(is.null(xpoints)) {
+    pu <- par('usr')
+    xlim <- pu[1:2]
+    xpoints <- seq(xlim[1], xlim[2], length.out=100)
+  }
+  # note: Eh calculations are valid at a single T only
   if(xaxis=="O2" | (xaxis=='pH' & (yaxis=='Eh' | yaxis=='O2' | yaxis=="pe"))) {
     if('reduction' %in% which) {
       logfH2 <- 0
       logK <- subcrt(c("H2O", "O2", "H2"), c(-1, 0.5, 1), c("liq", O2state, "gas"), T=T, P=P, convert=FALSE)$out$logK 
       # this is logfO2 if O2state=="gas", or logaO2 if O2state=="aq"
       logfO2 <- 2 * logK - logfH2 + 2 * logaH2O
-      if(xaxis=='O2') abline(v=logfO2,lty=lty,lwd=lwd,col=col) 
-      else if(yaxis=='O2') abline(h=logfO2,lty=lty,lwd=lwd,col=col) 
-      else if(yaxis=="Eh") lines(xlim,convert(logfO2,'E0',T=T,P=P,pH=xlim),lty=lty,lwd=lwd,col=col)
-      else if(yaxis=="pe") lines(xlim,convert(convert(logfO2,'E0',T=T,P=P,pH=xlim),"pe",T=T),lty=lty,lwd=lwd,col=col)
+      #if(xaxis=='O2') abline(v=logfO2,lty=lty,lwd=lwd,col=col) 
+      #if(yaxis=='O2') abline(h=logfO2,lty=lty,lwd=lwd,col=col) 
+      if(yaxis=="Eh") y.reduction <- convert(logfO2, 'E0', T=T, P=P, pH=xpoints)
+      else if(yaxis=="pe") y.reduction <- convert(convert(logfO2, 'E0', T=T, P=P, pH=xpoints), "pe", T=T)
     }
     if('oxidation' %in% which) {
       logfO2 <- 0
       logK <- subcrt(c("O2", "O2"), c(-1, 1), c("gas", O2state), T=T, P=P, convert=FALSE)$out$logK 
       # this is logfO2 if O2state=="gas", or logaO2 if O2state=="aq"
       logfO2 <- logfO2 + logK
-      if(xaxis=='O2') abline(v=logfO2,lty=lty,lwd=lwd,col=col) 
-      if(yaxis=='O2') abline(h=logfO2,lty=lty,lwd=lwd,col=col) 
-      else if(yaxis=="Eh") lines(xlim,convert(logfO2,'E0',T=T,P=P,pH=xlim),lty=lty,lwd=lwd,col=col)
-      else if(yaxis=="pe") lines(xlim,convert(convert(logfO2,'E0',T=T,P=P,pH=xlim),"pe",T=T),lty=lty,lwd=lwd,col=col)
+      #if(xaxis=='O2') abline(v=logfO2,lty=lty,lwd=lwd,col=col) 
+      #if(yaxis=='O2') abline(h=logfO2,lty=lty,lwd=lwd,col=col) 
+      if(yaxis=="Eh") y.oxidation <- convert(logfO2, 'E0', T=T, P=P, pH=xpoints)
+      else if(yaxis=="pe") y.oxidation <- convert(convert(logfO2, 'E0', T=T, P=P, pH=xpoints), "pe", T=T)
     }
   } else if(xaxis %in% c('T','P') & yaxis %in% c('Eh','O2') ) {
     #if(xaxis=='T') if(is.null(xpoints)) xpoints <- T
     # 20090212 get T values from plot limits
     # TODO: make this work for T on y-axis too
-    if(xaxis=='T') {
-      if(missing(T)) {
-        xpoints <- seq(xlim[1],xlim[2],length.out=100)
-        T <- envert(xpoints,"K")
-      }
-    }
-    if(xaxis=='P') if(is.null(xpoints)) xpoints <- P
+    if(xaxis=='T' & missing(T)) T <- envert(xpoints, "K")
+    if(xaxis=='P') if(missing(xpoints)) xpoints <- P
     if('oxidation' %in% which) {
       logfO2 <- rep(0,length(xpoints))
-      if(yaxis=='Eh') lines(xpoints,convert(logfO2,'E0',T=T,P=P,pH=xlim),lty=lty,lwd=lwd,col=col)
-      else lines(xpoints,logfO2,lty=lty,lwd=lwd,col=col)
+      if(yaxis=='Eh') y.oxidation <- convert(logfO2, 'E0', T=T, P=P, pH=xpoints)
+      else y.oxidation <- logfO2
     }
     if('reduction' %in% which) {
       logfH2 <- 0
       logK <- subcrt(c('H2O','oxygen','hydrogen'),c(-1,0.5,1),T=T,P=P,convert=FALSE)$out$logK 
       logfO2 <- 2 * logK - logfH2 + 2 * logaH2O
-      if(yaxis=='Eh') lines(xpoints,convert(logfO2,'E0',T=T,P=P,pH=xlim),lty=lty,lwd=lwd,col=col)
-      else lines(xpoints,logfO2,lty=lty,lwd=lwd,col=col)
+      if(yaxis=='Eh') y.reduction <- convert(logfO2, 'E0', T=T, P=P, pH=xpoints)
+      else y.reduction <- logfO2
     }
-  } else {
-    # inexact lines
-    #
   }
+  if(yaxis=="Eh") y.oxidation <- convert(logfO2, 'E0', T=T, P=P, pH=xpoints)
+  # now plot the lines
+  if(plot.it) {
+    lines(xpoints, y.oxidation, lty=lty, lwd=lwd, col=col)
+    lines(xpoints, y.reduction, lty=lty, lwd=lwd, col=col)
+  }
+  # return the values
+  return(invisible(list(xpoints=xpoints, y.oxidation=y.oxidation, y.reduction=y.reduction)))
 }
 
 mtitle <- function(main, line=0, ...) {

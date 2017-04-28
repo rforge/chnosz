@@ -9,7 +9,7 @@ os2 <- gsub("\ .*", "", thermo$obigt$ref2)
 obigt.source <- unique(c(os1,os2))
 obigt.source <- obigt.source[!is.na(obigt.source)]
 # these all produce character(0) if the sources are all accounted for
-print("missing these sources (1) for thermodynamic properties:")
+print("missing these sources for thermodynamic properties:")
 print(unique(obigt.source[!(obigt.source %in% ref.source)]))
 # determine if all the reference sources are cited
 # this should produce character(0)

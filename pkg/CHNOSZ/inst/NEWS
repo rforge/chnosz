@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-78 (2017-04-27)
+CHANGES IN CHNOSZ 1.0.8-79 (2017-04-28)
 ---------------------------------------
 
 DOCUMENTATION:
@@ -57,6 +57,10 @@ CHANGES TO diagram():
 
 - Add arguments `adj` and `dy` for x-alignment and y-offset of line
   labels.
+
+- Add arguments `fill.NA` (color of empty areas) and `limit.water`
+  (assign NA to areas beyond water stability limits on Eh-pH and pe-pH
+  diagrams).
 
 NEW FEATURES:
 
@@ -161,7 +165,7 @@ BUG FIXES:
   the bug report and test.
 
 - NaN values from equilibrate() are now preserved by diagram(),
-  producing unlabeled fields rather than being mistakenly labeled with
+  producing empty (NA) fields rather than being mistakenly labeled with
   the first species. Thanks to Grayson Boyer for the bug report.
 
 OTHER CHANGES:

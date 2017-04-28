@@ -14,7 +14,8 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
     ylog=TRUE, xlim=NULL, ylim=NULL, xlab=NULL, ylab=NULL,
     cex=par("cex"), cex.names=1, cex.axis=par("cex"),
     lty=NULL, lwd=par("lwd"), dotted=NULL,
-    col=par("col"), col.names=par("col"), fill=NULL, col.NA="black",
+    col=par("col"), col.names=par("col"), fill=NULL,
+    fill.NA="slategray1", limit.water=TRUE,
     names=NULL, main=NULL, legend.x=NA, format.names=TRUE, adj=0.5, dy=0,
     add=FALSE, plot.it=TRUE, tplot=TRUE, ...)
   strip(affinity, ispecies = NULL, col = NULL, ns = NULL, 
@@ -48,7 +49,8 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
   \item{col}{character, color of activity lines (1D diagram) or predominance field boundaries (2D diagram), or colors of bars in a strip diagram (\code{strip})}
   \item{col.names}{character, colors for labels of species}
   \item{fill}{character, colors used to fill predominance fields}
-  \item{col.NA}{character, color for grid points with NA values}
+  \item{fill.NA}{character, color for grid points with NA values}
+  \item{limit.water}{logical, set NA values beyond water stability limits?}
   \item{names}{character, names of species for activity lines or predominance fields}
   \item{main}{character, a main \code{\link{title}} for the plot; \code{NULL} means to plot no title}
   \item{legend.x}{character, description of legend placement passed to \code{\link{legend}}}
@@ -89,6 +91,9 @@ On 2-D diagrams, the fields represent the species with the highest equilibrium a
 \code{fill} determines the color of the predominance fields, \code{col} that of the boundary lines.
 By default, \code{\link{heat.colors}} are used to fill the predominance fields in diagrams on the screen plot device.
 \code{fill} can be any color specification, or the word \samp{rainbow}, \samp{heat}, \samp{terrain}, \samp{topo}, or \samp{cm}, indicating a palette from \pkg{grDevices}.
+\code{fill.NA} gives the color for empty fields, i.e. points for which NA values are present, possibly by using \code{\link{equilibrate}} at extreme conditions (see \code{test-diagram.Rd}).
+\code{fill.NA} is also used to specify the color outside the water stability limits on Eh-pH or pe-pH diagrams, when \code{limit.water} is TRUE.
+Note that the default for \code{fill.NA} is automatically changed to \samp{transparent} when \code{add} is TRUE.
 
 As of CHNOSZ 1.0.8-11, a new default line-drawing procedure has been implemented.
 This uses \code{\link{contour}} to draw smooth-looking diagonal and curved lines, at the expense of not coinciding exactly with the rectangular grid (which is still used for drawing colors).
@@ -210,9 +215,9 @@ species(c("rhomboclase", "ferricopiapite", "hydronium jarosite",
   "goethite", "melanterite", "pyrite"))
 a <- affinity(pH=c(-1, 4, 256), pe=c(-5, 23, 256))
 d <- diagram(a, main="Fe-S-O-H, after Majzlan et al., 2006")
-# the first four species show up along the top of the diagram
-stopifnot(all.equal(unique(t(d$predominant)[256,]), 1:4))
-water.lines(yaxis="pe")
+# the first four species show up in order near pe=15
+stopifnot(all.equal(unique(d$predominant[, 183]), 1:4))
+water.lines(yaxis="pe", lwd=2)
 text(3, 22, describe.basis(thermo$basis[2:3,], digits=2, oneline=TRUE))
 text(3, 21, describe.property(c("T", "P"), c(25, 1), oneline=TRUE))
 

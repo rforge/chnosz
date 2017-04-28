@@ -77,6 +77,8 @@ mosaic <- function(bases, bases2=NULL, blend=FALSE, ...) {
     # merge affinities using the second, third, ... basis species
     for(j in tail(seq_along(affs), -1)) {
       is.predominant <- d$predominant==j
+      # diagram() produces NA beyond water limits on Eh-pH diagrams (but we can't use NA for indexing, below)
+      is.predominant[is.na(is.predominant)] <- FALSE
       for(i in seq_along(A.species$values)) {
         A.species$values[[i]][is.predominant] <- affs[[j]]$values[[i]][is.predominant]
       }

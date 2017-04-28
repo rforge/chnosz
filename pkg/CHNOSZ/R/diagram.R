@@ -20,7 +20,8 @@ diagram <- function(
   # line styles
   lty=NULL, lwd=par("lwd"), dotted=NULL, 
   # colors
-  col=par("col"), col.names=par("col"), fill=NULL, col.NA="black",
+  col=par("col"), col.names=par("col"), fill=NULL,
+  fill.NA="slategray1", limit.water=TRUE,
   # labels
   names=NULL, main=NULL, legend.x=NA, format.names=TRUE, adj=0.5, dy=0,
   # plotting controls
@@ -33,7 +34,7 @@ diagram <- function(
   if(!"sout" %in% names(eout)) stop("'eout' does not look like output from equil() or affinity()")
 
   ## 'what' can be:
-  #    loga.equil    -  equilibrium activities of species of interest (eout)
+  #    loga.equil    - equilibrium activities of species of interest (eout)
   #    basis species - equilibrium activity of a basis species (aout)
   #    missing       - property from affinity() or predominances of species (aout)
   eout.is.aout <- FALSE
@@ -156,6 +157,19 @@ diagram <- function(
       }
     }
     predominant <- which.pmax(pv)
+    # for an Eh-pH or pe-pH diagram, clip plot to water stability region
+    if(limit.water & eout$vars[1] == "pH" & eout$vars[2] %in% c("Eh", "pe")) {
+      wl <- water.lines(xaxis=eout$vars[1], yaxis=eout$vars[2], T=eout$T, P=eout$P, xpoints=eout$vals[[1]], plot.it=FALSE)
+      # for each x-point, find the y-values that are outside the water stability limits
+      for(i in seq_along(wl$xpoints)) {
+        ymin <- min(c(wl$y.oxidation[i], wl$y.reduction[i]))
+        ymax <- max(c(wl$y.oxidation[i], wl$y.reduction[i]))
+        # the actual calculation
+        iNA <- eout$vals[[2]] < ymin | eout$vals[[2]] > ymax
+        # assign NA to the predominance matrix
+        predominant[i, iNA] <- NA
+      }
+    }
   }
 
   # a warning about that we can only show properties of the first species on a 2-D diagram
@@ -316,9 +330,9 @@ diagram <- function(
         for(i in 1:nrow(zs)) zs[i,] <- out[nrow(zs)+1-i,]
         zs <- t(zs)
         breaks <- c(-1, 0, 1:nspecies) + 0.5
-        # use col.NA for NA values
+        # use fill.NA for NA values
         zs[is.na(zs)] <- 0
-        image(x=xs, y=ys, z=zs, col=c(col.NA, fill), add=TRUE, breaks=breaks, useRaster=TRUE)
+        image(x=xs, y=ys, z=zs, col=c(fill.NA, fill), add=TRUE, breaks=breaks, useRaster=TRUE)
       }
       ## curve plot function
       # 20091116 replaced plot.curve with plot.line; different
@@ -405,7 +419,7 @@ diagram <- function(
           ys <- rev(ys)
         }
 	# the categories (species/groups/etc) on the plot
-	zvals <- unique(as.vector(predominant))
+	zvals <- na.omit(unique(as.vector(predominant)))
 	# take each possible pair
 	for(i in 1:(length(zvals)-1)) {
 	  for(j in (i+1):length(zvals)) {
@@ -460,6 +474,8 @@ diagram <- function(
       else if(isTRUE(fill[1]=="rainbow")) fill <- rainbow(ngroups)
       else if(isTRUE(fill[1] %in% c("heat", "terrain", "topo", "cm"))) fill <- get(paste0(fill[1], ".colors"))(ngroups)
       fill <- rep(fill, length.out=ngroups)
+      # modify the default for fill.NA
+      if(add & missing(fill.NA)) fill.NA <- "transparent"
       # the x and y values 
       xs <- eout$vals[[1]]
       ys <- eout$vals[[2]]

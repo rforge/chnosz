@@ -558,7 +558,7 @@ Now we can calculate the affinities on an Eh-pH grid:
 
 Given values of affinity, the <span style="color:green">`diagram()`</span> function uses the maximum affinity method to make a potential diagram (i.e. a Pourbaix diagram).
 Areas corresponding to Eh-pH conditions beyond the stability limits of water are colored slate gray.
-A second function, <span style="color:green">`water.lines()`</span>, is used to draw lines at the water stability limits:
+Another function, <span style="color:green">`water.lines()`</span>, is used to draw lines at the water stability limits:
 ```{r EhpH_plot, echo=-1, eval=FALSE}
 ```
 
@@ -1642,8 +1642,12 @@ This is similar to Figure 1.5 of Alberty (2003):
 </p>
 
 We have calculated the distribution of ATP species and average binding number of H<sup>+</sup> and Mg<sup>+2</sup> for given pH, pMg, ionic strength, and temperature.
-Apparent equilibrium constants tabulated for specified ionic strength make an algebraic solution of the equilibrium distribution of species feasible, as demonstrated by the Mathematica code in Alberty (2003).
-The required calculations can be performed "on the fly" in CHNOSZ by using the `IS` argument in <span style="color:green">`subcrt()`</span> or <span style="color:green">`affinity()`</span> to invoke the nonideality model on top of the standard Gibbs energies of species.
+Accounting for the distribution of chemical species lends itself to thermodynamic models for reactions between reactants that have multiple possibly ionized and bound states.
+In contrast, Alberty (2003) and others propose models for biochemical reactions where the ionized and complexed species are combined into a single representation.
+Those models invoke Legendre-transformed thermodynamic properties, such as transformed Gibbs energies that are tabulated for specified pH, pMg, and ionic strength.
+Although the conceptual pathways are different, the two approaches lead to equivalent results concerning the energetics of the overall reactions and the conditions for equilibrium [@SVI12].
+The example here shows how the required calculations can be performed at the species level using conventional standard Gibbs energies for species referenced to infinite dilution (zero ionic strength).
+The effects of ionic strength are modeled "on the fly" in CHNOSZ by setting the `IS` argument in <span style="color:green">`subcrt()`</span> or <span style="color:green">`affinity()`</span> to invoke the nonideality model on top of the standard Gibbs energies of species.
 
 ## Optimization of chemical activities
 

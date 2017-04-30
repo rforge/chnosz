@@ -15,7 +15,7 @@ local({
   sources_gas <- paste0(c("inorganic", "organic"), "_gas")
   OBIGTdir <- system.file("extdata/OBIGT/", package="CHNOSZ")
   # need explicit "/" for Windows
-  sourcefiles <- paste0(OBIGTdir, "/", c(sources_aq, sources_cr, sources_liq, sources_gas), ".csv")
+  sourcefiles <- paste0(OBIGTdir, "/", c(sources_aq, sources_cr, sources_liq, sources_gas), ".csv.xz")
   datalist <- lapply(sourcefiles, read.csv, as.is=TRUE)
   obigt <- do.call(rbind, datalist)
   # create thermo list

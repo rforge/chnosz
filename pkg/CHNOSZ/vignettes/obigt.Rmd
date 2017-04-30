@@ -4,7 +4,7 @@ output:
 # change to html_document for full version
   html_document:
     mathjax: null
-# uncomment for full version
+# uncomment the next two lines for full version
     theme: cosmo
     css: obigt.css
 vignette: >
@@ -37,7 +37,7 @@ data(thermo)
 setfile <- function(csvfile, dat=NULL) {
   # assign csvfile outside this function
   assign("csvfile", csvfile, parent.frame())
-  file <- system.file(paste0("extdata/OBIGT/", csvfile), package="CHNOSZ")
+  file <- system.file(paste0("extdata/OBIGT/", csvfile, ".xz"), package="CHNOSZ")
   dat <- read.csv(file, as.is=TRUE)
   # the class of substance, followed by number of species
   class <- gsub("_.*", "", csvfile)
@@ -52,7 +52,7 @@ filerefs <- function(csvfile, dat=NULL, message=FALSE) {
   whichref <- "ref2"
   # without dat, look for ref1 in csvfile
   if(is.null(dat)) {
-    file <- system.file(paste0("extdata/OBIGT/", csvfile), package="CHNOSZ")
+    file <- system.file(paste0("extdata/OBIGT/", csvfile, ".xz"), package="CHNOSZ")
     dat <- read.csv(file, as.is=TRUE)
     whichref <- "ref1"
   }

@@ -18,7 +18,7 @@ The \code{thermo} object holds the thermodynamic database of properties of speci
 The \code{thermo} object also holds intermediate data used in calculations, in particular the definitions of basis species and species of interest input by the user, and the calculated properties of \code{\link{water}} so that subsequent calculations at the same temperature-pressure conditions can be accelerated.
 
 The \code{thermo} object is a \code{\link{list}} composed of \code{\link{data.frame}}s or lists each representing a class of data.
-The object is created in an environment named \code{thermo}; see \code{\link{sideeffects}} for details.
+The object is created in an environment named \code{thermo}.
 At any time, the user can restore the data object to its initial state by calling \code{data(thermo)}.
 This is sometimes a useful command to use during an interactive session, when previous definitions of basis species and species of interest are longer desired.
 }

@@ -5,7 +5,7 @@
 examples <- function(do.png=FALSE) {
   # run all the examples in CHNOSZ documentation
   .ptime <- proc.time()
-  topics <- c("thermo", "sideeffects", "examples",
+  topics <- c("thermo", "examples",
     "util.array", "util.blast", "util.data", "util.expression",
     "util.fasta", "util.formula", "util.matrix", "util.misc", "util.seq", "util.units",
     "util.water", "taxonomy", "info", "protein.info", "hkf", "water", "IAPWS95", "subcrt",

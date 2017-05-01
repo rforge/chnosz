@@ -38,7 +38,7 @@ The amino acid compositions are multiplied by the indicated \code{abundance}; th
 If \code{average} is TRUE the final sum is divided by the number of input compositions.
 The name used in the output is taken from the first row of \code{aa} or from \code{protein} and \code{organism} if they are specified.
 
-Given amino acid composition returned by the \code{*aa} functions described above, \code{add.protein} adds them to \code{thermo$protein} for use by other functions in CHNOSZ.
+Given amino acid compositions returned by the \code{*aa} functions described above, \code{add.protein} adds them to \code{thermo$protein} for use by other functions in CHNOSZ.
 The amino acid compositions of proteins in \code{aa} with the same name as one in \code{thermo$protein} are replaced.
 The value returned by this function is the rownumbers of \code{thermo$protein} that are added and/or replaced.
 }

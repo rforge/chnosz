@@ -2,7 +2,7 @@
 \alias{diagram}
 \alias{strip}
 \alias{find.tp}
-\title{Equilibrium Chemical Activity Diagrams}
+\title{Chemical Activity Diagrams}
 \description{
 Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predominance) diagrams as a function of chemical activities of basis speecies, temperature and/or pressure.
 }
@@ -24,7 +24,7 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
 }
 
 \arguments{
-  \item{eout}{list, object returned by \code{\link{equilibrate}}} or \code{\link{affinity}}
+  \item{eout}{list, object returned by \code{\link{equilibrate}} or \code{\link{affinity}}}
   \item{what}{character, what property to calculate and plot}
   \item{alpha}{logical, for speciation diagrams, plot degree of formation instead of activities?}
   \item{normalize}{logical, divide chemical affinities by balance coefficients (rescale to whole formulas)?}
@@ -95,7 +95,7 @@ By default, \code{\link{heat.colors}} are used to fill the predominance fields i
 \code{fill.NA} is also used to specify the color outside the water stability limits on Eh-pH or pe-pH diagrams, when \code{limit.water} is TRUE.
 Note that the default for \code{fill.NA} is automatically changed to \samp{transparent} when \code{add} is TRUE.
 
-As of CHNOSZ 1.0.8-11, a new default line-drawing procedure has been implemented.
+In CHNOSZ 1.1.0, a new default line-drawing procedure has been implemented.
 This uses \code{\link{contour}} to draw smooth-looking diagonal and curved lines, at the expense of not coinciding exactly with the rectangular grid (which is still used for drawing colors).
 \code{lty}, \code{col}, and \code{lwd} can be specified, but limiting the lines via \code{xrange} is not currently supported.
 To go back to the old behavior for drawing lines, set \code{dotted} to \samp{0}.
@@ -149,7 +149,7 @@ The maximum affinity method is premised on the calculation of the affinities of 
 Then, the species with the highest affinity of formation, after normalization by the balancing coefficients, corresponds to the predominant species in an equilibrium calculation.
 The examples below \dQuote{work} because they are relatively simple - the balancing coefficients are unity or all the same value (aqueous aluminum example), or the species are solids with unit activities (the mineral examples).
 The examples shown for \code{\link{protein}s} elsewhere also take the balancing coefficients to unity, after normalizing by protein length.
-However, if aqueous species are present with different balancing coefficients, the maximum affinity method is not dependable, as shown in the TCA metabolite example below.
+However, if aqueous species are present with different balancing coefficients, the maximum affinity method may produce unintended results.
 }
 
 \seealso{ 
@@ -257,11 +257,6 @@ stopifnot(species()$name[d$predominant[99, 101]]=="sillimanite")
   LaRowe, D. E. and Helgeson, H. C. (2007) Quantifying the energetics of metabolic reactions in diverse biogeochemical systems: electron flow and ATP synthesis. \emph{Geobiology} \bold{5}, 153--168. \url{http://dx.doi.org/10.1111/j.1472-4669.2007.00099.x}
 
   Majzlan, J., Navrotsky, A., McClesky, R. B. and Alpers, C. N. (2006) Thermodynamic properties and crystal structure refinement of ferricopiapite, coquimbite, rhomboclase, and Fe2(SO4)3(H2O)5. \emph{Eur. J. Mineral.} \bold{18}, 175--186. \url{http://dx.doi.org/10.1127/0935-1221/2006/0018-0175}
-
-  Seewald, J. S. (1997) Mineral redox buffers and the stability of organic compounds under hydrothermal conditions. \emph{Mat. Res. Soc. Symp. Proc.} \bold{432}, 317--331. \url{http://dx.doi.org/10.1557/PROC-432-317}
-
-  Seewald, J. S. (2001) Aqueous geochemistry of low molecular weight hydrocarbons at elevated temperatures and pressures: Constraints from mineral buffered laboratory experiments \emph{Geochim. Cosmochim. Acta} \bold{65}, 1641--1664. \url{http://dx.doi.org/10.1016/S0016-7037(01)00544-0}
-
 }
 
 \concept{Primary thermodynamic modeling}

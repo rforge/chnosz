@@ -50,6 +50,8 @@ for(i in 1:length(reactants)) {
   for(j in 1:2) {
     formula <- thermo$obigt$formula[s$reaction$ispecies[j]]
     key1 <- thermo$obigt$ref1[s$reaction$ispecies[j]]
+    # remove suffix from the key (e.g. "DLH06 [S15]" --> "DLH06")
+    key1 <- strsplit(key1, " ")[[1]][1]
     ikey1 <- which(thermo$refs$key==key1)
     URL1 <- thermo$refs$URL[ikey1]
     setSVGShapeURL(URL1, target="_blank")

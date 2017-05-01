@@ -28,7 +28,7 @@ Calculate equilibrium chemical activities of species from the affinities of form
 }
 
 \details{
-\code{equilibrate} provides an interface to calculate the chemical activities of species in metastable equilibrium, in an open system at constant temperature and pressure and chemical activities of basis species, and with linear balancing constraints on transformations.
+\code{equilibrate} calculates the chemical activities of species in metastable equilibrium, in an open system at constant temperature and pressure and chemical activities of basis species, and with linear balancing constraints on transformations.
 
 It takes as input \code{aout}, the output from \code{\link{affinity}}, which may be calculated from a multidimensional grid of conditions.
 The equilibrium chemical activities of species are calculated using either the \code{equil.reaction} or \code{equil.boltzmann} functions, the latter only if the balance is on one mole of species.

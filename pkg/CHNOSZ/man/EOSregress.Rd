@@ -110,6 +110,8 @@ The vignette \emph{Regressing thermodynamic data} has more references and exampl
 }
 
 \references{
+  Hnědkovský, L. and Wood, R. H. (1997) Apparent molar heat capacities of aqueous solutions of CH4, CO2, H2S, and NH3 at temperatures from 304 K to 704 K at a pressure of 28 MPa. \emph{J. Chem. Thermodyn.} \bold{29}, 731--747. \url{http://dx.doi.org/10.1006/jcht.1997.0192}
+
   Schulte, M. D., Shock, E. L. and Wood, R. H. (1995) The temperature dependence of the standard-state thermodynamic properties of aqueous nonelectrolytes. \emph{Geochim. Cosmochim. Acta} \bold{65}, 3919--3930. \url{http://dx.doi.org/10.1016/S0016-7037(01)00717-7}
 }
 
@@ -118,7 +120,7 @@ The vignette \emph{Regressing thermodynamic data} has more references and exampl
 \dontshow{data(thermo)}
 ## fit experimental heat capacities of CH4
 ## using revised Helgeson-Kirkham-Flowers equations
-# read the data from Hnedkovsky and Wood, 1997
+# read the data from Hnědkovský and Wood, 1997
 f <- system.file("extdata/cpetc/Cp.CH4.HW97.csv", package="CHNOSZ")
 d <- read.csv(f)
 # have to convert J to cal and MPa to bar

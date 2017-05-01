@@ -1642,7 +1642,7 @@ This is similar to Figure 1.5 of Alberty (2003):
 </p>
 
 We have calculated the distribution of ATP species and average binding number of H<sup>+</sup> and Mg<sup>+2</sup> for given pH, pMg, ionic strength, and temperature.
-Accounting for the distribution of chemical species lends itself to thermodynamic models for reactions between reactants that have multiple ionized and bound states.
+Accounting for the distribution of chemical species lends itself to thermodynamic models for reactions between reactants that have multiple ionized and complexed states.
 In contrast, Alberty (2003) and others propose models for biochemical reactions where the ionized and complexed species are combined into a single representation.
 Those models invoke Legendre-transformed thermodynamic properties, such as transformed Gibbs energies that are tabulated for specified pH, pMg, and ionic strength.
 Although the conceptual pathways are different, the two approaches lead to equivalent results concerning the energetics of the overall reactions and the conditions for equilibrium [@SVI12].

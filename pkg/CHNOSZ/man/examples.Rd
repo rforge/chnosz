@@ -15,8 +15,9 @@
 \usage{
   examples(do.png = FALSE)
   demos(which = c("sources", "protein.equil", "affinity", "NaCl", "density",
-    "ORP", "revisit", "findit", "ionize", "buffer", "protbuff", "yeastgfp", "mosaic",
-    "copper", "solubility", "wjd", "dehydration", "bugstab", "Shh", "activity_ratios"),
+    "ORP", "revisit", "findit", "ionize", "buffer", "protbuff", "yeastgfp",
+    "mosaic", "copper", "solubility", "wjd", "dehydration", "bugstab", "Shh",
+    "activity_ratios"),
     to.file=FALSE)
 }
 

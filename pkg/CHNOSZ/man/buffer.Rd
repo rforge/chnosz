@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{buffer}
 \alias{buffer}
 \alias{mod.buffer}

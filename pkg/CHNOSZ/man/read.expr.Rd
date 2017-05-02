@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{read.expr}
 \alias{yeastgfp}
 \alias{read.expr}

@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{util.misc}
 \alias{util.misc}
 \alias{dPdTtr}

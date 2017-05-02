@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{makeup}
 \alias{makeup}
 \alias{count.elements}
@@ -37,8 +38,6 @@ If \code{count.zero} is TRUE, the elemental counts for each formula include zero
 The \code{multiplier} argument must have either length = 1 or length equal to the number of formulas.
 The elemental count in each formula is multiplied by the respective value.
 If \code{sum} is true, the elemental counts in all formulas (after any multiplying) are summed together to yield a single bulk formula. 
-
-\code{count.elements}
 }
 
 \value{

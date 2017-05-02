@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{add.protein}
 \alias{add.protein}
 \alias{seq2aa}

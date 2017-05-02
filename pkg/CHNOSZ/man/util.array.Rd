@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{util.array}
 \alias{util.array}
 \alias{list2array}

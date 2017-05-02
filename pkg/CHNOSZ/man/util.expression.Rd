@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{util.expression}
 \alias{util.expression}
 \alias{expr.species}

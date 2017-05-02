@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{util.program}
 \alias{util.program}
 \alias{palply}

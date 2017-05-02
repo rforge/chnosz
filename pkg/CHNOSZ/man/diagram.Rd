@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{diagram}
 \alias{diagram}
 \alias{strip}

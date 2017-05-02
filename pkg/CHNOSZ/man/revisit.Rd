@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{revisit}
 \alias{revisit}
 \alias{richness}

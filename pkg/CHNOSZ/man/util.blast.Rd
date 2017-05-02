@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{util.blast}
 \alias{util.blast}
 \alias{read.blast}

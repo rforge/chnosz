@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{findit}
 \alias{findit}
 \alias{plot_findit}
@@ -73,6 +74,6 @@ If the limits of any of the parameters extend beyond those in \code{lims}, they 
 \code{findit} returns a list having class \code{findit} with elements \code{value} (values of the parameters, and value of the objective function, at each iteration), \code{lolim} (lower limits of the parameters) and \code{hilim} (upper limits of the parameters).
 }
 
-\seealso{ \code{demo("findit")} and \code{tests/test-findit.R} for examples. }
+\seealso{ \code{\link{demos}("findit")} and \code{test-findit.R} for examples. }
 
 \concept{Secondary thermodynamic modeling}

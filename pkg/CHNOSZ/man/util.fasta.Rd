@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{util.fasta}
 \alias{util.fasta}
 \alias{read.fasta}

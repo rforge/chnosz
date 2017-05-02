@@ -199,7 +199,7 @@ count.formulas <- function(formula) {
     if(length(iopen) != length(iclose)) stop("formula has unpaired parentheses")
     # are the parentheses unnested?
     iparen <- as.numeric(matrix(c(iopen, iclose), nrow=2, byrow=TRUE))
-    if(any(diff(iparen) < 0)) stop("formula has nested parentheses")
+    if(any(diff(iparen) < 0)) stop(paste("formula has nested parentheses: ", formula))
     # iend will be the last position including coefficients
     # (e.g. the position of 2 in (OH)2)
     iend <- iclose

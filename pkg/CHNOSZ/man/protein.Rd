@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{protein}
 \alias{protein}
 \title{Examples of Calculations for Proteins}

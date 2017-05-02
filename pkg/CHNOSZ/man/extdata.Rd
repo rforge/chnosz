@@ -12,13 +12,13 @@
 
   Files in \code{abundance} contain protein abundance and microbial occurrence data:
   \itemize{
-    \item \code{TBD+05.csv} lists genes with transcriptomic expression changes in carbon limitation stress response experiments in yeast (Tai et al., 2005).
-    \item \code{ISR+08.csv} has columns excerpted from Additional File 2 of Ishihama et al. (2008) for protein abundances in \emph{E. coli} cytosol. The columns in this file are ID (Swiss-Prot ID), accession (Swiss-Prot accession), emPAI (exponentially modified protein abundance index), copynumber (emPAI-derived copy number/cell), GRAVY (Kyte-Doolittel), FunCat (FunCat class description), PSORT (PSORT localisation), ribosomal (yes/no). See \code{\link{read.expr}} for examples that use this file.
-    \item \code{yeastgfp.csv.xz} Has 28 columns; the names of the first five are \code{yORF}, \code{gene name}, \code{GFP tagged?}, \code{GFP visualized?}, and \code{abundance}. The remaining columns correspond to the 23 subcellular localizations considered in the YeastGFP project (Huh et al., 2003 and Ghaemmaghami et al., 2003) and hold values of either \code{T} or \code{F} for each protein. \samp{yeastgfp.csv} was downloaded on 2007-02-01 from http://yeastgfp.ucsf.edu using the Advanced Search, setting options to download the entire dataset and to include localization table and abundance, sorted by orf number. See \code{\link{yeastgfp}} for examples that use this file.
+    \item \code{TBD+05.csv} lists genes with transcriptomic expression changes in carbon limitation stress response experiments in yeast (Tai et al., 2005). See \code{\link{read.expr}} for an example that uses this file.
+    \item \code{ISR+08.csv} has columns excerpted from Additional File 2 of Ishihama et al. (2008) for protein abundances in \emph{E. coli} cytosol. The columns in this file are ID (Swiss-Prot ID), accession (Swiss-Prot accession), emPAI (exponentially modified protein abundance index), copynumber (emPAI-derived copy number/cell), GRAVY (Kyte-Doolittel), FunCat (FunCat class description), PSORT (PSORT localisation), ribosomal (yes/no). See \code{\link{read.expr}} for an example that uses this file.
+    \item \code{yeastgfp.csv.xz} Has 28 columns; the names of the first five are \code{yORF}, \code{gene name}, \code{GFP tagged?}, \code{GFP visualized?}, and \code{abundance}. The remaining columns correspond to the 23 subcellular localizations considered in the YeastGFP project (Huh et al., 2003 and Ghaemmaghami et al., 2003) and hold values of either \code{T} or \code{F} for each protein. \samp{yeastgfp.csv} was downloaded on 2007-02-01 from http://yeastgfp.ucsf.edu using the Advanced Search, setting options to download the entire dataset and to include localization table and abundance, sorted by orf number. See \code{\link{yeastgfp}} and \code{\link{demos}("yeastgfp")} for examples that use this file.
     \item \code{microbes.csv} has data for microbial occurrence (i.e. relative enrichement) in colorectal cancer and normal tissue. The file is from the Supporting Information of Dick (2016). This file is used by \code{\link{demos}("bugstab")}.
   }
 
-  Files in \code{bison} contain BLAST results and taxonomic information for a metagenome:
+  Files in \code{bison} contain BLAST results and taxonomic information for an environmental metagenome from the Bison Pool hot spring in Yellowstone National Park:
   \itemize{
     \item \code{bisonN_vs_refseq57.blast.xz}, \code{bisonS...}, \code{bisonR...}, \code{bisonQ...}, \code{bisonP...} are partial tabular BLAST results for proteins in the Bison Pool Environmental Genome. Protein sequences predicted in the metagenome were downloaded from the Joint Genome Institute's IMG/M system on 2009-05-13. The target database for the searches was constructed from microbial protein sequences in National Center for Biotechnology Information (NCBI) RefSeq database version 57, representing 7415 microbial genomes. The \sQuote{blastall} command was used with the default setting for E value cuttoff (10.0) and options to make a tabular output file consisting of the top 20 hits for each query sequence. The function \code{\link{read.blast}} was used to extract only those hits with E values less than or equal to 1e-5 and with sequence similarity (percent identity) at least 30 percent, and to keep only the first hit for each query sequence. The function \code{\link{write.blast}} was used to save partial BLAST files (only selected columns). The files provided with CHNOSZ contain the first 5,000 hits for each sampling site at Bison Pool, representing between about 7 to 15 percent of the first BLAST hits after similarity and E value filtering.
     \item \code{gi.taxid.txt.xz} is a table that lists the sequence identifiers (gi numbers) that appear in the example BLAST files (see above), together with the corresponding taxon ids used in the NCBI databases. This file is \emph{not} a subset of the complete \sQuote{gi_taxid_prot.dmp.gz} available at \url{ftp://ftp.ncbi.nih.gov/pub/taxonomy/} but instead is a subset of \sQuote{gi.taxid.txt} generated from the RefSeq release catalog using \sQuote{gencat.sh} in the \code{refseq} directory. See \code{\link{id.blast}} for an example that uses this file and the BLAST files described above.
@@ -27,23 +27,23 @@
 
   Files in \code{cpetc} contain heat capacity and other thermodynamic data and parameters:
   \itemize{
-    \item \code{PM90.csv} Heat capacities of four unfolded aqueous proteins taken from Privalov and Makhatadze, 1990. Temperature in \eqn{^{\circ}}{°}C is in the first column, and heat capacities of the proteins in J mol\eqn{^{-1}}{^-1} K\eqn{^{-1}}{^-1} in the remaining columns. See \code{\link{ionize.aa}} for an example that uses this file.
+    \item \code{PM90.csv} Heat capacities of four unfolded aqueous proteins taken from Privalov and Makhatadze, 1990. Temperature in \eqn{^{\circ}}{°}C is in the first column, and heat capacities of the proteins in J mol\eqn{^{-1}}{^-1} K\eqn{^{-1}}{^-1} in the remaining columns. See \code{\link{ionize.aa}} and the vignette \code{anintro.Rmd} for examples that uses this file.
     \item \code{RH95.csv} Heat capacity data for iron taken from Robie and Hemingway, 1995. Temperature in Kelvin is in the first column, heat capacity in J K\eqn{^{-1}}{^-1} mol\eqn{^{-1}}{^-1} in the second. See \code{\link{subcrt}} for an example that uses this file.
     \item \code{RT71.csv} pH titration measurements for unfolded lysozyme (\samp{LYSC_CHICK}) taken from Roxby and Tanford, 1971. pH is in the first column, net charge in the second. See \code{\link{ionize.aa}} for an example that uses this file.
-    \item \code{SOJSH.csv} Experimental equilibrium constants for the reaction NaCl(aq) = Na+ + Cl- as a function of temperature and pressure taken from Fig. 1 of Shock et al., 1992. Data were extracted from the figure using g3data (\url{http://www.frantz.fi/software/g3data.php}). See \code{\link{water}} for an example that uses this file.
-    \item \code{Cp.CH4.HW97.csv}, \code{V.CH4.HWM96.csv} Apparent molar heat capacities and volumes of CH4 in dilute aqueous solutions reported by Hnědkovský and Wood, 1997 and Hnědkovský et al., 1996. See \code{\link{EOSregress}} for examples that use these files.
-    \item \code{SC10_Rainbow.csv} Values of temperature (\eqn{^{\circ}}{°}C), pH and logarithms of activity of \eqn{\mathrm{CO_2}}{CO2}, \eqn{\mathrm{H_2}}{H2}, \eqn{\mathrm{NH_4^+}}{NH4+}, \eqn{\mathrm{H_2S}}{H2S} and \eqn{\mathrm{CH_4}}{CH4} for mixing of seawater and hydrothermal fluid at Rainbow field (Mid-Atlantic Ridge), taken from Shock and Canovas, 2010.
-    \item \code{SS98_Fig5a.csv}, \code{SS98_Fig5b.csv} Values of logarithm of fugacity of \eqn{\mathrm{O_2}}{O2} and pH as a function of temperature for mixing of seawater and hydrothermal fluid, digitized from Figs. 5a and b of Shock and Schulte, 1998.
-    \item \code{rubisco.csv} UniProt IDs for Rubisco, ranges of optimal growth temperature of organisms, domain and name of organisms, and URL of reference for growth temperature, from Dick, 2014.
+    \item \code{SOJSH.csv} Experimental equilibrium constants for the reaction NaCl(aq) = Na+ + Cl- as a function of temperature and pressure taken from Fig. 1 of Shock et al., 1992. Data were extracted from the figure using g3data (\url{http://www.frantz.fi/software/g3data.php}). See \code{\link{demos}("NaCl")} for an example that uses this file.
+    \item \code{Cp.CH4.HW97.csv}, \code{V.CH4.HWM96.csv} Apparent molar heat capacities and volumes of CH4 in dilute aqueous solutions reported by Hnědkovský and Wood, 1997 and Hnědkovský et al., 1996. See \code{\link{EOSregress}} and the vignette \code{eos-regress.Rmd} for examples that use these files.
+    \item \code{SC10_Rainbow.csv} Values of temperature (\eqn{^{\circ}}{°}C), pH and logarithms of activity of \eqn{\mathrm{CO_2}}{CO2}, \eqn{\mathrm{H_2}}{H2}, \eqn{\mathrm{NH_4^+}}{NH4+}, \eqn{\mathrm{H_2S}}{H2S} and \eqn{\mathrm{CH_4}}{CH4} for mixing of seawater and hydrothermal fluid at Rainbow field (Mid-Atlantic Ridge), taken from Shock and Canovas, 2010. See the vignette \code{anintro.Rmd} for an example that uses this file.
+    \item \code{SS98_Fig5a.csv}, \code{SS98_Fig5b.csv} Values of logarithm of fugacity of \eqn{\mathrm{O_2}}{O2} and pH as a function of temperature for mixing of seawater and hydrothermal fluid, digitized from Figs. 5a and b of Shock and Schulte, 1998. See the vignette \code{anintro.Rmd} for an example that uses this file.
+    \item \code{rubisco.csv} UniProt IDs for Rubisco, ranges of optimal growth temperature of organisms, domain and name of organisms, and URL of reference for growth temperature, from Dick, 2014. See the vignette \code{anintro.Rmd} for an example that uses this file.
   }
 
   Files in \code{fasta} contain protein sequences:
   \itemize{
-    \item \code{EF-Tu.aln} consists of aligned sequences (394 amino acids) of elongation factor Tu (EF-Tu). The sequences correspond to those taken from UniProtKB for ECOLI (\emph{Escherichia coli}), THETH (\emph{Thermus thermophilus}) and THEMA (\emph{Thermotoga maritima}), and reconstructed ancestral sequences taken from Gaucher et al., 2003 (maximum likelihood bacterial stem and mesophilic bacterial stem, and alternative bacterial stem)
-    \item \code{rubisco.csv} Sequences of Rubisco obtained from UniProt (see Dick, 2014).
+    \item \code{EF-Tu.aln} consists of aligned sequences (394 amino acids) of elongation factor Tu (EF-Tu). The sequences correspond to those taken from UniProtKB for ECOLI (\emph{Escherichia coli}), THETH (\emph{Thermus thermophilus}) and THEMA (\emph{Thermotoga maritima}), and reconstructed ancestral sequences taken from Gaucher et al., 2003 (maximum likelihood bacterial stem and mesophilic bacterial stem, and alternative bacterial stem). See \code{\link{read.fasta}} for an example that uses this file.
+    \item \code{rubisco.fasta} Sequences of Rubisco obtained from UniProt (see Dick, 2014). See the vignette \code{anintro.Rmd} for an example that uses this file.
   }
 
-  Files in \code{protein} contain protein composition data for model organisms.
+  Files in \code{protein} contain amino acid compositions for proteins.
   See \code{\link{more.aa}} and \code{\link{read.expr}} for examples that use these files.
   \itemize{
     \item \code{Sce.csv.xz}
@@ -53,7 +53,7 @@
     \item \code{Eco.csv.xz}
       Amino acid compositions of 4407 proteins in \emph{Escherichia coli} strain K12.
       Format is the one used \code{\link{thermo}$protein}, with columns \samp{protein} holding the gene name, \samp{organism} set to \samp{ECOLI}, and \code{abbrv} holding the UniProt ID.
-      The source of data is the file \samp{ECOLI.fas} downloaded from the HAMAP (High-quality Automated and Manual Annotation of microbial Proteomes system) FTP site (Gattiker et al., 2003) on 2010-09-25 (old URL: \code{ftp://ftp.expasy.org/databases/hamap/complete_proteomes/fasta/bacteria}) .
+      The source of data is the file \samp{ECOLI.fas} downloaded from the HAMAP (High-quality Automated and Manual Annotation of microbial Proteomes system) FTP site (Gattiker et al., 2003) on 2010-09-25 (old URL: ftp://ftp.expasy.org/databases/hamap/complete_proteomes/fasta/bacteria).
     \item \code{DS11.csv}, \code{DS13.csv}
       These two files contain amino acid compositions of metagenomically encoded proteins, averaged together according to functional annotation (DS11) or taxonomic affiliation (DS13).
       The data are from Dick and Shock, 2011 and 2013.
@@ -63,7 +63,6 @@
       This file is taken from Dick, 2016.
       It is used by \code{\link{demos}("bugstab")}.
   }
-
 
   Files in \code{refseq} contain code and results of processing NCBI Reference Sequences (RefSeq) for microbial proteins, using RefSeq release 61 of 2013-09-09:
   \itemize{
@@ -81,24 +80,24 @@
       See example for \code{\link{id.blast}}.
   }
 
-  Files in \code{supcrt} contain scripts for reading and comparing SUPCRT files with the database in CHNOSZ:
+  Files in \code{supcrt} contain scripts for reading and comparing SUPCRT files (including slop98.dat and newer slop files from GEOPIG (http://geopig.asu.edu)) with the database in CHNOSZ:
   \itemize{
     \item \code{read.supcrt.R} defines the function \code{read.supcrt} that can be used to read SUPCRT files.
     \item \code{compare.R} uses \code{read.supcrt} to compare data in the SUPCRT file with that in \code{thermo$obigt}.
     \item \code{newnames.csv} maps names generated by \code{read.supcrt}, based on names present in the source SUPCRT files, to names used in \code{thermo$obigt}.
   }
 
-  Files in \code{taxonomy} contain example taxonomic data files:
+  Files in \code{taxonomy} contain taxonomic data files:
   \itemize{
-    \item \code{names.dmp} and \code{nodes.dmp} are excerpts of the taxonomy files available on the NCBI ftp site (\url{ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz}, accessed 2010-02-15). These example files contain only the entries for \emph{Escherichia coli} K-12, \emph{Saccharomyces cerevisiae}, \emph{Homo sapiens}, \emph{Pyrococcus furisosus} and \emph{Methanocaldococcus jannaschii} (taxids 83333, 4932, 9606, 186497, 243232) and the higher-ranking nodes (genus, family, etc.) in the respective lineages. See \code{\link{taxonomy}} for examples that use this file.
+    \item \code{names.dmp} and \code{nodes.dmp} are excerpts of the taxonomy files available on the NCBI ftp site (\url{ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz}, accessed 2010-02-15). These files contain only the entries for \emph{Escherichia coli} K-12, \emph{Saccharomyces cerevisiae}, \emph{Homo sapiens}, \emph{Pyrococcus furisosus} and \emph{Methanocaldococcus jannaschii} (taxids 83333, 4932, 9606, 186497, 243232) and the higher-ranking nodes (genus, family, etc.) in the respective lineages. See \code{\link{taxonomy}} for examples that use these files.
   }
 
   Files in \code{thermo} contain additional thermodynamic data and group additivity definitions:
   \itemize{
-    \item \code{Ste01.csv} and \code{BZA10.csv} contain supplementary thermodynamic data taken from Stefansson (2001) and Bazarkina et al. (2010). They can be added to the database in the current session using \code{\link{add.obigt}}.
+    \item \code{Ste01.csv} and \code{BZA10.csv} contain supplementary thermodynamic data taken from Stefansson (2001) and Bazarkina et al. (2010). They can be added to the database in the current session using \code{\link{add.obigt}}. See \code{\link{add.obigt}} and the vignette \code{eos-regress.Rmd} for examples that use these files.
     \item \code{obigt_check.csv} contains the results of running \code{\link{check.obigt}} to check the internal consistency of entries in the primary and supplementary databases.
     \item \code{RH98_Table15.csv} Group stoichiometries for high molecular weight crystalline and liquid organic compounds taken from Table 15 of Richard and Helgeson, 1998. The first three columns have the \code{compound} name, \code{formula} and physical \code{state} (\samp{cr} or \samp{liq}). The remaining columns have the numbers of each group in the compound; the names of the groups (columns) correspond to species in \code{\link{thermo}$obigt}. The compound named \samp{5a(H),14a(H)-cholestane} in the paper has been changed to \samp{5a(H),14b(H)-cholestane} here to match the group stoichiometry given in the table. See \code{\link{RH2obigt}} for a function that uses this file.
-    \item \code{DLEN67.csv} Standard Gibbs energies of formation, in kcal/mol, from Dayhoff et al., 1967, for nitrogen (N2) plus 17 compounds shown in Fig. 2 of Dayhoff et al., 1964, at 300, 500, 700 and 1000 K.
+    \item \code{DLEN67.csv} Standard Gibbs energies of formation, in kcal/mol, from Dayhoff et al., 1967, for nitrogen (N2) plus 17 compounds shown in Fig. 2 of Dayhoff et al., 1964, at 300, 500, 700 and 1000 K. See \code{\link{demos}("wjd")} and the vignette \code{wjd.Rmd} for examples that use this file.
   }
 
 

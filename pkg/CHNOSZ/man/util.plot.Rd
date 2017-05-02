@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{util.plot}
 \alias{util.plot}
 \alias{thermo.plot.new}

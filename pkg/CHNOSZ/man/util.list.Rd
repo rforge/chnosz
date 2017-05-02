@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{util.list}
 \alias{util.list}
 \alias{which.pmax}

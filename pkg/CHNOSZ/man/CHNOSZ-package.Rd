@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{CHNOSZ-package}
 \alias{CHNOSZ-package}
 \docType{package}
@@ -9,7 +10,7 @@ It can be used to calculate the standard molal thermodynamic properties and chem
 
 \section{Getting Help}{
 The major features of the package are outlined in the Overview given below, with links to specific help topics.
-See the vignette \emph{An Introduction to CHNOSZ} for more in-depth example of the usage the functions.
+See the vignette \emph{An Introduction to CHNOSZ} (\code{anintro.Rmd}) for more in-depth example of the usage the functions.
 The help pages have been given either keywords or \dQuote{concept index entries} which are visible to \code{\link{help.search}} (aka \code{??}).
 Use \code{??primary} to browse the most commonly used functions and \code{??secondary} to see other high-level, but less often-used functions.
 \code{??protein} shows functions for working with proteins, and \code{??extra} lists functions with extra functionality (beyond the main workflow).
@@ -50,6 +51,8 @@ If there is any doubt about the accuracy or suitability of data for a particular
   \item Activity diagrams - plot the equilibrium activities at a single point (as barplots), or as a function of one (species activity diagrams) or two (predominance diagrams) variables (\code{\link{diagram}}).
 
   \item Buffer calculations - compute activities of basis species that are determined by a buffer of one or more species (e.g., pyrite-pyrrhotite-magnetite; acetic acid-CO2) (\code{\link{buffer}}).
+
+  \item Activity coefficients (\bold{experimental}) - calculate activity coefficients of aqueous species using the extended Debye-Hückel equation (\code{\link{nonideal}}).
 
   \item Activity statistics (\bold{experimental}) - calculate summary statistics for equilibrium activities of species (\code{\link{revisit}}).
 

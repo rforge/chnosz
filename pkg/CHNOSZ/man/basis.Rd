@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{basis}
 \alias{basis}
 \title{Define Basis Species}

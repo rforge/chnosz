@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{transfer}
 \alias{transfer}
 \alias{draw.transfer}

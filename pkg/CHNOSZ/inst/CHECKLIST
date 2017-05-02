@@ -11,7 +11,12 @@ release checklist for CHNOSZ
 
 - check output of demo("sources") to make sure all data sources are cited
 
-- check output of R CMD Rd2pdf: fix lines truncated by page margins
+- recreate extdata/thermo/obigt_check.csv after all data updates:
+  co <- check.obigt()
+  write.csv(co, "obigt_check.csv", row.names=FALSE, na="")
+
+- run R_PAPERSIZE=letter R CMD Rd2pdf chnosz/
+  and fix any lines truncated by page margins
 
 - run R CMD check using R compiled without long doubles (as in Solaris checks on CRAN)
   (CFLAGS=-ffloat-store ./configure --disable-long-double)
@@ -25,10 +30,6 @@ OTHER THINGS TO CHECK:
 - remove all "<<-" from sources (leftover from debugging)
 
 - update list of documentation topics in examples() with any new ones
-
-- recreate extdata/thermo/obigt_check.csv after all data updates:
-  co <- check.obigt()
-  write.csv(co, "obigt_check.csv", row.names=FALSE, na="")
 
 - especially on Windows:  
   - data files are uncompressed on installation? (from BuildResaveData: no)

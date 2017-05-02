@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{species}
 \alias{species}
 \title{Species of Interest}

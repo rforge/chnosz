@@ -23,7 +23,7 @@
   describe.property(property, value, digits = 1, oneline = FALSE,
     ret.val = FALSE)
   describe.reaction(reaction, iname = numeric(), states = NULL)
-  syslab(system = c("K2O", "Al2O3", "SiO2", "H2O"))
+  syslab(system = c("K2O", "Al2O3", "SiO2", "H2O"), dash="\u2013")
   ratlab(ion = "K+")
 }
 
@@ -46,6 +46,7 @@
   \item{iname}{numeric, show names instead of formulas for these species}
   \item{states}{character, if \samp{all}, show states for all species}
   \item{system}{character, thermodynamic components}
+  \item{dash}{character to use for dash between components}
   \item{ion}{character, an ion}
 }
 

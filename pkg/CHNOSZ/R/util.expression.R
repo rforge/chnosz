@@ -270,11 +270,11 @@ ratlab <- function(ion="K+") {
 }
 
 # make formatted text for thermodynamic system 20170217
-syslab <- function(system = c("K2O", "Al2O3", "SiO2", "H2O")) {
+syslab <- function(system = c("K2O", "Al2O3", "SiO2", "H2O"), dash="\u2013") {
   for(i in seq_along(system)) {
     expr <- expr.species(system[i])
     # use en dash here
-    if(i==1) lab <- expr else lab <- substitute(a*"\u2013"*b, list(a=lab, b=expr))
+    if(i==1) lab <- expr else lab <- substitute(a*dash*b, list(a=lab, dash=dash, b=expr))
   }
   lab
 }

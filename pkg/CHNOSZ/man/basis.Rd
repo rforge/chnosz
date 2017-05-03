@@ -29,7 +29,6 @@ To create a basis definition, call \code{basis} with the names or formulas of th
 Alternatively, the first argument may consist of numeric values indicating the species indices (rownumbers in \code{\link{thermo}$obigt}), but a mixture of character and numeric values will generate an error.
 The special names \samp{pH}, \samp{pe} and \samp{Eh} can be included in the \code{species} argument; they get translated into the names of the proton (\samp{H+}) and electron (\samp{e-}) as appropriate.
 
-
 The physical states or logarithms of activities of species in the basis definition can be changed by calling \code{basis} with the formulas of species that are in the basis set, or their species indices.
 If either of the second or third arguments to \code{basis} is of type character, it refers to the name of a state (if present in \code{thermo$obigt$state}) or to the name of a chemical activity \code{\link{buffer}} (if present in \code{thermo$buffers$name}).
 If either of these arguments is numeric it specifies the logarithms of activities (or fugacities for gases) of the basis species.
@@ -49,7 +48,7 @@ The basis species identified by these keywords are aqueous except for \eqn{\math
 
   \tabular{ll}{
     \code{CHNOS} \tab \eqn{\mathrm{CO_2}}{CO2}, \eqn{\mathrm{H_2O}}{H2O}, \eqn{\mathrm{NH_3}}{NH3}, 
-                      \eqn{\mathrm{H_2S}}{H2S}, \eqn{\mathrm{O_2}}{O2} \cr
+                      \eqn{\mathrm{H_2S}}{H2S}, \eqn{\mathrm{O_2}}{O2} (basis I in Dick, 2016)\cr
     \code{CHNOS+} \tab \eqn{\mathrm{CO_2}}{CO2}, \eqn{\mathrm{H_2O}}{H2O}, \eqn{\mathrm{NH_3}}{NH3}, 
                        \eqn{\mathrm{H_2S}}{H2S}, \eqn{\mathrm{O_2}}{O2}, \eqn{\mathrm{H^+}}{H+} \cr
     \code{CHNOSe} \tab \eqn{\mathrm{CO_2}}{CO2}, \eqn{\mathrm{H_2O}}{H2O}, \eqn{\mathrm{NH_3}}{NH3}, 
@@ -63,10 +62,12 @@ The basis species identified by these keywords are aqueous except for \eqn{\math
                         \eqn{\mathrm{NH_3}}{NH3}, \eqn{\mathrm{H_2S}}{H2S}, \eqn{\mathrm{O_2}}{O2} \cr
     \code{FeCHNOS+} \tab \eqn{\mathrm{Fe_2O_3}}{Fe2O3}, \eqn{\mathrm{CO_2}}{CO2}, \eqn{\mathrm{H_2O}}{H2O}, 
                          \eqn{\mathrm{NH_3}}{NH3}, \eqn{\mathrm{H_2S}}{H2S}, \eqn{\mathrm{O_2}}{O2}, \eqn{\mathrm{H^+}}{H+} \cr
+    \code{QEC4} \tab cysteine, glutamic acid, glutamine, \eqn{\mathrm{H_2O}}{H2O}, \eqn{\mathrm{O_2}}{O2} (basis II in Dick, 2016) \cr
     \code{QEC} \tab cysteine, glutamic acid, glutamine, \eqn{\mathrm{H_2O}}{H2O}, \eqn{\mathrm{O_2}}{O2} \cr
     \code{QEC+} \tab cysteine, glutamic acid, glutamine, \eqn{\mathrm{H_2O}}{H2O}, \eqn{\mathrm{O_2}}{O2}, \eqn{\mathrm{H^+}}{H+} \cr
   }
 
+The logarithms of activities of amino acids in the \samp{QEC4} basis are -4; those in \samp{QEC} and \samp{QEC+} are set to approximate concentrations in human plasma (see Dick, 2017).
 }
 
 \value{
@@ -82,6 +83,12 @@ If the new basis definition meets all requirements, it is stored in \code{\link{
   \code{\link{makeup}} is used by \code{basis} to generate the stoichiometric matrix from chemical formulas.
   \code{\link{swap.basis}} is used to change the chemical compounds (species formulas) used in the basis definition while keeping the chemical potentials of the elements unaltered.
   \code{\link{species}} for setting up the formation reactions from basis species. 
+}
+
+\references{
+Dick, J. M. (2016) Proteomic indicators of oxidation and hydration state in colorectal cancer. \emph{PeerJ} \bold{4}:e2238. \url{http://dx.doi.org/10.7717/peerj.2238}
+
+Dick, J. M. (2017) Chemical composition and the potential for proteomic transformation in cancer, hypoxia, and hyperosmotic stress. \emph{bioRxiv} \url{https://doi.org/10.1101/097667}
 }
 
 \examples{

@@ -100,8 +100,4 @@ This function is intended to generate colors for distinguishing average oxidatio
 
 }
 
-\section{Side Effects}{
-  These functions create or modify a plot.
-}
-
 \keyword{utilities}

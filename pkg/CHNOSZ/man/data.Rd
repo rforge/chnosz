@@ -58,7 +58,7 @@ This is sometimes a useful command to use during an interactive session, when pr
 
     \item \code{thermo$element}
   Dataframe containing the thermodynamic properties of elements taken from Cox et al., 1989 and Wagman et al., 1982.
-  The standard molal entropy (\eqn{S}(\code{Z})) at 25 \eqn{^{\circ}}{°}C and 1 bar for the element of charge (\code{Z}) was calculated from \eqn{S}(H2,g) + 2\eqn{S}(\code{Z}) =  2\eqn{S}(H+), where the standard molal entropies of H2,g and H+ were taken from Cox et al., 1989.
+  The standard molal entropy (\eqn{S}(\code{Z})) at 25 \eqn{^{\circ}}{°}C and 1 bar for the \dQuote{element} of charge (\code{Z}) was calculated from \eqn{S}(H2,g) + 2\eqn{S}(\code{Z}) =  2\eqn{S}(H+), where the standard molal entropies of H2,g and H+ were taken from Cox et al., 1989.
   The mass of \code{Z} is taken to be zero.
   Accessing this data frame using \code{\link{mass}} or \code{\link{entropy}} will select the first entry found for a given element; i.e., values from Wagman et al., 1982 will only be retrieved if the properties of the element are not found from Cox et al., 1989.
       \tabular{lll}{
@@ -83,7 +83,7 @@ This is sometimes a useful command to use during an interactive session, when pr
   } 
 
   \samp{OrganoBioGeoTherm} is the name of a GUI program to use SUPCRT in Windows, produced in Harold C. Helgeson's Laboratory of Theoretical Geochemistry and Biogeochemistry at the University of California, Berkeley.
-  The \acronym{OBIGT} database was originally developed for that program, but has been ported to CHNOSZ, with additional modifications.
+  The \acronym{OBIGT} database was originally developed for that program, and has been ported to CHNOSZ, with additional modifications.
   There may be an additional meaning for the acronym: \dQuote{One BIG Table} of thermodynamic data.
 
   Each entry is referenced to one or two literature sources listed in \code{thermo$refs}.
@@ -158,8 +158,8 @@ Columns 13-20 for crystalline, gas and liquid species (\eqn{Cp=a+bT+cT^{-2}+dT^{
       \code{key} \tab character \tab Source key\cr
       \code{author} \tab character \tab Author(s)\cr
       \code{year} \tab character \tab Year\cr
-      \code{note} \tab character \tab Short description of the compounds or species in this data source\cr
       \code{citation} \tab character \tab Citation (journal title, volume, and article number or pages; or book or report title)\cr
+      \code{note} \tab character \tab Short description of the compounds or species in this data source\cr
       \code{URL} \tab character \tab URL\cr
     }
 
@@ -208,18 +208,7 @@ Columns 13-20 for crystalline, gas and liquid species (\eqn{Cp=a+bT+cT^{-2}+dT^{
        \code{name} \tab character \tab Name of species\cr
     }
 
-    \item \code{thermo$water}
-    The properties calculated with \code{\link{water}} at multiple T, P points (minimum of 26) are stored here so that repeated calculations at the same conditions can be done more quickly.
-
-    \item \code{thermo$Psat}
-    The values of Psat calculated with \code{water.SUPCRT} at multiple T points (minimum of 26) are stored here.
-
-    \item \code{thermo$water2}
-    The properties calculated with \code{water.SUPCRT} at multiple T, P points (minimum of 26) are stored here.
-
-
   }  % end of itemize with long descriptions
-     
 
 } % end of format
 

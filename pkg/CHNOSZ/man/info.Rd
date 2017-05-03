@@ -40,16 +40,12 @@ If \code{check.it} is TRUE, several checks of self consistency among the thermod
 }
 
 
-\seealso{ \code{\link{thermo}} }
+\seealso{ \code{\link{thermo}}, \code{\link{check.obigt}} }
 
 \examples{
 \dontshow{data(thermo)}
 ## summary of available data
 info()
-\dontrun{
-## run a consistency check on each species in the database
-# (marked dontrun because it takes a while)
-info(check=TRUE) }
 
 ## species information
 # search for something named (or whose formula is) "Fe"

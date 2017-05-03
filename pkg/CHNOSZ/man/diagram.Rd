@@ -122,7 +122,7 @@ The latter is referred to as the maximum affinity method.
 In cases where it applies (see Warning), the maximum affinity method is much faster than an equilibrium calculation.
 \code{balance} is the option that determines the balancing coefficients (this argument has no effect on the calculations of equilibrium activities.)
 If \code{what} is the name of a basis species, it refers to option (2) above.
-A contour plot is made in the case of 2-D diagrams of the equilibrium activity of a basis species (see \code{\link{demos}("CO2Ac")}, and only the first species of interest is used in the calculation; a warning is produced if there is more than one.
+A contour plot is made in the case of 2-D diagrams of the equilibrium activity of a basis species (see the CO2-acetic acid example in \code{\link{buffer}}, and only the first species of interest is used in the calculation; a warning is produced if there is more than one.
 
 A different incarnation of 1-D speciation diagrams is provided by \code{strip}.
 This function generates any number of strip diagrams in a single plot.

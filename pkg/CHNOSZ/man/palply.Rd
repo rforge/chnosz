@@ -1,11 +1,10 @@
 \encoding{UTF-8}
-\name{util.program}
-\alias{util.program}
+\name{palply}
 \alias{palply}
 
-\title{Functions for Various Programming Tasks}
+\title{Conditional Parallel Processing}
 \description{
-  Get name of calling function; send messages to standard output; use multiple processors if parallel package is loaded.
+  Use multiple processors for large calculations.
 }
 
 \usage{
@@ -27,7 +26,7 @@ If lots of package startup messages are created when running \code{\link[paralle
 
 \seealso{
 \code{\link{read.fasta}}, \code{\link{count.aa}}, \code{\link{affinity}}, \code{\link{equil.boltzmann}} and \code{\link{equil.reaction}} for functions that use \code{palply}.
-Tests are in \file{tests/test-util.program.R}, and a \dQuote{real life} application is in \file{demos/density.R}.
+Tests are in \file{tests/test-util.program.R}, and a \dQuote{real life} example is in \file{demos/density.R}.
 }
 
 \keyword{utilities}

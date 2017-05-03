@@ -31,7 +31,6 @@ local({
     groups = read.csv("groups.csv", row.names=1, check.names=FALSE),
     basis = NULL,
     species = NULL,
-    Psat = NULL,
     opar = NULL
   )
   # place it in CHNOSZ environment

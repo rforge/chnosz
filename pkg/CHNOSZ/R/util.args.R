@@ -1,5 +1,5 @@
 # CHNOSZ/util.args.R
-# functions to create argument lists
+# functions to create argument lists and get name of calling function
 
 ### unexported functions ###
 
@@ -71,4 +71,20 @@ state.args <- function(state=NULL) {
     if(tolower(state[i])=='l') state[i] <- 'liq'
   }
   return(state)
+}
+
+caller.name <- function(n=2) {
+  # returns the name of the calling function n frames up
+  # (n=2: the caller of the function that calls this one)
+  # or character() if called interactively
+  if(sys.nframe() < n) name <- character()
+  else {
+    sc <- sys.call(-n)[[1]]
+    name <- try(as.character(sc),silent=TRUE)
+    # also return character() if the value from sys.call is
+    # the function itself (why does this sometimes happen,
+    # e.g. when called from affinity()?)
+    if(class(name)=="try-error") name <- character()
+  }
+  return(name)
 }

@@ -28,8 +28,8 @@ Retrieve the amino acid compositions of proteins with localizations and abundanc
 \code{read.expr} and \code{yeastgfp} read data files stored in \code{\link{extdata}/abundance} to retrieve identities and possibly abundances of proteins in certain conditions.
 
 \code{yeastgfp} returns the identities and abundances of proteins with the requested subcellular localization(s) (specified in \code{location}) using data from the YeastGFP project that is stored in \code{\link{extdata}/abundance/yeastgfp.csv.xz}.
-The default value of \code{exclusive} (\code{FALSE}) tells the function to grab all proteins that are localized to a compartment even if they are also localized to other compartments.
-If \code{exclusive} is \code{TRUE}, only those proteins that are localized exclusively to the requested compartments are identified, unless there are no such proteins, then the non-exclusive localizations are used (applies to the \samp{bud} localization).
+If \code{exclusive} is \code{FALSE}, the function grabs all proteins that are localized to a compartment even if they are also localized to other compartments.
+If \code{exclusive} is \code{TRUE} (the default), only those proteins that are localized exclusively to the requested compartments are identified, unless there are no such proteins, then the non-exclusive localizations are used (applies to the \samp{bud} localization).
 
 \code{read.expr} reads a \code{file} (CSV format) that contains protein sequence names or IDs and protein abundance data.
 \code{idcol} and \code{abundcol} are either the names of the columns holding the sequence IDs and protein abundances, or numeric values indicating the column numbers where these data are found.
@@ -110,8 +110,6 @@ stopifnot(c(d$predominant[128, 128], d$predominant[128, 1])==grep("down", expt))
 
 \references{
 Boer, V. M., de Winde, J. H., Pronk, J. T. and Piper, M. D. W. (2003) The genome-wide transcriptional responses of \emph{Saccharomyces cerevisiae} grown on glucose in aerobic chemostat cultures limited for carbon, nitrogen, phosphorus, or sulfur. \emph{J. Biol. Chem.} \bold{278}, 3265--3274. \url{http://dx.doi.org/10.1074/jbc.M209759200}
-
-Dick, J. M. (2009) Calculation of the relative metastabilities of proteins in subcellular compartments of \emph{Saccharomyces cerevisiae}. \emph{BMC Syst. Biol.} \bold{3}:75. \url{http://dx.doi.org/10.1186/1752-0509-3-75}
 
 Ishihama, Y., Schmidt, T., Rappsilber, J., Mann, M., Hartl, F. U., Kerner, M. J. and Frishman, D. (2008) Protein abundance profiling of the \emph{Escherichia coli} cytosol. \emph{BMC Genomics} \bold{9}:102. \url{http://dx.doi.org/10.1186/1471-2164-9-102}
 

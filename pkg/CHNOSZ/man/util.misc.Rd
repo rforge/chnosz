@@ -45,11 +45,6 @@ If any of those species are proteins, the function gets their lengths using \cod
   Numeric returns are made by \code{dPdTtr}, \code{Ttr}, \code{spearman}, \code{mod.obigt} Functions with no (or unspecified) returns are \code{thermo.plot.new}, \code{thermo.postscript}, \code{label.plot} and \code{water.lines}.
 }
 
-
-\seealso{
-  For some of the functions on which these utilities depend or were modeled, see \code{\link{paste}}, \code{\link{substr}}, \code{\link{tolower}}, \code{\link{par}} and \code{\link{text}}.
-}
-
 \examples{\dontshow{data(thermo)}
 ## properties of phase transitions
 si <- info("enstatite")
@@ -97,10 +92,6 @@ loga <- unitize(logact,length,logact.tot)
 stopifnot(isTRUE(all.equal(loga[2]-loga[1],1)))
 # but the activities of residues still add up to one
 stopifnot(isTRUE(all.equal(sum(10^loga * length),1)))
-}
-
-\references{
-  Alberty, R. A. (2003) \emph{Thermodynamics of Biochemical Reactions}, John Wiley & Sons, Hoboken, New Jersey, 397 p. \url{http://www.worldcat.org/oclc/51242181}
 }
 
 \keyword{utilities}

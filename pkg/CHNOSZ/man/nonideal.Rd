@@ -19,7 +19,8 @@ Calculate activity coefficients and non-ideal contributions to apparent standard
 
 \details{
 \code{nonideal} takes a list of dataframes (in \code{proptable}) containing the standard molal properties of the identified \code{species}.
-The function bypasses (leaves unchanged) properties of the proton (H+), electron (e-), and all species whose charge (determined by the number of Z in their \code{\link{makeup}}) is equal to zero.
+The function bypasses (leaves unchanged) properties of all species whose charge (determined by the number of Z in their \code{\link{makeup}}) is equal to zero.
+The proton (H+) and electron (e-) are also bypassed by default; to apply the calculations to H+ and/or e-, change \code{\link{thermo}$opt$ideal.H} or \code{ideal.e} to FALSE.
 The values of \code{IS} are combined with Alberty's (2003) equation 3.6-1 (extended Debye-Hückel equation) and its derivatives, to calculate apparent molal properties at the specified ionic strength(s) and temperature(s).
 The lengths of \code{IS} and \code{T} supplied in the arguments should be equal to the number of rows of each dataframe in \code{proptable}, or one to use single values throughout.
 The apparent molal properties that can be calculated include \code{G}, \code{H}, \code{S} and \code{Cp}; any columns in the dataframes of \code{proptable} with other names are left untouched.
@@ -65,7 +66,7 @@ subcrt(c("acetic acid", "acetate", "H+"), c(-1, 1, 1),
   IS=c(0, 0.1, 0.25), T=25, property="logK")
 # note that *apparent* values equal *standard* values at IS=0
 # reset option to default
-thermo$opt$ideal.H <<- FALSE
+thermo$opt$ideal.H <<- TRUE
 
 ## p. 95: basis and elemental stoichiometries of species 
 # (this example doesn't use activity coefficients)

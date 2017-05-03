@@ -61,8 +61,7 @@ Other specific characters are parsed as follows (case-sensitive):
      \samp{D} \tab Delta \cr
      \samp{A} \tab bold A (chemical affinity) \cr
      \samp{p} \tab subscript italic P (isobaric heat capacity) \cr
-     \samp{0} \tab degree sign (standard-state property) \cr
-  }
+     \samp{0} \tab degree sign (standard-state property) \cr  }
 
 A \samp{0} gets interpreted as a degree sign only if it does not immediately follow a number (so that e.g. \samp{2.303} can be included in an expression).
 
@@ -79,8 +78,7 @@ Special cases for the \code{property} argument (\samp{logK}, \samp{Eh}, \samp{pH
      \samp{P} \tab pressure \cr
      \samp{T} \tab temperature \cr
      \samp{Eh} \tab electrical potential \cr
-     \samp{IS} \tab ionic strength \cr
-  }
+     \samp{IS} \tab ionic strength \cr  }
 
 If none of those characters appears in the property, the expression is an empty character (no units). If a \code{prefix} is given, it is added to the expression. The denominator of the units (default \samp{mol}) is taken from the \code{per} argument; it is applied to all units except for \samp{P}, \samp{T}, \samp{Eh}, and \samp{IS}.
 
@@ -99,7 +97,7 @@ If none of those characters appears in the property, the expression is an empty 
 }
 
 \seealso{
-\code{demo(activity_ratio)} for examples of \code{syslab} and \code{ratlab}.
+\code{demo("activity_ratios")} for examples of \code{syslab} and \code{ratlab}.
 }
 
 \examples{\dontshow{data(thermo)}

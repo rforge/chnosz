@@ -49,7 +49,7 @@ A warning is generated if any character in \code{seq}, excluding spaces, is not 
 \code{start} and/or \code{stop} can be provided to count a fragment of the sequence (extracted using \code{\link{substr}}).
 If only one of \code{start} or \code{stop} is present, the other defaults to 1 (\code{start}) or the length of the sequence (\code{stop}).
 
-\code{uniprot.aa} returns a data frame of amino acid composition, in the format of \code{thermo$protein}, retrieved from the protein sequence if it is available from UniProt (\url{http://uniprot.org}; The UniProt Consortium, 2012).
+\code{uniprot.aa} returns a data frame of amino acid composition, in the format of \code{thermo$protein}, retrieved from the protein sequence if it is available from UniProt (\url{http://uniprot.org}).
 The \code{protein} argument corresponds to the \samp{Entry name} on the UniProt search pages.
 
 
@@ -98,10 +98,6 @@ atest <- count.aa("WhatAmIMadeOf?")
 # there are 3 "A" (alanine)
 stopifnot(atest[, "A"]==3)
 }
-}
-
-\references{
-  The UniProt Consortium (2012) Reorganizing the protein space at the Universal Protein Resource (UniProt). \emph{Nucleic Acids Res.} \bold{40}, D71--D75. \url{http://dx.doi.org/10.1093/nar/gkr981}
 }
 
 \keyword{utilities}

@@ -60,10 +60,6 @@ This function is used to reduce the size of the example BLAST files that are pac
   \code{read.blast} returns a dataframe with as many columns (12) as the BLAST file. \code{id.blast} returns a dataframe with columns \code{query}, \code{subject} (i.e., sequence id or gi number), \code{similarity}, \code{evalue}, \code{taxid}, \code{phylum} and \code{species}. \code{write.blast} \code{\link{invisible}}-y returns the results (that are also written to \code{outfile}).
 }
 
-\seealso{
-  The \code{extdata/refseq} directory contains the \code{taxid_names.csv.xz} file for microbial taxa, which can be used for the \code{taxid.names} in \code{id.blast}. 
-}
-
 \examples{
 ## using def2gi
 def <- "gi|218295810|ref|ZP_03496590.1|"

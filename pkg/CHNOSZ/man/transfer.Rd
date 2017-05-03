@@ -6,7 +6,7 @@
 \alias{apc}
 \title{Mass Transfer Calculations}
 \description{
-Simulate a mass transfer process such as mineral weathering or sequential formation of proteins.
+Simulate a mass transfer process such as mineral weathering.
 }
 
 \usage{

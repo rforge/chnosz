@@ -128,4 +128,4 @@ test_that("equilibrate() can be used for huge values of Astar", {
 # Seewald, J. S. (2001) 
 #   Aqueous geochemistry of low molecular weight hydrocarbons at elevated temperatures and
 #   pressures: Constraints from mineral buffered laboratory experiments
-#   Geochim. Cosmochim. Acta 65, 1641--1664. http://dx.doi.org/10.1016/S0016-7037(01)00544-0
+#   Geochim. Cosmochim. Acta 65, 1641--1664. https://doi.org/10.1016/S0016-7037(01)00544-0

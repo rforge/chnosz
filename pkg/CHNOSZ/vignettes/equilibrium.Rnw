@@ -27,7 +27,7 @@
 %\VignetteEngine{knitr::knitr}
 
 % so DOIs in bibliography show up as hyperlinks
-\newcommand*{\doi}[1]{\href{http://dx.doi.org/#1}{doi: #1}}
+\newcommand*{\doi}[1]{\href{https://doi.org/#1}{doi: #1}}
 
 \makeatother
 

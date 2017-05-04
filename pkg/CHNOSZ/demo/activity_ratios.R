@@ -35,7 +35,7 @@ legend("bottomright", describe.property(c("T", "P"), c(300, 1000)), bty = "n")
 # with accordingly different axis ranges
 
 ## MgO-CaO-SiO2-H2O at 300 degree C and Psat
-## Russell et al., 2010 (http://dx.doi.org/10.1111/j.1472-4669.2010.00249.x)
+## Russell et al., 2010 (https://doi.org/10.1111/j.1472-4669.2010.00249.x)
 basis(c("Mg+2", "Ca+2", "SiO2", "H2O", "O2", "H+"))
 species(c("brucite", "chrysotile", "talc", "tremolite", "diopside", "akermanite"))
 a <- affinity(SiO2 = c(-10, 0, res), `Ca+2` = c(0, 20, res), T = 300)
@@ -45,7 +45,7 @@ legend("topright", describe.property(c("T", "P"), c(300, 85.84)), bty = "n")
 
 ## CaO-MgO-SiO2-H2O and
 ## CaO-Al2O3-MgO-SiO2-H2O at 300 degree C and 500 bar
-## Bach and Klein, 2009 (http://dx.doi.org/10.1016/j.lithos.2008.10.022)
+## Bach and Klein, 2009 (https://doi.org/10.1016/j.lithos.2008.10.022)
 basis(c("Ca+2", "Al+3", "Mg+2", "SiO2", "H2O", "O2", "H+"))
 species(c("clinochlore,14a", "clinozoisite", "prehnite", "grossular"))
 a <- affinity(SiO2 = c(-5, 0, res), `Ca+2` = c(6, 11, res), T = 300, P = 500)

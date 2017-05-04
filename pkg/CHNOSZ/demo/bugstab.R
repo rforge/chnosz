@@ -1,6 +1,6 @@
 # formation potential of microbial proteins in colorectal cancer
 # based on "bugstab" function in Supporting Information of Dick, 2016
-# (http://dx.doi.org/10.7717/peerj.2238)
+# (https://doi.org/10.7717/peerj.2238)
 
 # set up graphics device
 layout(cbind(matrix(sapply(list(c(1, 2), c(3, 4)), function(x) rep(rep(x, each=3), 3)), nrow=6, byrow=TRUE),

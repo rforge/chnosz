@@ -25,7 +25,7 @@ Calculate thermodynamic and electrostatic properties of water.
 
 \details{
 
-These functions compute the thermodynamic (Gibbs energy and it derivatives) and electrostatic (dielectric constant and its derivatives) properties of liquid or supercritical \ifelse{latex}{\out{H$_2$O}}{\ifelse{html}{\out{H<sub>2</sub>O}}{H2O}} using equations of state taken from the literature.
+These functions compute the thermodynamic (Gibbs energy and it derivatives) and electrostatic (dielectric constant and its derivatives) properties of liquid or supercritical \H2O using equations of state taken from the literature.
 The high-level function \code{water} accepts two major computational alternatives.
 The default option (i.e., \code{\link{thermo}$opt$water} equal to \samp{SUPCRT92}) is retrieve thermodynamic and electrostatic properties as a function of temperature and pressure using a FORTRAN subroutine taken from the \acronym{SUPCRT92} software package (Johnson et al., 1992).
 If \code{thermo$opt$water} is set to \samp{IAPWS95}, the thermodynamic properties are calculated using an implementation in \R code of the IAPWS-95 formulation (Wagner and Pruss, 2002), and electrostatic properties are calculated using the equations of Archer and Wang, 1990.
@@ -140,7 +140,7 @@ print(w)
 }
 
 \references{
-Archer, D. G. and Wang, P. M. (1990) The dielectric constant of water and Debye-Huckel limiting law slopes. \emph{J. Phys. Chem. Ref. Data} \bold{19}, 371--411. \url{http://dx.doi.org/10.1063/1.555853}
+Archer, D. G. and Wang, P. M. (1990) The dielectric constant of water and Debye-Huckel limiting law slopes. \emph{J. Phys. Chem. Ref. Data} \bold{19}, 371--411. \url{https://doi.org/10.1063/1.555853}
 
 Haar, L., Gallagher, J. S. and Kell, G. S. (1984) \emph{NBS/NRC Steam Tables}. Hemisphere, Washington, D. C., 320 p. \url{http://www.worldcat.org/oclc/301304139}
 
@@ -148,11 +148,11 @@ Helgeson, H. C. and Kirkham, D. H. (1974) Theoretical prediction of the thermody
 
 Johnson, J. W. and Norton, D. (1991) Critical phenomena in hydrothermal systems: state, thermodynamic, electrostatic, and transport properties of H\eqn{_2}{2}O in the critical region. \emph{Am. J. Sci.} \bold{291}, 541--648. \url{http://www.ajsonline.org/cgi/content/abstract/291/6/541}
 
-Johnson, J. W., Oelkers, E. H. and Helgeson, H. C. (1992) SUPCRT92: A software package for calculating the standard molal thermodynamic properties of minerals, gases, aqueous species, and reactions from 1 to 5000 bar and 0 to 1000\eqn{^{\circ}}{°}C. \emph{Comp. Geosci.} \bold{18}, 899--947. \url{http://dx.doi.org/10.1016/0098-3004(92)90029-Q}
+Johnson, J. W., Oelkers, E. H. and Helgeson, H. C. (1992) SUPCRT92: A software package for calculating the standard molal thermodynamic properties of minerals, gases, aqueous species, and reactions from 1 to 5000 bar and 0 to 1000\eqn{^{\circ}}{°}C. \emph{Comp. Geosci.} \bold{18}, 899--947. \url{https://doi.org/10.1016/0098-3004(92)90029-Q}
 
-Levelt-Sengers, J. M. H., Kamgarparsi, B., Balfour, F. W. and Sengers, J. V. (1983) Thermodynamic properties of steam in the critical region. \emph{J. Phys. Chem. Ref. Data} \bold{12}, 1--28. \url{http://dx.doi.org/10.1063/1.555676}
+Levelt-Sengers, J. M. H., Kamgarparsi, B., Balfour, F. W. and Sengers, J. V. (1983) Thermodynamic properties of steam in the critical region. \emph{J. Phys. Chem. Ref. Data} \bold{12}, 1--28. \url{https://doi.org/10.1063/1.555676}
 
-Wagner, W. and Pruss, A. (2002) The IAPWS formulation 1995 for the thermodynamic properties of ordinary water substance for general and scientific use. \emph{J. Phys. Chem. Ref. Data} \bold{31}, 387--535. \url{http://dx.doi.org/10.1063/1.1461829}
+Wagner, W. and Pruss, A. (2002) The IAPWS formulation 1995 for the thermodynamic properties of ordinary water substance for general and scientific use. \emph{J. Phys. Chem. Ref. Data} \bold{31}, 387--535. \url{https://doi.org/10.1063/1.1461829}
 }
 
 \concept{Secondary thermodynamic modeling}

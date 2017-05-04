@@ -1,5 +1,5 @@
 # Compare affinities of Sonic hedgehog and transcription factors involved in dorsal-ventral patterning
-# (Dick, 2015. Chemical integration of proteins in signaling and development. http://dx.doi.org/10.1101/015826)
+# (Dick, 2015. Chemical integration of proteins in signaling and development. https://doi.org/10.1101/015826)
 
 # UniProt names of the proteins
 pname <- c("SHH", "OLIG2", "NKX22", "FOXA2", "IRX3", "PAX6", "NKX62", "DBX1",

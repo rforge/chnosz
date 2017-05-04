@@ -87,7 +87,7 @@ layout(matrix(1))
 }
 
 \references{
-  Helgeson, H. C., Garrels, R. M. and Mackenzie, F. T. (1969) Evaluation of irreversible reactions in geochemical processes involving minerals and aqueous solutions. II. Applications. \emph{Geochim. Cosmochim. Acta} \bold{33}, 455--481. \url{http://dx.doi.org/10.1016/0016-7037(69)90127-6}
+  Helgeson, H. C., Garrels, R. M. and Mackenzie, F. T. (1969) Evaluation of irreversible reactions in geochemical processes involving minerals and aqueous solutions. II. Applications. \emph{Geochim. Cosmochim. Acta} \bold{33}, 455--481. \url{https://doi.org/10.1016/0016-7037(69)90127-6}
 
   Steinmann, P., Lichtner, P. C. and Shotyk, W. (1994) Reaction path approach to mineral weathering reactions. \emph{Clay Clay Min.} \bold{42}, 197--206. \url{http://ccm.geoscienceworld.org/cgi/content/abstract/42/2/197}
 }

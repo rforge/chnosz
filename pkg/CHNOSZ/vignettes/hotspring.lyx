@@ -10,7 +10,7 @@
 %\VignetteEngine{knitr::knitr}
 
 % so DOIs in bibliography show up as hyperlinks
-\newcommand*{\doi}[1]{\href{http://dx.doi.org/#1}{doi: #1}}
+\newcommand*{\doi}[1]{\href{https://doi.org/#1}{doi: #1}}
 \end_preamble
 \use_default_options true
 \begin_modules
@@ -429,7 +429,7 @@ lines(xpoints, pHfun(xpoints))
 \begin_inset CommandInset href
 LatexCommand href
 name "DOI link"
-target "http://dx.doi.org/10.1371/journal.pone.0022782.g005"
+target "https://doi.org/10.1371/journal.pone.0022782.g005"
 
 \end_inset
 
@@ -917,7 +917,7 @@ DOI links for these plots as they appeared in the publications:
 \begin_inset CommandInset href
 LatexCommand href
 name "plot 1"
-target "http://dx.doi.org/10.1371/journal.pone.0022782.g004"
+target "https://doi.org/10.1371/journal.pone.0022782.g004"
 
 \end_inset
 
@@ -925,7 +925,7 @@ target "http://dx.doi.org/10.1371/journal.pone.0022782.g004"
 \begin_inset CommandInset href
 LatexCommand href
 name "plot 2"
-target "http://dx.doi.org/10.1371/journal.pone.0072395.g001"
+target "https://doi.org/10.1371/journal.pone.0072395.g001"
 
 \end_inset
 
@@ -1263,7 +1263,7 @@ a.res
 \begin_inset CommandInset href
 LatexCommand href
 name "DOI link"
-target "http://dx.doi.org/10.1371/journal.pone.0022782.t005"
+target "https://doi.org/10.1371/journal.pone.0022782.t005"
 
 \end_inset
 
@@ -1560,7 +1560,7 @@ legend("bottom", lty=1:5, legend=1:5, bty="n", cex=0.6)
 \begin_inset CommandInset href
 LatexCommand href
 name "DOI link"
-target "http://dx.doi.org/10.1371/journal.pone.0022782.g005"
+target "https://doi.org/10.1371/journal.pone.0022782.g005"
 
 \end_inset
 
@@ -1702,7 +1702,7 @@ for(i in 1:2) {
 \begin_inset CommandInset href
 LatexCommand href
 name "DOI link"
-target "http://dx.doi.org/10.1371/journal.pone.0022782.g007"
+target "https://doi.org/10.1371/journal.pone.0022782.g007"
 
 \end_inset
 
@@ -1865,7 +1865,7 @@ for(j in 1:2) {
 \begin_inset CommandInset href
 LatexCommand href
 name "DOI link"
-target "http://dx.doi.org/10.1371/journal.pone.0072395.g002"
+target "https://doi.org/10.1371/journal.pone.0072395.g002"
 
 \end_inset
 
@@ -2276,7 +2276,7 @@ for(i in 1:5) {
 \begin_inset CommandInset href
 LatexCommand href
 name "DOI link"
-target "http://dx.doi.org/10.1371/journal.pone.0072395.g003"
+target "https://doi.org/10.1371/journal.pone.0072395.g003"
 
 \end_inset
 
@@ -2786,7 +2786,7 @@ DOI links to published versions:
 \begin_inset CommandInset href
 LatexCommand href
 name "plot 1"
-target "http://dx.doi.org/10.1371/journal.pone.0022782.g009"
+target "https://doi.org/10.1371/journal.pone.0022782.g009"
 
 \end_inset
 
@@ -2794,7 +2794,7 @@ target "http://dx.doi.org/10.1371/journal.pone.0022782.g009"
 \begin_inset CommandInset href
 LatexCommand href
 name "plot 2"
-target "http://dx.doi.org/10.1371/journal.pone.0072395.g004"
+target "https://doi.org/10.1371/journal.pone.0072395.g004"
 
 \end_inset
 
@@ -2972,7 +2972,7 @@ for(iloc in 1:5) {
 \begin_inset CommandInset href
 LatexCommand href
 name "DOI link"
-target "http://dx.doi.org/10.1371/journal.pone.0072395.g005"
+target "https://doi.org/10.1371/journal.pone.0072395.g005"
 
 \end_inset
 
@@ -3117,7 +3117,7 @@ legend("bottomleft", legend=rev(phyla.abbrv), fill=rev(phyla.cols), bty="n",
 \begin_inset CommandInset href
 LatexCommand href
 name "DOI link"
-target "http://dx.doi.org/10.1371/journal.pone.0072395.g006"
+target "https://doi.org/10.1371/journal.pone.0072395.g006"
 
 \end_inset
 

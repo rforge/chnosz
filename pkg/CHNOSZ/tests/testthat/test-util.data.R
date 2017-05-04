@@ -53,4 +53,4 @@ test_that("add.obigt() replaces existing entries without changing species index"
 # Richard, L. and Helgeson, H. C. (1998) Calculation of the thermodynamic properties at elevated 
 #   temperatures and pressures of saturated and aromatic high molecular weight solid and liquid 
 #   hydrocarbons in kerogen, bitumen, petroleum, and other organic matter of biogeochemical interest. 
-#   Geochim. Cosmochim. Acta 62, 3591--3636. http://dx.doi.org/10.1016/S0016-7037(97)00345-1
+#   Geochim. Cosmochim. Acta 62, 3591--3636. https://doi.org/10.1016/S0016-7037(97)00345-1

@@ -98,7 +98,7 @@ test_that("calculations using IAPWS-95 are possible", {
 
 # Amend, J. P. and Shock, E. L. (2001) 
 #   Energetics of overall metabolic reactions of thermophilic and hyperthermophilic Archaea and Bacteria. 
-#   FEMS Microbiol. Rev. 25, 175--243. http://dx.doi.org/10.1016/S0168-6445(00)00062-0
+#   FEMS Microbiol. Rev. 25, 175--243. https://doi.org/10.1016/S0168-6445(00)00062-0
 
 # Helgeson, H. C., Delany, J. M., Nesbitt, H. W. and Bird, D. K. (1978) 
 #   Summary and critique of the thermodynamic properties of rock-forming minerals. 

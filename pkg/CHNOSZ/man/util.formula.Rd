@@ -56,9 +56,9 @@ The equation in effect can be written as \eqn{{\Delta}G^{\circ}={\Delta}H^{\circ
 For each formula, if one of \code{G}, \code{H}, or \code{S} is NA, its value is calculated from the other two.
 Otherwise, the values are returned unchanged. Units of cal mol\eqn{^{-1}}{^-1} (\code{DG}, \code{DH}) and cal K\eqn{^{-1}}{^-1} mol\eqn{^{-1}}{^-1} (\code{S}) are assumed.
 
-\code{ZC} returns the average oxidation state of carbon (\eqn{\overline{Z}_{\mathrm{C}}}{Z_C}) calculated from ratios of the elements in the chemical \code{formula}s.
+\code{ZC} returns the average oxidation state of carbon (\eqn{Z_{\mathrm{C}}}{Z_C}) calculated from ratios of the elements in the chemical \code{formula}s.
 The equation used is
-\eqn{\overline{Z}_{\mathrm{C}}=\frac{Z-n_{\mathrm{H}}+2\left(n_{\mathrm{O}}+n_{\mathrm{S}}\right)+3n_{\mathrm{N}}}{n_{\mathrm{C}}}}{Z_C = (Z - nH + 2*(nO + nS) + 3*nN) / nC}, where the \eqn{n}{n} refer to the number of the indicated element in the formula (Dick and Shock, 2011).
+\eqn{Z_{\mathrm{C}}=\frac{Z-n_{\mathrm{H}}+2\left(n_{\mathrm{O}}+n_{\mathrm{S}}\right)+3n_{\mathrm{N}}}{n_{\mathrm{C}}}}{Z_C = (Z - nH + 2*(nO + nS) + 3*nN) / nC}, where the \eqn{n}{n} refer to the number of the indicated element in the formula and \eqn{Z}{Z} is the charge (Dick and Shock, 2011).
 The result is \code{NaN} for any formula that does not contain carbon. Elements other than those shown in the equation are not included in the calculation, and produce a warning.
 }
 
@@ -109,7 +109,7 @@ range(ZC(pf), na.rm=TRUE)
 }
 
 \references{
-  Dick, J. M. and Shock, E. L. (2011) Calculation of the relative chemical stabilities of proteins as a function of temperature and redox chemistry in a hot spring. \emph{PLoS ONE} \bold{6}, e22782. \url{http://dx.doi.org/10.1371/journal.pone.0022782}
+  Dick, J. M. and Shock, E. L. (2011) Calculation of the relative chemical stabilities of proteins as a function of temperature and redox chemistry in a hot spring. \emph{PLoS ONE} \bold{6}, e22782. \url{https://doi.org/10.1371/journal.pone.0022782}
 }
 
 \keyword{utilities}

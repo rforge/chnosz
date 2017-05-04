@@ -32,8 +32,8 @@
 
 \details{
 \code{subcrt} calculates the standard molal thermodynamic properties of species and reactions as a function of temperature and pressure.
-For each of the \code{species} (a formula or name), optionally identified in a given \code{state}, the standard molal thermodynamic properties and equations-of-state parameters are retrieved via \code{\link{info}} (except for \eqn{\mathrm{H_2O}}{H2O} liquid).
-The standard molal properties of the species are computed using equations-of-state functions for aqueous species (\code{\link{hkf}}), crystalline, gas, and liquid species (\code{\link{cgl}}) and liquid or supercritical \eqn{\mathrm{H_2O}}{H2O} (\code{\link{water}}).
+For each of the \code{species} (a formula or name), optionally identified in a given \code{state}, the standard molal thermodynamic properties and equations-of-state parameters are retrieved via \code{\link{info}} (except for \H2O liquid).
+The standard molal properties of the species are computed using equations-of-state functions for aqueous species (\code{\link{hkf}}), crystalline, gas, and liquid species (\code{\link{cgl}}) and liquid or supercritical \H2O (\code{\link{water}}).
 
 \code{T} and \code{P} denote the temperature and pressure conditions for the calculations and should generally be of the same length, unless \code{P} is \samp{Psat} (the default; see \code{\link{water}}).
 Argument \code{\link{grid}} if present can be one of \code{T} or \code{P} to perform the computation of a \code{T}\eqn{\times}{x}\code{P} or \code{P}\eqn{\times}{x}\code{T} grid.
@@ -83,10 +83,10 @@ Calculations can also be performed on a \code{P}-\code{IS}, \code{T}-\code{IS} o
 Values of \code{logK} of reactions calculated for \code{IS} not equal to zero are consistent with the apparent Gibbs energies of the charged aqueous species.
 
 \code{subcrt} is modeled after the functionality of the \acronym{SUPCRT92} package (Johnson et al., 1992).
-Certain features of \acronym{SUPCRT92} are not available here, for example, calculations as a function of density of \eqn{\mathrm{H_2O}}{H2O} instead of pressure, or calculations of temperatures of univariant curves (i.e. for which \code{logK} is zero), or calculations of the molar volumes of quartz and coesite as a function of temperature (taken here to be constant).
+Certain features of \acronym{SUPCRT92} are not available here, for example, calculations as a function of density of \H2O instead of pressure, or calculations of temperatures of univariant curves (i.e. for which \code{logK} is zero), or calculations of the molar volumes of quartz and coesite as a function of temperature (taken here to be constant).
 The informative messages produced by \code{SUPCRT92} when temperature or pressure limits of the equations of state are exceeded generally are not reproduced here.
 However, \code{NA}s may be produced in the output of \code{subcrt} if the requisite thermodynamic or electrostatic properties of water can not be calculated at given conditions.
-Specifically, \code{NA}s are produced for calculations at \samp{Psat} when the temperature exceeds the critical temperature of H2O.
+Specifically, \code{NA}s are produced for calculations at \samp{Psat} when the temperature exceeds the critical temperature of \H2O.
 
 For calculations below 273.16 K, the pressure should be set to 1, as Psat is not defined in these conditions.
 
@@ -289,13 +289,13 @@ title(main=substitute(H2O~and~Na~to~-20~degC, list(H2O=H2O, Na=Na, degC=degC)))
 \references{
   Anderson, G. M. and Crerar, D. A. (1993) \emph{Thermodynamics in Geochemistry: The Equilibrium Model}, Oxford University Press. \url{http://www.worldcat.org/oclc/803272549}
 
-  Johnson, J. W., Oelkers, E. H. and Helgeson, H. C. (1992) SUPCRT92: A software package for calculating the standard molal thermodynamic properties of minerals, gases, aqueous species, and reactions from 1 to 5000 bar and 0 to 1000\eqn{^{\circ}}{°}C. \emph{Comp. Geosci.} \bold{18}, 899--947. \url{http://dx.doi.org/10.1016/0098-3004(92)90029-Q}
+  Johnson, J. W., Oelkers, E. H. and Helgeson, H. C. (1992) SUPCRT92: A software package for calculating the standard molal thermodynamic properties of minerals, gases, aqueous species, and reactions from 1 to 5000 bar and 0 to 1000\eqn{^{\circ}}{°}C. \emph{Comp. Geosci.} \bold{18}, 899--947. \url{https://doi.org/10.1016/0098-3004(92)90029-Q}
 
-  LaRowe, D. E. and Helgeson, H. C. (2007) Quantifying the energetics of metabolic reactions in diverse biogeochemical systems: electron flow and ATP synthesis. \emph{Geobiology} \bold{5}, 153--168. \url{http://dx.doi.org/10.1111/j.1472-4669.2007.00099.x}
+  LaRowe, D. E. and Helgeson, H. C. (2007) Quantifying the energetics of metabolic reactions in diverse biogeochemical systems: electron flow and ATP synthesis. \emph{Geobiology} \bold{5}, 153--168. \url{https://doi.org/10.1111/j.1472-4669.2007.00099.x}
 
-  Schulte, M. D. and Shock, E. L. (1995) Thermodynamics of Strecker synthesis in hydrothermal systems. \emph{Orig. Life Evol. Biosph.} \bold{25}, 161--173. \url{http://dx.doi.org/10.1007/BF01581580}
+  Schulte, M. D. and Shock, E. L. (1995) Thermodynamics of Strecker synthesis in hydrothermal systems. \emph{Orig. Life Evol. Biosph.} \bold{25}, 161--173. \url{https://doi.org/10.1007/BF01581580}
 
-  Shock, E. L., Oelkers, E. H., Johnson, J. W., Sverjensky, D. A. and Helgeson, H. C. (1992) Calculation of the thermodynamic properties of aqueous species at high pressures and temperatures: Effective electrostatic radii, dissociation constants and standard partial molal properties to 1000 \eqn{^{\circ}}{°}C and 5 kbar. \emph{J. Chem. Soc. Faraday Trans.} \bold{88}, 803--826. \url{http://dx.doi.org/10.1039/FT9928800803}
+  Shock, E. L., Oelkers, E. H., Johnson, J. W., Sverjensky, D. A. and Helgeson, H. C. (1992) Calculation of the thermodynamic properties of aqueous species at high pressures and temperatures: Effective electrostatic radii, dissociation constants and standard partial molal properties to 1000 \eqn{^{\circ}}{°}C and 5 kbar. \emph{J. Chem. Soc. Faraday Trans.} \bold{88}, 803--826. \url{https://doi.org/10.1039/FT9928800803}
 }
 
 \concept{Primary thermodynamic modeling}

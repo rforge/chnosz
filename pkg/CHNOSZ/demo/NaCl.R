@@ -3,7 +3,7 @@
 ## (Shock, E. L., Oelkers, E. H., Johnson, J. W., Sverjensky, D. A. and Helgeson, H. C. (1992) 
 ##  Calculation of the thermodynamic properties of aqueous species at high pressures and temperatures: 
 ##  Effective electrostatic radii, dissociation constants and standard partial molal properties to 1000 degrees C and 5 kbar. 
-##  J. Chem. Soc. Faraday Trans. 88, 803-826. http://dx.doi.org/10.1039/FT9928800803 )
+##  J. Chem. Soc. Faraday Trans. 88, 803-826. https://doi.org/10.1039/FT9928800803 )
 species <- c("NaCl", "Na+", "Cl-")
 coeffs <- c(-1, 1, 1)
 # start a new plot and show the experimental logK

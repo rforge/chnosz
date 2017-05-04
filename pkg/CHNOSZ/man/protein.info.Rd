@@ -181,11 +181,11 @@ for(cluster in c("A", "B", "C", "D")) {
 }
 
 \references{
-  Dick, J. M., LaRowe, D. E. and Helgeson, H. C. (2006) Temperature, pressure, and electrochemical constraints on protein speciation: Group additivity calculation of the standard molal thermodynamic properties of ionized unfolded proteins. \emph{Biogeosciences} \bold{3}, 311--336. \url{http://dx.doi.org/10.5194/bg-3-311-2006}
+  Dick, J. M., LaRowe, D. E. and Helgeson, H. C. (2006) Temperature, pressure, and electrochemical constraints on protein speciation: Group additivity calculation of the standard molal thermodynamic properties of ionized unfolded proteins. \emph{Biogeosciences} \bold{3}, 311--336. \url{https://doi.org/10.5194/bg-3-311-2006}
 
-  LaRowe, D. E. and Dick, J. M. (2012) Calculation of the standard molal thermodynamic properties of crystalline peptides. \emph{Geochim. Cosmochim. Acta} \bold{80}, 70--91. \url{http://dx.doi.org/10.1016/j.gca.2011.11.041}
+  LaRowe, D. E. and Dick, J. M. (2012) Calculation of the standard molal thermodynamic properties of crystalline peptides. \emph{Geochim. Cosmochim. Acta} \bold{80}, 70--91. \url{https://doi.org/10.1016/j.gca.2011.11.041}
 
-  Dick, J. M. (2014) Average oxidation state of carbon in proteins. \emph{J. R. Soc. Interface} \bold{11}, 20131095. \url{http://dx.doi.org/10.1098/rsif.2013.1095}
+  Dick, J. M. (2014) Average oxidation state of carbon in proteins. \emph{J. R. Soc. Interface} \bold{11}, 20131095. \url{https://doi.org/10.1098/rsif.2013.1095}
 }
 
 \concept{Protein thermodynamic modeling}

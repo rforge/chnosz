@@ -44,30 +44,22 @@ Any current basis definition (before being deleted) is returned by this call or 
 
 If the value of \code{basis} is one of the keywords in the following table, the corresponding set of basis species is loaded, and their activities are given preset values.
 This approach is used by many of the examples in the package.
-The basis species identified by these keywords are aqueous except for \eqn{\mathrm{H_2O}}{H2O} (liq), \eqn{\mathrm{O_2}}{O2} (gas) and \eqn{\mathrm{Fe_2O_3}}{Fe2O3} (hematite, cr1).
+The basis species identified by these keywords are aqueous except for \H2O (liq), \O2 (gas) and \Fe2O3 (hematite, cr1).
 
   \tabular{ll}{
-    \code{CHNOS} \tab \eqn{\mathrm{CO_2}}{CO2}, \eqn{\mathrm{H_2O}}{H2O}, \eqn{\mathrm{NH_3}}{NH3}, 
-                      \eqn{\mathrm{H_2S}}{H2S}, \eqn{\mathrm{O_2}}{O2} (basis I in Dick, 2016)\cr
-    \code{CHNOS+} \tab \eqn{\mathrm{CO_2}}{CO2}, \eqn{\mathrm{H_2O}}{H2O}, \eqn{\mathrm{NH_3}}{NH3}, 
-                       \eqn{\mathrm{H_2S}}{H2S}, \eqn{\mathrm{O_2}}{O2}, \eqn{\mathrm{H^+}}{H+} \cr
-    \code{CHNOSe} \tab \eqn{\mathrm{CO_2}}{CO2}, \eqn{\mathrm{H_2O}}{H2O}, \eqn{\mathrm{NH_3}}{NH3}, 
-                       \eqn{\mathrm{H_2S}}{H2S}, \eqn{e^-}{e-}, \eqn{\mathrm{H^+}}{H+} \cr
-    \code{CHNOPS+} \tab \eqn{\mathrm{CO_2}}{CO2}, \eqn{\mathrm{H_2O}}{H2O}, \eqn{\mathrm{NH_3}}{NH3}, 
-                        \eqn{\mathrm{H_3PO_4}}{H3PO4}, \eqn{\mathrm{H_2S}}{H2S}, \eqn{e^-}{e-}, \eqn{\mathrm{H^+}}{H+} \cr
-    \code{MgCHNOPS+} \tab \eqn{\mathrm{Mg^{+2}}}{Mg+2}, \eqn{\mathrm{CO_2}}{CO2}, \eqn{\mathrm{H_2O}}{H2O}, 
-                          \eqn{\mathrm{NH_3}}{NH3}, \eqn{\mathrm{H_3PO_4}}{H3PO4}, \eqn{\mathrm{H_2S}}{H2S}, 
-                          \eqn{e^-}{e-}, \eqn{\mathrm{H^+}}{H+} \cr
-    \code{FeCHNOS} \tab \eqn{\mathrm{Fe_2O_3}}{Fe2O3}, \eqn{\mathrm{CO_2}}{CO2}, \eqn{\mathrm{H_2O}}{H2O}, 
-                        \eqn{\mathrm{NH_3}}{NH3}, \eqn{\mathrm{H_2S}}{H2S}, \eqn{\mathrm{O_2}}{O2} \cr
-    \code{FeCHNOS+} \tab \eqn{\mathrm{Fe_2O_3}}{Fe2O3}, \eqn{\mathrm{CO_2}}{CO2}, \eqn{\mathrm{H_2O}}{H2O}, 
-                         \eqn{\mathrm{NH_3}}{NH3}, \eqn{\mathrm{H_2S}}{H2S}, \eqn{\mathrm{O_2}}{O2}, \eqn{\mathrm{H^+}}{H+} \cr
-    \code{QEC4} \tab cysteine, glutamic acid, glutamine, \eqn{\mathrm{H_2O}}{H2O}, \eqn{\mathrm{O_2}}{O2} (basis II in Dick, 2016) \cr
-    \code{QEC} \tab cysteine, glutamic acid, glutamine, \eqn{\mathrm{H_2O}}{H2O}, \eqn{\mathrm{O_2}}{O2} \cr
-    \code{QEC+} \tab cysteine, glutamic acid, glutamine, \eqn{\mathrm{H_2O}}{H2O}, \eqn{\mathrm{O_2}}{O2}, \eqn{\mathrm{H^+}}{H+} \cr
+    \code{CHNOS} \tab \CO2, \H2O, \NH3, \H2S, \O2 \cr
+    \code{CHNOS+} \tab \CO2, \H2O, \NH3, \H2S, \O2, \Hplus \cr
+    \code{CHNOSe} \tab \CO2, \H2O, \NH3, \H2S, \eminus, \Hplus \cr
+    \code{CHNOPS+} \tab \CO2, \H2O, \NH3, \H3PO4, \H2S, \eminus, \Hplus \cr
+    \code{MgCHNOPS+} \tab \Mgplus2, \CO2, \H2O, \NH3, \H3PO4, \H2S, \eminus, \Hplus \cr
+    \code{FeCHNOS} \tab \Fe2O3, \CO2, \H2O, \NH3, \H2S, \O2 \cr
+    \code{FeCHNOS+} \tab \Fe2O3, \CO2, \H2O, \NH3, \H2S, \O2, \Hplus \cr
+    \code{QEC4} \tab cysteine, glutamic acid, glutamine, \H2O, \O2 \cr
+    \code{QEC} \tab cysteine, glutamic acid, glutamine, \H2O, \O2 \cr
+    \code{QEC+} \tab cysteine, glutamic acid, glutamine, \H2O, \O2, \Hplus \cr
   }
 
-The logarithms of activities of amino acids in the \samp{QEC4} basis are -4; those in \samp{QEC} and \samp{QEC+} are set to approximate concentrations in human plasma (see Dick, 2017).
+The logarithms of activities of amino acids in the \samp{QEC4} basis are -4 (i.e., basis II in Dick, 2016); those in \samp{QEC} and \samp{QEC+} are set to approximate concentrations in human plasma (see Dick, 2017).
 }
 
 \value{
@@ -86,7 +78,7 @@ If the new basis definition meets all requirements, it is stored in \code{\link{
 }
 
 \references{
-Dick, J. M. (2016) Proteomic indicators of oxidation and hydration state in colorectal cancer. \emph{PeerJ} \bold{4}:e2238. \url{http://dx.doi.org/10.7717/peerj.2238}
+Dick, J. M. (2016) Proteomic indicators of oxidation and hydration state in colorectal cancer. \emph{PeerJ} \bold{4}:e2238. \url{https://doi.org/10.7717/peerj.2238}
 
 Dick, J. M. (2017) Chemical composition and the potential for proteomic transformation in cancer, hypoxia, and hyperosmotic stress. \emph{bioRxiv} \url{https://doi.org/10.1101/097667}
 }

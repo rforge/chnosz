@@ -38,7 +38,7 @@ for(i in 1:length(reactants)) {
 
   # points
   if(!is.na(ex.T[i])) {
-    URL <- paste0("http://dx.doi.org/", ex.doi[i])
+    URL <- paste0("https://doi.org/", ex.doi[i])
     setSVGShapeURL(URL, target="_blank")
     setSVGShapeContents(paste0("<title>", ex.txt[i], "</title>"))
     # we would use this instead with toolTipMode=1 :

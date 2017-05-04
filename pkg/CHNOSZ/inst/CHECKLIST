@@ -5,9 +5,9 @@ release checklist for CHNOSZ
 - uncomment CSL line in Rmd files (commented for building on R-Forge)
   csl: elementa.csl
 
-- compile vignettes with release version number and date.
+- compile vignettes with release version number and date
 
-- run examples() and demos() to check their output and
+- run examples() and demos() to check their output
 
 - check output of demo("sources") to make sure all data sources are cited
 
@@ -15,10 +15,12 @@ release checklist for CHNOSZ
   co <- check.obigt()
   write.csv(co, "obigt_check.csv", row.names=FALSE, na="")
 
+- check that uniprot.aa() works with current UniProt web pages
+
 - run R_PAPERSIZE=letter R CMD Rd2pdf chnosz/
   and fix any lines truncated by page margins
 
-- run R CMD check using R compiled without long doubles (as in Solaris checks on CRAN)
+- run R CMD check using R compiled without long doubles (emulating Solaris checks on CRAN)
   (CFLAGS=-ffloat-store ./configure --disable-long-double)
 
 - build the package on the source directory;
@@ -35,8 +37,6 @@ OTHER THINGS TO CHECK:
   - data files are uncompressed on installation? (from BuildResaveData: no)
     (so that users can copy and modify the thermodynamic database)
   - anim.*() produce pngs / movies (ImageMagick dependency)?
-
-- check that uniprot.aa() works with current UniProt web pages
 
 - check for stale URLs in Rd files
 

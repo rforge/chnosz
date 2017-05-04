@@ -109,4 +109,4 @@ test_that("affinity of ionization is consistent with manual calculations", {
 # Dick, J. M., LaRowe, D. E. and Helgeson, H. C. (2006) 
 #   Temperature, pressure, and electrochemical constraints on protein speciation: 
 #   Group additivity calculation of the standard molal thermodynamic properties of ionized unfolded proteins. 
-#   Biogeosciences 3, 311--336. http://dx.doi.org/10.5194/bg-3-311-2006
+#   Biogeosciences 3, 311--336. https://doi.org/10.5194/bg-3-311-2006

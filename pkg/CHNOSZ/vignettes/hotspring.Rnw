@@ -27,7 +27,7 @@
 %\VignetteEngine{knitr::knitr}
 
 % so DOIs in bibliography show up as hyperlinks
-\newcommand*{\doi}[1]{\href{http://dx.doi.org/#1}{doi: #1}}
+\newcommand*{\doi}[1]{\href{https://doi.org/#1}{doi: #1}}
 
 \makeatother
 
@@ -118,7 +118,7 @@ pHfun <- splinefun(distance, bison.pH, method="mono")
 lines(xpoints, pHfun(xpoints))
 @
 
-\href{http://dx.doi.org/10.1371/journal.pone.0022782.g005}{DOI link}
+\href{https://doi.org/10.1371/journal.pone.0022782.g005}{DOI link}
 to published figure (panels A and B). The length of \texttt{xpoints}
 here, 128, is the resolution used for the figures in the 2011 paper
 (defined in the \texttt{mkargs()} function of the Supporting Information).
@@ -217,8 +217,8 @@ legend("bottomright", pch=0:10, legend=phyla.abbrv, bg="white", cex=0.9)
 title(main="major phyla")
 @
 
-DOI links for these plots as they appeared in the publications: \href{http://dx.doi.org/10.1371/journal.pone.0022782.g004}{plot 1},
-\href{http://dx.doi.org/10.1371/journal.pone.0072395.g001}{plot 2}.
+DOI links for these plots as they appeared in the publications: \href{https://doi.org/10.1371/journal.pone.0022782.g004}{plot 1},
+\href{https://doi.org/10.1371/journal.pone.0072395.g001}{plot 2}.
 Compared to the papers, a different \emph{y}-axis scale is used here,
 in order to have same scale on both plots; permease at lower $\overline{Z}_{\mathrm{C}}$
 does not appear in plot 1 here.
@@ -295,7 +295,7 @@ a.res <- t(as.data.frame(a$values))/pl
 a.res
 @
 
-\href{http://dx.doi.org/10.1371/journal.pone.0022782.t005}{DOI link}
+\href{https://doi.org/10.1371/journal.pone.0022782.t005}{DOI link}
 to published table.
 
 The affinities are expressed as dimensionless values, i.e. $\boldsymbol{A}/2.303RT$
@@ -365,7 +365,7 @@ diagram(e, legend.x=NULL)
 legend("bottom", lty=1:5, legend=1:5, bty="n", cex=0.6)
 @
 
-\href{http://dx.doi.org/10.1371/journal.pone.0022782.g005}{DOI link}
+\href{https://doi.org/10.1371/journal.pone.0022782.g005}{DOI link}
 to published figure (panels B and F).
 
 \clearpage
@@ -396,7 +396,7 @@ for(i in 1:2) {
 }
 @
 
-\href{http://dx.doi.org/10.1371/journal.pone.0022782.g007}{DOI link}
+\href{https://doi.org/10.1371/journal.pone.0022782.g007}{DOI link}
 to published figure.
 
 \clearpage
@@ -432,7 +432,7 @@ for(j in 1:2) {
 }
 @
 
-\href{http://dx.doi.org/10.1371/journal.pone.0072395.g002}{DOI link}
+\href{https://doi.org/10.1371/journal.pone.0072395.g002}{DOI link}
 to published figure, which was made with higher resolution (256) and
 manual placement of some labels.
 
@@ -521,7 +521,7 @@ for(i in 1:5) {
 }
 @
 
-\href{http://dx.doi.org/10.1371/journal.pone.0072395.g003}{DOI link}
+\href{https://doi.org/10.1371/journal.pone.0072395.g003}{DOI link}
 to published version of the figure.
 
 \clearpage
@@ -645,8 +645,8 @@ text(90, -5.3, "Equation 2")
 text(66, -9, "optimal parameterization\nfor observed\nphylum abundances", adj=0)
 @
 
-DOI links to published versions: \href{http://dx.doi.org/10.1371/journal.pone.0022782.g009}{plot 1},
-\href{http://dx.doi.org/10.1371/journal.pone.0072395.g004}{plot 2}.
+DOI links to published versions: \href{https://doi.org/10.1371/journal.pone.0022782.g009}{plot 1},
+\href{https://doi.org/10.1371/journal.pone.0072395.g004}{plot 2}.
 
 \section{Relative abundance comparison}
 
@@ -683,7 +683,7 @@ for(iloc in 1:5) {
 }
 @
 
-\href{http://dx.doi.org/10.1371/journal.pone.0072395.g005}{DOI link}
+\href{https://doi.org/10.1371/journal.pone.0072395.g005}{DOI link}
 to published figure.
 
 \clearpage
@@ -711,7 +711,7 @@ plot.new()
 legend("bottomleft", legend=rev(phyla.abbrv), fill=rev(phyla.cols), bty="n", cex=0.7)
 @
 
-\href{http://dx.doi.org/10.1371/journal.pone.0072395.g006}{DOI link}
+\href{https://doi.org/10.1371/journal.pone.0072395.g006}{DOI link}
 to published figure.
 
 \section{Document history}

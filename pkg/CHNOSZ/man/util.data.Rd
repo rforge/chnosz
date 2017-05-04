@@ -12,7 +12,7 @@
 \title{Functions to Work with the Thermodynamic Database}
 \description{
 Add species to or alter properties of species in the thermodynamic database or in the buffer definition table.
-Show references for sources of thermodynamic data in a web browser.
+Show table of references in a web browser or get individual references for species.
 Check internal consistency of individual entries in database.
 }
 
@@ -33,8 +33,8 @@ Check internal consistency of individual entries in database.
   \item{force}{logical, force replacement of already existing species?}
   \item{E.units}{character, units of energy, \samp{cal} or \samp{J}}
   \item{...}{character or numeric, properties of species to modify in the thermodynamic database}
-  \item{key}{character, numeric, or list, containing reference key(s) for which to show URL(s) in browser}
-  \item{eos}{dataframe, containing equations-of-state parameters in the format of \code{thermo$obigt}}
+  \item{key}{character, numeric, or list; bibliographic reference key(s)}
+  \item{eos}{dataframe, equations-of-state parameters in the format of \code{thermo$obigt}}
   \item{state}{character, physical state of species}
   \item{prop}{character, property of interest (\samp{Cp} or \samp{V})}
   \item{ret.diff}{logical, return the difference between calculated and tabulated values?}
@@ -84,7 +84,7 @@ If \code{ret.diff} is TRUE, the differences are returned irrespective of their v
 A message is printed and the calculated difference is returned if it exceeds the value given in \code{thermo$opt$G.tol}, which has a default value of 100 cal/mol.
 The calculation requires that G, H and S, and the chemical formula of the species all be present.
 
-\code{check.obigt} is a function to check self-consistency of each entry (with itself) in the thermodynamic database, using \code{checkEOS} and \code{checkGHS}.
+\code{check.obigt} is a function to check self-consistency of each entry in the thermodynamic database, using \code{checkEOS} and \code{checkGHS}.
 The output is a table listing only species that exceed at least one of the tolerance limits, giving the species index (rownumber in `thermo$obigt`), species name and state, and DCp, DV and DG, for the calculated differences (only those above the tolerances are given). This function is used to generate the file found at \code{extdata/thermo/obigt_check.csv}.
 
   \code{RH2obigt} implements a group additivity algorithm for standard molal thermodynamic properties and equations of state parameters of crystalline and liquid organic molecules from Richard and Helgeson, 1998. The names of the \code{compound}s and their physical \code{state} are searched for in the indicated \code{file}, that also contains chemical formulas and group stoichiometries; the names of the groups are stored in the column names of this file, and must be present in \code{\link{thermo}$obigt}. The default \code{file} (\code{\link{extdata}/thermo/RH98_Table15.csv}) includes data taken from Table 15 of Richard and Helgeson, 1998 for high molecular weight compounds in \samp{cr}ystalline and \samp{liq}uid states. An error is produced if any of the \code{compound}-\code{state} combinations is not found in the \code{file}, if any of the group names for a given \code{compound}-\code{state} combination is not found in \code{thermo$obigt}, or if the chemical formula calculated from group additivity (with the aid of \code{\link{i2A}} and \code{\link{as.chemical.formula}}) is not identical to that listed in the \code{file}.
@@ -158,11 +158,11 @@ RH2obigt()
 }
 
 \references{
-Bazarkina, E. F., Zotov, A. V., and Akinfiev, N. N. (2010)  Pressure-dependent stability of cadmium chloride complexes: Potentiometric measurements at 1-1000 bar and 25°C. \emph{Geology of Ore Deposits} \bold{52}, 167--178. \url{http://dx.doi.org/10.1134/S1075701510020054}
+Bazarkina, E. F., Zotov, A. V., and Akinfiev, N. N. (2010)  Pressure-dependent stability of cadmium chloride complexes: Potentiometric measurements at 1-1000 bar and 25°C. \emph{Geology of Ore Deposits} \bold{52}, 167--178. \url{https://doi.org/10.1134/S1075701510020054}
 
-Richard, L. and Helgeson, H. C. (1998) Calculation of the thermodynamic properties at elevated temperatures and pressures of saturated and aromatic high molecular weight solid and liquid hydrocarbons in kerogen, bitumen, petroleum, and other organic matter of biogeochemical interest. \emph{Geochim. Cosmochim. Acta} \bold{62}, 3591--3636. \url{http://dx.doi.org/10.1016/S0016-7037(97)00345-1}
+Richard, L. and Helgeson, H. C. (1998) Calculation of the thermodynamic properties at elevated temperatures and pressures of saturated and aromatic high molecular weight solid and liquid hydrocarbons in kerogen, bitumen, petroleum, and other organic matter of biogeochemical interest. \emph{Geochim. Cosmochim. Acta} \bold{62}, 3591--3636. \url{https://doi.org/10.1016/S0016-7037(97)00345-1}
 
-Sverjensky, D. A., Shock, E. L., and Helgeson, H. C. (1997) Prediction of the thermodynamic properties of aqueous metal complexes to 1000 °C and 5 kbar. \emph{Geochim. Cosmochim. Acta} \bold{61}, 1359--1412. \url{http://dx.doi.org/10.1016/S0016-7037(97)00009-4}
+Sverjensky, D. A., Shock, E. L., and Helgeson, H. C. (1997) Prediction of the thermodynamic properties of aqueous metal complexes to 1000 °C and 5 kbar. \emph{Geochim. Cosmochim. Acta} \bold{61}, 1359--1412. \url{https://doi.org/10.1016/S0016-7037(97)00009-4}
 }
 
 \keyword{utilities}

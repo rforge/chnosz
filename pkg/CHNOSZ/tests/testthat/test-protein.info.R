@@ -33,4 +33,4 @@ test_that("pinfo() returns NA if no organism is given", {
 # references
 # Dick, J. M. and Shock, E. L. (2011) Calculation of the relative chemical stabilities of proteins 
 #   as a function of temperature and redox chemistry in a hot spring. 
-#   PLoS ONE 6, e22782. http://dx.doi.org/10.1371/journal.pone.0022782
+#   PLoS ONE 6, e22782. https://doi.org/10.1371/journal.pone.0022782

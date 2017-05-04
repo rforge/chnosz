@@ -50,7 +50,7 @@ This is sometimes a useful command to use during an interactive session, when pr
       \code{Cp.tol} \tab numeric \tab Difference in Cp above which \code{\link{checkEOS}} produces a message (cal K\ifelse{latex}{\eqn{^{-1}}}{\ifelse{html}{\out{<sup>-1</sup>}}{^-1}} mol\ifelse{latex}{\eqn{^{-1}}}{\ifelse{html}{\out{<sup>-1</sup>}}{^-1}}) [1]\cr
       \code{V.tol} \tab numeric \tab Difference in V above which \code{\link{checkEOS}} produces a message (cm\ifelse{latex}{\eqn{^{3}}}{\ifelse{html}{\out{<sup>3</sup>}}{^3}} mol\ifelse{latex}{\eqn{^{-1}}}{\ifelse{html}{\out{<sup>-1</sup>}}{^-1}}) [1]\cr
       \code{varP} \tab logical \tab Use variable-pressure standard state for gases? [\code{FALSE}] (see \code{\link{subcrt}})\cr
-      \code{IAPWS.sat} \tab character \tab State of \ifelse{latex}{\out{H$_2$O}}{\ifelse{html}{\out{H<sub>2</sub>O}}{H2O}} for saturation properties [\samp{liquid}] (see \code{\link{util.water}})\cr
+      \code{IAPWS.sat} \tab character \tab State of water for saturation properties [\samp{liquid}] (see \code{\link{util.water}})\cr
       \code{paramin} \tab integer \tab Minimum number of calculations to launch parallel processes [1000] (see \code{\link{palply}}) \cr
       \code{ideal.H} \tab logical \tab Should \code{\link{nonideal}} ignore the proton? [\code{TRUE}] \cr
       \code{ideal.e} \tab logical \tab Should \code{\link{nonideal}} ignore the electron? [\code{TRUE}]
@@ -231,7 +231,7 @@ thermo$obigt$formula[runif(10)*n]
 \references{
 Cox, J. D., Wagman, D. D. and Medvedev, V. A., eds. (1989) \emph{CODATA Key Values for Thermodynamics}. Hemisphere Publishing Corporation, New York, 271 p. \url{http://www.worldcat.org/oclc/18559968}
 
-Johnson, J. W., Oelkers, E. H. and Helgeson, H. C. (1992) SUPCRT92: A software package for calculating the standard molal thermodynamic properties of minerals, gases, aqueous species, and reactions from 1 to 5000 bar and 0 to 1000\eqn{^{\circ}}{°}C. \emph{Comp. Geosci.} \bold{18}, 899--947. \url{http://dx.doi.org/10.1016/0098-3004(92)90029-Q}
+Johnson, J. W., Oelkers, E. H. and Helgeson, H. C. (1992) SUPCRT92: A software package for calculating the standard molal thermodynamic properties of minerals, gases, aqueous species, and reactions from 1 to 5000 bar and 0 to 1000\eqn{^{\circ}}{°}C. \emph{Comp. Geosci.} \bold{18}, 899--947. \url{https://doi.org/10.1016/0098-3004(92)90029-Q}
 
 Shock, E. L. et al. {1998} \emph{SLOP98.dat} (computer data file). http://geopig.asu.edu/supcrt92_data/slop98.dat, accessed on 2005-11-05. Current location: \url{http://geopig.asu.edu/?q=tools}.
 

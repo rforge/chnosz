@@ -9,7 +9,7 @@
 %\VignetteIndexEntry{Winding journey down (in Gibbs energy)}
 
 % so DOIs in bibliography show up as hyperlinks
-\newcommand*{\doi}[1]{\href{http://dx.doi.org/#1}{doi: #1}}
+\newcommand*{\doi}[1]{\href{https://doi.org/#1}{doi: #1}}
 \end_preamble
 \options round
 \use_default_options true
@@ -1445,7 +1445,7 @@ wjd()
 
 \begin_layout Standard
 \begin_inset Branch inactive
-status open
+status collapsed
 
 \begin_layout Standard
 \begin_inset Branch short

@@ -38,55 +38,55 @@
 <text transform="translate(220.84,489.21) " fill="#000000"  style="font-size:14pt" >T,&#160;&#176;C</text>
 <text transform="translate(16.68,257.83)  rotate(-90)" fill="#000000"  style="font-size:14pt" >ZC</text>
 <rect x="67.48" y="211.33" width="19.91" height="19.91" stroke-width="1px" stroke="#0000FF" fill="#FFFFFF" stroke-opacity="1.000000" fill-opacity="0.000000" />
-<a xlink:href="http://dx.doi.org/10.3354/ab00256"
+<a xlink:href="https://doi.org/10.3354/ab00256"
  target="_blank">
 <text transform="translate(71.44,230.38) " fill="#000000"  style="font-size:17pt" >1<title>Phaeocystis antarctica</title>
 </text>
 </a>
 <circle cx="93.16" cy="140.32" r="10.66" stroke-width="1px" stroke="#00CD00" fill="#FFFFFF" stroke-opacity="1.000000" fill-opacity="0.000000" />
-<a xlink:href="http://dx.doi.org/10.1016/S0723-2020(97)80003-3"
+<a xlink:href="https://doi.org/10.1016/S0723-2020(97)80003-3"
  target="_blank">
 <text transform="translate(87.17,149.42) " fill="#000000"  style="font-size:17pt" >2<title>Octadecabacter antarcticus 307</title>
 </text>
 </a>
 <polyline points="136.41 , 260.85 149.81 , 284.06 123.00 , 284.06 136.41 , 260.85 " stroke-width="1px" stroke="#FF0000" fill="#000000" stroke-opacity="1.000000" fill-opacity="0.000000"/>
-<a xlink:href="http://dx.doi.org/10.1128/AEM.01146-08"
+<a xlink:href="https://doi.org/10.1128/AEM.01146-08"
  target="_blank">
 <text transform="translate(130.41,285.42) " fill="#000000"  style="font-size:17pt" >3<title>Methanolobus psychrophilus</title>
 </text>
 </a>
 <polyline points="156.07 , 242.83 169.47 , 266.05 142.66 , 266.05 156.07 , 242.83 " stroke-width="1px" stroke="#FF0000" fill="#000000" stroke-opacity="1.000000" fill-opacity="0.000000"/>
-<a xlink:href="http://dx.doi.org/10.1016/S0723-2020(11)80117-7"
+<a xlink:href="https://doi.org/10.1016/S0723-2020(11)80117-7"
  target="_blank">
 <text transform="translate(150.07,267.41) " fill="#000000"  style="font-size:17pt" >4<title>Methanococcoides burtonii</title>
 </text>
 </a>
 <circle cx="173.76" cy="178.23" r="10.66" stroke-width="1px" stroke="#00CD00" fill="#FFFFFF" stroke-opacity="1.000000" fill-opacity="0.000000" />
-<a xlink:href="http://dx.doi.org/10.1099/00207713-32-1-136"
+<a xlink:href="https://doi.org/10.1099/00207713-32-1-136"
  target="_blank">
 <text transform="translate(167.76,187.33) " fill="#000000"  style="font-size:17pt" >5<title>Bradyrhizobium japonicum</title>
 </text>
 </a>
 <circle cx="179.65" cy="122.55" r="10.66" stroke-width="1px" stroke="#00CD00" fill="#FFFFFF" stroke-opacity="1.000000" fill-opacity="0.000000" />
-<a xlink:href="http://dx.doi.org/10.1080/01490459209377920"
+<a xlink:href="https://doi.org/10.1080/01490459209377920"
  target="_blank">
 <text transform="translate(173.66,131.65) " fill="#000000"  style="font-size:17pt" >6<title>Thiobacillus ferrooxidans</title>
 </text>
 </a>
 <rect x="173.63" y="140.79" width="19.91" height="19.91" stroke-width="1px" stroke="#0000FF" fill="#FFFFFF" stroke-opacity="1.000000" fill-opacity="0.000000" />
-<a xlink:href="http://dx.doi.org/10.1016/S0065-2113(08)60322-3"
+<a xlink:href="https://doi.org/10.1016/S0065-2113(08)60322-3"
  target="_blank">
 <text transform="translate(177.59,159.85) " fill="#000000"  style="font-size:17pt" >7<title>Zea mays</title>
 </text>
 </a>
 <circle cx="183.59" cy="138.89" r="10.66" stroke-width="1px" stroke="#00CD00" fill="#FFFFFF" stroke-opacity="1.000000" fill-opacity="0.000000" />
-<a xlink:href="http://dx.doi.org/10.1371/journal.pone.0000667"
+<a xlink:href="https://doi.org/10.1371/journal.pone.0000667"
  target="_blank">
 <text transform="translate(177.59,147.99) " fill="#000000"  style="font-size:17pt" >8<title>Mariprofundus ferrooxydans</title>
 </text>
 </a>
 <circle cx="203.24" cy="75.75" r="10.66" stroke-width="1px" stroke="#00CD00" fill="#FFFFFF" stroke-opacity="1.000000" fill-opacity="0.000000" />
-<a xlink:href="http://dx.doi.org/10.1099/ijs.0.02323-0"
+<a xlink:href="https://doi.org/10.1099/ijs.0.02323-0"
  target="_blank">
 <text transform="translate(197.25,84.85) " fill="#000000"  style="font-size:17pt" >9<title>Desulfovibrio hydrothermalis</title>
 </text>
@@ -98,7 +98,7 @@
 </text>
 </a>
 <circle cx="242.56" cy="106.44" r="10.66" stroke-width="1px" stroke="#00CD00" fill="#FFFFFF" stroke-opacity="1.000000" fill-opacity="0.000000" />
-<a xlink:href="http://dx.doi.org/10.1099/13500872-140-12-3451"
+<a xlink:href="https://doi.org/10.1099/13500872-140-12-3451"
  target="_blank">
 <text transform="translate(236.56,115.54) " fill="#000000"  style="font-size:17pt" >2<title>Acidithiobacillus caldus</title>
 </text>
@@ -110,55 +110,55 @@
 </text>
 </a>
 <circle cx="252.39" cy="180.70" r="10.66" stroke-width="1px" stroke="#00CD00" fill="#FFFFFF" stroke-opacity="1.000000" fill-opacity="0.000000" />
-<a xlink:href="http://dx.doi.org/10.1099/00221287-142-4-775"
+<a xlink:href="https://doi.org/10.1099/00221287-142-4-775"
  target="_blank">
 <text transform="translate(246.39,189.80) " fill="#000000"  style="font-size:17pt" >4<title>Sulfobacillus acidophilus</title>
 </text>
 </a>
 <circle cx="270.08" cy="224.52" r="10.66" stroke-width="1px" stroke="#00CD00" fill="#FFFFFF" stroke-opacity="1.000000" fill-opacity="0.000000" />
-<a xlink:href="http://dx.doi.org/10.1271/bbb1961.41.685"
+<a xlink:href="https://doi.org/10.1271/bbb1961.41.685"
  target="_blank">
 <text transform="translate(264.08,233.62) " fill="#000000"  style="font-size:17pt" >5<title>Pseudomonas hydrogenothermophila</title>
 </text>
 </a>
 <circle cx="272.04" cy="149.84" r="10.66" stroke-width="1px" stroke="#00CD00" fill="#FFFFFF" stroke-opacity="1.000000" fill-opacity="0.000000" />
-<a xlink:href="http://dx.doi.org/10.1128/AEM.72.1.544-550.2006"
+<a xlink:href="https://doi.org/10.1128/AEM.72.1.544-550.2006"
  target="_blank">
 <text transform="translate(266.05,158.94) " fill="#000000"  style="font-size:17pt" >6<title>Synechococcus sp. (strain JA-2-3B'a(2-13))</title>
 </text>
 </a>
 <polyline points="291.70 , 116.89 305.10 , 140.11 278.30 , 140.11 291.70 , 116.89 " stroke-width="1px" stroke="#FF0000" fill="#000000" stroke-opacity="1.000000" fill-opacity="0.000000"/>
-<a xlink:href="http://dx.doi.org/10.1099/00207713-42-3-463"
+<a xlink:href="https://doi.org/10.1099/00207713-42-3-463"
  target="_blank">
 <text transform="translate(285.70,141.47) " fill="#000000"  style="font-size:17pt" >7<title>Methanosaeta thermophila</title>
 </text>
 </a>
 <circle cx="289.73" cy="175.15" r="10.66" stroke-width="1px" stroke="#00CD00" fill="#FFFFFF" stroke-opacity="1.000000" fill-opacity="0.000000" />
-<a xlink:href="http://dx.doi.org/10.1093/oxfordjournals.pcp.a075684"
+<a xlink:href="https://doi.org/10.1093/oxfordjournals.pcp.a075684"
  target="_blank">
 <text transform="translate(283.74,184.25) " fill="#000000"  style="font-size:17pt" >8<title>Thermosynechococcus elongatus</title>
 </text>
 </a>
 <circle cx="301.53" cy="381.90" r="10.66" stroke-width="1px" stroke="#00CD00" fill="#FFFFFF" stroke-opacity="1.000000" fill-opacity="0.000000" />
-<a xlink:href="http://dx.doi.org/10.1099/ijs.0.003483-0"
+<a xlink:href="https://doi.org/10.1099/ijs.0.003483-0"
  target="_blank">
 <text transform="translate(295.53,391.00) " fill="#000000"  style="font-size:17pt" >9<title>Clostridium clariflavum</title>
 </text>
 </a>
 <circle cx="321.19" cy="245.44" r="10.66" stroke-width="1px" stroke="#00CD00" fill="#FFFFFF" stroke-opacity="1.000000" fill-opacity="0.000000" />
-<a xlink:href="http://dx.doi.org/10.1099/00221287-67-1-9"
+<a xlink:href="https://doi.org/10.1099/00221287-67-1-9"
  target="_blank">
 <text transform="translate(315.19,254.54) " fill="#000000"  style="font-size:17pt" >1<title>Bacillus acidocaldarius</title>
 </text>
 </a>
 <circle cx="321.19" cy="403.26" r="10.66" stroke-width="1px" stroke="#00CD00" fill="#FFFFFF" stroke-opacity="1.000000" fill-opacity="0.000000" />
-<a xlink:href="http://dx.doi.org/10.1099/00207713-52-4-1361"
+<a xlink:href="https://doi.org/10.1099/00207713-52-4-1361"
  target="_blank">
 <text transform="translate(315.19,412.36) " fill="#000000"  style="font-size:17pt" >2<title>Thermotoga lettingae</title>
 </text>
 </a>
 <circle cx="340.84" cy="202.57" r="10.66" stroke-width="1px" stroke="#00CD00" fill="#FFFFFF" stroke-opacity="1.000000" fill-opacity="0.000000" />
-<a xlink:href="http://dx.doi.org/10.1371/journal.pone.0004207"
+<a xlink:href="https://doi.org/10.1371/journal.pone.0004207"
  target="_blank">
 <text transform="translate(334.85,211.67) " fill="#000000"  style="font-size:17pt" >3<title>Thermomicrobium roseum</title>
 </text>
@@ -170,31 +170,31 @@
 </text>
 </a>
 <polyline points="399.81 , 392.08 413.22 , 415.30 386.41 , 415.30 399.81 , 392.08 " stroke-width="1px" stroke="#FF0000" fill="#000000" stroke-opacity="1.000000" fill-opacity="0.000000"/>
-<a xlink:href="http://dx.doi.org/10.1007/BF00425213"
+<a xlink:href="https://doi.org/10.1007/BF00425213"
  target="_blank">
 <text transform="translate(393.82,416.66) " fill="#000000"  style="font-size:17pt" >5<title>Methanocaldococcus jannaschii</title>
 </text>
 </a>
 <polyline points="409.64 , 346.01 423.05 , 369.23 396.24 , 369.23 409.64 , 346.01 " stroke-width="1px" stroke="#FF0000" fill="#000000" stroke-opacity="1.000000" fill-opacity="0.000000"/>
-<a xlink:href="http://dx.doi.org/10.1016/S0723-2020(83)80035-6"
+<a xlink:href="https://doi.org/10.1016/S0723-2020(83)80035-6"
  target="_blank">
 <text transform="translate(403.65,370.59) " fill="#000000"  style="font-size:17pt" >6<title>Thermofilum pendens</title>
 </text>
 </a>
 <polyline points="413.57 , 396.54 426.98 , 419.76 400.17 , 419.76 413.57 , 396.54 " stroke-width="1px" stroke="#FF0000" fill="#000000" stroke-opacity="1.000000" fill-opacity="0.000000"/>
-<a xlink:href="http://dx.doi.org/10.1016/S0723-2020(86)80157-6"
+<a xlink:href="https://doi.org/10.1016/S0723-2020(86)80157-6"
  target="_blank">
 <text transform="translate(407.58,421.12) " fill="#000000"  style="font-size:17pt" >7<title>Staphylothermus marinus</title>
 </text>
 </a>
 <polyline points="450.92 , 346.52 464.33 , 369.74 437.52 , 369.74 450.92 , 346.52 " stroke-width="1px" stroke="#FF0000" fill="#000000" stroke-opacity="1.000000" fill-opacity="0.000000"/>
-<a xlink:href="http://dx.doi.org/10.1007/s007920050051"
+<a xlink:href="https://doi.org/10.1007/s007920050051"
  target="_blank">
 <text transform="translate(444.93,371.10) " fill="#000000"  style="font-size:17pt" >8<title>Pyrococcus horikoshii</title>
 </text>
 </a>
 <polyline points="458.79 , 399.49 472.19 , 422.71 445.38 , 422.71 458.79 , 399.49 " stroke-width="1px" stroke="#FF0000" fill="#000000" stroke-opacity="1.000000" fill-opacity="0.000000"/>
-<a xlink:href="http://dx.doi.org/10.1007/BF00413027"
+<a xlink:href="https://doi.org/10.1007/BF00413027"
  target="_blank">
 <text transform="translate(452.79,424.07) " fill="#000000"  style="font-size:17pt" >9<title>Pyrococcus furiosus</title>
 </text>

@@ -50,7 +50,7 @@ If there is any doubt about the accuracy or suitability of data for a particular
 
   \item Activity diagrams - plot the equilibrium activities at a single point (as barplots), or as a function of one (species activity diagrams) or two (predominance diagrams) variables (\code{\link{diagram}}).
 
-  \item Buffer calculations - compute activities of basis species that are determined by a buffer of one or more species (e.g., pyrite-pyrrhotite-magnetite; acetic acid-CO2) (\code{\link{buffer}}).
+  \item Buffer calculations - compute activities of basis species that are determined by a buffer of one or more species (e.g., pyrite-pyrrhotite-magnetite; acetic acid-\CO2) (\code{\link{buffer}}).
 
   \item Activity coefficients (\bold{experimental}) - calculate activity coefficients of aqueous species using the extended Debye-Hückel equation (\code{\link{nonideal}}).
 

@@ -122,7 +122,7 @@ The latter is referred to as the maximum affinity method.
 In cases where it applies (see Warning), the maximum affinity method is much faster than an equilibrium calculation.
 \code{balance} is the option that determines the balancing coefficients (this argument has no effect on the calculations of equilibrium activities.)
 If \code{what} is the name of a basis species, it refers to option (2) above.
-A contour plot is made in the case of 2-D diagrams of the equilibrium activity of a basis species (see the CO2-acetic acid example in \code{\link{buffer}}, and only the first species of interest is used in the calculation; a warning is produced if there is more than one.
+A contour plot is made in the case of 2-D diagrams of the equilibrium activity of a basis species (see the \CO2-acetic acid example in \code{\link{buffer}}, and only the first species of interest is used in the calculation; a warning is produced if there is more than one.
 
 A different incarnation of 1-D speciation diagrams is provided by \code{strip}.
 This function generates any number of strip diagrams in a single plot.
@@ -249,15 +249,15 @@ stopifnot(species()$name[d$predominant[99, 101]]=="sillimanite")
 
 \references{
 
-  Aksu, S. and Doyle, F. M. (2001) Electrochemistry of copper in aqueous glycine solutions. \emph{J. Electrochem. Soc.} \bold{148}, B51--B57. \url{http://dx.doi.org/10.1149/1.1344532}
+  Aksu, S. and Doyle, F. M. (2001) Electrochemistry of copper in aqueous glycine solutions. \emph{J. Electrochem. Soc.} \bold{148}, B51--B57. \url{https://doi.org/10.1149/1.1344532}
 
   Helgeson, H. C. (1970) A chemical and thermodynamic model of ore deposition in hydrothermal systems. \emph{Mineral. Soc. Amer. Spec. Pap.} \bold{3}, 155--186. \url{http://www.worldcat.org/oclc/583263}
 
   Helgeson, H. C., Delany, J. M., Nesbitt, H. W. and Bird, D. K. (1978) Summary and critique of the thermodynamic properties of rock-forming minerals. \emph{Am. J. Sci.} \bold{278-A}, 1--229. \url{http://www.worldcat.org/oclc/13594862}
 
-  LaRowe, D. E. and Helgeson, H. C. (2007) Quantifying the energetics of metabolic reactions in diverse biogeochemical systems: electron flow and ATP synthesis. \emph{Geobiology} \bold{5}, 153--168. \url{http://dx.doi.org/10.1111/j.1472-4669.2007.00099.x}
+  LaRowe, D. E. and Helgeson, H. C. (2007) Quantifying the energetics of metabolic reactions in diverse biogeochemical systems: electron flow and ATP synthesis. \emph{Geobiology} \bold{5}, 153--168. \url{https://doi.org/10.1111/j.1472-4669.2007.00099.x}
 
-  Majzlan, J., Navrotsky, A., McClesky, R. B. and Alpers, C. N. (2006) Thermodynamic properties and crystal structure refinement of ferricopiapite, coquimbite, rhomboclase, and Fe2(SO4)3(H2O)5. \emph{Eur. J. Mineral.} \bold{18}, 175--186. \url{http://dx.doi.org/10.1127/0935-1221/2006/0018-0175}
+  Majzlan, J., Navrotsky, A., McClesky, R. B. and Alpers, C. N. (2006) Thermodynamic properties and crystal structure refinement of ferricopiapite, coquimbite, rhomboclase, and Fe2(SO4)3(H2O)5. \emph{Eur. J. Mineral.} \bold{18}, 175--186. \url{https://doi.org/10.1127/0935-1221/2006/0018-0175}
 }
 
 \concept{Primary thermodynamic modeling}

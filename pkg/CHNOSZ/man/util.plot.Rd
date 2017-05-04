@@ -11,7 +11,7 @@
 \title{Functions to Create and Modify Plots}
 
 \description{
-  Initialize a new plot window using preset parameters, open a postcript file for plotting, add an axis or title to a plot, generate labels for plot axes and for identification of subplots and physical and chemical conditions, add stability lines for water to a diagram, get colors for set of values.
+  Initialize a new plot window using preset parameters, add an axis or title to a plot, generate labels for axes and subplots, add stability lines for water, get colors for a set of numeric values.
 }
 
 
@@ -94,7 +94,7 @@ It loops over each element of \code{main} and places it on a separate margin lin
 The spacing of the last (bottom) line from the edge of the plot is specified by \code{line}.
 This function exists to facilitate using \code{\link{expression}}s in multiline titles (see \code{\link{revisit}} for an example.) 
 
-\code{ZC.col} returns colors from a diverging palette (red - light grey - blue) corresponding to the values in \code{z}.
+\code{ZC.col} uses \CRANpkg{colorspace}) to generate colors from a diverging palette (red - light grey - blue) corresponding to the values in \code{z}.
 Red is associated with lower values of \code{z}.
 This function is intended to generate colors for distinguishing average oxidation state of carbon \code{\link{ZC}}, but any numeric values can be supplied.
 

@@ -41,10 +41,6 @@ If \code{logact} is NULL, the function takes the logarithms of activities from t
 If any of those species are proteins, the function gets their lengths using \code{protein.length}.
 }
 
-\value{
-  Numeric returns are made by \code{dPdTtr}, \code{Ttr}, \code{spearman}, \code{mod.obigt} Functions with no (or unspecified) returns are \code{thermo.plot.new}, \code{thermo.postscript}, \code{label.plot} and \code{water.lines}.
-}
-
 \examples{\dontshow{data(thermo)}
 ## properties of phase transitions
 si <- info("enstatite")

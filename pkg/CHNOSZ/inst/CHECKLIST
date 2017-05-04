@@ -33,10 +33,7 @@ OTHER THINGS TO CHECK:
 
 - update list of documentation topics in examples() with any new ones
 
-- especially on Windows:  
-  - data files are uncompressed on installation? (from BuildResaveData: no)
-    (so that users can copy and modify the thermodynamic database)
-  - anim.*() produce pngs / movies (ImageMagick dependency)?
+- especially on Windows: anim.*() produce pngs / movies (ImageMagick dependency)?
 
 - check for stale URLs in Rd files
 
@@ -52,3 +49,6 @@ OTHER THINGS TO CHECK:
     - Secondary thermodynamic modeling (less often-used functions e.g. revisit)
     - Extra thermodynamic modeling (out-of-workflow functions e.g. transfer)
     - Protein thermodynamic modeling (protein-specific functions e.g. ionize.aa)
+
+- although Rd files could use the \doi macro, it generates a largish (ca. 265K)
+  build/partial.rdb file; just use \url for now.

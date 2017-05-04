@@ -1,24 +1,23 @@
 Date: 2017-05-04
 Package: CHNOSZ
-Version: 1.0.8-88
+Version: 1.0.8-89
 Title: Chemical Thermodynamics and Activity Diagrams
 Author: Jeffrey Dick
 Maintainer: Jeffrey Dick <j3ffdick@gmail.com>
 Depends: R (>= 3.1.0)
 Suggests: limSolve, testthat, knitr, rmarkdown, tufte, RSVGTipsDevice
 Imports: grDevices, graphics, stats, utils, colorspace
-Description: Tools for thermodynamic calculations in compositional biology and
-  low-temperature geochemistry. Thermodynamic properties are taken from a database
-  including aqueous species, minerals, and biomolecules, or from amino acid group
-  additivity for proteins. High-temperature properties are calculated using the
-  revised Helgeson-Kirkham-Flowers equations of state for aqueous species. Functions
-  are provided to define a system using basis species, automatically balance reactions,
-  calculate the chemical affinities of reactions for selected species, and plot the
-  results on potential diagrams or equilibrium activity diagrams. Experimental functions
-  calculate activity coefficients for aqueous species or optimize multiple thermodynamic
-  variables using an objective function for chemical activities.
+Description: An integrated set of tools for thermodynamic calculations in compositional
+  biology and geochemistry. Thermodynamic properties are taken from a database for minerals
+  and inorganic and organic aqueous species including biomolecules, or from amino acid
+  group additivity for proteins. High-temperature properties are calculated using the
+  revised Helgeson-Kirkham-Flowers equations of state for aqueous species. Functions are
+  provided to define a system using basis species, automatically balance reactions,
+  calculate the chemical affinities of reactions for selected species, and plot the results
+  on potential diagrams or equilibrium activity diagrams. Experimental features are
+  available to calculate activity coefficients for aqueous species or for multidimensional
+  optimization of thermodynamic variables using an objective function.
 License: GPL (>= 2)
 BuildResaveData: no
-ZipData: no
 VignetteBuilder: knitr
 URL: http://www.chnosz.net/, http://chnosz.r-forge.r-project.org/

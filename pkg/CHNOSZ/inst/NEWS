@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.0.8-88 (2017-05-04)
+CHANGES IN CHNOSZ 1.0.8-89 (2017-05-04)
 ---------------------------------------
 
 DOCUMENTATION:
@@ -156,7 +156,7 @@ BUG FIXES:
 - Correct charge (-2) of NAD(red)-2 in biotic_aq.csv. Thanks to Peter
   Canovas.
 
-- Also correct charge (-2) of MgATP-2.
+- Correct charge (-2) of MgATP-2.
 
 - subcrt() returns `loggam` using the common logarithm; add
   test-nonideal.R to check for consistency between loggam and logK

@@ -95,7 +95,7 @@ One of the constraints of the algorithm coded in \code{wjd} is that the initial 
 Often, when investigating an equilibrium problem, the stoichiometric constraints are expressed most readily in terms of bulk composition -- numbers of moles of each element.
 \code{guess} is a function to make initial guesses about the numbers of moles of all species in the system subject to the positivity constraints.
 Its system-specific arguments are the stoichiometric matrix \code{A} (as defined above for \code{wjd}) and the bulk composition vector \code{B}, giving the number of moles of each element, in the same order that the elements appear in \code{A}.
-The first \code{method} available in \code{guess} generates the \sQuote{central} solution of the system of linear equations using the \code{\link[limSolve]{xranges}} function from \pkg{limSolve}. The central solution is the mean of ranges of unknowns. The inequality constraint, or minimum number of moles of any species, is given by \code{minX}.
+The first \code{method} available in \code{guess} generates the \sQuote{central} solution of the system of linear equations using the \code{\link[limSolve]{xranges}} function from \CRANpkg{limSolve}. The central solution is the mean of ranges of unknowns. The inequality constraint, or minimum number of moles of any species, is given by \code{minX}.
 
 The second method for \code{guess} \sQuote{stoich} (and the default for \code{run.guess} and \code{run.wjd}) is to test successive combinations of species whose elemental compositions are linearly independent.
 The linearly independent combinations tested are all those from \code{\link{invertible.combs}} if \code{ic} is NULL, or only those identified by \code{ic}.

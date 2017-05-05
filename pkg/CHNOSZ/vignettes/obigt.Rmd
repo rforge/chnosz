@@ -17,7 +17,7 @@ nocite: |
   @SPRONS92, @SLOP98, @SLOP07, @SLOP15, @CHNOSZ
 # 20170212: comment the csl line to build package on R-Forge, to avoid
 # getting an error there (pandoc-citeproc: error while parsing the XML string)
-#csl: elementa.csl
+csl: elementa.csl
 ---
 
 <!-- The bare-bones version (small, for submission to CRAN) uses html_vignette. -->

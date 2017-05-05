@@ -21,7 +21,7 @@ vignette: >
   \usepackage[utf8]{inputenc}
 bibliography: vig.bib
 link-citations: yes
-#csl: elementa.csl
+csl: elementa.csl
 ---
 
 ```{r width80, include=FALSE}

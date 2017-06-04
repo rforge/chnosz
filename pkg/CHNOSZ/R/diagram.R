@@ -157,17 +157,26 @@ diagram <- function(
       }
     }
     predominant <- which.pmax(pv)
-    # for an Eh-pH or pe-pH diagram, clip plot to water stability region
-    if(limit.water & eout$vars[1] == "pH" & eout$vars[2] %in% c("Eh", "pe")) {
-      wl <- water.lines(xaxis=eout$vars[1], yaxis=eout$vars[2], T=eout$T, P=eout$P, xpoints=eout$vals[[1]], plot.it=FALSE)
-      # for each x-point, find the y-values that are outside the water stability limits
-      for(i in seq_along(wl$xpoints)) {
-        ymin <- min(c(wl$y.oxidation[i], wl$y.reduction[i]))
-        ymax <- max(c(wl$y.oxidation[i], wl$y.reduction[i]))
-        # the actual calculation
-        iNA <- eout$vals[[2]] < ymin | eout$vals[[2]] > ymax
-        # assign NA to the predominance matrix
-        predominant[i, iNA] <- NA
+    # clip plot to water stability region
+    if(limit.water) {
+      wl <- water.lines(eout, plot.it=FALSE)
+      # proceed if water.lines produced calculations for this plot
+      if(!identical(wl, NA)) {
+        # for each x-point, find the y-values that are outside the water stability limits
+        for(i in seq_along(wl$xpoints)) {
+          ymin <- min(c(wl$y.oxidation[i], wl$y.reduction[i]))
+          ymax <- max(c(wl$y.oxidation[i], wl$y.reduction[i]))
+          if(!wl$swapped) {
+            # the actual calculation
+            iNA <- eout$vals[[2]] < ymin | eout$vals[[2]] > ymax
+            # assign NA to the predominance matrix
+            predominant[i, iNA] <- NA
+          } else {
+            # as above, but x- and y-axes are swapped
+            iNA <- eout$vals[[1]] < ymin | eout$vals[[1]] > ymax
+            predominant[iNA, i] <- NA
+          }
+        }
       }
     }
   }

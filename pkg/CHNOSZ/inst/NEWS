@@ -1,5 +1,9 @@
-CHANGES IN CHNOSZ 1.1.0-1 (2017-05-24)
+CHANGES IN CHNOSZ 1.1.0-2 (2017-06-04)
 --------------------------------------
+
+- water.lines() now works for diagrams of Eh, pe, logfO2, logaO2,
+  logfH2, or logaH2 vs pH, T, or P. It is possible to have T or P on
+  either the x- or y-axis.
 
 CHANGES IN CHNOSZ 1.1.0 (2017-05-04)
 ------------------------------------

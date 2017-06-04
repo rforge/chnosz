@@ -2685,7 +2685,7 @@ for(loga in c(-1, 0, -2, -3)) {
 
 \begin_layout Plain Layout
 
-water.lines()
+water.lines(d)
 \end_layout
 
 \begin_layout Plain Layout
@@ -4233,7 +4233,7 @@ diagram(e, ylim=c(-2.8, -1.6), names=organisms)
 
 \begin_layout Plain Layout
 
-water.lines(xaxis="O2")
+water.lines(e)
 \end_layout
 
 \begin_layout Plain Layout
@@ -4253,7 +4253,7 @@ diagram(e, ylim=c(-4, -2), names=organisms)
 
 \begin_layout Plain Layout
 
-water.lines(xaxis="O2")
+water.lines(e)
 \end_layout
 
 \begin_layout Plain Layout
@@ -4361,7 +4361,7 @@ for(normalize in c(FALSE, TRUE)) {
 
 \begin_layout Plain Layout
 
-  water.lines(xaxis="O2", T=convert(325, "K"))
+  water.lines(e)
 \end_layout
 
 \begin_layout Plain Layout

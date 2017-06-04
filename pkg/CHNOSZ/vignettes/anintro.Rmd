@@ -547,7 +547,7 @@ That is, running <span style="color:green">`affinity()`</span>`$values` again wo
 ```{r EhpH_plot, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, cache=TRUE, fig.cap="Aqueous sulfur species at 25 °C.", pngquant=pngquant, timeit=timeit}
 a <- affinity(pH = c(0, 12), Eh = c(-0.5, 1))
 diagram(a, fill = "heat")
-water.lines()
+water.lines(a)
 ```
 
 Now we can calculate the affinities on an Eh-pH grid:
@@ -631,7 +631,7 @@ m1 <- mosaic(bases, blend = TRUE, pH = c(0, 12, res), Eh=c(-1.2, 0.75, res), T=T
 diagram(m1$A.species, lwd = 2, fill = NA, limit.water = FALSE)
 diagram(m1$A.bases, add = TRUE, col = "blue", col.names = "blue", lty = 2,
         limit.water = FALSE)
-water.lines("pH", "Eh", T = convert(T, "K"), col = "red", lwd = 2, lty = 2)
+water.lines(m1$A.species, col = "red", lwd = 2, lty = 2)
 ```
 
 The argument `blend = TRUE` is used to combine the diagrams according to the equilibrium activities of the basis species by themselves ([see below](#equilibration)).

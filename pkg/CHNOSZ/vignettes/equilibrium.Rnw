@@ -1,4 +1,4 @@
-%% LyX 2.2.2 created this file.  For more info, see http://www.lyx.org/.
+%% LyX 2.2.3 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
 \documentclass[english,round]{article}
 \usepackage{mathpazo}
@@ -609,7 +609,7 @@ for(loga in c(-1, 0, -2, -3)) {
   iCu <- which(d$predominant == 1, arr.ind=TRUE)
   text(a$vals[[1]][max(iCu[, 1])] - 0.03, a$vals[[2]][min(iCu[, 2])] + 0.2, adj=1, loga)
 }
-water.lines()
+water.lines(d)
 
 @
 
@@ -1018,11 +1018,11 @@ a <- affinity(O2=c(-100, -65))
 layout(matrix(1:2), heights=c(1, 2))
 e <- equilibrate(a)
 diagram(e, ylim=c(-2.8, -1.6), names=organisms)
-water.lines(xaxis="O2")
+water.lines(e)
 title(main="Equilibrium activities of proteins, normalize = FALSE")
 e <- equilibrate(a, normalize=TRUE)
 diagram(e, ylim=c(-4, -2), names=organisms)
-water.lines(xaxis="O2")
+water.lines(e)
 title(main="Equilibrium activities of proteins, normalize = TRUE")
 @
 
@@ -1048,7 +1048,7 @@ lty <- 1:4
 for(normalize in c(FALSE, TRUE)) {
   e <- equilibrate(a, loga.balance=-2, normalize=normalize)
   diagram(e, ylim=c(-30, 0), legend.x=NULL, col=col, lty=lty)
-  water.lines(xaxis="O2", T=convert(325, "K"))
+  water.lines(e)
   title(main=paste("Aqueous sulfur speciation, normalize =", normalize))
 }
 par(mar=c(0, 0, 0, 0))

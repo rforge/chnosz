@@ -218,7 +218,7 @@ a <- affinity(pH=c(-1, 4, 256), pe=c(-5, 23, 256))
 d <- diagram(a, main="Fe-S-O-H, after Majzlan et al., 2006")
 # the first four species show up in order near pe=15
 stopifnot(all.equal(unique(d$predominant[, 183]), 1:4))
-water.lines(yaxis="pe", lwd=2)
+water.lines(d, lwd=2)
 text(3, 22, describe.basis(thermo$basis[2:3,], digits=2, oneline=TRUE))
 text(3, 21, describe.property(c("T", "P"), c(25, 1), oneline=TRUE))
 

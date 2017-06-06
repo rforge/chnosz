@@ -1198,7 +1198,7 @@ lapply(c("CHNOS", "QEC"), function(thisbasis) {
 ```
 
 By projecting the compositions of proteins into the `QEC` set of basis species, *n*&#773;<sub>`r o2`</sub> emerges as a strong indicator of oxidation state, while *n*&#773;<sub>`r h2o`</sub> is a relatively uncorrelated (i.e. independent) compositional variable.
-These independent variables make it easier to distinguish the effects of oxidation and hydration state in proteomic datasets [@Dic17a].
+These independent variables make it easier to distinguish the effects of oxidation and hydration state in proteomic datasets [@Dic17].
 
 ## Normalization to residues
 

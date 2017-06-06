@@ -80,7 +80,7 @@ If the new basis definition meets all requirements, it is stored in \code{\link{
 \references{
 Dick, J. M. (2016) Proteomic indicators of oxidation and hydration state in colorectal cancer. \emph{PeerJ} \bold{4}:e2238. \url{https://doi.org/10.7717/peerj.2238}
 
-Dick, J. M. (2017) Chemical composition and the potential for proteomic transformation in cancer, hypoxia, and hyperosmotic stress. \emph{bioRxiv} \url{https://doi.org/10.1101/097667}
+Dick, J. M. (2017) Chemical composition and the potential for proteomic transformation in cancer, hypoxia, and hyperosmotic stress. \emph{PeerJ} \bold{5}:e3421 \url{https://doi.org/10.7717/peerj.3421}
 }
 
 \examples{

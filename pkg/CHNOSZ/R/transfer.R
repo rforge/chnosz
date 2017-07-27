@@ -806,6 +806,8 @@ feldspar <- function(which="closed",plot.it=FALSE) {
   # or feldspar("open")
   # setup conditions for feldspar reaction
   basis(delete=TRUE)
+  # make pseudo-H4SiO4 available
+  add.obigt("pseudo-H4SiO4")
   basis(c('Al+3','pseudo-H4SiO4','K+','H2O','H+','O2'))
   # some of SLS94's initial conditions
   basis(c('K+','H4SiO4'),c(-6,-6))

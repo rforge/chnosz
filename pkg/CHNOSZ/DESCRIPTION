@@ -1,14 +1,14 @@
-Date: 2017-06-06
+Date: 2017-07-27
 Package: CHNOSZ
-Version: 1.1.0-3
+Version: 1.1.0-4
 Title: Chemical Thermodynamics and Activity Diagrams
 Author: Jeffrey Dick
 Maintainer: Jeffrey Dick <j3ffdick@gmail.com>
 Depends: R (>= 3.1.0)
 Suggests: limSolve, testthat, knitr, rmarkdown, tufte, RSVGTipsDevice
 Imports: grDevices, graphics, stats, utils, colorspace
-Description: An integrated set of tools for thermodynamic calculations in compositional
-  biology and geochemistry. Thermodynamic properties are taken from a database for minerals
+Description: An integrated set of tools for thermodynamic calculations in geochemistry and
+  compositional biology. Thermodynamic properties are taken from a database for minerals
   and inorganic and organic aqueous species including biomolecules, or from amino acid
   group additivity for proteins. High-temperature properties are calculated using the
   revised Helgeson-Kirkham-Flowers equations of state for aqueous species. Functions are

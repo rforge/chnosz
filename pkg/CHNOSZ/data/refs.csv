@@ -116,3 +116,4 @@ CHNOSZ.5,"J. M. Dick",2017,"CHNOSZ package documentation","AuCl4- renamed to AuC
 CHNOSZ.6,"J. M. Dick",2017,"CHNOSZ package documentation","dipeptides not included in slop files after slop98.dat",http://chnosz.net
 CHNOSZ.7,"J. M. Dick",2017,"CHNOSZ package documentation","charge of NpO2(Oxal), La(Succ)+, NH4(Succ)-, and NpO2(Succ) as listed by @PSK99",http://chnosz.net
 CHNOSZ.8,"J. M. Dick",2017,"CHNOSZ package documentation","Incorrect values of HKF a<sub>1</sub>--a<sub>4</sub> parameters for [-CH2NH2] were printed in Table 6 of @DLH06; corrected values are used here.",http://chnosz.net
+LCT17,"A. R. Lowe, J. S. Cox and P. R. Tremaine",2017,"J. Chem. Thermodynamics 112, 129-145","adenine Cp and V",https://doi.org/10.1016/j.jct.2017.04.005

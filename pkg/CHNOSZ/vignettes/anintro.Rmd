@@ -275,7 +275,7 @@ The corresponding units are °C (`T`), bar (`P`), g cm<sup>-3</sup> (`rho`), cal
 A custom temperature-pressure grid can be specified.
 Here, we calculate the properties of `r h2o` on a *T*, *P* grid in the supercritical region, with conditions grouped by pressure:
 ```{marginfigure}
-See also <span style="color:blue">`demo(density)`</span>.
+See also [<span style="color:blue">`demo(density)`</span>](../demo/density.R).
 ```
 ```{r subcrt_water_grid}
 subcrt("water", T = c(400, 500, 600), P = c(200, 400, 600), grid = "P")$out$water
@@ -322,7 +322,7 @@ To calculate the thermodynamic properties of reactions, give the names of specie
 Here we calculate properties for the dissolution of CO<sub>2</sub>:
 ```{marginfigure}
 Because of aqueous speciation, this doesn't give the _solubility_ of CO<sub>2</sub>.
-For an example of a solubility calculation, see <span style="color:blue">`demo(solubility)`</span>, which is based on a figure in Manning et al. (2013).
+For an example of a solubility calculation, see [<span style="color:blue">`demo(solubility)`</span>](../demo/solubility.R), which is based on a figure in Manning et al. (2013).
 ```
 ```{r subcrt_CO2}
 subcrt(c("CO2", "CO2"), c("gas", "aq"), c(-1, 1), T = seq(0, 250, 50))
@@ -582,7 +582,7 @@ Additional arguments are passed to R's plotting functions; here, we use `bty` to
 Mineral stability diagrams often depict activity ratios, e.g. log (*a*<sub>Ca<sup>+2</sup></sub>/*a*<sub>H<sup>+</sup></sub><sup>2</sup>), on one or both axes.
 The variables used for potential calculations in CHNOSZ include only a single chemical activity, e.g. log *a*<sub>Ca<sup>+2</sup></sub>.
 However, you can set pH = 0 to generate diagrams that are geometrically equivalent to those calculated using activity ratios, and use <span style="color:green">`ratlab()`</span> to make the axes labels for the ratios.
-See <span style="color:blue">`demo(activity_ratios)`</span> for some examples.
+See [<span style="color:blue">`demo(activity_ratios)`</span>](../demo/activity_ratios.R) for some examples.
 
 ## Mosaic diagrams
 
@@ -699,7 +699,7 @@ The target of the conversion is `G`, or free energy, from `logK`.
 That conversion requires temperature in Kelvin, which is obtained by conversion from °C.
 We finish with a negation (affinity is negative Gibbs energy) and scaling from cal to kcal.
 ```
-Using R's `lapply()` to run <span style="color:green">`convert()`</span> for each species, we convert the affinity from dimensionless values (*A*/2.303*RT*) to cal/mol.
+Using R's `lapply()` to run <span style="color:green">`convert()`</span> for each species, we convert the affinity from dimensionless values (*A*/2.303*RT*) to cal/mol, then kcal/mol.
 ```{r rainbow_affinity, message=FALSE}
 a <- affinity(T = rb$T, CO2 = rb$CO2, H2 = rb$H2,
               `NH4+` = rb$`NH4+`, H2S = rb$H2S, pH = rb$pH)
@@ -735,14 +735,14 @@ In CHNOSZ there are two ways to perform buffer calculations:
 * more versatile (multiple activities can be buffered, e.g. both S<sub>2</sub> and O<sub>2</sub> by pyrite-pyrrhotite-magnetite);
 * the buffers are active in calculations of affinity of other species;
 * use <span style="color:red">`mod.buffer()`</span> to change or add buffers in `thermo$buffer`;
-* <span style="color:blue">`demo(buffer)`</span> uses it for mineral buffers (solid lines).
+* [<span style="color:blue">`demo(buffer)`</span>](../demo/buffer.R) uses it for mineral buffers (solid lines).
 2. Use the `what` argument of <span style="color:green">`diagram()`</span> to solve for the activity of the indicated basis species:
 * more convenient (the buffers come from the currently defined species of interest), but only a single basis species can be buffered, and it's not used in the calculation of affinity;
-* <span style="color:blue">`demo(buffer)`</span> uses it for aqueous organic species as buffers (dotted and dashed lines).
+* [<span style="color:blue">`demo(buffer)`</span>](../demo/buffer.R) uses it for aqueous organic species as buffers (dotted and dashed lines).
 
 As an example of method 1, let's look at the pyrite-pyrrhotite-magnetite (PPM) buffer at 300 °C.
 ```{marginfigure}
-For other examples, see <span style="color:blue">`?buffer`</span> and <span style="color:blue">`demo(protbuff)`</span> (hypothetical buffer made of proteins).
+For other examples, see <span style="color:blue">`?buffer`</span> and [<span style="color:blue">`demo(protbuff)`</span>](../demo/protbuff.R) (hypothetical buffer made of proteins).
 ```
 Without the buffer, the basis species have default activities of zero.
 Under these conditions, the minerals are not in equilibrium, as shown by their different affinities of formation:
@@ -780,7 +780,7 @@ Under these conditions, the affinities of formation reactions of the minerals in
 ```{r PPM_affinity, eval=FALSE}
 ```
 
-Another example, based on Figure 6 of @SS95, is given in <span style="color:blue">`demo(buffer)`</span>.
+Another example, based on Figure 6 of @SS95, is given in [<span style="color:blue">`demo(buffer)`</span>](../demo/buffer.R).
 Here, values of log*f*<sub>H<sub>2</sub></sub> buffered by minerals or set by equilibrium with given activities of aqueous species are calculated using the two methods:
 ```{r demo_buffer, eval=FALSE}
 demo(buffer)
@@ -853,7 +853,7 @@ To display the species distribution, or degree of formation, add `alpha = TRUE` 
 The possible reactions between species are all balanced on 1 C.
 Therefore, although pH alters the total activity of C, in a system with ideal mixing the total activity of C doesn't affect the relative activities of these species.
 ```{marginfigure}
-See <span style="color:blue">`demo(solubility)`</span> for calculations of the total activity of C in this ideal system; uncomment a line in the demo to run calculations for CO<sub>2</sub> instead of calcite.
+See [<span style="color:blue">`demo(solubility)`</span>](../demo/solubility.R) for calculations of the total activity of C in this ideal system; uncomment a line in the demo to run calculations for CO<sub>2</sub> instead of calcite.
 ```
 
 ## Groups of species
@@ -1054,7 +1054,7 @@ The following plot shows the calculated affinity of reaction between nonionized 
 Charged and uncharged sets of basis species are used to to activate and suppress the ionization calculations.
 The calculation of affinity for the ionized proteins returns multiple values (as a function of pH), but there is only one value of affinity returned for the nonionized proteins, so we need to use R's `as.numeric()` to avoid subtracting nonconformable arrays:
 
-```{r protein_ionization, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, fig.cap='Affinity of ionization of proteins. See <span style="color:blue">demo(ionize)</span> for ionization properties calculated as a function of temperature and pH.', cache=TRUE, pngquant=pngquant, timeit=timeit}
+```{r protein_ionization, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, results="hide", message=FALSE, fig.cap='Affinity of ionization of proteins. See [<span style="color:blue">demo(ionize)</span>](../demo/ionize.R) for ionization properties calculated as a function of temperature and pH.', cache=TRUE, pngquant=pngquant, timeit=timeit}
 ip <- pinfo(c("CYC_BOVIN", "LYSC_CHICK", "MYG_PHYCA", "RNAS1_BOVIN"))
 basis("CHNOS+")
 a_ion <- affinity(pH = c(0, 14), iprotein = ip)
@@ -1319,7 +1319,7 @@ for(i in 1:length(a$values)) a$values[[i]] <- a$values[[i]] - a.Shh
 Next we use <span style="color:green">`diagram()`</span> to plot the affinities.
 We set `balance = 1` to plot the values as they are---without that, <span style="color:green">`diagram()`</span> divides the values by protein length, which we have already done!
 ```{marginfigure}
-See <span style="color:blue">`demo(Shh)`</span> for a plot with more interpretive labels and comments.
+See [<span style="color:blue">`demo(Shh)`</span>](../demo/Shh.R) for a plot with more interpretive labels and comments.
 ```
 For this plot, we highlight and label the proteins with the highest relative affinity at some combination of `r logfO2` and log*a*<sub>`r h2o`</sub> along the transect.
 Those proteins are Olig2, Irx3, Nkx6.2, Dbx1, and Shh (numbers 2, 5, 7, 8, 1 in the set we have identified).
@@ -1820,7 +1820,7 @@ browseURL(ref$URL)  ## opens a link to worldcat.org
 
 ## Adding data
 
-Use <span style="color:red">`add.obigt()`</span> to add data from a file to the database in the current session.
+Use <span style="color:red">`add.obigt()`</span> to add data from a user-specified file to the database in the current session.
 The file must be a CSV (comma separated value) file with column headers that match those in the main database.
 To show the required format, take a look at `BZA10.csv`, a supplemental data file provided in CHNOSZ.
 Missing values are indicated by `NA`:
@@ -1837,6 +1837,10 @@ read.csv(file, as.is = TRUE)
 The column names with a dot (`.`) refer to different sets of equations for calculating standard thermodynamic properties.
 Aqueous species use the revised Helgeson-Kirkham-Flowers (HKF) equations (symbols before the dot), and crystalline, gas and liquid species other than `r h2o` use a general heat capacity equation.
 See <span style="color:blue">`?thermo`</span> for details about what's in the data table, and <span style="color:blue">`?hkf`</span> and <span style="color:blue">`?cgl`</span> for information about the thermodynamic equations.
+
+Another use of <span style="color:red">`add.obigt()`</span> is to add data from the file `CHNOSZ_aq.csv`, which holds provisional updates that aren't loaded by default (i.e., using <span style="color:red">`data(thermo)`</span>).
+In this mode, only the name of the species is used as the argument.
+Currently available species are `adenine` and `pseudo-H4SiO4` (see [<span style="color:blue">`demo(adenine)`</span>](../demo/adenine.R) and the vignette, [<span style="color:blue">*Regressing thermodynamic data*</span>](eos-regress.html)).
 
 ## Modifying data
 
@@ -1985,7 +1989,7 @@ Reading and running these tests can be useful for understanding some of the erro
 
 Some functions in CHNOSZ lie outside the main workflow described above.
 
-## Regressing thermodynamic data
+## RHKF parameters regressed from heat capacity and volume of aqueous adenineegressing thermodynamic data
 
 <span style="color:green">`EOSregress()`</span> and related functions can be used to regress "equation of state" parameters (e.g. coefficients in the HKF equations) from heat capacity and volumetric data. See <span style="color:blue">`?EOSregress`</span> and the vignette, [<span style="color:blue">*Regressing thermodynamic data*</span>](eos-regress.html).
 

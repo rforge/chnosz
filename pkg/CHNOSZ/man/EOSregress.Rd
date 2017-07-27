@@ -49,6 +49,7 @@ Possible models include the Helgeson-Kirkham-Flowers (HKF) equations of state, o
 
 \details{
 \code{EOSregress} uses a linear model (\code{\link{lm}}) to regress the experimental heat capacity or volume data in \code{exptdata}, which is a data frame with columns \samp{T} (temperature in degrees Kelvin), \samp{P} (pressure in bars), and \samp{Cp} or \samp{V} (heat capacity in cal/mol.K or volume in cm3/mol).
+The \samp{Cp} or \samp{V} data must be in the third column.
 Only data below the temperature of \code{T.max} are included in the regression.
 The regression formula is specified by a vector of names in \code{var}.
 The names of the variables can be any combination of the following (listed in the order of search): variables listed in the following table, any available property of \code{\link{water}} (e.g. \samp{V}, \samp{alpha}, \samp{QBorn}), or the name of a function that can be found using \code{\link{get}} in the default environment.
@@ -130,6 +131,8 @@ d$P <- convert(d$P, "bar")
 var <- c("invTTheta2", "TXBorn")
 # perform regression, with a temperature limit
 EOSlm <- EOSregress(d, var, T.max=600)
+# calculate the Cp at some temperature and pressure
+EOScalc(EOSlm$coefficients, 298.15, 1)
 # get the database values of c1, c2 and omega for CH4(aq)
 CH4coeffs <- EOScoeffs("CH4", "Cp")
 ## make plots comparing the regressions

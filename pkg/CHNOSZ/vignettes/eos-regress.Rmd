@@ -386,12 +386,14 @@ mod.obigt("new-H4SiO4", a1 = Vcoeffs[1]*10, a2 = Vcoeffs[2]/100,
 
 We just made a new `r h4sio4` pseudospecies.
 In February 2017, the database in CHNOSZ was updated with a `pseudo-H4SiO4` that was made using this procedure.
-Data given for `r h4sio4` by @Ste01 (`H4SiO4_Ste01`) are contained in a supplemental file:
+This `pseudo-H4SiO4` can be activated using the <span style="color:red">`add.obigt()`</span> function.
+Data given for `r h4sio4` by @Ste01 (`H4SiO4_Ste01`) are contained in a supplemental file, which as well can be read using <span style="color:red">`add.obigt()`</span>:
 ```{r width180, include=FALSE}
 options(width = 180)
 ```
 ```{r info_H4SiO4, message=FALSE}
-add.obigt(system.file("extdata/thermo/Ste01.csv", package="CHNOSZ"))
+add.obigt("pseudo-H4SiO4")
+add.obigt(system.file("extdata/thermo/Ste01.csv", package = "CHNOSZ"))
 info(info(c("new-H4SiO4", "pseudo-H4SiO4", "H4SiO4_Ste01")))
 ```
 ```{r width80, include=FALSE}

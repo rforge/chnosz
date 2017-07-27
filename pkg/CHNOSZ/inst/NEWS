@@ -1,9 +1,18 @@
-CHANGES IN CHNOSZ 1.1.0-3 (2017-06-06)
+CHANGES IN CHNOSZ 1.1.0-4 (2017-07-27)
 --------------------------------------
 
 - water.lines() now works for diagrams of Eh, pe, logfO2, logaO2,
   logfH2, or logaH2 vs pH, T, or P. It is possible to have T or P on
   either the x- or y-axis.
+
+- Data file CHNOSZ_aq.csv is no longer added to the database by default.
+  It is now intended to hold provisional updates. Updated heat capacity
+  and volume HKF parameters for adenine (Lowe et al., 2017) have been
+  added to this file.
+
+- Modify add.obigt() to search for species from CHNOSZ_aq.csv to add to
+  the current database. If the species is not found, add.obigt() treats
+  the argument as a file name, as before.
 
 CHANGES IN CHNOSZ 1.1.0 (2017-05-04)
 ------------------------------------

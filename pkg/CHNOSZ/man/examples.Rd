@@ -17,7 +17,8 @@
   demos(which = c("sources", "protein.equil", "affinity", "NaCl",
     "density", "ORP", "revisit", "findit", "ionize", "buffer",
     "protbuff", "yeastgfp", "mosaic", "copper", "solubility",
-    "wjd", "dehydration", "bugstab", "Shh", "activity_ratios"),
+    "wjd", "dehydration", "bugstab", "Shh", "activity_ratios",
+    "adenine"),
     to.file=FALSE)
 }
 
@@ -53,6 +54,7 @@ See the comments in the source code for more information about each demo.
     \code{bugstab} \tab formation potential of microbial proteins in colorectal cancer (Dick, 2016) \cr
     \code{Shh} \tab affinities of transcription factors relative to Sonic hedgehog \cr
     \code{activity_ratios} \tab mineral stability plots with activity ratios on the axes \cr
+    \code{adenine} \tab HKF parameters regressed from heat capacity and volume of aqueous adenine (Lowe et al., 2017) \cr
   }
 
 }
@@ -67,6 +69,8 @@ See the comments in the source code for more information about each demo.
   Dick, J. M. (2016) Proteomic indicators of oxidation and hydration state in colorectal cancer. \emph{PeerJ} \bold{4}:e2238. \url{https://doi.org/10.7717/peerj.2238}
 
   Garrels, R. M. and Christ, C. L. (1965) \emph{Solutions, Minerals, and Equilibria}, Harper & Row, New York, 450 p. \url{http://www.worldcat.org/oclc/517586}
+
+  Lowe, A. R., Cox, J. S. and Tremaine, P. R. (2017) Thermodynamics of aqueous adenine: Standard partial molar volumes and heat capacities of adenine, adeninium chloride, and sodium adeninate from \emph{T} = 278.15 K to 393.15 K. \emph{J. Chem. Thermodyn.} \bold{112}, 129--145. \url{https://doi.org/10.1016/j.jct.2017.04.005}
   
   Manning, C. E., Shock, E. L. and Sverjensky, D. A. (2013) The chemistry of carbon in aqueous fluids at crustal and upper-mantle conditions: Experimental and theoretical constraints. \emph{Rev. Mineral. Geochem.} \bold{75}, 109--148. \url{https://doi.org/10.2138/rmg.2013.75.5}
 

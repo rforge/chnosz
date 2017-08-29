@@ -1989,7 +1989,7 @@ Reading and running these tests can be useful for understanding some of the erro
 
 Some functions in CHNOSZ lie outside the main workflow described above.
 
-## RHKF parameters regressed from heat capacity and volume of aqueous adenineegressing thermodynamic data
+## Regressing thermodynamic data
 
 <span style="color:green">`EOSregress()`</span> and related functions can be used to regress "equation of state" parameters (e.g. coefficients in the HKF equations) from heat capacity and volumetric data. See <span style="color:blue">`?EOSregress`</span> and the vignette, [<span style="color:blue">*Regressing thermodynamic data*</span>](eos-regress.html).
 

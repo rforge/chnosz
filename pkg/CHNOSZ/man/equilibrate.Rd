@@ -11,9 +11,9 @@ Calculate equilibrium chemical activities of species from the affinities of form
 \usage{
   equilibrate(aout, balance=NULL, loga.balance=NULL,
     ispecies=1:length(aout$values), normalize=FALSE, as.residue=FALSE,
-    method=c("boltzmann", "reaction"))
+    method=c("boltzmann", "reaction"), tol=.Machine$double.eps^0.25)
   equil.boltzmann(Astar, n.balance, loga.balance)
-  equil.reaction(Astar, n.balance, loga.balance)
+  equil.reaction(Astar, n.balance, loga.balance, tol=.Machine$double.eps^0.25)
 }
 
 \arguments{
@@ -26,6 +26,7 @@ Calculate equilibrium chemical activities of species from the affinities of form
   \item{n.balance}{numeric, number of moles of conserved component in the formation reactions of the species of interest}
   \item{loga.balance}{numeric, logarithm of total activity of balanced quantity}
   \item{method}{character, equilibration method to use}
+  \item{tol}{numeric, convergence tolerance for \code{\link{uniroot}}}
 }
 
 \details{

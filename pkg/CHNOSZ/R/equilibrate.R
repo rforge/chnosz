@@ -4,7 +4,7 @@
 
 equilibrate <- function(aout, balance=NULL, loga.balance=NULL, 
   ispecies=1:length(aout$values), normalize=FALSE, as.residue=FALSE,
-  method=c("boltzmann", "reaction")) {
+  method=c("boltzmann", "reaction"), tol=.Machine$double.eps^0.25) {
   ### set up calculation of equilibrium activities of species from the affinities 
   ### of their formation reactions from basis species at known activities
   ### split from diagram() 20120925 jmd
@@ -59,7 +59,7 @@ equilibrate <- function(aout, balance=NULL, loga.balance=NULL,
   }
   message(paste("equilibrate: using", method[1], "method"))
   if(method[1]=="boltzmann") loga.equil <- equil.boltzmann(Astar, n.balance, loga.balance)
-  else if(method[1]=="reaction") loga.equil <- equil.reaction(Astar, n.balance, loga.balance)
+  else if(method[1]=="reaction") loga.equil <- equil.reaction(Astar, n.balance, loga.balance, tol)
   ## if we normalized the formulas, get back to activities to species
   if(normalize & !as.residue) {
     loga.equil <- lapply(1:nspecies, function(i) {
@@ -112,7 +112,7 @@ equil.boltzmann <- function(Astar, n.balance, loga.balance) {
   return(A)
 }
 
-equil.reaction <- function(Astar, n.balance, loga.balance) {
+equil.reaction <- function(Astar, n.balance, loga.balance, tol=.Machine$double.eps^0.25) {
   # to turn the affinities/RT (A) of formation reactions into 
   # logactivities of species (logact(things)) at metastable equilibrium
   # 20090217 extracted from diagram and renamed to abundance.old
@@ -206,7 +206,7 @@ equil.reaction <- function(Astar, n.balance, loga.balance) {
     # get limits of Abar where logadiff brackets zero
     Abar.range <- Abarrange(i)
     # now for the real thing: uniroot!
-    Abar <- uniroot(logadiff, interval=Abar.range, i=i)$root
+    Abar <- uniroot(logadiff, interval=Abar.range, i=i, tol=tol)$root
     return(Abar)
   }
   # calculate the logact(thing) for each condition

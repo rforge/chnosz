@@ -80,7 +80,6 @@ Except for \code{rho}, the units are those used by Johnson and Norton, 1991.
 These calculations are based on data and equations of Levelt-Sengers et al., 1983, Haar et al., 1984, and Johnson and Norton, 1991, among others (see Johnson et al., 1992).
 A value of \code{P} set to \samp{Psat} refers to one bar below 100 \eqn{^{\circ}}{°}C, otherwise to the vapor-liquid saturation pressure at temperatures below the critical point (\samp{Psat} is not available at temperatures above the critical point).
 \code{water.SUPCRT92} provides a limited interface to the FORTRAN subroutine; some functions provided there are not made available here (e.g., using variable density instead of pressure, or calculating the properties of steam).
-The properties of steam in CHNOSZ, as in \acronym{SUPCRT92}, are calculated using general equations for crystalline, gaseous and liquid species (\code{\link{cgl}}).
 
 The stated temperature limits of validity of calculations in \code{water.SUPCRT92} are from the greater of 0 \eqn{^{\circ}}{°}C or the melting temperature at pressure, to 2250 \eqn{^{\circ}}{°}C (Johnson et al., 1992).
 Valid pressures are from the greater of zero bar or the melting pressure at temperature to 30000 bar.

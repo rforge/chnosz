@@ -147,17 +147,17 @@ subcrt(c("glucose", "ethanol"), c(-1, 3))
 # to initiate an infinite loop
 basis(c("H2O", "H2S", "O2", "H+"))
 subcrt(c("HS-", "SO4-2"), c(-1, 1))
-# note the next one is a non-reaction
-# (products same as reactants)
-subcrt("H2O", 1)
+# because O2,aq is in the basis, this is a non-reaction
+# (O2,aq to O2,aq)
+subcrt("O2", 1, "aq")
 # but this one auto-balances into a reaction
-# (water to steam)
-subcrt("H2O", 1, "gas")
+# (O2,aq to O2,gas)
+subcrt("O2", 1, "gas")
 # properties of a species and a formation 
 # reaction for that species
 subcrt("C2H5OH")    # species
 basis("CHNOS")
-subcrt("C2H5OH",1)  # reaction
+subcrt("C2H5OH", 1) # reaction
 
 ## properties of mineral phases
 # properties of phase species

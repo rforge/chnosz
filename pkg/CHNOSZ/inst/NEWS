@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-5 (2017-08-29)
+CHANGES IN CHNOSZ 1.1.0-7 (2017-09-23)
 --------------------------------------
 
 - water.lines() now works for diagrams of Eh, pe, logfO2, logaO2,
@@ -16,6 +16,10 @@ CHANGES IN CHNOSZ 1.1.0-5 (2017-08-29)
 
 - Add 'tol' argument to equil.reaction() (convergence tolerance for
   uniroot).
+
+- Remove H2O(gas) from the database (taken from SUPCRT92), as it gives
+  inconsistent results for metastable steam (Zavarin et al., 2016,
+  LLNL-TR-701407, doi: 10.2172/1325873).
 
 CHANGES IN CHNOSZ 1.1.0 (2017-05-04)
 ------------------------------------

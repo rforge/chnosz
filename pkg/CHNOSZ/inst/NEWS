@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-12 (2017-09-25)
+CHANGES IN CHNOSZ 1.1.0-13 (2017-09-25)
 ---------------------------------------
 
 - water.lines() now works for diagrams of Eh, pe, logfO2, logaO2,
@@ -34,8 +34,9 @@ CHANGES IN CHNOSZ 1.1.0-12 (2017-09-25)
   subcrt().
 
 - Add equations from the Deep Earth Water (DEW) model (Sverjensky
-  et al., 2014) in the exported functions calculateDensity(),
-  calculateGibbsofWater(), calculateEpsilon(), and calculateQ().
+  et al., 2014) in the functions calculateDensity(),
+  calculateGibbsofWater(), calculateEpsilon(), calculateQ(), and
+  the interface function water.DEW() for use by subcrt().
 
 CHANGES IN CHNOSZ 1.1.0 (2017-05-04)
 ------------------------------------

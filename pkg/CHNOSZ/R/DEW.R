@@ -2,7 +2,7 @@
 # R functions for the Deep Earth Water model
 # 20170924 jmd
 
-# Most code was translated from VBA macros in the DEW spreadsheet (DEW_May19_2017_11.0.2 .xlsm)
+# Most code here was translated from VBA macros in the DEW spreadsheet (DEW_May19_2017_11.0.2 .xlsm)
 # Comments starting with ' were transferred from the DEW spreadsheet
 # In the original, functions return zero for invalid input; here, NA is used instead
 
@@ -60,7 +60,6 @@ calculateGibbsOfWater <- function(pressure, temperature) {
 
   # 'Equation created by Brandon Harrison. This models data for the Gibbs energy at 1 kb as a function of temperature,
   # 'then defines the gibbs free energy as the integral over the volume as a function of temperature.
-
   myfunction <- function(pressure, temperature) {
     # 'Gibbs Free Energy of water at 1 kb. This equation is a polynomial fit to data as a function of temperature.
     # 'It is valid in the range of 100 to 1000 C.

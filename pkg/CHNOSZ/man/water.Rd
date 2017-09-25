@@ -4,6 +4,7 @@
 \alias{water.props}
 \alias{water.SUPCRT92}
 \alias{water.IAPWS95}
+\alias{water.DEW}
 \title{Properties of Water}
 \description{
 Calculate thermodynamic and electrostatic properties of water.
@@ -14,6 +15,7 @@ Calculate thermodynamic and electrostatic properties of water.
   water.props(formulation = get("thermo")$opt$water)
   water.SUPCRT92(property, T = 298.15, P = 1)
   water.IAPWS95(property, T = 298.15, P = 1)
+  water.DEW(property, T = 373.15, P = 1000)
 }
 
 \arguments{
@@ -25,53 +27,61 @@ Calculate thermodynamic and electrostatic properties of water.
 
 \details{
 
-These functions compute the thermodynamic (Gibbs energy and it derivatives) and electrostatic (dielectric constant and its derivatives) properties of liquid or supercritical \H2O using equations of state taken from the literature.
-The high-level function \code{water} accepts two major computational alternatives.
-The default option (i.e., \code{\link{thermo}$opt$water} equal to \samp{SUPCRT92}) is retrieve thermodynamic and electrostatic properties as a function of temperature and pressure using a FORTRAN subroutine taken from the \acronym{SUPCRT92} software package (Johnson et al., 1992).
-If \code{thermo$opt$water} is set to \samp{IAPWS95}, the thermodynamic properties are calculated using an implementation in \R code of the IAPWS-95 formulation (Wagner and Pruss, 2002), and electrostatic properties are calculated using the equations of Archer and Wang, 1990.
+These functions compute the thermodynamic (Gibbs energy and it derivatives) and electrostatic (dielectric constant and its derivatives) properties of liquid or supercritical \H2O as a function of temperature and pressure using equations of state taken from the literature.
+The high-level function \code{water} performs different computations, depending on the setting of \code{\link{thermo}$opt$water}:
+
+\describe{
+
+  \item{\samp{SUPCRT92}}{(Default) Thermodynamic and electrostatic properties are calculated using a FORTRAN subroutine taken from the \acronym{SUPCRT92} software package (Johnson et al., 1992). See more information below.}
+
+  \item{\samp{IAPWS95}}{Thermodynamic properties are calculated using an implementation in \R code of the \acronym{IAPWS-95} formulation (Wagner and Pruss, 2002), and electrostatic properties are calculated using the equations of Archer and Wang, 1990. See \code{\link{IAPWS95}} and more information below.}
+
+  \item{\samp{DEW}}{Thermodynamic and electrostatic properties are calculated using the Deep Earth Water (\acronym{DEW}) model (Sverjensky et al., 2014). The defaults for \code{T} and \code{P} reflect the minimum values for applicability of the model. See \code{\link{DEW}}.}
+
+}
 
 The allowed \code{property}s for \code{water} are one or more of those given below, depending on the computational option; availability is shown by an asterisk.
 The names of properties in the arguments are not case sensitive. Note that some of the properties that can actually be calculated using the different formulations are not implemented here.
 Except for \code{rho}, the units are those used by Johnson and Norton, 1991.
 
-  \tabular{lllll}{
-     Property \tab Description \tab Units \tab IAPWS95 \tab SUPCRT92 \cr
-     \code{A} \tab Helmholtz energy \tab cal mol\eqn{^{-1}}{^-1} \tab * \tab * \cr
-     \code{G} \tab Gibbs energy \tab cal mol\eqn{^{-1}}{^-1} \tab * \tab * \cr
-     \code{S} \tab Entropy \tab cal K\eqn{^{-1}}{^-1} mol\eqn{^{-1}}{^-1} \tab * \tab * \cr
-     \code{U} \tab Internal energy \tab cal mol\eqn{^{-1}}{^-1} \tab * \tab * \cr
-     \code{H} \tab Enthalpy \tab cal mol\eqn{^{-1}}{^-1} \tab * \tab * \cr
-     \code{Cv} \tab Isochoric heat capacity \tab cal K\eqn{^{-1}}{^-1} mol\eqn{^{-1}}{^-1} \tab * \tab * \cr
-     \code{Cp} \tab Isobaric heat capacity \tab cal K\eqn{^{-1}}{^-1} mol\eqn{^{-1}}{^-1} \tab * \tab * \cr
-     \code{Speed} \tab Speed of sound \tab cm s\eqn{^{-1}}{^-1} \tab NA \tab * \cr
-     \code{alpha} \tab Coefficient of isobaric expansivity \tab K\eqn{^{-1}}{^-1} \tab NA \tab * \cr
-     \code{beta} \tab Coefficient of isothermal compressibility \tab bar\eqn{^{-1}}{^-1} \tab NA \tab * \cr
-     \code{diel} \tab Dielectric constant \tab dimensionless \tab NA \tab * \cr
-     \code{visc} \tab Dynamic viscosity \tab g cm\eqn{^{-1}}{^-1} s\eqn{^{-1}}{^-1} \tab NA \tab * \cr
-     \code{tcond} \tab Thermal conductivity \tab cal cm\eqn{^{-1}}{^-1} s\eqn{^{-1}}{^-1} K\eqn{^{-1}}{^-1} \tab NA \tab * \cr
-     \code{tdiff} \tab Thermal diffusivity \tab cm\eqn{^2} s\eqn{^{-1}}{^-1} \tab NA \tab * \cr
-     \code{Prndtl} \tab Prandtl number \tab dimensionless \tab NA \tab * \cr
-     \code{visck} \tab Kinematic viscosity \tab cm\eqn{^2} s\eqn{^{-1}}{^-1} \tab NA \tab * \cr
-     \code{albe} \tab Isochoric expansivity \tab bar K\eqn{^{-1}}{^-1} \tab NA \tab * \cr
-     \tab -compressibility \tab \tab \tab \cr
-     \code{ZBorn} \tab Z Born function \tab dimensionless \tab NA \tab * \cr
-     \code{YBorn} \tab Y Born function \tab K\eqn{^{-1}}{^-1} \tab * \tab * \cr
-     \code{QBorn} \tab Q Born function \tab bar\eqn{^{-1}}{^-1} \tab * \tab * \cr
-     \code{daldT} \tab Isobaric temperature derivative \tab K\eqn{^{-2}}{^-2} \tab NA \tab * \cr
-     \tab of expansibility \tab \tab \tab \cr
-     \code{XBorn} \tab X Born function \tab K\eqn{^{-2}}{^-2} \tab * \tab * \cr
-     \code{NBorn} \tab N Born function \tab bar\eqn{^{-2}}{^-2} \tab * \tab NA \cr
-     \code{UBorn} \tab U Born function \tab bar\eqn{^{-1}}{^-1} K\eqn{^{-1}}{^-1} \tab * \tab NA \cr
-     \code{V} \tab Volume \tab cm\eqn{^3} mol\eqn{^{-1}}{^-1} \tab * \tab * \cr
-     \code{rho} \tab Density \tab kg cm\eqn{^3} \tab * \tab * \cr     
-     \code{Psat} \tab Saturation vapor pressure \tab bar \tab * \tab * \cr
-     \code{E} \tab Isobaric expansivity \tab cm\eqn{^3} K\eqn{^{-1}}{^-1} \tab NA \tab * \cr
-     \code{kT} \tab Isothermal compressibility \tab cm\eqn{^3} bar\eqn{^{-1}}{^-1} \tab NA \tab * \cr
-     \code{de.dT} \tab Temperature derivative \tab K\eqn{^{-1}}{^-1} \tab * \tab NA \cr
-     \tab of dielectric constant \tab \tab \tab \cr
-     \code{de.dP} \tab Pressure derivative \tab bar\eqn{^{-1}}{^-1} \tab * \tab NA \cr
-     \tab of dielectric constant \tab \tab \tab \cr
-     \code{P} \tab Pressure \tab bar \tab * \tab NA \cr
+  \tabular{llllll}{
+     Property \tab Description \tab Units \tab IAPWS95 \tab SUPCRT92 \tab DEW \cr
+     \code{A} \tab Helmholtz energy \tab cal mol\eqn{^{-1}}{^-1} \tab * \tab * \tab NA \cr
+     \code{G} \tab Gibbs energy \tab cal mol\eqn{^{-1}}{^-1} \tab * \tab * \tab * \cr
+     \code{S} \tab Entropy \tab cal K\eqn{^{-1}}{^-1} mol\eqn{^{-1}}{^-1} \tab * \tab * \tab NA \cr
+     \code{U} \tab Internal energy \tab cal mol\eqn{^{-1}}{^-1} \tab * \tab * \tab NA \cr
+     \code{H} \tab Enthalpy \tab cal mol\eqn{^{-1}}{^-1} \tab * \tab * \tab NA \cr
+     \code{Cv} \tab Isochoric heat capacity \tab cal K\eqn{^{-1}}{^-1} mol\eqn{^{-1}}{^-1} \tab * \tab * \tab NA \cr
+     \code{Cp} \tab Isobaric heat capacity \tab cal K\eqn{^{-1}}{^-1} mol\eqn{^{-1}}{^-1} \tab * \tab * \tab NA \cr
+     \code{Speed} \tab Speed of sound \tab cm s\eqn{^{-1}}{^-1} \tab NA \tab * \tab NA \cr
+     \code{alpha} \tab Coefficient of isobaric expansivity \tab K\eqn{^{-1}}{^-1} \tab NA \tab * \tab NA \cr
+     \code{beta} \tab Coefficient of isothermal compressibility \tab bar\eqn{^{-1}}{^-1} \tab NA \tab * \tab NA \cr
+     \code{diel} \tab Dielectric constant \tab dimensionless \tab NA \tab * \tab * \cr
+     \code{visc} \tab Dynamic viscosity \tab g cm\eqn{^{-1}}{^-1} s\eqn{^{-1}}{^-1} \tab NA \tab * \tab NA \cr
+     \code{tcond} \tab Thermal conductivity \tab cal cm\eqn{^{-1}}{^-1} s\eqn{^{-1}}{^-1} K\eqn{^{-1}}{^-1} \tab NA \tab * \tab NA \cr
+     \code{tdiff} \tab Thermal diffusivity \tab cm\eqn{^2} s\eqn{^{-1}}{^-1} \tab NA \tab * \tab NA \cr
+     \code{Prndtl} \tab Prandtl number \tab dimensionless \tab NA \tab * \tab NA \cr
+     \code{visck} \tab Kinematic viscosity \tab cm\eqn{^2} s\eqn{^{-1}}{^-1} \tab NA \tab * \tab NA \cr
+     \code{albe} \tab Isochoric expansivity \tab bar K\eqn{^{-1}}{^-1} \tab NA \tab * \tab NA \cr
+     \tab -compressibility \tab \tab \tab \tab \cr
+     \code{ZBorn} \tab Z Born function \tab dimensionless \tab NA \tab * \tab NA \cr
+     \code{YBorn} \tab Y Born function \tab K\eqn{^{-1}}{^-1} \tab * \tab * \tab NA \cr
+     \code{QBorn} \tab Q Born function \tab bar\eqn{^{-1}}{^-1} \tab * \tab * \tab * \cr
+     \code{daldT} \tab Isobaric temperature derivative \tab K\eqn{^{-2}}{^-2} \tab NA \tab * \tab NA \cr
+     \tab of expansibility \tab \tab \tab \tab \cr
+     \code{XBorn} \tab X Born function \tab K\eqn{^{-2}}{^-2} \tab * \tab * \tab NA \cr
+     \code{NBorn} \tab N Born function \tab bar\eqn{^{-2}}{^-2} \tab * \tab NA \tab NA \cr
+     \code{UBorn} \tab U Born function \tab bar\eqn{^{-1}}{^-1} K\eqn{^{-1}}{^-1} \tab * \tab NA \tab NA \cr
+     \code{V} \tab Volume \tab cm\eqn{^3} mol\eqn{^{-1}}{^-1} \tab * \tab * \tab * \cr
+     \code{rho} \tab Density \tab kg cm\eqn{^3} \tab * \tab * \tab * \cr     
+     \code{Psat} \tab Saturation vapor pressure \tab bar \tab * \tab * \tab NA \cr
+     \code{E} \tab Isobaric expansivity \tab cm\eqn{^3} K\eqn{^{-1}}{^-1} \tab NA \tab * \tab NA \cr
+     \code{kT} \tab Isothermal compressibility \tab cm\eqn{^3} bar\eqn{^{-1}}{^-1} \tab NA \tab * \tab NA \cr
+     \code{de.dT} \tab Temperature derivative \tab K\eqn{^{-1}}{^-1} \tab * \tab NA \tab NA \cr
+     \tab of dielectric constant \tab \tab \tab \tab \cr
+     \code{de.dP} \tab Pressure derivative \tab bar\eqn{^{-1}}{^-1} \tab * \tab NA \tab NA \cr
+     \tab of dielectric constant \tab \tab \tab \tab \cr
+     \code{P} \tab Pressure \tab bar \tab * \tab NA \tab NA \cr
   }
 
 \code{water.props} returns the names of the available properties listed in this table, reflecting the current setting of \code{thermo$opt$water}.
@@ -97,7 +107,7 @@ For compatibility with geochemical modeling conventions, the values of Gibbs ene
 
 
 \value{
-For \code{water} and \code{water.SUPCRT92} a data frame the number of rows of which corresponds to the number of input temperature, pressure and/or density values.
+A data frame, the number of rows of which corresponds to the number of input temperature-pressure pairs.
 }
 
 \seealso{
@@ -139,7 +149,7 @@ print(w)
 }
 
 \references{
-Archer, D. G. and Wang, P. M. (1990) The dielectric constant of water and Debye-Huckel limiting law slopes. \emph{J. Phys. Chem. Ref. Data} \bold{19}, 371--411. \url{https://doi.org/10.1063/1.555853}
+Archer, D. G. and Wang, P. M. (1990) The dielectric constant of water and Debye-Hückel limiting law slopes. \emph{J. Phys. Chem. Ref. Data} \bold{19}, 371--411. \url{https://doi.org/10.1063/1.555853}
 
 Haar, L., Gallagher, J. S. and Kell, G. S. (1984) \emph{NBS/NRC Steam Tables}. Hemisphere, Washington, D. C., 320 p. \url{http://www.worldcat.org/oclc/301304139}
 
@@ -150,6 +160,8 @@ Johnson, J. W. and Norton, D. (1991) Critical phenomena in hydrothermal systems:
 Johnson, J. W., Oelkers, E. H. and Helgeson, H. C. (1992) SUPCRT92: A software package for calculating the standard molal thermodynamic properties of minerals, gases, aqueous species, and reactions from 1 to 5000 bar and 0 to 1000\eqn{^{\circ}}{°}C. \emph{Comp. Geosci.} \bold{18}, 899--947. \url{https://doi.org/10.1016/0098-3004(92)90029-Q}
 
 Levelt-Sengers, J. M. H., Kamgarparsi, B., Balfour, F. W. and Sengers, J. V. (1983) Thermodynamic properties of steam in the critical region. \emph{J. Phys. Chem. Ref. Data} \bold{12}, 1--28. \url{https://doi.org/10.1063/1.555676}
+
+Sverjensky, D. A., Harrison, B. and Azzolini, D. (2014) Water in the deep Earth: The dielectric constant and the solubilities of quartz and corundum to 60 kb and 1,200 \degC. \emph{Geochim. Cosmochim. Acta} \bold{129}, 125--145. \url{https://doi.org/10.1016/j.gca.2013.12.019}
 
 Wagner, W. and Pruss, A. (2002) The IAPWS formulation 1995 for the thermodynamic properties of ordinary water substance for general and scientific use. \emph{J. Phys. Chem. Ref. Data} \bold{31}, 387--535. \url{https://doi.org/10.1063/1.1461829}
 }

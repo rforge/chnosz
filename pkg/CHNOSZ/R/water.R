@@ -303,3 +303,25 @@ water.IAPWS95 <- function(property, T=298.15, P=1) {
   message("")
   return(w.out)
 }
+
+# get water properties from DEW model for use by subcrt() 20170925
+water.DEW <- function(property, T = 373.15, P = 1000) {
+  # convert temperature units
+  pressure <- P
+  temperature <- convert(T, "C")
+  # initialize output data frame with NA for all properties and conditions
+  ncond <- max(length(T), length(P))
+  out <- matrix(NA, ncol=length(property), nrow=ncond)
+  out <- as.data.frame(out)
+  colnames(out) <- property
+  # calculate rho if it's needed for any other properties
+  if(any(c("rho", "V", "QBorn", "diel") %in% property)) rho <- calculateDensity(pressure, temperature)
+  # fill in columns with values
+  if("rho" %in% property) out$rho <- rho
+  if("V" %in% property) out$V <- 18.01528/rho
+  if("G" %in% property) out$G <- calculateGibbsOfWater(pressure, temperature)
+  if("QBorn" %in% property) out$QBorn <- calculateQ(rho, temperature)
+  if("diel" %in% property) out$diel <- calculateEpsilon(rho, temperature)
+  out
+}
+

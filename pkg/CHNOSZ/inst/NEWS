@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-9 (2017-09-25)
+CHANGES IN CHNOSZ 1.1.0-10 (2017-09-25)
 --------------------------------------
 
 - water.lines() now works for diagrams of Eh, pe, logfO2, logaO2,
@@ -23,6 +23,11 @@ CHANGES IN CHNOSZ 1.1.0-9 (2017-09-25)
 
 - In hkf() and cgl(), combine 'ghs' and 'eos' arguments into single
   argument named 'parameters'.
+
+- Remove 'H2O.PrTr' and 'domega' arguments from hkf(). Properties of
+  water at Pr and Tr and the logic for when to calculate derivatives of
+  omega are now calculated within the function, thereby simplifying the
+  function call from subcrt().
 
 CHANGES IN CHNOSZ 1.1.0 (2017-05-04)
 ------------------------------------

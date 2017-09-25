@@ -3,7 +3,7 @@
 # 11/17/03 jmd
 
 hkf <- function(property = NULL, T = 298.15, P = 1, parameters = NULL,
-  contrib = c('n', 's', 'o'), H2O.PT = NULL, H2O.PrTr = NULL, domega = TRUE) {
+  contrib = c('n', 's', 'o'), H2O.PT = NULL) {
   # calculate G, H, S, Cp, V, kT, and/or E using
   # the revised HKF equations of state
   thermo <- get("thermo")
@@ -17,7 +17,6 @@ hkf <- function(property = NULL, T = 298.15, P = 1, parameters = NULL,
   property <- eargs$prop
   EOS.props <- eargs$props
   EOS.Props <- eargs$Prop
-  domega <- rep(domega, length.out = nrow(parameters))
   # nonsolvation, solvation, and origination contribution
   notcontrib <- ! contrib %in% c('n', 's', 'o')
   if(TRUE %in% notcontrib)
@@ -36,7 +35,7 @@ hkf <- function(property = NULL, T = 298.15, P = 1, parameters = NULL,
       H2O.props <- c(H2O.props, 'NBorn', 'UBorn')
     }
     if(is.null(H2O.PT)) H2O.PT <- water(H2O.props, T = T, P = P)
-    if(is.null(H2O.PrTr)) H2O.PrTr <- water(H2O.props, T = thermo$opt$Tr, P = thermo$opt$Pr)
+    H2O.PrTr <- water(H2O.props, T = thermo$opt$Tr, P = thermo$opt$Pr)
     ZBorn <- -1 / H2O.PT$diel
     ZBorn.PrTr <- -1 / H2O.PrTr$diel
   }
@@ -66,8 +65,8 @@ hkf <- function(property = NULL, T = 298.15, P = 1, parameters = NULL,
     dwdP <- dwdT <- d2wdT2 <- numeric(length(T))
     Z <- PAR$Z
     omega.PT <- rep(PAR$omega, length(T))
-    if(!identical(Z, 0) & domega[k] & dosupcrt) {
-      # g and f function stuff (Shock et al., 1992; Johnson et al., 1992)
+    if(!identical(Z, 0) & !PAR$name=="H+" & dosupcrt) {
+      # compute derivatives of omega: g and f functions (Shock et al., 1992; Johnson et al., 1992)
       rhohat <- H2O.PT$rho/1000  # just converting kg/m3 to g/cm3
       g <- gfun(rhohat, convert(T, "C"), P, H2O.PT$alpha, H2O.PT$daldT, H2O.PT$beta)
       # after SUPCRT92/reac92.f

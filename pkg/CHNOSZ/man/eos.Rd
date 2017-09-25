@@ -10,19 +10,16 @@ Calculate thermodynamic properties using the revised Helgeson-Kirkham-Flowers (H
 \usage{
   cgl(property = NULL, T = 298.15, P = 1, parameters = NULL)
   hkf(property = NULL, T = 298.15, P = 1, parameters = NULL,
-    contrib = c("n","s","o"), H2O.PT = NULL, H2O.PrTr = NULL, 
-    domega = TRUE)
+    contrib = c("n", "s", "o"), H2O.PT = NULL)
 }
 
 \arguments{
   \item{property}{character, name(s) of properties to calculate}
   \item{T}{numeric, temperature(s) at which to calculate properties (K)}
   \item{P}{numeric, pressure(s) at which to calculate properties (bar)}
-  \item{parameters}{dataframe, standard molal thermodynamic properties and equations-of-state parameters in the format of \code{thermo$obigt}}
+  \item{parameters}{dataframe, species parameters as one or more rows from \code{thermo$obigt}}
   \item{contrib}{character, which contributions to consider in the revised HKF equations equations of state: (\code{n})onsolvation, (\code{s})olvation (the \eqn{\omega}{omega} terms), or (o)rigination contributions (i.e., the property itself at 25 \eqn{^{\circ}}{°}C and 1 bar). Default is \code{c("n","s","o")}, for all contributions}
   \item{H2O.PT}{dataframe, values of the electrostatic properties of water at the temperature(s) and pressure(s) of interest}
-  \item{H2O.PrTr}{dataframe, values of the electrostatic properties of water at the reference temperature and pressure}
-  \item{domega}{logical, calculate the T and P derivatives of omega?}
 }
 
 \details{
@@ -34,10 +31,10 @@ The names of the properties are matched without regard to case.
 \code{hkf} implements the revised HKF equations of state (Helgeson et al., 1981; Tanger and Helgeson, 1988; Shock and Helgeson, 1988).
 The equations-of-state parameters are \code{a1}, \code{a2}, \code{a3}, \code{a4}, \code{c1}, \code{c2}, \code{omega} and \code{Z}; the units of these parameters are as indicated for \code{\link{thermo}$obigt}, without the order of magnitude multipliers.
 Note that the equation-of-state parameter \code{Z} (appearing in the \eqn{g}{g}-function for the temperature derivatives of the omega parameter; Shock et al., 1992) is taken from \code{thermo$obigt} and \emph{not} from the \code{\link{makeup}} of the species.
-\code{H2O.PT} and \code{H2O.PrTr} are optional arguments that contain the electrostatic properties of \eqn{\mathrm{H_2O}}{H2O} required for the calculations.
+\code{H2O.PT} is an optional argument that contains the electrostatic properties of \eqn{\mathrm{H_2O}}{H2O} required for the calculations.
 If either of these is \code{NULL} (the default), the required values are retrieved using \code{\link{water}}. 
 
-Unless \code{domega}, the value of which is recycled to the number of species (number of rows of \code{parameters}), is FALSE for any of the species, the temperature and pressure derivatives of the \code{omega} parameter for charged species (where \code{Z != 0}) are calculated using the \eqn{g}{g}- and \eqn{f}{f}-functions described by Shock et al., 1992 and Johnson et al., 1992.
+The temperature and pressure derivatives of the \code{omega} parameter for charged species (where \code{Z != 0}, but not for the aqueous proton, H+) are calculated using the \eqn{g}{g}- and \eqn{f}{f}-functions described by Shock et al., 1992 and Johnson et al., 1992.
 This option is turned off when the IAPWS-95 equations are activated (see \code{\link{water}}).
 
 The parameters in the \code{cgl} equations of state for crystalline, gas and liquid species (except liquid water) include \code{V}, \code{a}, \code{b}, \code{c}, \code{d}, \code{e}, \code{f} and \code{lambda}.

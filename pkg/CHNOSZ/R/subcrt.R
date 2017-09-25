@@ -266,14 +266,12 @@ subcrt <- function(species, coeff=1, state=NULL, property=c('logK','G','H','S','
   out <- list()
   # aqueous species
   if(TRUE %in% isaq | 'rho' %in% eprop) {
-    # load the water properties (better here, once,
-    # than possible many times in hkf()).
+    # load the water properties
     wprop.PT <- character()
     wprop.PrTr <- 'rho'
     dosupcrt <- thermo$opt$water != "IAPWS95"
     if(TRUE %in% (prop %in% c('logk','g','h','s'))) wprop.PrTr <- c(wprop.PrTr,'YBorn')
     if(dosupcrt | TRUE %in% (prop %in% c('logk','g','h'))) wprop.PrTr <- c(wprop.PrTr,'diel')
-    H2O.PrTr <- water(wprop.PrTr,T=thermo$opt$Tr,P=thermo$opt$Pr)
     if(TRUE %in% (prop %in% c('cp'))) {wprop.PT <- c(wprop.PT,'XBorn','YBorn')}
     if(TRUE %in% (prop %in% c('v'))) {wprop.PT <- c(wprop.PT,'QBorn')}
     if(TRUE %in% (prop %in% c('kt'))) {wprop.PT <- c(wprop.PT,'NBorn')}
@@ -287,8 +285,7 @@ subcrt <- function(species, coeff=1, state=NULL, property=c('logK','G','H','S','
       # the overhead of info() and use new obigt2eos() instead
       #si <- info(inpho[isaq],quiet=TRUE)
       si <- obigt2eos(thermo$obigt[inpho[isaq],], "aq", fixGHS = TRUE)
-      domega <- thermo$obigt$name[inpho[isaq]] != 'H+'
-      p.aq <- hkf(eosprop,T=T,P=P,parameters=si,H2O.PT=H2O.PT,H2O.PrTr=H2O.PrTr,domega=domega)
+      p.aq <- hkf(eosprop, T=T, P=P, parameters=si, H2O.PT=H2O.PT)
       if(any(IS!=0)) p.aq <- nonideal(inpho[isaq],p.aq,newIS,T)
       out <- c(out,p.aq)
     }

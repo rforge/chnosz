@@ -57,7 +57,7 @@ export(
   "water.SUPCRT92", "water.props", "eqdata", "plot_findit",
   "nonideal", "anim.TCA", "uniprot.aa", "run.guess",
 # added 20170301 or later
-  "GHS_Tr"
+  "GHS_Tr", "calculateDensity", "calculateGibbsOfWater", "calculateEpsilon", "calculateQ"
 )
 
 # Load shared objects

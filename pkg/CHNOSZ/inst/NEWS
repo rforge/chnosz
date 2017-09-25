@@ -1,5 +1,5 @@
-CHANGES IN CHNOSZ 1.1.0-11 (2017-09-25)
---------------------------------------
+CHANGES IN CHNOSZ 1.1.0-12 (2017-09-25)
+---------------------------------------
 
 - water.lines() now works for diagrams of Eh, pe, logfO2, logaO2,
   logfH2, or logaH2 vs pH, T, or P. It is possible to have T or P on
@@ -32,6 +32,10 @@ CHANGES IN CHNOSZ 1.1.0-11 (2017-09-25)
 - Add 'H2O.props' argument to hkf(). This lists the properties of water
   to calculate (at P, T) so that the calculations aren't duplicated by
   subcrt().
+
+- Add equations from the Deep Earth Water (DEW) model (Sverjensky
+  et al., 2014) in the exported functions calculateDensity(),
+  calculateGibbsofWater(), calculateEpsilon(), and calculateQ().
 
 CHANGES IN CHNOSZ 1.1.0 (2017-05-04)
 ------------------------------------

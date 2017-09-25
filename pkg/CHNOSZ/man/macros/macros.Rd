@@ -23,3 +23,8 @@
 % use \nH2O{&#772;} to call this macro (the html code can't be defined in the macro,
 % which interprets '#' followed by a number as a placeholder for an argument)
 \newcommand{\nH2O}{\ifelse{latex}{\eqn{\bar{n}_{\mathrm{H_{2}O}}}}{\ifelse{html}{\out{<i>n</i>#1<sub>H<sub>2</sub>O</sub>}}{nH2O}}}
+
+% other symbols
+\newcommand{\degC}{\ifelse{latex}{\eqn{^{\circ}}C}{\ifelse{html}{\out{&deg;}C}{°C}}}
+\newcommand{\le}{\ifelse{latex}{\eqn{\le}}{\ifelse{html}{\out{&le;}}{≤}}}
+\newcommand{\ge}{\ifelse{latex}{\eqn{\ge}}{\ifelse{html}{\out{&ge;}}{≥}}}

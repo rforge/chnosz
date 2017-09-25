@@ -1,9 +1,21 @@
-CHANGES IN CHNOSZ 1.1.0-15 (2017-09-25)
+CHANGES IN CHNOSZ 1.1.0-16 (2017-09-25)
 ---------------------------------------
+
+MAJOR CHANGES:
+
+- Add functions implementing the Deep Earth Water (DEW) model
+  (Sverjensky et al., 2014): calculateDensity(),
+  calculateGibbsofWater(), calculateEpsilon(), calculateQ(), and
+  water.DEW().
+
+- The computational option for water (thermo$opt$par) can now be
+  set using water("DEW"), water("IAPWS"), etc.
 
 - water.lines() now works for diagrams of Eh, pe, logfO2, logaO2,
   logfH2, or logaH2 vs pH, T, or P. It is possible to have T or P on
   either the x- or y-axis.
+
+DATABASE UPDATES:
 
 - Data file CHNOSZ_aq.csv is no longer added to the database by default.
   It is now intended to hold provisional updates. Updated heat capacity
@@ -14,12 +26,14 @@ CHANGES IN CHNOSZ 1.1.0-15 (2017-09-25)
   the current database. If the species is not found, add.obigt() treats
   the argument as a file name, as before.
 
-- Add 'tol' argument to equil.reaction() (convergence tolerance for
-  uniroot).
-
 - Remove H2O(gas) from the database (taken from SUPCRT92), as it gives
   inconsistent results for metastable steam (Zavarin et al., 2016,
   LLNL-TR-701407, doi: 10.2172/1325873).
+
+OTHER CHANGES:
+
+- Add 'tol' argument to equil.reaction() (convergence tolerance for
+  uniroot).
 
 - In hkf() and cgl(), combine 'ghs' and 'eos' arguments into single
   argument named 'parameters'.
@@ -32,11 +46,6 @@ CHANGES IN CHNOSZ 1.1.0-15 (2017-09-25)
 - Add 'H2O.props' argument to hkf(). This lists the properties of water
   to calculate (at P, T) so that the calculations aren't duplicated by
   subcrt().
-
-- Add equations from the Deep Earth Water (DEW) model (Sverjensky
-  et al., 2014) in the functions calculateDensity(),
-  calculateGibbsofWater(), calculateEpsilon(), calculateQ(), and
-  the interface function water.DEW() for use by subcrt().
 
 - In water.* functions, rename the "diel" variable to "epsilon".
 

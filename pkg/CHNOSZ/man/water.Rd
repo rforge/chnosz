@@ -19,7 +19,7 @@ Calculate thermodynamic and electrostatic properties of water.
 }
 
 \arguments{
-  \item{property}{character, name(s) of property(s) to calculate}
+  \item{property}{character, name(s) of property(s) to calculate, or name of computational option}
   \item{T}{numeric, temperature (K)}
   \item{P}{numeric, pressure (bar), or \samp{Psat} for vapor-liquid saturation}
   \item{formulation}{character, name of formulation for which to return names of available properties}
@@ -32,13 +32,16 @@ The high-level function \code{water} performs different computations, depending 
 
 \describe{
 
-  \item{\samp{SUPCRT92}}{(Default) Thermodynamic and electrostatic properties are calculated using a FORTRAN subroutine taken from the \acronym{SUPCRT92} software package (Johnson et al., 1992). See more information below.}
+  \item{\samp{SUPCRT92} (default) or \samp{SUPCRT}}{Thermodynamic and electrostatic properties are calculated using a FORTRAN subroutine taken from the \acronym{SUPCRT92} software package (Johnson et al., 1992). See more information below.}
 
-  \item{\samp{IAPWS95}}{Thermodynamic properties are calculated using an implementation in \R code of the \acronym{IAPWS-95} formulation (Wagner and Pruss, 2002), and electrostatic properties are calculated using the equations of Archer and Wang, 1990. See \code{\link{IAPWS95}} and more information below.}
+  \item{\samp{IAPWS95} or \samp{IAPWS}}{Thermodynamic properties are calculated using an implementation in \R code of the \acronym{IAPWS-95} formulation (Wagner and Pruss, 2002), and electrostatic properties are calculated using the equations of Archer and Wang, 1990. See \code{\link{IAPWS95}} and more information below.}
 
   \item{\samp{DEW}}{Thermodynamic and electrostatic properties are calculated using the Deep Earth Water (\acronym{DEW}) model (Sverjensky et al., 2014). The defaults for \code{T} and \code{P} reflect the minimum values for applicability of the model; calculations for lower \code{T} and/or \code{P} points fall back to using \samp{SUPCRT92}. See \code{\link{DEW}}.}
 
 }
+
+Use e.g. \code{water("DEW")} to set the option.
+Subsequent calculations with \code{water}, or other functions such as \code{subcrt} and \code{affinity}, will use that option.
 
 The allowed \code{property}s for \code{water} are one or more of those given below, depending on the computational option; availability is shown by an asterisk.
 The names of properties in the arguments are not case sensitive. Note that some of the properties that can actually be calculated using the different formulations are not implemented here.
@@ -129,15 +132,15 @@ water(c("QBorn", "YBorn", "XBorn"), T=T, P=2000)
 ## comparing the formulations
 T <- convert(c(25, 100, 200, 300), "K")
 # IAPWS-95
-thermo$opt$water <<- "IAPWS95"
+water("IAPWS95")
 water(water.props(), T=T)
 # SUPCRT92 (the default)
-thermo$opt$water <<- "SUPCRT92"
+water("SUPCRT92")
 water(water.props(), T=T)
 
 ## calculating Q Born function
 # after Table 22 of Johnson and Norton, 1991
-thermo$opt$water <<- "SUPCRT92"
+water("SUPCRT92")
 T <- rep(c(375, 400, 425, 450, 475), each=5)
 P <- rep(c(250, 300, 350, 400, 450), 5)
 w <- water("QBorn", T=convert(T, "K"), P=P)

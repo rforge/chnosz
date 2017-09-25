@@ -63,7 +63,7 @@ thermo$opt$IAPWS.sat <<- ""
 water.IAPWS95("V", T, "Psat")
 # the calculated Psat, while not exact, should be close enough for most
 # geochemical calculations to select liquid or vapor
-thermo$opt$water <<- "IAPWS95"
+water("IAPWS95")
 thermo$opt$IAPWS.sat <<- "vapor"
 V.vapor <- subcrt("water", T=convert(445:455, "C"))$out[[1]]$V
 thermo$opt$IAPWS.sat <<- "liquid" # the default

@@ -41,3 +41,8 @@ test_that("Born coefficient Q is calculated correctly", {
             0.10918151, 0.87729257,  0.05068788, 0.20640645) / 1e6
   expect_equal(RQ, DEWQ)
 })
+
+test_that("Gibbs energies of species are calculated correctly", {
+  DEWG_HCl <- c(-28784.99, -58496.85, -26520.94, -55276.92, -21928.89, -50337.19, -8014.34, -36746.87)
+  DEWG_Cl <- c(-30054.59, -22839.35, -27910.68, -28094.07, -23568.45, -27959.67, -10443.07, -18744.93)
+})

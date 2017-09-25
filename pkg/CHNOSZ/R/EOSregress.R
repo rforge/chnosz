@@ -5,14 +5,14 @@
 
 Cp_s_var <- function(T=298.15, P=1, omega.PrTr=0, Z=0) {
   # solvation contribution to heat capacity in the HKF EOS, divided by omega(Pr,Tr) (calories)
-  Cp_s <- hkf("Cp", T=T, P=P, parameters=data.frame(omega=omega.PrTr, Z=Z), contrib="s")
+  Cp_s <- hkf("Cp", T=T, P=P, parameters=data.frame(omega=omega.PrTr, Z=Z), contrib="s")$aq
   return(Cp_s[[1]][, 1]/omega.PrTr)
 }
 
 V_s_var <- function(T=298.15, P=1, omega.PrTr=0, Z=0) {
   # solvation contribution to volume in the HKF EOS, divided by omega(Pr,Tr) (cm3.bar)
   # [the negative sign on this term as written in the HKF EOS is accounted for by hkf()]
-  V_s <- hkf("V", T=T, P=P, parameters=data.frame(omega=omega.PrTr, Z=Z), contrib="s")
+  V_s <- hkf("V", T=T, P=P, parameters=data.frame(omega=omega.PrTr, Z=Z), contrib="s")$aq
   return(V_s[[1]][, 1]/convert(omega.PrTr, "cm3bar"))
 }
 

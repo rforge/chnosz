@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-10 (2017-09-25)
+CHANGES IN CHNOSZ 1.1.0-11 (2017-09-25)
 --------------------------------------
 
 - water.lines() now works for diagrams of Eh, pe, logfO2, logaO2,
@@ -28,6 +28,10 @@ CHANGES IN CHNOSZ 1.1.0-10 (2017-09-25)
   water at Pr and Tr and the logic for when to calculate derivatives of
   omega are now calculated within the function, thereby simplifying the
   function call from subcrt().
+
+- Add 'H2O.props' argument to hkf(). This lists the properties of water
+  to calculate (at P, T) so that the calculations aren't duplicated by
+  subcrt().
 
 CHANGES IN CHNOSZ 1.1.0 (2017-05-04)
 ------------------------------------

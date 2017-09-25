@@ -3,9 +3,10 @@
 # 11/17/03 jmd
 
 hkf <- function(property = NULL, T = 298.15, P = 1, parameters = NULL,
-  contrib = c('n', 's', 'o'), H2O.PT = NULL) {
+  contrib = c('n', 's', 'o'), H2O.props="rho") {
   # calculate G, H, S, Cp, V, kT, and/or E using
   # the revised HKF equations of state
+  # H2O.props - H2O properties needed for subcrt() output
   thermo <- get("thermo")
   # constants
   Tr <- thermo$opt$Tr
@@ -19,28 +20,28 @@ hkf <- function(property = NULL, T = 298.15, P = 1, parameters = NULL,
   EOS.Props <- eargs$Prop
   # nonsolvation, solvation, and origination contribution
   notcontrib <- ! contrib %in% c('n', 's', 'o')
-  if(TRUE %in% notcontrib)
-    stop(paste("contrib must be in c('n', 's', 'o'); got", c2s(contrib[notcontrib])))
-  # get water properties, if they weren't supplied in arguments (and we want solvation props)
-  dosupcrt <- thermo$opt$water != "IAPWS95"
-  if('s' %in% contrib) {
-    H2O.props <- c("QBorn", "XBorn", "YBorn", "diel")
-    if(dosupcrt) {
-      # using H2O92D.f from SUPCRT92
-      # (rho, alpha, daldT, beta - for partial derivatives of omega (g function))
-      H2O.props <- c(H2O.props, "rho", "alpha", "daldT", "beta")
-    } else {
-      # using IAPWS-95
-      # (NBorn, UBorn - for compressibility, expansibility)
-      H2O.props <- c(H2O.props, 'NBorn', 'UBorn')
-    }
-    if(is.null(H2O.PT)) H2O.PT <- water(H2O.props, T = T, P = P)
-    H2O.PrTr <- water(H2O.props, T = thermo$opt$Tr, P = thermo$opt$Pr)
-    ZBorn <- -1 / H2O.PT$diel
-    ZBorn.PrTr <- -1 / H2O.PrTr$diel
+  if(TRUE %in% notcontrib) stop(paste("contrib must be in c('n', 's', 'o'); got", c2s(contrib[notcontrib])))
+  # get water properties
+  # rho - for subcrt() output and derivatives of omega (if needed)
+  # Born functions and epsilon - for HKF calculations
+  H2O.props <- c(H2O.props, "QBorn", "XBorn", "YBorn", "diel")
+  if(grepl("SUPCRT", thermo$opt$water)) {
+    # using H2O92D.f from SUPCRT92
+    # (alpha, daldT, beta - for partial derivatives of omega (g function))
+    H2O.props <- c(H2O.props, "alpha", "daldT", "beta")
   }
+  if(grepl("IAPWS", thermo$opt$water)) {
+    # using IAPWS-95
+    # (NBorn, UBorn - for compressibility, expansibility)
+    H2O.props <- c(H2O.props, 'NBorn', 'UBorn')
+  }
+  H2O <- water(H2O.props, T = c(thermo$opt$Tr, T), P = c(thermo$opt$Pr, P))
+  H2O.PrTr <- H2O[1, ]
+  H2O.PT <- H2O[-1, ]
+  ZBorn <- -1 / H2O.PT$diel
+  ZBorn.PrTr <- -1 / H2O.PrTr$diel
   # a list to store the result
-  x <- list()
+  aq.out <- list()
   nspecies <- nrow(parameters)
   for(k in 1:nspecies) {
     # loop over each species
@@ -65,7 +66,7 @@ hkf <- function(property = NULL, T = 298.15, P = 1, parameters = NULL,
     dwdP <- dwdT <- d2wdT2 <- numeric(length(T))
     Z <- PAR$Z
     omega.PT <- rep(PAR$omega, length(T))
-    if(!identical(Z, 0) & !PAR$name=="H+" & dosupcrt) {
+    if(!identical(Z, 0) & !identical(PAR$name, "H+") & grepl("SUPCRT", thermo$opt$water)) {
       # compute derivatives of omega: g and f functions (Shock et al., 1992; Johnson et al., 1992)
       rhohat <- H2O.PT$rho/1000  # just converting kg/m3 to g/cm3
       g <- gfun(rhohat, convert(T, "C"), P, H2O.PT$alpha, H2O.PT$daldT, H2O.PT$beta)
@@ -144,7 +145,7 @@ hkf <- function(property = NULL, T = 298.15, P = 1, parameters = NULL,
             H2O.PT$QBorn + convert(dwdP,'cm3bar') * (-ZBorn - 1)
           # TODO: the partial derivatives of omega are not included here here for kt and e
           # (to do it, see p. 820 of SOJ+92 ... but kt requires d2wdP2 which we don't have yet)
-          if(PROP == 'kt') p <- convert(omega,'cm3bar') * H2O.PT$N
+          if(PROP == 'kt') p <- convert(omega,'cm3bar') * H2O.PT$NBorn
           if(PROP == 'e') p <- -convert(omega,'cm3bar') * H2O.PT$UBorn
         }
         if(icontrib == 'o') {
@@ -166,9 +167,9 @@ hkf <- function(property = NULL, T = 298.15, P = 1, parameters = NULL,
       if(i > 1) w <- cbind(w, wnew) else w <- wnew
     }
     colnames(w) <- EOS.Props
-    x[[k]] <- w
+    aq.out[[k]] <- w
   }
-  return(x)
+  return(list(aq=aq.out, H2O=H2O.PT))
 }
 
 ### unexported functions ###

@@ -2,6 +2,13 @@
 # calculate standard molal thermodynamic propertes
 # 20060817 jmd
 
+## if we interactively source this file, the following are also needed to provide unexported functions:
+#source("util.args.R")
+#source("util.character.R")
+#source("info.R")
+#source("util.units.R")
+#source("util.data.R")
+
 subcrt <- function(species, coeff=1, state=NULL, property=c('logK','G','H','S','V','Cp'),
   T=seq(273.15,623.15,25), P='Psat', grid=NULL, convert=TRUE, check.Ttr=TRUE, exceed.Ttr=FALSE,
   logact=NULL, action.unbalanced='warn', IS=0) {
@@ -42,8 +49,8 @@ subcrt <- function(species, coeff=1, state=NULL, property=c('logK','G','H','S','
   # allowed properties
   properties <- c('rho','logK','G','H','S','Cp','V','kT','E')
   # property checking
-  prop <- tolower(property)
-  notproperty <- property[!prop %in% tolower(properties)]
+  outprop <- tolower(property)
+  notproperty <- property[!outprop %in% tolower(properties)]
   if(length(notproperty) > 0) stop(paste(notproperty,
     'are not valid properties\ntry rho, logK, G, H, S, V, Cp, kT, or E (or their lowercase equivalents)'))
   # length checking
@@ -254,41 +261,35 @@ subcrt <- function(species, coeff=1, state=NULL, property=c('logK','G','H','S','
   }
 
   # calculate the properties
-  # if we want affinities we must have logK
-  if(!is.null(logact)) if(!'logk' %in% prop) prop <- c('logk',prop)
-  # if logK but not g was requested, get g ...
-  if('logk' %in% prop & ! 'g' %in% prop) eprop <- c(prop,'g') else eprop <- prop
-  # don't request logk from the eos ...
-  eosprop <- eprop[!eprop %in% c('logk','rho')]
+  # if we want affinities we must have logK; include it in the ouput
+  if(!is.null(logact)) if(!'logk' %in% outprop) outprop <- c('logk', outprop)
+  # if logK but not g was requested, we need to calculate g
+  eosprop <- outprop
+  if('logk' %in% outprop & ! 'g' %in% outprop) eosprop <- c(eosprop, 'g')
   # also get g if we are dealing with mineral phases
-  if(!'g' %in% eprop & length(inpho) > length(sinfo)) eosprop <- c(eosprop,'g')
-  # the reaction result is in out
+  if(!'g' %in% eosprop & length(inpho) > length(sinfo)) eosprop <- c(eosprop, 'g')
+  # don't request logk or rho from the eos ...
+  eosprop <- eosprop[!eosprop %in% c('logk','rho')]
+  # the reaction result will go here
   out <- list()
-  # aqueous species
-  if(TRUE %in% isaq | 'rho' %in% eprop) {
-    # load the water properties
-    wprop.PT <- character()
-    wprop.PrTr <- 'rho'
-    dosupcrt <- thermo$opt$water != "IAPWS95"
-    if(TRUE %in% (prop %in% c('logk','g','h','s'))) wprop.PrTr <- c(wprop.PrTr,'YBorn')
-    if(dosupcrt | TRUE %in% (prop %in% c('logk','g','h'))) wprop.PrTr <- c(wprop.PrTr,'diel')
-    if(TRUE %in% (prop %in% c('cp'))) {wprop.PT <- c(wprop.PT,'XBorn','YBorn')}
-    if(TRUE %in% (prop %in% c('v'))) {wprop.PT <- c(wprop.PT,'QBorn')}
-    if(TRUE %in% (prop %in% c('kt'))) {wprop.PT <- c(wprop.PT,'NBorn')}
-    if(TRUE %in% (prop %in% c('e'))) {wprop.PT <- c(wprop.PT,'UBorn')}
-    # get additional properties required for omega derivatives
-    if(dosupcrt) wprop.PT <- c(wprop.PT,'alpha','daldT','beta','diel')
-    H2O.PT <- water(c(wprop.PrTr,wprop.PT),T=T,P=P)
-    if(TRUE %in% isaq) {
-      # now the species stuff
-      # 20110808 if inpho are the species indices let's avoid
-      # the overhead of info() and use new obigt2eos() instead
-      #si <- info(inpho[isaq],quiet=TRUE)
-      si <- obigt2eos(thermo$obigt[inpho[isaq],], "aq", fixGHS = TRUE)
-      p.aq <- hkf(eosprop, T=T, P=P, parameters=si, H2O.PT=H2O.PT)
-      if(any(IS!=0)) p.aq <- nonideal(inpho[isaq],p.aq,newIS,T)
-      out <- c(out,p.aq)
-    }
+  # aqueous species and H2O properties
+  if(TRUE %in% isaq) {
+    # 20110808 if inpho are the species indices let's avoid
+    # the overhead of info() and use new obigt2eos() instead
+    #si <- info(inpho[isaq],quiet=TRUE)
+    si <- obigt2eos(thermo$obigt[inpho[isaq],], "aq", fixGHS = TRUE)
+    # always get density
+    H2O.props <- "rho"
+    # get other properties for H2O only if it's in the reaction
+    if(any(isH2O)) H2O.props <- c(H2O.props, eosprop)
+    hkfstuff <- hkf(eosprop, T = T, P = P, parameters = si, H2O.props=H2O.props)
+    p.aq <- hkfstuff$aq
+    H2O.PT <- hkfstuff$H2O
+    if(any(IS != 0)) p.aq <- nonideal(inpho[isaq], p.aq, newIS, T)
+    out <- c(out, p.aq)
+  } else if(any(isH2O)) {
+    # we're not using the HKF, but still want water
+    H2O.PT <- water(c("rho", eosprop), T = T, P = P)
   }
   # crystalline, gas, liquid (except water) species
   iscgl <- reaction$state %in% c('liq','cr','gas','cr1','cr2','cr3',
@@ -349,22 +350,20 @@ subcrt <- function(species, coeff=1, state=NULL, property=c('logK','G','H','S','
   }
 
   # water
-  if(TRUE %in% isH2O) {
-    if(!exists('H2O.PT',inherits=FALSE)) H2O.PT <- water('rho',T=T,P=P)
-    if(length(eosprop)==0) eosprop <- 'rho'
-    #message(paste('subcrt: water equation of state:',c2s(eosprop)))
-    p.H2O <- list(tmp=water(eosprop,T=T,P=P))
-    out <- c(out,rep(p.H2O,length(which(isH2O==TRUE))))
+  if(any(isH2O)) {
+    p.H2O <- H2O.PT[, match(eosprop, tolower(colnames(H2O.PT))), drop=FALSE]
+    p.H2O <- list(p.H2O)
+    out <- c(out, rep(p.H2O, sum(isH2O == TRUE)))
   }
 
   # use variable-pressure standard Gibbs energy for gases
   isgas <- reaction$state %in% "gas" 
-  if(TRUE %in% isgas & "g" %in% eprop & thermo$opt$varP) {
+  if(any(isgas) & "g" %in% eosprop & thermo$opt$varP) {
     for(i in which(isgas)) out[[i]]$G <- out[[i]]$G - convert(log10(P), "G", T=T)
   }
 
   # logK
-  if('logk' %in% prop) {
+  if('logk' %in% outprop) {
     for(i in 1:length(out)) {
       # NOTE: the following depends on the water function renaming g to G
       out[[i]] <- cbind(out[[i]],data.frame(logK=convert(out[[i]]$G,'logK',T=T)))
@@ -460,11 +459,10 @@ subcrt <- function(species, coeff=1, state=NULL, property=c('logK','G','H','S','
   iscgl <- iscgl.new
   isH2O <- isH2O.new
 
-  newprop <- eprop[eprop!='rho']
   # the order of the properties
-  if(length(newprop)>1) for(i in 1:length(out)) {
+  if(length(outprop)>1) for(i in 1:length(out)) {
     # keep state/loggam columns if they exists
-    ipp <- match(newprop,tolower(colnames(out[[i]])))
+    ipp <- match(outprop,tolower(colnames(out[[i]])))
     if('state' %in% colnames(out[[i]])) ipp <- c(ipp,match('state',colnames(out[[i]]))) 
     if('loggam' %in% colnames(out[[i]])) ipp <- c(ipp,match('loggam',colnames(out[[i]]))) 
     out[[i]] <- out[[i]][,ipp,drop=FALSE]
@@ -527,7 +525,7 @@ subcrt <- function(species, coeff=1, state=NULL, property=c('logK','G','H','S','
       if(convert) P.out <- outvert(P,"bar") else P.out <- P
       # try to stuff in a column of rho if we have aqueous species
       # watch out! supcrt-ish densities are in g/cc not kg/m3
-      if('rho' %in% prop | (missing(property) & any(c(isaq,isH2O))) & (names(out)[i])!='state') 
+      if('rho' %in% outprop | (missing(property) & any(c(isaq,isH2O))) & (names(out)[i])!='state') 
         out[[i]] <- cbind(data.frame(T=T.out,P=P.out,rho=H2O.PT$rho/1000),out[[i]])
       else
         out[[i]] <- cbind(data.frame(T=T.out,P=P.out,out[[i]]))

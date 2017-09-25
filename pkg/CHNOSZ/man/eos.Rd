@@ -10,7 +10,7 @@ Calculate thermodynamic properties using the revised Helgeson-Kirkham-Flowers (H
 \usage{
   cgl(property = NULL, T = 298.15, P = 1, parameters = NULL)
   hkf(property = NULL, T = 298.15, P = 1, parameters = NULL,
-    contrib = c("n", "s", "o"), H2O.PT = NULL)
+    contrib = c("n", "s", "o"), H2O.props = "rho")
 }
 
 \arguments{
@@ -19,7 +19,7 @@ Calculate thermodynamic properties using the revised Helgeson-Kirkham-Flowers (H
   \item{P}{numeric, pressure(s) at which to calculate properties (bar)}
   \item{parameters}{dataframe, species parameters as one or more rows from \code{thermo$obigt}}
   \item{contrib}{character, which contributions to consider in the revised HKF equations equations of state: (\code{n})onsolvation, (\code{s})olvation (the \eqn{\omega}{omega} terms), or (o)rigination contributions (i.e., the property itself at 25 \eqn{^{\circ}}{°}C and 1 bar). Default is \code{c("n","s","o")}, for all contributions}
-  \item{H2O.PT}{dataframe, values of the electrostatic properties of water at the temperature(s) and pressure(s) of interest}
+  \item{H2O.props}{character, properties to calculate for water}
 }
 
 \details{
@@ -31,8 +31,7 @@ The names of the properties are matched without regard to case.
 \code{hkf} implements the revised HKF equations of state (Helgeson et al., 1981; Tanger and Helgeson, 1988; Shock and Helgeson, 1988).
 The equations-of-state parameters are \code{a1}, \code{a2}, \code{a3}, \code{a4}, \code{c1}, \code{c2}, \code{omega} and \code{Z}; the units of these parameters are as indicated for \code{\link{thermo}$obigt}, without the order of magnitude multipliers.
 Note that the equation-of-state parameter \code{Z} (appearing in the \eqn{g}{g}-function for the temperature derivatives of the omega parameter; Shock et al., 1992) is taken from \code{thermo$obigt} and \emph{not} from the \code{\link{makeup}} of the species.
-\code{H2O.PT} is an optional argument that contains the electrostatic properties of \eqn{\mathrm{H_2O}}{H2O} required for the calculations.
-If either of these is \code{NULL} (the default), the required values are retrieved using \code{\link{water}}. 
+\code{H2O.props} is an optional argument that lists the properties of water that should be returned; it is used by \code{\link{subcrt}} so that the time-consuming water calculations are only performed once.
 
 The temperature and pressure derivatives of the \code{omega} parameter for charged species (where \code{Z != 0}, but not for the aqueous proton, H+) are calculated using the \eqn{g}{g}- and \eqn{f}{f}-functions described by Shock et al., 1992 and Johnson et al., 1992.
 This option is turned off when the IAPWS-95 equations are activated (see \code{\link{water}}).
@@ -57,6 +56,7 @@ These temperature limits are stored in the thermodynamic database for some miner
 \value{
 A list of length equal to the number of species (i.e., number rows of \code{parameters}).
 Each element of the list contains a dataframe, each column of which corresponds to one of the specified properties; the number of rows is equal to the number of pressure-temperature points.
+Furthermore, in \code{hkf}, the output is a list consisting of the above-described object (named \samp{aq}) and a data frame of the calculated properties of water (named \samp{H2O}).
 }
 
 \seealso{

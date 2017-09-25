@@ -56,7 +56,7 @@ Except for \code{rho}, the units are those used by Johnson and Norton, 1991.
      \code{Speed} \tab Speed of sound \tab cm s\eqn{^{-1}}{^-1} \tab NA \tab * \tab NA \cr
      \code{alpha} \tab Coefficient of isobaric expansivity \tab K\eqn{^{-1}}{^-1} \tab NA \tab * \tab NA \cr
      \code{beta} \tab Coefficient of isothermal compressibility \tab bar\eqn{^{-1}}{^-1} \tab NA \tab * \tab NA \cr
-     \code{diel} \tab Dielectric constant \tab dimensionless \tab NA \tab * \tab * \cr
+     \code{epsilon} \tab Dielectric constant \tab dimensionless \tab NA \tab * \tab * \cr
      \code{visc} \tab Dynamic viscosity \tab g cm\eqn{^{-1}}{^-1} s\eqn{^{-1}}{^-1} \tab NA \tab * \tab NA \cr
      \code{tcond} \tab Thermal conductivity \tab cal cm\eqn{^{-1}}{^-1} s\eqn{^{-1}}{^-1} K\eqn{^{-1}}{^-1} \tab NA \tab * \tab NA \cr
      \code{tdiff} \tab Thermal diffusivity \tab cm\eqn{^2} s\eqn{^{-1}}{^-1} \tab NA \tab * \tab NA \cr

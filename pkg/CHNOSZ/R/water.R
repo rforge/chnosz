@@ -34,13 +34,13 @@ water.props <- function(formulation=get("thermo")$opt$water) {
   # added 20130212 jmd
   if(formulation=="SUPCRT92")
     props <- c("A", "G", "S", "U", "H", "Cv", "Cp",
-    "Speed", "alpha", "beta", "diel", "visc",
+    "Speed", "alpha", "beta", "epsilon", "visc",
     "tcond", "surten", "tdiff", "Prndtl", "visck", "albe",
     "ZBorn", "YBorn", "QBorn", "daldT", "XBorn",
     "V", "rho", "Psat", "E", "kT")
   else if(formulation=="IAPWS95")
     props <- c("A", "G", "S", "U", "H", "Cv", "Cp",
-    "Speed", "diel",
+    "Speed", "epsilon",
     "YBorn", "QBorn", "XBorn", "NBorn", "UBorn",
     "V", "rho", "Psat", "de.dT", "de.dP", "P")
   return(props)
@@ -185,7 +185,7 @@ water.IAPWS95 <- function(property, T=298.15, P=1) {
   speed <- function()
     return(IAPWS95('w',T=T,rho=my.rho)$w*100) # to cm/s
   ## electrostatic properties
-  diel <- function() return(water.AW90(T=T,rho=my.rho,P=convert(P,'MPa')))
+  epsilon <- function() return(water.AW90(T=T,rho=my.rho,P=convert(P,'MPa')))
   de.dt <- function() {
     p <- numeric()
     for(i in 1:length(T)) {
@@ -315,13 +315,13 @@ water.DEW <- function(property, T = 373.15, P = 1000) {
   out <- as.data.frame(out)
   colnames(out) <- property
   # calculate rho if it's needed for any other properties
-  if(any(c("rho", "V", "QBorn", "diel") %in% property)) rho <- calculateDensity(pressure, temperature)
+  if(any(c("rho", "V", "QBorn", "epsilon") %in% property)) rho <- calculateDensity(pressure, temperature)
   # fill in columns with values
   if("rho" %in% property) out$rho <- rho
   if("V" %in% property) out$V <- 18.01528/rho
   if("G" %in% property) out$G <- calculateGibbsOfWater(pressure, temperature)
   if("QBorn" %in% property) out$QBorn <- calculateQ(rho, temperature)
-  if("diel" %in% property) out$diel <- calculateEpsilon(rho, temperature)
+  if("epsilon" %in% property) out$epsilon <- calculateEpsilon(rho, temperature)
   out
 }
 

@@ -72,7 +72,7 @@ EOSlab <- function(var, coeff="") {
     "kT" = substitute(YYY%*%kappa[italic(T)], list(YYY=coeff)),
     "alpha" = substitute(YYY%*%alpha, list(YYY=coeff)),
     "beta" = substitute(YYY%*%beta, list(YYY=coeff)),
-    "diel" = substitute(YYY%*%epsilon, list(YYY=coeff)),
+    "epsilon" = substitute(YYY%*%epsilon, list(YYY=coeff)),
     "rho" = substitute(YYY%*%rho, list(YYY=coeff)),
     "NBorn" = substitute(YYY%*%italic(N), list(YYY=coeff)),
     "QBorn" = substitute(YYY%*%italic(Q), list(YYY=coeff)),

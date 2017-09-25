@@ -24,7 +24,7 @@ hkf <- function(property = NULL, T = 298.15, P = 1, parameters = NULL,
   # get water properties
   # rho - for subcrt() output and derivatives of omega (if needed)
   # Born functions and epsilon - for HKF calculations
-  H2O.props <- c(H2O.props, "QBorn", "XBorn", "YBorn", "diel")
+  H2O.props <- c(H2O.props, "QBorn", "XBorn", "YBorn", "epsilon")
   if(grepl("SUPCRT", thermo$opt$water)) {
     # using H2O92D.f from SUPCRT92
     # (alpha, daldT, beta - for partial derivatives of omega (g function))
@@ -38,8 +38,8 @@ hkf <- function(property = NULL, T = 298.15, P = 1, parameters = NULL,
   H2O <- water(H2O.props, T = c(thermo$opt$Tr, T), P = c(thermo$opt$Pr, P))
   H2O.PrTr <- H2O[1, ]
   H2O.PT <- H2O[-1, ]
-  ZBorn <- -1 / H2O.PT$diel
-  ZBorn.PrTr <- -1 / H2O.PrTr$diel
+  ZBorn <- -1 / H2O.PT$epsilon
+  ZBorn.PrTr <- -1 / H2O.PrTr$epsilon
   # a list to store the result
   aq.out <- list()
   nspecies <- nrow(parameters)

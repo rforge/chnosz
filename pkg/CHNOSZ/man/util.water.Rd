@@ -35,7 +35,7 @@ Alternatively, the user can specify a \code{state} of \samp{liquid} or \samp{vap
 The \code{state} is set in calls by \code{\link{water.IAPWS95}} to the value in \code{thermo$opt$IAPWS.sat} (default \samp{liquid}) so that higher-level functions (\code{\link{water}}, \code{\link{subcrt}}) take properties for that state along the saturation curve.
 Diagnostic messages are printed if \code{trace} is positive (it is also included in the call to \code{uniroot}).
 
-\code{water.AW90} provides values of the static dielectric constant (\code{diel}) calculated using equations given by Archer and Wang, 1990.
+\code{water.AW90} provides values of the static dielectric constant (\code{epsilon}) calculated using equations given by Archer and Wang, 1990.
 }
 
 \examples{\dontshow{data(thermo)}

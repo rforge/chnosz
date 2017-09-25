@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-13 (2017-09-25)
+CHANGES IN CHNOSZ 1.1.0-14 (2017-09-25)
 ---------------------------------------
 
 - water.lines() now works for diagrams of Eh, pe, logfO2, logaO2,
@@ -37,6 +37,8 @@ CHANGES IN CHNOSZ 1.1.0-13 (2017-09-25)
   et al., 2014) in the functions calculateDensity(),
   calculateGibbsofWater(), calculateEpsilon(), calculateQ(), and
   the interface function water.DEW() for use by subcrt().
+
+- In water.* functions, rename the "diel" variable to "epsilon".
 
 CHANGES IN CHNOSZ 1.1.0 (2017-05-04)
 ------------------------------------

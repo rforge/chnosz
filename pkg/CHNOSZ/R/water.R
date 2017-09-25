@@ -13,36 +13,41 @@ water <- function(property = NULL, T = get("thermo")$opt$Tr, P = "Psat") {
   }
   # turn 273.15 K to 273.16 K (needed for water.SUPCRT92 at Psat)
   T[T == 273.15] <- 273.16
-  # this tells us to do the calculations using code taken from SUPCRT
-  do.supcrt <- get("thermo")$opt$water != "IAPWS95"
-  if(do.supcrt) {
+  wopt <- get("thermo")$opt$water
+  if(grepl("SUPCRT", wopt)) {
     # get the values of the properties using SUPCRT92
     w.out <- water.SUPCRT92(property, T, P)
-    return(w.out)
-  } else {
+  }
+  if(grepl("IAPWS", wopt)) {
     # here we get properties using IAPWS-95 
     w.out <- water.IAPWS95(property, T, P)
     # normalize the names to use upper case (expected by subcrt())
     iprop <- match(tolower(property), tolower(water.props("IAPWS95")))
     colnames(w.out) <- water.props("IAPWS95")[iprop]
-    return(w.out)
   }
+  if(grepl("DEW", wopt)) {
+    # use the Deep Earth Water (DEW) model
+    w.out <- water.DEW(property, T, P)
+  }
+  w.out
 }
 
 water.props <- function(formulation=get("thermo")$opt$water) {
   # return the names of properties that are available in SUPCRT92 or IAPWS95
   # added 20130212 jmd
-  if(formulation=="SUPCRT92")
+  if(grepl("SUPCRT", formulation))
     props <- c("A", "G", "S", "U", "H", "Cv", "Cp",
     "Speed", "alpha", "beta", "epsilon", "visc",
     "tcond", "surten", "tdiff", "Prndtl", "visck", "albe",
     "ZBorn", "YBorn", "QBorn", "daldT", "XBorn",
     "V", "rho", "Psat", "E", "kT")
-  else if(formulation=="IAPWS95")
+  if(grepl("IAPWS", formulation))
     props <- c("A", "G", "S", "U", "H", "Cv", "Cp",
     "Speed", "epsilon",
     "YBorn", "QBorn", "XBorn", "NBorn", "UBorn",
     "V", "rho", "Psat", "de.dT", "de.dP", "P")
+  if(grepl("DEW", formulation))
+    props <- c("G", "epsilon", "QBorn", "V", "rho")
   return(props)
 }
 
@@ -306,6 +311,12 @@ water.IAPWS95 <- function(property, T=298.15, P=1) {
 
 # get water properties from DEW model for use by subcrt() 20170925
 water.DEW <- function(property, T = 373.15, P = 1000) {
+  # we can't use Psat here
+  if(identical(P, "Psat")) stop("Psat isn't supported in this implementation of the DEW model")
+  # use uppercase property names (including H, S, etc., so we get them from the SUPCRT properties)
+  wprop <- water.props("SUPCRT")
+  iprop <- match(tolower(property), tolower(wprop))
+  property[!is.na(iprop)] <- wprop[na.omit(iprop)]
   # convert temperature units
   pressure <- P
   temperature <- convert(T, "C")
@@ -317,11 +328,19 @@ water.DEW <- function(property, T = 373.15, P = 1000) {
   # calculate rho if it's needed for any other properties
   if(any(c("rho", "V", "QBorn", "epsilon") %in% property)) rho <- calculateDensity(pressure, temperature)
   # fill in columns with values
-  if("rho" %in% property) out$rho <- rho
+  if("rho" %in% property) out$rho <- rho*1000 # use kg/m^3 (like SUPCRT)
   if("V" %in% property) out$V <- 18.01528/rho
   if("G" %in% property) out$G <- calculateGibbsOfWater(pressure, temperature)
   if("QBorn" %in% property) out$QBorn <- calculateQ(rho, temperature)
   if("epsilon" %in% property) out$epsilon <- calculateEpsilon(rho, temperature)
+  # use SUPCRT-calculated values below 100 degC and/or below 1000 bar
+  ilow <- T < 373.15 | P < 1000
+  if(any(ilow)) {
+    out[ilow, ] <- water.SUPCRT92(property, T=T[ilow], P=P[ilow])
+    iPrTr <- T==get("thermo")$opt$Tr & P==get("thermo")$opt$Pr
+    if(sum(iPrTr)==sum(ilow)) message(paste("water.DEW: using SUPCRT calculations for Pr,Tr"))
+    if(sum(iPrTr)==0) message(paste("water.DEW: using SUPCRT calculations for", sum(ilow), "low-T or low-P condition(s)"))
+    if(sum(ilow) > sum(iPrTr)) message(paste("water.DEW: using SUPCRT calculations for Pr,Tr and", sum(ilow)-1, "other low-T or low-P condition(s)"))
+  }
   out
 }
-

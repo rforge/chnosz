@@ -2,7 +2,7 @@
 # calculate standard molal thermodynamic propertes
 # 20060817 jmd
 
-## if we interactively source this file, the following are also needed to provide unexported functions:
+## if this file is interactively sourced, the following are also needed to provide unexported functions:
 #source("util.args.R")
 #source("util.character.R")
 #source("info.R")
@@ -291,6 +291,7 @@ subcrt <- function(species, coeff=1, state=NULL, property=c('logK','G','H','S','
     # we're not using the HKF, but still want water
     H2O.PT <- water(c("rho", eosprop), T = T, P = P)
   }
+
   # crystalline, gas, liquid (except water) species
   iscgl <- reaction$state %in% c('liq','cr','gas','cr1','cr2','cr3',
     'cr4','cr5','cr6','cr7','cr8','cr9') & reaction$name != 'water'

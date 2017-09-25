@@ -2,6 +2,9 @@
 # calculate thermodynamic properties using equations of state
 # 11/17/03 jmd
 
+## if this file is interactively sourced, the following is also needed to provide unexported functions:
+#source("util.args.R")
+
 hkf <- function(property = NULL, T = 298.15, P = 1, parameters = NULL,
   contrib = c('n', 's', 'o'), H2O.props="rho") {
   # calculate G, H, S, Cp, V, kT, and/or E using
@@ -18,6 +21,11 @@ hkf <- function(property = NULL, T = 298.15, P = 1, parameters = NULL,
   property <- eargs$prop
   EOS.props <- eargs$props
   EOS.Props <- eargs$Prop
+  # make T and P equal length
+  if(!identical(P, "Psat")) {
+    if(length(P) < length(T)) P <- rep(P, length.out = length(T))
+    if(length(T) < length(P)) T <- rep(T, length.out = length(P))
+  }
   # nonsolvation, solvation, and origination contribution
   notcontrib <- ! contrib %in% c('n', 's', 'o')
   if(TRUE %in% notcontrib) stop(paste("contrib must be in c('n', 's', 'o'); got", c2s(contrib[notcontrib])))

@@ -30,6 +30,7 @@ This implementation of DEW is based on the VBA macro code in the May, 2017 versi
 The spreadsheet provides multiple options for some calculations; here the default equations for density of water (Zhang and Duan, 2005), dielectric constant (Sverjensky et al., 2014) and Gibbs energy of water (integral of volume, equation created by Brandon Harrison) are used.
 
 Comments in the original code indicate that \code{calculateGibbsOfWater} is valid for 100 \le \T \le 1000 \degC and \P \ge 1000 bar.
+Likewise, the power function fit of the dielectric constant (epsilon) is valid for 100 \le \T \le 1200 \degC and \P \ge 1000 bar (Sverjensky et al., 2014).
 }
 
 \value{
@@ -37,6 +38,7 @@ The calculated values of density, Gibbs energy, and the Q Born coefficient have 
 }
 
 \seealso{
+\code{\link{water.DEW}} 
 }
 
 \examples{

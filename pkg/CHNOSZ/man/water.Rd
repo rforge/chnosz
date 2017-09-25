@@ -36,7 +36,7 @@ The high-level function \code{water} performs different computations, depending 
 
   \item{\samp{IAPWS95}}{Thermodynamic properties are calculated using an implementation in \R code of the \acronym{IAPWS-95} formulation (Wagner and Pruss, 2002), and electrostatic properties are calculated using the equations of Archer and Wang, 1990. See \code{\link{IAPWS95}} and more information below.}
 
-  \item{\samp{DEW}}{Thermodynamic and electrostatic properties are calculated using the Deep Earth Water (\acronym{DEW}) model (Sverjensky et al., 2014). The defaults for \code{T} and \code{P} reflect the minimum values for applicability of the model. See \code{\link{DEW}}.}
+  \item{\samp{DEW}}{Thermodynamic and electrostatic properties are calculated using the Deep Earth Water (\acronym{DEW}) model (Sverjensky et al., 2014). The defaults for \code{T} and \code{P} reflect the minimum values for applicability of the model; calculations for lower \code{T} and/or \code{P} points fall back to using \samp{SUPCRT92}. See \code{\link{DEW}}.}
 
 }
 
@@ -73,7 +73,7 @@ Except for \code{rho}, the units are those used by Johnson and Norton, 1991.
      \code{NBorn} \tab N Born function \tab bar\eqn{^{-2}}{^-2} \tab * \tab NA \tab NA \cr
      \code{UBorn} \tab U Born function \tab bar\eqn{^{-1}}{^-1} K\eqn{^{-1}}{^-1} \tab * \tab NA \tab NA \cr
      \code{V} \tab Volume \tab cm\eqn{^3} mol\eqn{^{-1}}{^-1} \tab * \tab * \tab * \cr
-     \code{rho} \tab Density \tab kg cm\eqn{^3} \tab * \tab * \tab * \cr     
+     \code{rho} \tab Density \tab kg m\eqn{^3} \tab * \tab * \tab * \cr     
      \code{Psat} \tab Saturation vapor pressure \tab bar \tab * \tab * \tab NA \cr
      \code{E} \tab Isobaric expansivity \tab cm\eqn{^3} K\eqn{^{-1}}{^-1} \tab NA \tab * \tab NA \cr
      \code{kT} \tab Isothermal compressibility \tab cm\eqn{^3} bar\eqn{^{-1}}{^-1} \tab NA \tab * \tab NA \cr

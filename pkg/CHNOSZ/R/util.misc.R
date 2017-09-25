@@ -48,18 +48,18 @@ GHS_Tr <- function(ispecies, Htr) {
       # set the starting GHS to 0 (in case they're NA - we only need the increments over temperature)
       thisinfo$G <- thisinfo$H <- thisinfo$S <- 0
       # the HS increments from 298.15 to Ttr
-      HSinc <- cgl(c("H", "S"), T=c(298.15, Ttr), ghs=thisinfo, eos=thisinfo)
+      HSinc <- cgl(c("H", "S"), T=c(298.15, Ttr), parameters=thisinfo)
       Hf_Tr <- c(Hf_Tr, Hf - diff(HSinc[[1]]$H))
       S_Tr <- c(S_Tr, S - diff(HSinc[[1]]$S))
       # plug in the calculated S_Tr to calculate the G increment correctly
       thisinfo$S <- tail(S_Tr, 1)
-      Ginc <- cgl("G", T=c(298.15, Ttr), ghs=thisinfo, eos=thisinfo)
+      Ginc <- cgl("G", T=c(298.15, Ttr), parameters=thisinfo)
       Gf_Tr <- c(Gf_Tr, Gf - diff(Ginc[[1]]$G))
     }
     # the temperature of the next transition
     Ttr <- thisinfo$T
     # the GHS increments from Tprev to Ttr
-    GHCinc <- cgl(c("G", "H", "S"), T=c(Tprev, Ttr), ghs=thisinfo, eos=thisinfo)
+    GHCinc <- cgl(c("G", "H", "S"), T=c(Tprev, Ttr), parameters=thisinfo)
     # the GHS + transition at Tr
     Gf <- Gf + diff(GHCinc[[1]]$G)
     Hf <- Hf + diff(GHCinc[[1]]$H) + Htr[i]

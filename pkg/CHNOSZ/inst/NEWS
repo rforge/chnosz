@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-8 (2017-09-24)
+CHANGES IN CHNOSZ 1.1.0-9 (2017-09-25)
 --------------------------------------
 
 - water.lines() now works for diagrams of Eh, pe, logfO2, logaO2,
@@ -20,6 +20,9 @@ CHANGES IN CHNOSZ 1.1.0-8 (2017-09-24)
 - Remove H2O(gas) from the database (taken from SUPCRT92), as it gives
   inconsistent results for metastable steam (Zavarin et al., 2016,
   LLNL-TR-701407, doi: 10.2172/1325873).
+
+- In hkf() and cgl(), combine 'ghs' and 'eos' arguments into single
+  argument named 'parameters'.
 
 CHANGES IN CHNOSZ 1.1.0 (2017-05-04)
 ------------------------------------

@@ -288,7 +288,7 @@ subcrt <- function(species, coeff=1, state=NULL, property=c('logK','G','H','S','
       #si <- info(inpho[isaq],quiet=TRUE)
       si <- obigt2eos(thermo$obigt[inpho[isaq],], "aq", fixGHS = TRUE)
       domega <- thermo$obigt$name[inpho[isaq]] != 'H+'
-      p.aq <- hkf(eosprop,T=T,P=P,ghs=si,eos=si,H2O.PT=H2O.PT,H2O.PrTr=H2O.PrTr,domega=domega)
+      p.aq <- hkf(eosprop,T=T,P=P,parameters=si,H2O.PT=H2O.PT,H2O.PrTr=H2O.PrTr,domega=domega)
       if(any(IS!=0)) p.aq <- nonideal(inpho[isaq],p.aq,newIS,T)
       out <- c(out,p.aq)
     }
@@ -300,7 +300,7 @@ subcrt <- function(species, coeff=1, state=NULL, property=c('logK','G','H','S','
   if(TRUE %in% iscgl) {
     #si <- info(inpho[iscgl],quiet=TRUE)
     si <- obigt2eos(thermo$obigt[inpho[iscgl],], "cgl", fixGHS = TRUE)
-    p.cgl <- cgl(eosprop,T=T,P=P,ghs=si,eos=si)
+    p.cgl <- cgl(eosprop, T = T, P = P, parameters = si)
     # replace Gibbs energies with NA where the
     # phases are beyond their temperature range
     if('g' %in% eosprop) {

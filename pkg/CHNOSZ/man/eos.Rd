@@ -8,8 +8,8 @@ Calculate thermodynamic properties using the revised Helgeson-Kirkham-Flowers (H
 }
 
 \usage{
-  cgl(property = NULL, T = 298.15, P = 1, ghs = NULL, eos = NULL)
-  hkf(property = NULL, T = 298.15, P = 1, ghs = NULL, eos = NULL,
+  cgl(property = NULL, T = 298.15, P = 1, parameters = NULL)
+  hkf(property = NULL, T = 298.15, P = 1, parameters = NULL,
     contrib = c("n","s","o"), H2O.PT = NULL, H2O.PrTr = NULL, 
     domega = TRUE)
 }
@@ -18,8 +18,7 @@ Calculate thermodynamic properties using the revised Helgeson-Kirkham-Flowers (H
   \item{property}{character, name(s) of properties to calculate}
   \item{T}{numeric, temperature(s) at which to calculate properties (K)}
   \item{P}{numeric, pressure(s) at which to calculate properties (bar)}
-  \item{ghs}{dataframe, values of the standard molal Gibbs energy and enthalpy of formation from the elements and entropy at 25 \eqn{^{\circ}}{°}C and 1 bar}
-  \item{eos}{dataframe, values of the equations-of-state parameters}
+  \item{parameters}{dataframe, standard molal thermodynamic properties and equations-of-state parameters in the format of \code{thermo$obigt}}
   \item{contrib}{character, which contributions to consider in the revised HKF equations equations of state: (\code{n})onsolvation, (\code{s})olvation (the \eqn{\omega}{omega} terms), or (o)rigination contributions (i.e., the property itself at 25 \eqn{^{\circ}}{°}C and 1 bar). Default is \code{c("n","s","o")}, for all contributions}
   \item{H2O.PT}{dataframe, values of the electrostatic properties of water at the temperature(s) and pressure(s) of interest}
   \item{H2O.PrTr}{dataframe, values of the electrostatic properties of water at the reference temperature and pressure}
@@ -38,7 +37,7 @@ Note that the equation-of-state parameter \code{Z} (appearing in the \eqn{g}{g}-
 \code{H2O.PT} and \code{H2O.PrTr} are optional arguments that contain the electrostatic properties of \eqn{\mathrm{H_2O}}{H2O} required for the calculations.
 If either of these is \code{NULL} (the default), the required values are retrieved using \code{\link{water}}. 
 
-Unless \code{domega}, the value of which is recycled to the number of species (rows of ghs and eos), is FALSE for any of the species, the temperature and pressure derivatives of the \code{omega} parameter for charged species (where \code{Z != 0}) are calculated using the \eqn{g}{g}- and \eqn{f}{f}-functions described by Shock et al., 1992 and Johnson et al., 1992.
+Unless \code{domega}, the value of which is recycled to the number of species (number of rows of \code{parameters}), is FALSE for any of the species, the temperature and pressure derivatives of the \code{omega} parameter for charged species (where \code{Z != 0}) are calculated using the \eqn{g}{g}- and \eqn{f}{f}-functions described by Shock et al., 1992 and Johnson et al., 1992.
 This option is turned off when the IAPWS-95 equations are activated (see \code{\link{water}}).
 
 The parameters in the \code{cgl} equations of state for crystalline, gas and liquid species (except liquid water) include \code{V}, \code{a}, \code{b}, \code{c}, \code{d}, \code{e}, \code{f} and \code{lambda}.
@@ -59,7 +58,7 @@ These temperature limits are stored in the thermodynamic database for some miner
 }
 
 \value{
-A list of length equal to the number of species (i.e., number rows of supplied \code{ghs} and \code{eos} values).
+A list of length equal to the number of species (i.e., number rows of \code{parameters}).
 Each element of the list contains a dataframe, each column of which corresponds to one of the specified properties; the number of rows is equal to the number of pressure-temperature points.
 }
 
@@ -70,22 +69,23 @@ Each element of the list contains a dataframe, each column of which corresponds 
 \examples{
 \dontshow{data(thermo)}
 ## aqueous species
-a <- info(info("methane","aq"))	
-hkf(property="Cp",ghs=a,eos=a)
+CH4aq <- info(info("methane", "aq"))	
+hkf(property = "Cp", parameters = CH4aq)
 # the non-solvation heat capacity
-hkf(property="Cp",ghs=a,eos=a,contrib="n")	
+hkf(property = "Cp", parameters = CH4aq, contrib = "n")	
 # at different temperature and pressure
-hkf(property="Cp",ghs=a,eos=a,T=c(373.15,473.15),P=1000)
+hkf(property = "Cp", parameters = CH4aq, T = c(373.15,473.15), P = 1000)
 
 ## crystalline, gas, liquid species
-a <- info(info("methane","gas"))	
-cgl(property="Cp",ghs=a,eos=a)
+CH4gas <- info(info("methane", "gas"))	
+cgl(property = "Cp", parameters = CH4gas)
 # melting and vaporization of n-octane
-a <- info(info(rep("n-octane",3),c("cr","liq","gas")))
-b <- cgl(property="G",ghs=a,eos=a,T=seq(200,420,10),P=1)
-which.pmax(b,pmin=TRUE)  # 1 = cr, 2 = liq, 3 = gas
+C8H18par <- info(info(rep("n-octane", 3), c("cr", "liq", "gas")))
+myT <- seq(200, 420, 10)
+DG0f <- cgl(property = "G", parameters = C8H18par, T = myT, P = 1)
+cbind(T = myT, which.pmax(DG0f, pmin = TRUE))  # 1 = cr, 2 = liq, 3 = gas
 # compare that result with the tabulated transition temperatures
-print(a)
+print(C8H18par)
 }
 
 \references{

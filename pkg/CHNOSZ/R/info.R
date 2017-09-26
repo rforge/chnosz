@@ -18,10 +18,8 @@ info <- function(species=NULL, state=NULL, check.it=TRUE) {
       nrow(thermo$element), ", buffers: ", length(unique(thermo$buffers$name)), sep=""))
     message(paste("number of proteins in thermo$protein is", nrow(thermo$protein), "from",
       length(unique(thermo$protein$organism)), "organisms"))
-    # print information about SGD.csv, ECO.csv, HUM.csv
-    more.aa(organism="Sce")
-    more.aa(organism="Eco")
-    #pdata.aa(organism="HUM")
+    # print information about Sce.csv
+    yeast.aa()
     # print information about yeastgfp.csv
     yeastgfp()
     return()

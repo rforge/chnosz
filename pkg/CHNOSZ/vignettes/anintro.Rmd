@@ -1225,7 +1225,7 @@ ina <- is.na(y$abundance)
 
 Next, we get the amino acid compositions of the proteins and add them to `thermo$protein`:
 ```{r add_protein_yeast, message=FALSE}
-aa <- more.aa(y$protein[!ina], "Sce")
+aa <- yeast.aa(y$protein[!ina])
 ip <- add.protein(aa)
 ```
 
@@ -1362,10 +1362,9 @@ The `nrows` argument can be added to read that number of rows:
 file <- system.file("extdata/protein/DS11.csv", package = "CHNOSZ")
 aa_bison <- read.csv(file, as.is = TRUE, nrows = 5)
 ```
-<span style="color:green">`more.aa()`</span> retrieves amino acid composition of proteins in *Saccharomyces cerevisiae* and *Escherichia coli* from data files that are included with CHNOSZ:
-```{r more_aa}
-aa_YML020W <- more.aa("YML020W", "Sce")
-aa_ILVE <- more.aa("ILVE", "Eco")
+<span style="color:green">`yeast.aa()`</span> retrieves amino acid composition of proteins in *Saccharomyces cerevisiae* from a data file that is included with CHNOSZ:
+```{r yeast_aa}
+aa_YML020W <- yeast.aa("YML020W")
 ```
 <span style="color:green">`read.fasta()`</span> reads a FASTA file and returns the amino acid compositions of the sequences.
 The `iseq` argument can be used to read those sequences from the file:
@@ -1446,7 +1445,7 @@ aa_UniProt
 
 These amino acid compositions can be processed using functions such as <span style="color:green">`protein.length()`</span> and <span style="color:green">`protein.formula()`</span>:
 ```{r protein_length}
-myaa <- rbind(aa_YML020W, aa_ILVE, aa_Ef, aa_PRIO)
+myaa <- rbind(aa_YML020W, aa_Ef, aa_PRIO)
 protein.length(myaa)
 ```
 

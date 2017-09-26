@@ -1,23 +1,20 @@
-# CHNOSZ/more.aa.R
-# get amino acid compositions of proteins from model organisms
-# (Eco.csv or Sce.csv)
+# CHNOSZ/yeast.aa.R
+# get amino acid compositions of proteins from Saccharomyces cerevisiae
 
-more.aa <- function(protein=NULL, organism) {
-  # return the composition of one or more proteins from
-  # a "model organism", E. coli (Eco) or S. cerevisiae (Sce)
+yeast.aa <- function(protein=NULL) {
+  # return the composition of one or more proteins from S. cerevisiae (Sce)
   # extracted from get.protein 20120519
-  datapath <- paste("extdata/protein/", organism, ".csv.xz", sep="")
+  datapath <- paste("extdata/protein/Sce.csv.xz", sep="")
   datafile <- system.file(datapath, package="CHNOSZ")
   if(datafile=="") stop(paste("missing", datapath))
   mydata <- read.csv(datafile, as.is=TRUE)
   # if protein is not supplied, just give some information about the datafile
   if(is.null(protein)) {
-    message("more.aa: ", datapath, " has data for ", nrow(mydata), " proteins")
+    message("yeast.aa: ", datapath, " has data for ", nrow(mydata), " proteins")
     return(invisible())
   }
   # which columns to search for matches
-  if(organism=="Sce") searchcols <- c("ORF", "SGDID", "GENE")
-  else if(organism=="Eco") searchcols <- c("protein", "abbrv")
+  searchcols <- c("ORF", "SGDID", "GENE")
   # which columns have the amino acids, in the order of thermo$protein 
   iaa <- match(toupper(aminoacids(3)), toupper(colnames(mydata)))
   # iterate over a list
@@ -41,17 +38,15 @@ more.aa <- function(protein=NULL, organism) {
     inotmatch <- which(is.na(imatch)) 
     if(length(inotmatch) > 0) {
       if(length(inotmatch)==1) verb <- " was" else verb <- " were"
-      message("more.aa: ", paste(protein[[i]][inotmatch], collapse=" "), verb, " not matched")
+      message("yeast.aa: ", paste(protein[[i]][inotmatch], collapse=" "), verb, " not matched")
     }
     aa <- data.frame(mydata[imatch, iaa])
     # add the identifying columns
-    if(organism=="Sce") ref <- mydata$SGDID[imatch]
-    else ref <- rep(NA, length(protein[[i]]))
-    if(organism=="Sce") abbrv <- mydata$GENE[imatch]
-    else abbrv <- rep(NA, length(protein[[i]]))
+    ref <- mydata$SGDID[imatch]
+    abbrv <- mydata$GENE[imatch]
     chains <- rep(1, length(protein[[i]]))
     chains[inotmatch] <- NA
-    org <- rep(organism[[1]], length(protein[[i]]))
+    org <- rep("Sce", length(protein[[i]]))
     precols <- data.frame(protein[[i]], organism=org, ref, abbrv, chains, stringsAsFactors=FALSE)
     colnames(precols)[1] <- "protein"
     colnames(aa) <- aminoacids(3)

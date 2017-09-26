@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-19 (2017-09-26)
+CHANGES IN CHNOSZ 1.1.0-20 (2017-09-26)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -59,6 +59,8 @@ OTHER CHANGES:
 
 - To save space, taxid_names.csv has been trimmed to hold only those
   taxids listed in extdata/bison/gi.taxid.txt.
+
+- Remove Eco.csv.xz and rename more.aa() to yeast.aa().
 
 CHANGES IN CHNOSZ 1.1.0 (2017-05-04)
 ------------------------------------

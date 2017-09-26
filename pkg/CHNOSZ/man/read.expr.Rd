@@ -42,13 +42,13 @@ Each of these functions returns a list with elements named \code{protein} (names
 For \code{yeastgfp}, if \code{location} is NULL, the function returns the names of all known locations, and if the length of \code{location} is >1, the \code{protein} and \code{abundance} values are lists of the results for each location.
 }
 
-\seealso{ \code{\link{more.aa}} for getting the amino acid compositions of the proteins. }
+\seealso{ \code{\link{yeast.aa}} for getting the amino acid compositions of the proteins. }
 
 \examples{\dontshow{data(thermo)}
 ## overall oxidation state of proteins exclusively localized 
 ## to cytoplasm of S. cerevisiae with/without abundance weighting
 y <- yeastgfp("cytoplasm")
-aa <- more.aa(y$protein, "Sce")
+aa <- yeast.aa(y$protein)
 aaavg <- aasum(aa, average=TRUE)
 ZC(protein.formula(aaavg))
 # the average composition weighted by abundance
@@ -61,17 +61,17 @@ file <- system.file("extdata/abundance/ISR+08.csv.xz", package="CHNOSZ")
 # read all protein names and abundances in ID and emPAI columns
 # (emPAI - exponentially modified protein abundance index)
 expr <- read.expr(file, "ID", "emPAI")
-# scatter plot of average oxidation state and emPAI
-aa <- more.aa(expr$protein, "Eco")
-pf <- protein.formula(aa)
-zc <- ZC(pf)
-# note we specify ylim here that excludes some high-emPAI values
-plot(zc, expr$abundance, xlab=expr.property("ZC"), ylim=c(0, 90), ylab="emPAI",
-  main="Proteins in E. coli cytosol\nAbundance vs oxidation state of carbon")
-legend("topleft", pch=1, legend="Ishihama et al., 2008")
-# what if we just want kinases?
-# "description" is the name of the column where we search for "kinase"
-expr.kinase <- read.expr(file, "ID", "emPAI", list(description="kinase"))
+## scatter plot of average oxidation state and emPAI
+#aa <- more.aa(expr$protein, "Eco")
+#pf <- protein.formula(aa)
+#zc <- ZC(pf)
+## note we specify ylim here that excludes some high-emPAI values
+#plot(zc, expr$abundance, xlab=expr.property("ZC"), ylim=c(0, 90), ylab="emPAI",
+#  main="Proteins in E. coli cytosol\nAbundance vs oxidation state of carbon")
+#legend("topleft", pch=1, legend="Ishihama et al., 2008")
+## what if we just want kinases?
+## "description" is the name of the column where we search for "kinase"
+#expr.kinase <- read.expr(file, "ID", "emPAI", list(description="kinase"))
 
 ## potential fields for overall protein compositions 
 ## transcriptionally induced and repressed in aerobic
@@ -87,11 +87,11 @@ expt <- c("Clim.aerobic.down", "Clim.aerobic.up",
   "Clim.anaerobic.down", "Clim.anaerobic.up")
 file <- system.file("extdata/abundance/TBD+05.csv", package="CHNOSZ")
 dat <- read.csv(file, as.is=TRUE)
-# more.aa: get the amino acid compositions
+# yeast.aa: get the amino acid compositions
 # aasum: average them together
 for(thisexpt in expt) {
   p <- dat$protein[dat[, thisexpt]]
-  aa <- more.aa(p, "Sce")
+  aa <- yeast.aa(p)
   aa <- aasum(aa, average=TRUE, protein=thisexpt)
   add.protein(aa)
 }

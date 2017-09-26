@@ -44,16 +44,12 @@
   }
 
   Files in \code{protein} contain amino acid compositions for proteins.
-  See \code{\link{more.aa}} and \code{\link{read.expr}} for examples that use these files.
+  See \code{\link{yeast.aa}} and \code{\link{read.expr}} for examples that use these files.
   \itemize{
     \item \code{Sce.csv.xz}
       Data frame of amino acid composition of 6716 proteins from the \emph{Saccharomyces} Genome Database (SGD).
       Values in the first three columns are the \code{ORF} names of proteins, \code{SGDID}, and \code{GENE} names. The remaining twenty columns (\code{ALA}..\code{VAL}) contain the numbers of the respective amino acids in each protein.
       The sources of data for \samp{Sce.csv} are the files \samp{protein_properties.tab} and \samp{SGD_features.tab} (for the gene names), downloaded from \url{http://www.yeastgenome.org} on 2013-08-24.
-    \item \code{Eco.csv.xz}
-      Amino acid compositions of 4407 proteins in \emph{Escherichia coli} strain K12.
-      Format is the one used \code{\link{thermo}$protein}, with columns \samp{protein} holding the gene name, \samp{organism} set to \samp{ECOLI}, and \code{abbrv} holding the UniProt ID.
-      The source of data is the file \samp{ECOLI.fas} downloaded from the HAMAP (High-quality Automated and Manual Annotation of microbial Proteomes system) FTP site (Gattiker et al., 2003) on 2010-09-25 (old URL: ftp://ftp.expasy.org/databases/hamap/complete_proteomes/fasta/bacteria).
     \item \code{DS11.csv}, \code{DS13.csv}
       These two files contain amino acid compositions of metagenomically encoded proteins, averaged together according to functional annotation (DS11) or taxonomic affiliation (DS13).
       The data are from Dick and Shock, 2011 and 2013.

@@ -36,7 +36,7 @@ title(main="Prebiological atmospheres (Dayhoff et al., 1964)")
 # get the proteins in the requested location
 y <- yeastgfp("cell.periphery")
 # get the amino acid compositions of the proteins
-aa <- more.aa(y$protein, "Sce")
+aa <- yeast.aa(y$protein)
 # don't use those with NA abundance or sequence
 ina <- is.na(y$abundance) | is.na(aa$chains)
 aa <- aa[!ina, ]

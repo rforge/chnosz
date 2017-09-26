@@ -9,10 +9,11 @@ water <- function(property = NULL, T = get("thermo")$opt$Tr, P = "Psat") {
   # set water option
   if(length(property)==1 & any(property %in% c("SUPCRT", "SUPCRT92", "IAPWS", "IAPWS95", "DEW"))) {
     thermo <- get("thermo")
+    owater <- thermo$opt$water
     thermo$opt$water <- property
     assign("thermo", thermo, "CHNOSZ")
-    message(paste("water: thermo$opt$water was set to", property))
-    return(invisible(property))
+    message(paste("water: setting thermo$opt$water to", property))
+    return(invisible(owater))
   }
   # make T and P equal length
   if(!identical(P, "Psat")) {
@@ -23,15 +24,12 @@ water <- function(property = NULL, T = get("thermo")$opt$Tr, P = "Psat") {
   T[T == 273.15] <- 273.16
   wopt <- get("thermo")$opt$water
   if(grepl("SUPCRT", wopt)) {
-    # get the values of the properties using SUPCRT92
+    # get properties using SUPCRT92
     w.out <- water.SUPCRT92(property, T, P)
   }
   if(grepl("IAPWS", wopt)) {
-    # here we get properties using IAPWS-95 
+    # get properties using IAPWS-95 
     w.out <- water.IAPWS95(property, T, P)
-    # normalize the names to use upper case (expected by subcrt())
-    iprop <- match(tolower(property), tolower(water.props("IAPWS95")))
-    colnames(w.out) <- water.props("IAPWS95")[iprop]
   }
   if(grepl("DEW", wopt)) {
     # use the Deep Earth Water (DEW) model
@@ -291,7 +289,7 @@ water.IAPWS95 <- function(property, T=298.15, P=1) {
     return(p)
   }
   ### main loop; init dataframe output and density holders
-  w.out <- NULL
+  w.out <- data.frame(matrix(nrow=length(T), ncol=length(property)))
   my.rho <- NULL
   # get densities unless only Psat is requested
   if(!identical(tolower(property), "psat")) {
@@ -302,18 +300,23 @@ water.IAPWS95 <- function(property, T=298.15, P=1) {
     rho <- function() my.rho
   }
   for(i in 1:length(property)) {
-    if(tolower(property[i]) %in% c("e", "kt")) {
+    if(tolower(property[i]) %in% c("e", "kt", "alpha", "daldt", "beta")) {
       # E and kT aren't here yet... set them to NA
-      warning("water.IAPWS95: values of ", property[i], " are NA\n", call.=FALSE)
-      inew <- rep(NA, length(T))
+      # also set alpha, daldT, and beta (for derivatives of g function) to NA 20170926 
+      warning("water.IAPWS95: values of ", property[i], " are NA", call.=FALSE)
+      wnew <- rep(NA, length(T))
     } else {
       message(paste(" ", property[i], sep=""), appendLF=FALSE)
-      inew <- get(tolower(property[i]))()
+      wnew <- get(tolower(property[i]))()
     }
-    wnew <- data.frame(inew)
-    if(i > 1) w.out <- cbind(w.out, wnew) else w.out <- wnew
+    w.out[, i] <- wnew
   }  
   message("")
+  # use uppercase property names (including properties available in SUPCRT that might be NA here)
+  wprop <- unique(c(water.props("SUPCRT"), water.props("IAPWS")))
+  iprop <- match(tolower(property), tolower(wprop))
+  property[!is.na(iprop)] <- wprop[na.omit(iprop)]
+  colnames(w.out) <- property
   return(w.out)
 }
 

@@ -34,7 +34,7 @@ Note that the equation-of-state parameter \code{Z} (appearing in the \eqn{g}{g}-
 \code{H2O.props} is an optional argument that lists the properties of water that should be returned; it is used by \code{\link{subcrt}} so that the time-consuming water calculations are only performed once.
 
 The temperature and pressure derivatives of the \code{omega} parameter for charged species (where \code{Z != 0}, but not for the aqueous proton, H+) are calculated using the \eqn{g}{g}- and \eqn{f}{f}-functions described by Shock et al., 1992 and Johnson et al., 1992.
-This option is turned off when the IAPWS-95 equations are activated (see \code{\link{water}}).
+If the IAPWS-95 or DEW equations are activated (see \code{\link{water}}), only the \eqn{g}{g}-function (applicable to \samp{G}), but not its derivatives (needed for \samp{H}, \samp{S}, \samp{Cp}, and \samp{V}), is calculated.
 
 The parameters in the \code{cgl} equations of state for crystalline, gas and liquid species (except liquid water) include \code{V}, \code{a}, \code{b}, \code{c}, \code{d}, \code{e}, \code{f} and \code{lambda}.
 The terms denoted by \code{a}, \code{b} and \code{c} correspond to the Maier-Kelley equation for heat capacity (Maier and Kelley, 1932); the additional terms are useful for representing heat capacities of minerals (Robie and Hemingway, 1995) and gaseous or liquid organic species (Helgeson et al., 1998).

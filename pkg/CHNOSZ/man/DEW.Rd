@@ -38,7 +38,7 @@ The calculated values of density, Gibbs energy, and the Q Born coefficient have 
 }
 
 \seealso{
-\code{\link{water.DEW}} 
+\code{\link{water.DEW}}; use \code{water("DEW")} to activate these equations for the main functions in CHNOSZ.
 }
 
 \examples{

@@ -30,7 +30,7 @@ hkf <- function(property = NULL, T = 298.15, P = 1, parameters = NULL,
   notcontrib <- ! contrib %in% c('n', 's', 'o')
   if(TRUE %in% notcontrib) stop(paste("contrib must be in c('n', 's', 'o'); got", c2s(contrib[notcontrib])))
   # get water properties
-  # rho - for subcrt() output and derivatives of omega (if needed)
+  # rho - for subcrt() output and g function
   # Born functions and epsilon - for HKF calculations
   H2O.props <- c(H2O.props, "QBorn", "XBorn", "YBorn", "epsilon")
   if(grepl("SUPCRT", thermo$opt$water)) {
@@ -74,7 +74,7 @@ hkf <- function(property = NULL, T = 298.15, P = 1, parameters = NULL,
     dwdP <- dwdT <- d2wdT2 <- numeric(length(T))
     Z <- PAR$Z
     omega.PT <- rep(PAR$omega, length(T))
-    if(!identical(Z, 0) & !identical(PAR$name, "H+") & grepl("SUPCRT", thermo$opt$water)) {
+    if(!identical(Z, 0) & !identical(PAR$name, "H+")) {
       # compute derivatives of omega: g and f functions (Shock et al., 1992; Johnson et al., 1992)
       rhohat <- H2O.PT$rho/1000  # just converting kg/m3 to g/cm3
       g <- gfun(rhohat, convert(T, "C"), P, H2O.PT$alpha, H2O.PT$daldT, H2O.PT$beta)
@@ -234,46 +234,54 @@ gfun <- function(rhohat, Tc, P, alpha, daldT, beta) {
   ifg <- ifg & !is.na(ifg)
   # Eq. 32
   g[ifg] <- g[ifg] - f[ifg]
+  # at P > 6000 bar (in DEW calculations), g is zero 20170926
+  g[P > 6000] <- 0
   ## now we have g at P, T
+  # put the results in their right place (where rhohat < 1)
+  out$g[idoit] <- g
   ## the rest is to get its partial derivatives with pressure and temperature
   ## after Johnson et al., 1992
   # alpha - coefficient of isobaric expansivity (K^-1)
   # daldT - temperature derivative of coefficient of isobaric expansivity (K^-2)
   # beta - coefficient of isothermal compressibility (bar^-1)
-  # Eqn. 76
-  d2fdT2 <- (0.0608/300*((Tc-155)/300)^2.8 + af1/375*((Tc-155)/300)^14) * (af2*(1000-P)^3 + af3*(1000-P)^4)
-  # Eqn. 75
-  dfdT <- (0.016*((Tc-155)/300)^3.8 + 16*af1/300*((Tc-155)/300)^15) * (af2*(1000-P)^3 + af3*(1000-P)^4)
-  # Eqn. 74
-  dfdP <- -(((Tc-155)/300)^4.8 + af1*((Tc-155)/300)^16) * (3*af2*(1000-P)^2 + 4*af3*(1000-P)^3)
-  d2bdT2 <- 2 * bg3  # Eqn. 73
-  d2adT2 <- 2 * ag3  # Eqn. 72
-  dbdT <- bg2 + 2*bg3*Tc  # Eqn. 71
-  dadT <- ag2 + 2*ag3*Tc  # Eqn. 70
-  # Eqn. 69
-  dgadT <- bg*rhohat*alpha*(1-rhohat)^(bg-1) + log(1-rhohat)*g/ag*dbdT  
-  D <- rhohat
-  # transcribed from SUPCRT92/reac92.f
-  dDdT <- -D * alpha
-  dDdP <- D * beta
-  dDdTT <- -D * (daldT - alpha^2)
-  Db <- (1-D)^bg
-  dDbdT <- -bg*(1-D)^(bg-1)*dDdT + log(1-D)*Db*dbdT
-  dDbdTT <- -(bg*(1-D)^(bg-1)*dDdTT + (1-D)^(bg-1)*dDdT*dbdT + 
-    bg*dDdT*(-(bg-1)*(1-D)^(bg-2)*dDdT + log(1-D)*(1-D)^(bg-1)*dbdT)) +
-    log(1-D)*(1-D)^bg*d2bdT2 - (1-D)^bg*dbdT*dDdT/(1-D) + log(1-D)*dbdT*dDbdT
-  d2gdT2 <- ag*dDbdTT + 2*dDbdT*dadT + Db*d2adT2
-  d2gdT2[ifg] <- d2gdT2[ifg] - d2fdT2[ifg]
-  dgdT <- g/ag*dadT + ag*dgadT  # Eqn. 67
-  dgdT[ifg] <- dgdT[ifg] - dfdT[ifg]
-  dgdP <- -bg*rhohat*beta*g*(1-rhohat)^-1  # Eqn. 66
-  dgdP[ifg] <- dgdP[ifg] - dfdP[ifg]
-  # phew! done with those derivatives
-  # put the results in their right place (where rhohat < 1)
-  out$g[idoit] <- g
-  out$dgdT[idoit] <- dgdT
-  out$d2gdT2[idoit] <- d2gdT2
-  out$dgdP[idoit] <- dgdP
+  # if these are NULL or NA (for IAPWS-95 and DEW), we skip the calculation
+  if(is.null(alpha)) alpha <- NA
+  if(is.null(daldT)) daldT <- NA
+  if(is.null(beta)) beta <- NA
+  if(!all(is.na(alpha)) & !all(is.na(daldT)) & !all(is.na(beta))) {
+    # Eqn. 76
+    d2fdT2 <- (0.0608/300*((Tc-155)/300)^2.8 + af1/375*((Tc-155)/300)^14) * (af2*(1000-P)^3 + af3*(1000-P)^4)
+    # Eqn. 75
+    dfdT <- (0.016*((Tc-155)/300)^3.8 + 16*af1/300*((Tc-155)/300)^15) * (af2*(1000-P)^3 + af3*(1000-P)^4)
+    # Eqn. 74
+    dfdP <- -(((Tc-155)/300)^4.8 + af1*((Tc-155)/300)^16) * (3*af2*(1000-P)^2 + 4*af3*(1000-P)^3)
+    d2bdT2 <- 2 * bg3  # Eqn. 73
+    d2adT2 <- 2 * ag3  # Eqn. 72
+    dbdT <- bg2 + 2*bg3*Tc  # Eqn. 71
+    dadT <- ag2 + 2*ag3*Tc  # Eqn. 70
+    # Eqn. 69
+    dgadT <- bg*rhohat*alpha*(1-rhohat)^(bg-1) + log(1-rhohat)*g/ag*dbdT  
+    D <- rhohat
+    # transcribed from SUPCRT92/reac92.f
+    dDdT <- -D * alpha
+    dDdP <- D * beta
+    dDdTT <- -D * (daldT - alpha^2)
+    Db <- (1-D)^bg
+    dDbdT <- -bg*(1-D)^(bg-1)*dDdT + log(1-D)*Db*dbdT
+    dDbdTT <- -(bg*(1-D)^(bg-1)*dDdTT + (1-D)^(bg-1)*dDdT*dbdT + 
+      bg*dDdT*(-(bg-1)*(1-D)^(bg-2)*dDdT + log(1-D)*(1-D)^(bg-1)*dbdT)) +
+      log(1-D)*(1-D)^bg*d2bdT2 - (1-D)^bg*dbdT*dDdT/(1-D) + log(1-D)*dbdT*dDbdT
+    d2gdT2 <- ag*dDbdTT + 2*dDbdT*dadT + Db*d2adT2
+    d2gdT2[ifg] <- d2gdT2[ifg] - d2fdT2[ifg]
+    dgdT <- g/ag*dadT + ag*dgadT  # Eqn. 67
+    dgdT[ifg] <- dgdT[ifg] - dfdT[ifg]
+    dgdP <- -bg*rhohat*beta*g*(1-rhohat)^-1  # Eqn. 66
+    dgdP[ifg] <- dgdP[ifg] - dfdP[ifg]
+    # phew! done with those derivatives
+    out$dgdT[idoit] <- dgdT
+    out$d2gdT2[idoit] <- d2gdT2
+    out$dgdP[idoit] <- dgdP
+  }
   return(out)
 }
 

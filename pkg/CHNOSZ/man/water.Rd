@@ -40,7 +40,7 @@ The high-level function \code{water} performs different computations, depending 
 
 }
 
-Use e.g. \code{water("DEW")} to set the option.
+Use e.g. \code{water("DEW")} to set the option; the previous option (at the time of the function call) is returned invisibly.
 Subsequent calculations with \code{water}, or other functions such as \code{subcrt} and \code{affinity}, will use that option.
 
 The allowed \code{property}s for \code{water} are one or more of those given below, depending on the computational option; availability is shown by an asterisk.
@@ -132,15 +132,14 @@ water(c("QBorn", "YBorn", "XBorn"), T=T, P=2000)
 ## comparing the formulations
 T <- convert(c(25, 100, 200, 300), "K")
 # IAPWS-95
-water("IAPWS95")
+ow <- water("IAPWS95")
 water(water.props(), T=T)
 # SUPCRT92 (the default)
-water("SUPCRT92")
+water(ow)
 water(water.props(), T=T)
 
 ## calculating Q Born function
 # after Table 22 of Johnson and Norton, 1991
-water("SUPCRT92")
 T <- rep(c(375, 400, 425, 450, 475), each=5)
 P <- rep(c(250, 300, 350, 400, 450), 5)
 w <- water("QBorn", T=convert(T, "K"), P=P)

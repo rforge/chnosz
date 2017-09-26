@@ -199,3 +199,49 @@ calculate_depsdrho <- function(density, temperature) {
 
   A * exp(B) * density ^ (A - 1)
 }
+
+### testing functions ###
+# These unexported functions are included for testing purposes only.
+# In CHNOSZ, the g function and omega(P,T) are calculated via hkf().
+
+# 'Returns the value of omega at the input P and T.
+# The value returned is 'in units of cal/mol and NOT multiplied by 10^-5.
+#'pressure   - Pressure to calculate at, in bars
+#'temperature- Temperature to calculate at, in Celsius
+#'density    - Density of water to calculate omega at, in g/cm^3.
+#'wref       - The value of omega at standard pressure and temperature, in units of cal/mol.
+#'Z          - The charge of the species
+calculateOmega <- function(pressure, temperature, density, wref, Z) {
+  # 'These equations are given by Shock et al. (1992)
+  eta <- 166027       # 'Value in units of Angstroms cal mol^-1
+  # 'Defines the electrostatic radius at reference pressure and temperature
+  reref <- Z * Z / (wref / eta + Z / 3.082)
+  # 'This represents the pressure and temperature dependent solvent function
+  g <- calculateG(pressure, temperature, density)
+  # 'Defines the electrostatic radius at the input P and T
+  re <- reref + abs(Z) * g
+  omega <- eta * (Z * Z / re - Z / (3.082 + g))
+  # 'If species is hydrogen, the species is neutral, or the pressure is above 6 kb,
+  # 'this equation is not necessary because omega is very close to wref.
+  if(Z==0) omega[] <- wref
+  omega[pressure > 6000] <- wref
+}
+
+# 'Returns the value of the g function. If the density is greater than 1 g/cm^3, then zero is returned.
+# 'pressure   - The pressure to calculate at, in bars
+# 'temperature- The temperature to calculate at, in celsius
+# 'density    - The density of water at which to calculate g at, in g/cm^3
+calculateG <- function(pressure, temperature, density) {
+  T <- temperature
+  P <- pressure
+  a_g <- -2.037662 + 0.005747 * T - 6.557892E-06 * T * T
+  b_g <- 6.107361 - 0.01074377 * T + 1.268348E-05 * T * T
+  # 'Calculates the difference function in the case where we need to calculate at Psat conditions
+  f <- (((T - 155) / 300)^4.8 + 36.66666 * ((T - 155) / 300)^16) *
+      (-1.504956E-10 * (1000 - P)^3 + 5.017997E-14 * (1000 - P)^4)
+  f[P > 1000 | T < 155 | T > 355] <- 0
+  g <- a_g * (1 - density)^b_g - f
+  # use g = 0 for density >= 1
+  g[density >= 1] <- 0
+  g
+}

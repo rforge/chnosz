@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-16 (2017-09-25)
+CHANGES IN CHNOSZ 1.1.0-17 (2017-09-26)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -48,6 +48,9 @@ OTHER CHANGES:
   subcrt().
 
 - In water.* functions, rename the "diel" variable to "epsilon".
+
+- calculations of the g function (but not its derivatives) are now
+  enabled for DEW and IAPWS-95.
 
 CHANGES IN CHNOSZ 1.1.0 (2017-05-04)
 ------------------------------------

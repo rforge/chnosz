@@ -76,6 +76,7 @@
     \item \code{taxid.names.R} Generate a table of scientific names for the provided taxids. Requires the complete \code{names.dmp} and \code{nodes.dmp} from NCBI taxonomy files.
     \item \code{taxid_names.csv.xz} Output from above.
       NOTE: For backward compatibility with the example BLAST files for the Bison Pool metagenome, the packaged file merges records for taxids found in either RefSeq 57 or 61.
+      NOTE 2: To save space for the package, the file has been trimmed to hold only those taxids listed in extdata/bison/gi.taxid.txt.
       Certain taxids in release 57 were not located in the current RefSeq catalog, probably related to the transition to the \dQuote{WP} multispecies accessions (\url{ftp://ftp.ncbi.nlm.nih.gov/refseq/release/announcements/WP-proteins-06.10.2013.pdf}).
       See example for \code{\link{id.blast}}.
   }

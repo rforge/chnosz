@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-18 (2017-09-26)
+CHANGES IN CHNOSZ 1.1.0-19 (2017-09-26)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -56,6 +56,9 @@ OTHER CHANGES:
 
 - calculations of the g function (but not its derivatives) are now
   enabled for DEW and IAPWS-95.
+
+- To save space, taxid_names.csv has been trimmed to hold only those
+  taxids listed in extdata/bison/gi.taxid.txt.
 
 CHANGES IN CHNOSZ 1.1.0 (2017-05-04)
 ------------------------------------

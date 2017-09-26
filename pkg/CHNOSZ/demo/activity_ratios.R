@@ -11,7 +11,7 @@ fill <- "terrain"
 ## Garrels and Christ, p. 361 (http://www.worldcat.org/oclc/517586)
 ## https://wwwbrr.cr.usgs.gov/projects/GWC_coupled/phreeqc/html/final-75.html
 # make the pseudospecies H4SiO4 available for use as a basis species
-add.obigt("pseudo-H4SiO4")
+add.obigt("CHNOSZ_aq", "pseudo-H4SiO4")
 basis(c("Al+3", "pseudo-H4SiO4", "K+", "H2O", "H+", "O2"))
 species(c("gibbsite", "muscovite", "kaolinite", "pyrophyllite", "k-feldspar"))
 a <- affinity(H4SiO4 = c(-6, -2, res), `K+` = c(-3, 6, res))

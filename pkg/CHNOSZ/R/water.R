@@ -352,6 +352,10 @@ water.DEW <- function(property, T = 373.15, P = 1000) {
     if(sum(iPrTr)==sum(ilow)) message(paste("water.DEW: using SUPCRT calculations for Pr,Tr"))
     if(sum(iPrTr)==0) message(paste("water.DEW: using SUPCRT calculations for", sum(ilow), "low-T or low-P condition(s)"))
     if(sum(ilow) > sum(iPrTr)) message(paste("water.DEW: using SUPCRT calculations for Pr,Tr and", sum(ilow)-1, "other low-T or low-P condition(s)"))
+    # however, we also have this:
+    # epsilon(Pr,Tr) from SUPCRT: 78.24514
+    # epsilon(Pr,Tr) in DEW spreadsheet: 78.47
+    if("epsilon" %in% property) out$epsilon[iPrTr] <- 78.47
   }
   out
 }

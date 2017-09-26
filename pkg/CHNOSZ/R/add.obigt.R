@@ -97,19 +97,26 @@ mod.obigt <- function(...) {
   return(ispecies)
 }
 
-add.obigt <- function(file, force=TRUE, E.units="cal") {
+add.obigt <- function(file, species=NULL, force=TRUE, E.units="cal") {
   # add/replace entries in thermo$obigt from values saved in a file
   # only replace if force==TRUE
   thermo <- get("thermo")
   to1 <- thermo$obigt
   id1 <- paste(to1$name,to1$state)
-  # is the source the name of a species or a file?
-  CHNOSZfile <- system.file("extdata/OBIGT/CHNOSZ_aq.csv", package="CHNOSZ")
-  dat <- read.csv(CHNOSZfile, as.is=TRUE)
-  idat <- match(file, dat$name)
-  newdat <- dat[idat, ]
-  if(!all(is.na(newdat))) to2 <- newdat  # a species
-  else to2 <- read.csv(file,as.is=TRUE)  # a file
+  # we match system files with the file suffixes removed (e.g. "CHNOSZ_aq" or "DEW_aq")
+  sysfiles <- dir(system.file("extdata/OBIGT/", package="CHNOSZ"))
+  sysnosuffix <- sapply(strsplit(sysfiles, "\\."), "[", 1)
+  isys <- match(file, sysnosuffix)
+  if(!is.na(isys)) file <- system.file(paste0("extdata/OBIGT/", sysfiles[isys]), package="CHNOSZ")
+  # read data from the file
+  to2 <- read.csv(file, as.is=TRUE)
+  # load only selected species if requested
+  if(!is.null(species)) {
+    idat <- match(species, to2$name)
+    ina <- is.na(idat)
+    if(!any(ina)) to2 <- to2[idat, ]
+    else stop(paste("file", file, "doesn't have", paste(species[ina], collapse=", ")))
+  }
   id2 <- paste(to2$name,to2$state)
   # check if the data is compatible with thermo$obigt
   tr <- try(rbind(to1,to2),silent=TRUE)

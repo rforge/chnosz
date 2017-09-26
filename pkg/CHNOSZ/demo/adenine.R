@@ -106,7 +106,7 @@ lines(TK, LH06$V, lty = 3)
 lines(TK, Vfun(73.9, -917.0, -7930.3, TK), lty = 2)
 # load HKF coefficients for adenine reported by LCT17
 # note that the Cp coefficients here are very close to those regressed above!
-add.obigt("adenine")
+add.obigt("CHNOSZ_aq", "adenine")
 LCT17 <- subcrt("adenine", T = TK)$out$adenine
 lines(TK, LCT17$V, lwd = 2, col = "royalblue")
 legend("bottomright", lty = c(3, 2, 1), lwd = c(1, 1, 2), col = c("black", "black", "royalblue"), bty = "n",

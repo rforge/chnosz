@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-17 (2017-09-26)
+CHANGES IN CHNOSZ 1.1.0-18 (2017-09-26)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -17,14 +17,19 @@ MAJOR CHANGES:
 
 DATABASE UPDATES:
 
+- Add DEW_aq.csv with aqueous species data from the DEW spreadsheet
+  (May 2017 version).
+
+- In add.obigt(), using 'file' without a file suffix now can be used to
+  locate corresponding files (such as CHNOSZ_aq.csv or DEW_aq.csv) in
+  the extdata/OBIGT package directory.
+
+- add.obigt() gets new argument 'species' for selecting species to add.
+
 - Data file CHNOSZ_aq.csv is no longer added to the database by default.
   It is now intended to hold provisional updates. Updated heat capacity
   and volume HKF parameters for adenine (Lowe et al., 2017) have been
   added to this file.
-
-- Modify add.obigt() to search for species from CHNOSZ_aq.csv to add to
-  the current database. If the species is not found, add.obigt() treats
-  the argument as a file name, as before.
 
 - Remove H2O(gas) from the database (taken from SUPCRT92), as it gives
   inconsistent results for metastable steam (Zavarin et al., 2016,

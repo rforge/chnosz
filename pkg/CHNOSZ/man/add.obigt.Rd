@@ -9,13 +9,14 @@ Add or modify species in the thermodynamic database.
 }
 
 \usage{
-  add.obigt(file, force = TRUE, E.units = "cal")
+  add.obigt(file, species = NULL, force = TRUE, E.units = "cal")
   mod.obigt(...)
   today()
 }
 
 \arguments{
   \item{file}{character, path to a file}
+  \item{species}{character, names of species to load from file}
   \item{force}{logical, force replacement of already existing species?}
   \item{E.units}{character, units of energy, \samp{cal} or \samp{J}}
   \item{...}{character or numeric, properties of species to modify in the thermodynamic database}
@@ -23,17 +24,21 @@ Add or modify species in the thermodynamic database.
 
 \details{
 
-\code{\link{add.obigt}} is available to update the thermodynamic database in use in the running session.
-If the \code{file} argument matches the name of a species in \code{extdata/OBIGT/CHNOSZ_aq.csv}, this species is added to the database (possibly replacing an existing species with the same name).
-Otherwise, \code{add.obigt} reads data from the specified \code{file} and adds it to \code{\link{thermo}$obigt}.
+\code{\link{add.obigt}} is used to update the thermodynamic database (\code{\link{thermo}$obigt}) in the running session.
+The format (column names) of the file must be the same as the \code{extdata/OBIGT/*.csv} files provided with CHNOSZ.
+\code{file} can be the path to a user-supplied file or the name, sans any file suffixes, of any file in the \code{extdata/OBIGT} directory packaged with CHNOSZ (e.g. \samp{DEW_aq} or \samp{organic_aq}).
 
-The format of the file must be the same as the OBIGT files provided with CHNOSZ.
-Set \code{force} to FALSE to avoid replacing species that exist in the thermodynamic database (each unique combination of a name and a state in the database is considered to be a different species).
+If \code{species} is NULL (default), all species listed in the file are used.
+If \code{species} is given and matches the name(s) of species in the file, only those species are added to the database.
+
+By default, species in the file replace any existing species having the same combination of name and state.
+Set \code{force} to FALSE to avoid replacing species that are present in (\code{thermo$obigt}).
+
 Given the default setting of \code{E.units}, the function does not perform any unit conversions.
 If \code{E.units} is set to \samp{J}, then the thermodynamic parameters are converted from units of Joules to calories, as used in the CHNOSZ database. 
 
 When adding species, there is no attempt made to keep the order of physical states in the database (aq-cr-liq-gas); the function simply adds new rows to the end of \code{thermo}$obigt.
-As a result, retrieving the properties of an added aqueous species using \code{\link{info}} requires an explicit \code{state="aq"} argument to that function if a species with the same name is in one of the cr, liq or gas states.
+As a result, retrieving the properties of an added aqueous species using \code{\link{info}} requires an explicit \code{state="aq"} argument to that function if a species with the same name is present in one of the cr, liq or gas states.
 
 \code{mod.obigt} changes one or more of the properties of species or adds species to the thermodynamic database.
 These changes are lost if you reload the database by calling \code{\link{data}(thermo)} or if you quit the \R session without saving it.
@@ -50,7 +55,7 @@ The values provided should be in the units specifed in the documentation for the
 }
 
 \value{
-The values returned (\code{\link{invisible}}-y) by \code{mod.obigt} are the rownumbers of the affected species.
+The values returned (\code{\link{invisible}}-y) are the indices of the added and/or modified species.
 }
 
 \seealso{ \code{\link{thermo}}, \code{\link{util.data}}, \code{\link{mod.buffer}} }

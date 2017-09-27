@@ -191,21 +191,21 @@ cat("Parameters used here for goethite differ slightly from those listed in the 
 ## Optional Data {.tabset .tabset-pills}
 
 ```{r Optional_Data, results="asis", echo=FALSE}
-cat("These files contain provisional data updates that are not loaded by default (using `data(thermo)`). To load these data, run `add.obigt('CHNOSZ_aq')` or `add.obigt('DEW_aq')`.\n\n")
+cat("These files contain optional data updates that are not loaded by default (using `data(thermo)`). To load these data, run `add.obigt('CHNOSZ_aq')` or `add.obigt('DEW_aq')`.\n\n")
+```
+
+### `r setfile("DEW_aq.csv")`
+```{r DEW_aq, results="asis", echo=FALSE}
+cat("The Deep Earth Water (DEW) model extends the applicability of the revised HKF equations of state to 60 kbar. Accuracy of the thermodynamic calculations at these conditions is improved by revised correlations for some species, as described by [Sverjensky et al., 2014](https://doi.org/10.1016/j.gca.2013.12.019). The data here were taken from the May 2017 version of the DEW spreadsheet [@DEW17]. The following species are present in the spreadsheet, but are not listed in `DEW_aq.csv` because the parameters are unchanged from the default database in CHNOSZ: B(OH)3, Br-, Ca+2, Cl-, Cs+, F-, H+, H2, He, I-, K+, Kr, Li+, Mg+2, Na+, Ne, O2, Rb+, Rn.<hr>")
+```
+
+```{r noreflist, results="asis", echo=FALSE}
 ```
 
 ### `r setfile("CHNOSZ_aq.csv")`
 ```{r CHNOSZ_aq, results="asis", echo=FALSE}
 cat("The primary aqueous silica species in CHNSOZ is SiO<sub>2</sub> [@SHS89]. The pseudospecies H<sub>4</sub>SiO<sub>4</sub> is used to make activity diagrams with *a*<sub>H<sub>4</sub>SiO<sub>4</sub></sub> as a variable. The GHS and HKF parameters for this pseudospecies were calculated using CHNOSZ; see the vignette [*Regressing thermodynamic data*](eos-regress.html) for more information.\n\n")
 cat("HKF coefficients for adenine regressed from experimental Cp and V data were reported by Lowe et al. (2017). See [`demo(adenine)`](../demo/adenine.R).<hr>")
-```
-
-```{r noreflist, results="asis", echo=FALSE}
-```
-
-### `r setfile("DEW_aq.csv")`
-```{r DEW_aq, results="asis", echo=FALSE}
-cat("The Deep Earth Water (DEW) model extends the applicability of the revised HKF equations of state to 60 kbar. Accuracy of the thermodynamic calculations at these conditions is improved by revised parameters for some species, as described by [Sverjensky et al., 2014](https://doi.org/10.1016/j.gca.2013.12.019).<hr>")
 ```
 
 ```{r noreflist, results="asis", echo=FALSE}
@@ -276,15 +276,15 @@ used2 <- c(used2, filerefs(csvfile))
 ```{r Optional_Data, results="asis", echo=FALSE}
 ```
 
-#### `r setfile("CHNOSZ_aq.csv")`
-```{r CHNOSZ_aq, results="asis", echo=FALSE}
+#### `r setfile("DEW_aq.csv")`
+```{r DEW_aq, results="asis", echo=FALSE}
 ```
 
 ```{r noreflist, results="asis", echo=FALSE}
 ```
 
-#### `r setfile("DEW_aq.csv")`
-```{r DEW_aq, results="asis", echo=FALSE}
+#### `r setfile("CHNOSZ_aq.csv")`
+```{r CHNOSZ_aq, results="asis", echo=FALSE}
 ```
 
 ```{r noreflist, results="asis", echo=FALSE}

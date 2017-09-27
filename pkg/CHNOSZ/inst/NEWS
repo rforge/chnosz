@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-20 (2017-09-26)
+CHANGES IN CHNOSZ 1.1.0-21 (2017-09-27)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -18,7 +18,9 @@ MAJOR CHANGES:
 DATABASE UPDATES:
 
 - Add DEW_aq.csv with aqueous species data from the DEW spreadsheet
-  (May 2017 version).
+  (May 2017 version). Species with data unchanged from the default
+  database in CHNOSZ are not included. For the time being, only
+  selected species are fully referenced.
 
 - In add.obigt(), using 'file' without a file suffix now can be used to
   locate corresponding files (such as CHNOSZ_aq.csv or DEW_aq.csv) in

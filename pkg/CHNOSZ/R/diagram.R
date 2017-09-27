@@ -252,7 +252,7 @@ diagram <- function(
       # initialize the plot
       if(!add) {
         if(missing(xlab)) xlab <- axis.label(eout$vars[1], basis=eout$basis)
-        if(missing(xlim)) xlim <- range(xvalues)  # FIXME: this is backward if the vals are not increasing
+        if(missing(xlim)) xlim <- range(xvalues)  # TODO: this is backward if the vals are not increasing
         if(missing(ylab)) ylab <- axis.label(plotvar, units="")
         # to get range for y-axis, use only those points that are in the xrange
         if(is.null(ylim)) {

@@ -74,3 +74,47 @@ test_that("Gibbs energies of species are calculated correctly", {
   expect_equal(RG_Cl, DEWG_Cl, tolerance = 1e-7)
   water(ow)
 })
+
+test_that("Delta G, logK, and Delta V of reactions are calculated correctly", {
+  # these are reactions corresponding to Fig. 1b of Sverjensky et al., 2014 (Nat. Geosci.)
+  # the properties are calculated using parameters from the DEW spreadsheet,
+  # which are not necessarily identical those that were used for the paper
+  ow <- water("DEW")
+  add.obigt("DEW_aq", c("CO2", "HCO3-", "CO3-2", "acetic acid", "acetate", "methane"))
+  T <- 600
+  P <- c(5000, 50000)
+  R1 <- subcrt(c("H2O", "CO2", "HCO3-", "H+"), c(-1, -1, 1, 1), T=T, P=P)$out
+  R2 <- subcrt(c("HCO3-", "CO3-2", "H+"), c(-1, 1, 1), T=T, P=P)$out
+  R3 <- subcrt(c("acetic acid", "acetate", "H+"), c(-1, 1, 1), T=T, P=P)$out
+  R4 <- subcrt(c("H2O", "CO2", "acetic acid", "oxygen"), c(-2, -2, 1, 2), T=T, P=P)$out
+  R5 <- subcrt(c("oxygen", "CH4", "acetic acid", "H2O"), c(-2, -2, 1, 2), T=T, P=P)$out
+
+  # Delta G values calculated using the DEW spreadsheet (May 2017 version)
+  DEW_DG <- c(38267.404507442814, 14893.170655988564,   # R1
+              41407.05995898576,  21347.599525026497,   # R2
+              28109.598104640143, 16112.928184675075,   # R3
+              186960.22705581048, 133640.9631638353,    # R4
+              -141552.60059404257, -134279.54670605875) # R5
+  # the aqueous-only reactions
+  expect_equal(c(R1$G, R2$G, R3$G), DEW_DG[1:6], tolerance=1e-7)
+  # note that there is a small error for oxygen in the DEW spreadsheet (wrong c parameter),
+  # but even so, these tests have a lower tolerance because of the larger magnitude of the difference
+  expect_equal(c(R4$G, R5$G), DEW_DG[7:10], tolerance=1e-9)
+
+  # logK values calculated using the DEW spreadsheet
+  DEW_logK <- c(-9.58455651110442, -3.7301833667366027,
+                -10.370923015131565, -5.346776889042665,
+                -7.040405143911882, -4.035687100632826, 
+                -46.826558649850625, -33.47207316851283,
+                35.45364304557209, 33.632014510923746) 
+  expect_equal(c(R1$logK, R2$logK, R3$logK, R4$logK, R5$logK), DEW_logK, tolerance=1e-3)
+
+  # TODEW: add domega/dP calculation for DEW in CHNOSZ
+  ## Delta V values calculated using the DEW spreadsheet
+  #DEW_DV <- c(-45.26925983499276, -14.640599169742725,
+  #            -47.95180846799733, -9.469432706749927, 
+  #            -27.042087540311922, -6.836267057722694,
+  #            -18.1550937649195, 5.513800665649967,
+  #            -37.37077435045512, -45.08570662275889)
+  #expect_equal(c(R1$V, R2$V, R3$V, R4$V, R5$V), DEW_DV, tolerance=1e-3)
+})

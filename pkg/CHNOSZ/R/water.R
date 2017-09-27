@@ -9,11 +9,11 @@ water <- function(property = NULL, T = get("thermo")$opt$Tr, P = "Psat") {
   # set water option
   if(length(property)==1 & any(property %in% c("SUPCRT", "SUPCRT92", "IAPWS", "IAPWS95", "DEW"))) {
     thermo <- get("thermo")
-    owater <- thermo$opt$water
+    oldwat <- thermo$opt$water
     thermo$opt$water <- property
     assign("thermo", thermo, "CHNOSZ")
     message(paste("water: setting thermo$opt$water to", property))
-    return(invisible(owater))
+    return(invisible(oldwat))
   }
   # make T and P equal length
   if(!identical(P, "Psat")) {
@@ -53,7 +53,7 @@ water.props <- function(formulation=get("thermo")$opt$water) {
     "YBorn", "QBorn", "XBorn", "NBorn", "UBorn",
     "V", "rho", "Psat", "de.dT", "de.dP", "P")
   if(grepl("DEW", formulation))
-    props <- c("G", "epsilon", "QBorn", "V", "rho")
+    props <- c("G", "epsilon", "QBorn", "V", "rho", "beta")
   return(props)
 }
 
@@ -337,13 +337,15 @@ water.DEW <- function(property, T = 373.15, P = 1000) {
   out <- as.data.frame(out)
   colnames(out) <- property
   # calculate rho if it's needed for any other properties
-  if(any(c("rho", "V", "QBorn", "epsilon") %in% property)) rho <- calculateDensity(pressure, temperature)
+  if(any(c("rho", "V", "QBorn", "epsilon", "beta") %in% property)) rho <- calculateDensity(pressure, temperature)
   # fill in columns with values
   if("rho" %in% property) out$rho <- rho*1000 # use kg/m^3 (like SUPCRT)
   if("V" %in% property) out$V <- 18.01528/rho
   if("G" %in% property) out$G <- calculateGibbsOfWater(pressure, temperature)
   if("QBorn" %in% property) out$QBorn <- calculateQ(rho, temperature)
   if("epsilon" %in% property) out$epsilon <- calculateEpsilon(rho, temperature)
+  # divide drhodP by rho to get units of bar^-1
+  if("beta" %in% property) out$beta <- calculate_drhodP(rho, temperature) / rho
   # use SUPCRT-calculated values below 100 degC and/or below 1000 bar
   ilow <- T < 373.15 | P < 1000
   if(any(ilow)) {

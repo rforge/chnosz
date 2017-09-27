@@ -50,7 +50,7 @@ test_that("g function is calculated correctly", {
   pressure <- c(1000, 1000, 5000, 5000, 10000)
   temperature <- c(100, 1000, 100, 1000, 100)
   # properties of water from DEW implementation in CHNOSZ
-  ow <- water("DEW")
+  oldwat <- water("DEW")
   # note that values returned for alpha, daldT, beta are NA
   w <- water(c("rho", "alpha", "daldT", "beta", "Psat"), T=convert(temperature, "K"), P=pressure)
   # g from CHNOSZ functions
@@ -58,13 +58,13 @@ test_that("g function is calculated correctly", {
   # g from R translation of DEW macro functions (not used in CHNOSZ)
   DEWg <- calculateG(pressure, temperature, w$rho/1000)
   expect_equal(Rg, DEWg)
-  water(ow)
+  water(oldwat)
 })
 
 test_that("Gibbs energies of species are calculated correctly", {
   P <- c(5000, 5000, 10000, 10000, 20000, 20000, 50000, 50000)
   T <- c(100, 1000, 100, 1000, 100, 1000, 100, 1000)
-  ow <- water("DEW")
+  oldwat <- water("DEW")
   add.obigt("DEW_aq")
   RG_HCl <- subcrt("HCl", P=P, T=T)$out[[1]]$G
   DEWG_HCl <- c(-28784.99, -58496.85, -26520.94, -55276.92, -21928.89, -50337.19, -8014.34, -36746.87)
@@ -72,14 +72,14 @@ test_that("Gibbs energies of species are calculated correctly", {
   RG_Cl <- subcrt("Cl-", P=P, T=T)$out[[1]]$G
   DEWG_Cl <- c(-30054.59, -22839.35, -27910.68, -28094.07, -23568.45, -27959.67, -10443.07, -18744.93)
   expect_equal(RG_Cl, DEWG_Cl, tolerance = 1e-7)
-  water(ow)
+  water(oldwat)
 })
 
 test_that("Delta G, logK, and Delta V of reactions are calculated correctly", {
-  # these are reactions corresponding to Fig. 1b of Sverjensky et al., 2014 (Nat. Geosci.)
-  # the properties are calculated using parameters from the DEW spreadsheet,
-  # which are not necessarily identical those that were used for the paper
-  ow <- water("DEW")
+  # These are reactions corresponding to Fig. 1b of Sverjensky et al., 2014 (Nat. Geosci.).
+  # The properties are calculated using parameters from the DEW spreadsheet,
+  # which are not necessarily identical those that were used for the paper.
+  oldwat <- water("DEW")
   add.obigt("DEW_aq", c("CO2", "HCO3-", "CO3-2", "acetic acid", "acetate", "methane"))
   T <- 600
   P <- c(5000, 50000)
@@ -109,12 +109,18 @@ test_that("Delta G, logK, and Delta V of reactions are calculated correctly", {
                 35.45364304557209, 33.632014510923746) 
   expect_equal(c(R1$logK, R2$logK, R3$logK, R4$logK, R5$logK), DEW_logK, tolerance=1e-3)
 
-  # TODEW: add domega/dP calculation for DEW in CHNOSZ
-  ## Delta V values calculated using the DEW spreadsheet
-  #DEW_DV <- c(-45.26925983499276, -14.640599169742725,
-  #            -47.95180846799733, -9.469432706749927, 
-  #            -27.042087540311922, -6.836267057722694,
-  #            -18.1550937649195, 5.513800665649967,
-  #            -37.37077435045512, -45.08570662275889)
-  #expect_equal(c(R1$V, R2$V, R3$V, R4$V, R5$V), DEW_DV, tolerance=1e-3)
+  # Delta V values calculated using the DEW spreadsheet
+  DEW_DV <- c(-45.26925983499276, -14.640599169742725,
+              -47.95180846799733, -9.469432706749927, 
+              -27.042087540311922, -6.836267057722694,
+              -18.1550937649195, 5.513800665649967,
+              -37.37077435045512, -45.08570662275889)
+  # for the aqueous species we're getting very close results
+  # (at P=5000 bar this depends on calculating drhodP -> beta -> dgdP -> dwdP -> V correctly, which is not tested above)
+  expect_equal(c(R1$V, R2$V, R3$V), DEW_DV[1:6], tolerance=1e-15)
+  # TODO: why does DEW spreadsheet use V (O2,g) == 24.465?
+  #expect_equal(c(R4$V, R5$V), DEW_DV[7:10])
+
+  # reset computational option for water
+  water(oldwat)
 })

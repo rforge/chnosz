@@ -34,14 +34,16 @@ hkf <- function(property = NULL, T = 298.15, P = 1, parameters = NULL,
   # Born functions and epsilon - for HKF calculations
   H2O.props <- c(H2O.props, "QBorn", "XBorn", "YBorn", "epsilon")
   if(grepl("SUPCRT", thermo$opt$water)) {
-    # using H2O92D.f from SUPCRT92
-    # (alpha, daldT, beta - for partial derivatives of omega (g function))
+    # using H2O92D.f from SUPCRT92: alpha, daldT, beta - for partial derivatives of omega (g function)
     H2O.props <- c(H2O.props, "alpha", "daldT", "beta")
   }
   if(grepl("IAPWS", thermo$opt$water)) {
-    # using IAPWS-95
-    # (NBorn, UBorn - for compressibility, expansibility)
-    H2O.props <- c(H2O.props, 'NBorn', 'UBorn')
+    # using IAPWS-95: NBorn, UBorn - for compressibility, expansibility
+    H2O.props <- c(H2O.props, "NBorn", "UBorn")
+  }
+  if(grepl("DEW", thermo$opt$water)) {
+    # using DEW model: get beta to calculate dgdP
+    H2O.props <- c(H2O.props, "beta")
   }
   H2O <- water(H2O.props, T = c(thermo$opt$Tr, T), P = c(thermo$opt$Pr, P))
   H2O.PrTr <- H2O[1, ]
@@ -248,23 +250,23 @@ gfun <- function(rhohat, Tc, P, alpha, daldT, beta) {
   if(is.null(alpha)) alpha <- NA
   if(is.null(daldT)) daldT <- NA
   if(is.null(beta)) beta <- NA
-  if(!all(is.na(alpha)) & !all(is.na(daldT)) & !all(is.na(beta))) {
-    # Eqn. 76
-    d2fdT2 <- (0.0608/300*((Tc-155)/300)^2.8 + af1/375*((Tc-155)/300)^14) * (af2*(1000-P)^3 + af3*(1000-P)^4)
-    # Eqn. 75
-    dfdT <- (0.016*((Tc-155)/300)^3.8 + 16*af1/300*((Tc-155)/300)^15) * (af2*(1000-P)^3 + af3*(1000-P)^4)
-    # Eqn. 74
-    dfdP <- -(((Tc-155)/300)^4.8 + af1*((Tc-155)/300)^16) * (3*af2*(1000-P)^2 + 4*af3*(1000-P)^3)
-    d2bdT2 <- 2 * bg3  # Eqn. 73
-    d2adT2 <- 2 * ag3  # Eqn. 72
-    dbdT <- bg2 + 2*bg3*Tc  # Eqn. 71
-    dadT <- ag2 + 2*ag3*Tc  # Eqn. 70
+  # Eqn. 76
+  d2fdT2 <- (0.0608/300*((Tc-155)/300)^2.8 + af1/375*((Tc-155)/300)^14) * (af2*(1000-P)^3 + af3*(1000-P)^4)
+  # Eqn. 75
+  dfdT <- (0.016*((Tc-155)/300)^3.8 + 16*af1/300*((Tc-155)/300)^15) * (af2*(1000-P)^3 + af3*(1000-P)^4)
+  # Eqn. 74
+  dfdP <- -(((Tc-155)/300)^4.8 + af1*((Tc-155)/300)^16) * (3*af2*(1000-P)^2 + 4*af3*(1000-P)^3)
+  d2bdT2 <- 2 * bg3  # Eqn. 73
+  d2adT2 <- 2 * ag3  # Eqn. 72
+  dbdT <- bg2 + 2*bg3*Tc  # Eqn. 71
+  dadT <- ag2 + 2*ag3*Tc  # Eqn. 70
+  if(!all(is.na(alpha)) & !all(is.na(daldT))) {
     # Eqn. 69
     dgadT <- bg*rhohat*alpha*(1-rhohat)^(bg-1) + log(1-rhohat)*g/ag*dbdT  
     D <- rhohat
     # transcribed from SUPCRT92/reac92.f
     dDdT <- -D * alpha
-    dDdP <- D * beta
+    #dDdP <- D * beta
     dDdTT <- -D * (daldT - alpha^2)
     Db <- (1-D)^bg
     dDbdT <- -bg*(1-D)^(bg-1)*dDdT + log(1-D)*Db*dbdT
@@ -275,11 +277,13 @@ gfun <- function(rhohat, Tc, P, alpha, daldT, beta) {
     d2gdT2[ifg] <- d2gdT2[ifg] - d2fdT2[ifg]
     dgdT <- g/ag*dadT + ag*dgadT  # Eqn. 67
     dgdT[ifg] <- dgdT[ifg] - dfdT[ifg]
-    dgdP <- -bg*rhohat*beta*g*(1-rhohat)^-1  # Eqn. 66
-    dgdP[ifg] <- dgdP[ifg] - dfdP[ifg]
     # phew! done with those derivatives
     out$dgdT[idoit] <- dgdT
     out$d2gdT2[idoit] <- d2gdT2
+  }
+  if(!all(is.na(beta))) {
+    dgdP <- -bg*rhohat*beta*g*(1-rhohat)^-1  # Eqn. 66
+    dgdP[ifg] <- dgdP[ifg] - dfdP[ifg]
     out$dgdP[idoit] <- dgdP
   }
   return(out)

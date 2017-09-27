@@ -132,10 +132,10 @@ water(c("QBorn", "YBorn", "XBorn"), T=T, P=2000)
 ## comparing the formulations
 T <- convert(c(25, 100, 200, 300), "K")
 # IAPWS-95
-ow <- water("IAPWS95")
+oldwat <- water("IAPWS95")
 water(water.props(), T=T)
 # SUPCRT92 (the default)
-water(ow)
+water(oldwat)
 water(water.props(), T=T)
 
 ## calculating Q Born function

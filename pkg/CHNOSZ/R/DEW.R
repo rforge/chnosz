@@ -152,7 +152,7 @@ calculatePressure <- function(density, temperature) {
   ZD05_R * TK * density * delta / m
 }
 
-# 'Calculates the partial derivative of density with respect to pressure, i.e. (d(rho)/dP)_T
+# 'Calculates the partial derivative of density with respect to pressure, i.e. (d(rho)/dP)_T, in units of g^3/cm^3/bar
 # 'density        - The density of water, in g/cm^3
 # 'temperature    - The temperature of water, in Celsius
 calculate_drhodP <- function(density, temperature) {

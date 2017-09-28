@@ -29,6 +29,7 @@ SK93,"E. L. Shock and C. M. Koretsky",1993,"Geochim. Cosmochim. Acta 57, 4899-49
 SM93,"E. L. Shock and W. B. McKinnon",1993,"Icarus 106, 464-477","CO, HCN, urea",https://doi.org/10.1006/icar.1993.1185
 SS93,"M. D. Schulte and E. L. Shock",1993,"Geochim. Cosmochim. Acta 57, 3835-3846",aldehydes,https://doi.org/10.1016/0016-7037(93)90337-V
 HSS95,"J. R. Haas, E. L. Shock and D. C. Sassani",1995,"Geochim. Cosmochim. Acta 59, 4329-4350","complexes of rare earth elements",https://doi.org/10.1016/0016-7037(95)00314-P
+PH95,"V. A. Pokrovskii and H. C. Helgeson",1995,"Am. J. Sci. 295, 1255-1342","aluminum species",https://doi.org/10.2475/ajs.295.10.1255
 PK95,"V. B. Parker and I. L. Khodakovskii",1995,"J. Phys. Chem. Ref. Data 24, 1699-1745",melanterite,https://doi.org/10.1063/1.555964
 RH95,"R. A. Robie and B. S. Hemingway",1995,"U. S. Geological Survey Bull. 2131","gypsum GHS",http://pubs.er.usgs.gov/publication/b2131
 SK95,"E. L. Shock and C. M. Koretsky",1995,"Geochim. Cosmochim. Acta 59, 1497-1532","metal-organic acid complexes",https://doi.org/10.1016/0016-7037(95)00058-8
@@ -38,6 +39,7 @@ AH97b,"J. P. Amend and H. C. Helgeson",1997,"J. Chem. Soc., Faraday Trans. 93, 1
 DSM+97,"J. D. Dale, E. L. Shock et al.",1997,"Geochim. Cosmochim. Acta 61, 4017-4024",alkylphenols,https://doi.org/10.1016/S0016-7037(97)00212-3
 DSM+97.1,"J. D. Dale, E. L. Shock et al.",1997,"Geochim. Cosmochim. Acta 61, 4017-4024","phenol, and cresol isomers",https://doi.org/10.1016/S0016-7037(97)00212-3
 DSM+97.2,"J. D. Dale, E. L. Shock et al.",1997,"Geochim. Cosmochim. Acta 61, 4017-4024","dimethylphenol isomers",https://doi.org/10.1016/S0016-7037(97)00212-3
+HP97,"P. C. Ho and D. A. Palmer",1997,"Geochim. Cosmochim. Acta 61, 3027-3040",KOH,https://doi.org/10.1016/S0016-7037(97)00146-4
 MS97,"T. M. McCollom and E. L. Shock",1997,"Geochim. Cosmochim. Acta 61, 4375-4391","MgSO<sub>4</sub>, NaSO<sub>4</sub><sup>-</sup>, and HCl",https://doi.org/10.1016/S0016-7037(97)00241-X
 MS97.1,"T. M. McCollom and E. L. Shock",1997,"Geochim. Cosmochim. Acta 61, 4375-4391",sulfur,https://doi.org/10.1016/S0016-7037(97)00241-X
 SSB97,"E. L. Shock, D. C. Sassani and H. Betz",1997,"Geochim. Cosmochim. Acta 61, 4245-4266","uranium species",https://doi.org/10.1016/S0016-7037(97)00240-8
@@ -99,8 +101,11 @@ LD12.1,"D. E. LaRowe and J. M. Dick",2012,"Geochim. Cosmochim. Acta 80, 70-91","
 LD12.2,"D. E. LaRowe and J. M. Dick",2012,"Geochim. Cosmochim. Acta 80, 70-91","methionine GHS",https://doi.org/10.1016/j.gca.2011.11.041
 LD12.3,"D. E. LaRowe and J. M. Dick",2012,"Geochim. Cosmochim. Acta 80, 70-91","methionine sidechain GHS",https://doi.org/10.1016/j.gca.2011.11.041
 DEH+13,"J. M. Dick, K. A. Evans et al.",2013,"Geochim. Cosmochim. Acta 122, 247-266","phenanthrene and methylphenanthrene isomers",https://doi.org/10.1016/j.gca.2013.08.020
-FDM+14,"S. Facq et al.",2014,"Geochim. Cosmochim. Acta 132, 375-390","CO2, CO3-2, and HCO3-",https://doi.org/10.1016/j.gca.2014.01.030
-SHA14,"D. A. Sverjensky et al.",2014,"Geochim. Cosmochim. Acta 129, 125-145","AlO2- and HAlO2",https://doi.org/10.1016/j.gca.2013.12.019
+FDM+14,"S. Facq et al.",2014,"Geochim. Cosmochim. Acta 132, 375-390","CO<sub>2</sub>, CO<sub>3</sub><sup>-2</sup>, and HCO<sub>3</sub><sup>-</sup>",https://doi.org/10.1016/j.gca.2014.01.030
+SHA14,"D. A. Sverjensky et al.",2014,"Geochim. Cosmochim. Acta 129, 125-145","SiO<sub>2</sub> and Si<sub>2</sub>O<sub>4</sub>",https://doi.org/10.1016/j.gca.2013.12.019
+SHA14.1,"D. A. Sverjensky et al.",2014,"Geochim. Cosmochim. Acta 129, 125-145","revisions for AlO<sub>2</sub><sup>-</sup> and HAlO<sub>2</sub>",https://doi.org/10.1016/j.gca.2013.12.019
+SHA14.2,"D. A. Sverjensky et al.",2014,"Geochim. Cosmochim. Acta 129, 125-145","revisions for BO(OH) and BO<sub>2</sub><sup>-</sup>",https://doi.org/10.1016/j.gca.2013.12.019
+SHA14.3,"D. A. Sverjensky et al.",2014,"Geochim. Cosmochim. Acta 129, 125-145","Fitted to @HP97 data with a1 pred. from the sum of the ions and used to predict the volume",https://doi.org/10.1016/j.gca.2013.12.019
 SLOP15.1,"E. L. Shock et al.",2015,"slop15.dat computer data file","&quot;Enthalpy changed to be compatible with the equation &Delta;H=&Delta;G+T&Delta;S for the formation reaction from elements.&quot;",http://geopig.asu.edu/?q=tools
 SLOP15.2,"E. L. Shock et al.",2015,"slop15.dat computer data file","Zn(Ac)3-: &quot;Enthalpy changed to be compatible with the equation &Delta;H=&Delta;G+T&Delta;S for the formation reaction from elements. See footnote h in table 2 of @SSH97.&quot;",http://geopig.asu.edu/?q=tools
 SLOP15.3,"E. L. Shock et al.",2015,"slop15.dat computer data file","formaldehyde: &quot;Entropy corrected to be compatible with the equation &Delta;H=&Delta;G+T&Delta;S for the formation reaction from elements. See footnote i in table 2 of @SS93.&quot;",http://geopig.asu.edu/?q=tools
@@ -127,8 +132,6 @@ DEW17.4,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","wit
 DEW17.5,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","BaCl+, CaCl+, CaCl2: with new V from the sum of a1 values of ions",http://www.dewcommunity.org
 DEW17.6,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","revised volume increased in order that a1 of the complex is the sum of the a1 values of the ions",http://www.dewcommunity.org
 DEW17.7,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","acetate: revised January 26th, 2016; new a1 value from complexes and organics correlation.",http://www.dewcommunity.org
-DEW17.8,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","BO(OH): Revised May, 2013",http://www.dewcommunity.org
-DEW17.9,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","BO2-: revised a1 - a4  using delkappan for BO2- instead of B(OH)4- used by Shock and Helgeson (1988); Shock et al. (1997)",http://www.dewcommunity.org
 DEW17.10,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","CaSO4: revised using exptl V and pred. a1 from new correlation",http://www.dewcommunity.org
 DEW17.11,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","diglycine: Jamie & Dimitri fit to exptl Cp(T) and pred. a1-a4; delGf and S from fitting logK dimerisation values from Lemke et al. (2009).",http://www.dewcommunity.org
 DEW17.12,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","diketopiperazine: Jamie & Dimitri fit delGf and S from to logK dimerisation values from Lemke et al. (2009);  pred. a1-a4;",http://www.dewcommunity.org
@@ -143,7 +146,6 @@ DEW17.20,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","HS
 DEW17.21,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","HSO3-: revised using published estimated V and pred. a1 from new correlation",http://www.dewcommunity.org
 DEW17.22,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","isobutane: G, H, S, Cp, V from Shock & Helgeson (1990); a1 estimated with Sverjensky et al. (2014); c2 estimated with a new hydrocarbon correlation.",http://www.dewcommunity.org
 DEW17.23,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","KCl: May, 2017 Fitted to logKs from Oelkers & Helgeson (1988) + retrieved logKs from Hemley experiments at 1.0 kb using the HCl referred to above",http://www.dewcommunity.org
-DEW17.24,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","KOH: Fitted to Ho & Palmer (1997) data with a1 pred. from the sum of the ions and used to predict the volume",http://www.dewcommunity.org
 DEW17.25,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","KSO4-: Revised G, S and Cp to fit Noyes et al. (1906) & Sharygin et al. (2006) with a1 of the complex equal to the sum of the a1 values of the ions",http://www.dewcommunity.org
 DEW17.26,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","Mg(HCO3)+: Fit to Stefansson et al. (2014) & Siebert & Hostetler (1977); plus revised V increased so that a1 of the complex is the sum of the a1 values of the ions",http://www.dewcommunity.org
 DEW17.27,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","MgCO3: Sverjensky et al. (1997) revised volume increased in order that a1 of the complex is the sum of the a1 values of the ions; and Cp revised using isocoulombic reln with CaCO3,aq; also omega is set to +0.3 as for all neutral metal complexes.",http://www.dewcommunity.org
@@ -156,8 +158,9 @@ DEW17.33,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","OH
 DEW17.34,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","propane: Shock & Helgeson (1990) with new a1-a4 based on revised correlation to predict a1 in Sverjensky et al. (2013)",http://www.dewcommunity.org
 DEW17.35,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","propanoate: Revised a1 from new delVn correlation for -1 ions; kept original regression c1 and c2 plus omega from Shock & Helgeson (1990)",http://www.dewcommunity.org
 DEW17.36,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","S3-: Regression of data from Pokrovski & Dubessy (2015), Guggenheim (1971); Feb. 2015",http://www.dewcommunity.org
-DEW17.37,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","SiO2, Si2O4: Fit to Raman speciation and quartz solubility data (Sverjensky et al., 2014).",http://www.dewcommunity.org
 DEW17.38,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","SO2: Shock et al. (1989) with revised a1 predicted as a complex from delVn",http://www.dewcommunity.org
 DEW17.39,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","toluene: Plyasunov & Shock (2001) with new a1 to a4 predicted with revised a1 consistent with Sverjensky et al. (2013)",http://www.dewcommunity.org
 DEW17.40,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","urea: Revised Feb. 2015 by Dimitri: c1, c2, and omega from PS01 based on Stokes (1967) data; V from Cabani et al. (1981) with a1-a4 predicted.",http://www.dewcommunity.org
 DEW17.101,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","methane: revised with new predicted a1 for complex species",http://www.dewcommunity.org
+DEW17.102,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","MgCl<sup>+</sup>: revised volume increased in order that a1 of the complex is the sum of the a1 values of the ions",http://www.dewcommunity.org
+DEW17.103,"D. A. Sverjensky et al.",2017,"Deep Earth Water (DEW) spreadsheet","NaCl: revised with new predicted a1 for complex species",http://www.dewcommunity.org

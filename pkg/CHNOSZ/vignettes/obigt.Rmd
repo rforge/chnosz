@@ -196,7 +196,7 @@ cat("These files contain optional data updates that are not loaded by default (u
 
 ### `r setfile("DEW_aq.csv")`
 ```{r DEW_aq, results="asis", echo=FALSE}
-cat("The Deep Earth Water (DEW) model extends the applicability of the revised HKF equations of state to 60 kbar. Accuracy of the thermodynamic calculations at these conditions is improved by revised correlations for some species, as described by [Sverjensky et al., 2014](https://doi.org/10.1016/j.gca.2013.12.019). The data here were taken from the May 2017 version of the DEW spreadsheet [@DEW17]. The following species are present in the spreadsheet, but are not listed in `DEW_aq.csv` because the parameters are unchanged from the default database in CHNOSZ: B(OH)3, Br-, Ca+2, Cl-, Cs+, F-, H+, H2, He, I-, K+, Kr, Li+, Mg+2, Na+, Ne, O2, Rb+, Rn.<hr>")
+cat("The Deep Earth Water (DEW) model extends the applicability of the revised HKF equations of state to 60 kbar. Accuracy of the thermodynamic calculations at these conditions is improved by revised correlations for the <i>a</i><sub>1</sub> HKF parameter, as described by [Sverjensky et al., 2014](https://doi.org/10.1016/j.gca.2013.12.019). The data here were taken from the May 2017 version of the DEW spreadsheet [@DEW17]. The following species are present in the spreadsheet, but are not listed in `DEW_aq.csv` because the parameters are unchanged from the default database in CHNOSZ: B(OH)<sub>3</sub>, Br<sup>-</sup>, Ca<sup>+2</sup>, Cl<sup>-</sup>, Cs<sup>+</sup>, F<sup>-</sup>, H<sup>+</sup>, H<sub>2</sub>, He, I<sup>-</sup>, K<sup>+</sup>, Kr, Li<sup>+</sup>, Mg<sup>+2</sup>, Na<sup>+</sup>, Ne, O<sub>2</sub>, Rb<sup>+</sup>, Rn.<hr>")
 ```
 
 ```{r noreflist, results="asis", echo=FALSE}

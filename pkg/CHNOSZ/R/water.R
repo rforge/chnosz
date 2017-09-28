@@ -5,7 +5,7 @@
 water <- function(property = NULL, T = get("thermo")$opt$Tr, P = "Psat") {
   # calculate the properties of liquid H2O as a function of T and P
   # T in Kelvin, P in bar
-  if(is.null(property)) stop('property was NULL')
+  if(is.null(property)) return(get("thermo")$opt$water)
   # set water option
   if(length(property)==1 & any(property %in% c("SUPCRT", "SUPCRT92", "IAPWS", "IAPWS95", "DEW"))) {
     thermo <- get("thermo")

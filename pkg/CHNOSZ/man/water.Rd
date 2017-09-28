@@ -40,6 +40,7 @@ The high-level function \code{water} performs different computations, depending 
 
 }
 
+Calling the function with no arguments returns the current computational option.
 Use e.g. \code{water("DEW")} to set the option; the previous option (at the time of the function call) is returned invisibly.
 Subsequent calculations with \code{water}, or other functions such as \code{subcrt} and \code{affinity}, will use that option.
 

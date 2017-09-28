@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-21 (2017-09-27)
+CHANGES IN CHNOSZ 1.1.0-23 (2017-09-28)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -10,6 +10,8 @@ MAJOR CHANGES:
 
 - The computational option for water (thermo$opt$par) can now be
   set using water("DEW"), water("IAPWS"), etc.
+
+- Add demo DEW.R.
 
 - water.lines() now works for diagrams of Eh, pe, logfO2, logaO2,
   logfH2, or logaH2 vs pH, T, or P. It is possible to have T or P on

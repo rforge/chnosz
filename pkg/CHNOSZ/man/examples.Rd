@@ -18,7 +18,7 @@
     "density", "ORP", "revisit", "findit", "ionize", "buffer",
     "protbuff", "yeastgfp", "mosaic", "copper", "solubility",
     "wjd", "dehydration", "bugstab", "Shh", "activity_ratios",
-    "adenine"),
+    "adenine", "DEW"),
     to.file=FALSE)
 }
 
@@ -55,6 +55,7 @@ See the comments in the source code for more information about each demo.
     \code{Shh} \tab affinities of transcription factors relative to Sonic hedgehog \cr
     \code{activity_ratios} \tab mineral stability plots with activity ratios on the axes \cr
     \code{adenine} \tab HKF parameters regressed from heat capacity and volume of aqueous adenine (Lowe et al., 2017) \cr
+    \code{adenine} \tab Deep Earth Water (DEW) model for high pressures (Sverjensky et al., 2014a and 2014b) \cr
   }
 
 }
@@ -79,6 +80,10 @@ See the comments in the source code for more information about each demo.
   Shock, E. L., Oelkers, E. H., Johnson, J. W., Sverjensky, D. A. and Helgeson, H. C. (1992) Calculation of the thermodynamic properties of aqueous species at high pressures and temperatures: Effective electrostatic radii, dissociation constants and standard partial molal properties to 1000 \eqn{^{\circ}}{°}C and 5 kbar. \emph{J. Chem. Soc. Faraday Trans.} \bold{88}, 803--826. \url{https://doi.org/10.1039/FT9928800803}
 
   Stumm, W. and Morgan, J. J. (1996) \emph{Aquatic Chemistry: Chemical Equilibria and Rates in Natural Waters}, John Wiley & Sons, New York, 1040 p. \url{http://www.worldcat.org/oclc/31754493}
+
+  Sverjensky, D. A., Harrison, B. and Azzolini, D. (2014a) Water in the deep Earth: The dielectric constant and the solubilities of quartz and corundum to 60 kb and 1,200 \degC. \emph{Geochim. Cosmochim. Acta} \bold{129}, 125--145. \url{https://doi.org/10.1016/j.gca.2013.12.019}
+
+  Sverjensky, D. A., Stagno, V. and Huang, F. (2014b) Important role for organic carbon in subduction-zone fluids in the deep carbon cycle. \emph{Nat. Geosci.} \bold{7}, 909--913. \url{https://doi.org/10.1038/ngeo2291}
 }
 
 

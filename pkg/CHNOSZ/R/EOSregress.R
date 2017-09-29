@@ -35,7 +35,7 @@ EOSvar <- function(var, T, P, ...) {
     "V.kT" = water("V", T=T, P=P)[, 1]*water("kT", T=T, P=P)[, 1],
     # fallback: get a variable that is a property of water, or
     # is any other function by name (possibly a user-defined function)
-    (  if(var %in% water.props()) water(var, T, P)[, 1]
+    (  if(var %in% water.SUPCRT92()) water(var, T, P)[, 1]
        else if(exists(var)) {
          if(is.function(get(var))) {
            if(all(c("T", "P") %in% names(formals(get(var))))) get(var)(T=T, P=P, ...)

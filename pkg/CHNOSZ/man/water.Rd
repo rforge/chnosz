@@ -1,7 +1,6 @@
 \encoding{UTF-8}
 \name{water}
 \alias{water}
-\alias{water.props}
 \alias{water.SUPCRT92}
 \alias{water.IAPWS95}
 \alias{water.DEW}
@@ -12,17 +11,15 @@ Calculate thermodynamic and electrostatic properties of water.
 
 \usage{
   water(property = NULL, T = get("thermo")$opt$Tr, P = "Psat")
-  water.props(formulation = get("thermo")$opt$water)
-  water.SUPCRT92(property, T = 298.15, P = 1)
-  water.IAPWS95(property, T = 298.15, P = 1)
-  water.DEW(property, T = 373.15, P = 1000)
+  water.SUPCRT92(property=NULL, T = 298.15, P = 1)
+  water.IAPWS95(property=NULL, T = 298.15, P = 1)
+  water.DEW(property=NULL, T = 373.15, P = 1000)
 }
 
 \arguments{
   \item{property}{character, computational setting or property(s) to calculate}
   \item{T}{numeric, temperature (K)}
   \item{P}{numeric, pressure (bar), or \samp{Psat} for vapor-liquid saturation}
-  \item{formulation}{character, name of formulation for which to return names of available properties}
 }
 
 \details{
@@ -36,7 +33,7 @@ The high-level function \code{water} performs different computations, depending 
 
   \item{\samp{IAPWS95} or \samp{IAPWS}}{Thermodynamic properties are calculated using an implementation in \R code of the \acronym{IAPWS-95} formulation (Wagner and Pruss, 2002), and electrostatic properties are calculated using the equations of Archer and Wang, 1990. See \code{\link{IAPWS95}} and more information below.}
 
-  \item{\samp{DEW}}{Thermodynamic and electrostatic properties are calculated using the Deep Earth Water (\acronym{DEW}) model (Sverjensky et al., 2014). The defaults for \code{T} and \code{P} reflect the minimum values for applicability of the model; calculations for lower \code{T} and/or \code{P} points fall back to using \samp{SUPCRT92}. See \code{\link{DEW}}.}
+  \item{\samp{DEW}}{Thermodynamic and electrostatic properties are calculated using the Deep Earth Water (\acronym{DEW}) model (Sverjensky et al., 2014). The defaults for \code{T} and \code{P} reflect the minimum values for applicability of the model; calculations at lower \code{T} and/or \code{P} points fall back to using \samp{SUPCRT92}. See \code{\link{DEW}}.}
 
 }
 
@@ -45,7 +42,7 @@ Use e.g. \code{water("DEW")} to make the setting; the previous setting (at the t
 Subsequent calculations with \code{water}, or other functions such as \code{subcrt} and \code{affinity}, will use that setting.
 
 The allowed \code{property}s for \code{water} are one or more of those given below, depending on the computational setting; availability is shown by an asterisk.
-The names of properties in the arguments are not case sensitive. Note that some of the properties that can actually be calculated using the different formulations are not implemented here.
+Note that some of the properties that can actually be calculated using the different formulations are not implemented here.
 Except for \code{rho}, the units are those used by Johnson and Norton, 1991.
 
   \tabular{llllll}{
@@ -88,7 +85,7 @@ Except for \code{rho}, the units are those used by Johnson and Norton, 1991.
      \code{P} \tab Pressure \tab bar \tab * \tab NA \tab NA \cr
   }
 
-\code{water.props} returns the names of the available properties listed in this table, reflecting the current setting of \code{thermo$opt$water}.
+Call \code{water.SUPCRT92}, \code{water.IAPWS95}, or \code{water.DEW} with no arguments to list the available properties.
 
 \code{water.SUPCRT92} interfaces to the FORTRAN subroutine taken from the \acronym{SUPCRT92} package (H2O92D.F) for calculating properties of water.
 These calculations are based on data and equations of Levelt-Sengers et al., 1983, Haar et al., 1984, and Johnson and Norton, 1991, among others (see Johnson et al., 1992).
@@ -134,10 +131,13 @@ water(c("QBorn", "YBorn", "XBorn"), T=T, P=2000)
 T <- convert(c(25, 100, 200, 300), "K")
 # IAPWS-95
 oldwat <- water("IAPWS95")
-water(water.props(), T=T)
+water(water.IAPWS95(), T=T)
+# Deep Earth Water (DEW)
+water("DEW")
+water(water.DEW(), T=T, P=1000)
 # SUPCRT92 (the default)
 water(oldwat)
-water(water.props(), T=T)
+water(water.SUPCRT92(), T=T)
 
 ## calculating Q Born function
 # after Table 22 of Johnson and Norton, 1991

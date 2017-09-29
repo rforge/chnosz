@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-24 (2017-09-29)
+CHANGES IN CHNOSZ 1.1.0-26 (2017-09-29)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -12,6 +12,10 @@ MAJOR CHANGES:
   set using water("DEW"), water("IAPWS"), etc.
 
 - Add demo DEW.R.
+
+- Implement SUPCRT92's handling of variable volume for quartz and
+  coesite. Calculations for other minerals still assume constant
+  volume of each phase.
 
 - water.lines() now works for diagrams of Eh, pe, logfO2, logaO2,
   logfH2, or logaH2 vs pH, T, or P. It is possible to have T or P on

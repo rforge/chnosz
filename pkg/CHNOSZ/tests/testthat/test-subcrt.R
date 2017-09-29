@@ -111,7 +111,7 @@ test_that("calculations for quartz are consistent with SUPCRT92", {
   expect_equal(CHNOSZ_1bar$G, S92_1bar$G, tolerance = 1e-5)
   expect_equal(CHNOSZ_1bar$H, S92_1bar$H, tolerance = 1e-5)
   expect_equal(CHNOSZ_1bar$S, S92_1bar$S, tolerance = 1e-2)
-#  expect_equal(CHNOSZ_1bar$V, S92_1bar$V, tolerance = 1e-2)
+  expect_equal(CHNOSZ_1bar$V, S92_1bar$V, tolerance = 1e-2)
 
   # output from SUPCRT92 for reaction specified as "1 QUARTZ" run at 500 bar
   # (SUPCRT shows phase transition at 587.811 deg C)
@@ -125,6 +125,10 @@ test_that("calculations for quartz are consistent with SUPCRT92", {
     590	-214653	-208668	25.4	23.7
   ")
   CHNOSZ_500bar <- subcrt("quartz", T=seq(585, 590), P=500)$out[[1]]
+  expect_equal(CHNOSZ_500bar$G, S92_500bar$G, tolerance = 1e-5)
+  expect_equal(CHNOSZ_500bar$H, S92_500bar$H, tolerance = 1e-4)
+  expect_equal(CHNOSZ_500bar$S, S92_500bar$S, tolerance = 1e-3)
+  expect_equal(CHNOSZ_500bar$V, S92_500bar$V, tolerance = 1e-2)
 })
 
 # references

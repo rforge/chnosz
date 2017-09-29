@@ -11,7 +11,7 @@ examples <- function(do.png=FALSE) {
     "util.water", "taxonomy", "info", "protein.info", "hkf", "water", "IAPWS95", "subcrt",
     "makeup", "basis", "swap.basis", "species", "affinity", "equil.boltzmann", 
     "diagram", "buffer", "nonideal", "add.protein", "protein", "ionize.aa", "yeast.aa", "read.expr",
-    "anim", "objective", "revisit", "transfer", "EOSregress", "wjd")
+    "anim", "objective", "revisit", "EOSregress", "wjd")
   plot.it <- FALSE
   if(is.character(do.png))
     png(paste(do.png,"%d.png",sep=""),width=500,height=500,pointsize=12)

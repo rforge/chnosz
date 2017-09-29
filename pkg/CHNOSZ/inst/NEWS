@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-26 (2017-09-29)
+CHANGES IN CHNOSZ 1.1.0-28 (2017-09-29)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -74,6 +74,9 @@ OTHER CHANGES:
   taxids listed in extdata/bison/gi.taxid.txt.
 
 - Remove Eco.csv.xz and rename more.aa() to yeast.aa().
+
+- Remove transfer() and associated functions draw.transfer(), apc(), and
+  feldspar().
 
 CHANGES IN CHNOSZ 1.1.0 (2017-05-04)
 ------------------------------------

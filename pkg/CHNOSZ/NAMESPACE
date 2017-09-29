@@ -33,7 +33,7 @@ export(
   "ionize.aa", "MP90.cp", "aasum", "read.expr",
   "anim.carboxylase",
   "qqr", "RMSD", "CVRMSD", "spearman", "DGmix", "DDGmix", "DGtr",
-  "ratlab", "transfer", "draw.transfer",
+  "ratlab",
   "EOSregress", "EOScoeffs", "EOSplot", "EOSvar",
   "wjd", "element.potentials", "is.near.equil", "guess", "run.wjd",
 # demos
@@ -52,7 +52,7 @@ export(
   "write.blast", "checkEOS", "checkGHS", "check.obigt",
   "V_s_var", "Cp_s_var",
   "DGinf", "SD", "pearson", "shannon", "CV", "logact",
-  "feldspar", "apc", "EOSlab", "EOScalc",
+  "EOSlab", "EOScalc",
   "basis.elements", "element.mu", "ibasis",
   "water.SUPCRT92", "water.props", "eqdata", "plot_findit",
   "nonideal", "anim.TCA", "uniprot.aa", "run.guess",

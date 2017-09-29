@@ -36,7 +36,7 @@ For any arguments that refer to basis species, the numerical values are the loga
 
 If \samp{T}, \samp{P}, and/or \samp{IS} are not among the \code{var}s, their constant values can be supplied in \code{T}, \code{P}, or \code{IS} (in mol kg\eqn{^{-1}}{^-1}).
 The units of \samp{T} and \samp{P} are those set by \code{\link{T.units}} and \code{\link{P.units}} (on program start-up these are \eqn{^{\circ}}{°}C and bar, respectively). 
-\code{sout}, if provided, replaces the call to \code{\link{subcrt}}, which can greatly speed up the calculations if this intermediate result is stored by other functions (e.g., \code{\link{transfer}}).
+\code{sout}, if provided, replaces the call to \code{\link{subcrt}}, which can greatly speed up the calculations if this intermediate result is stored by other functions.
 \code{exceed.Ttr} is passed to \code{\link{subcrt}} so that the properties of mineral phases beyond their transition temperatures can optionally be calculated.
 
 If one or more buffers are assigned to the definition of \code{\link{basis}} species, the logarithms of activities of these basis species are taken from the buffer (see \code{\link{buffer}}).

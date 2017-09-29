@@ -1508,7 +1508,6 @@ The points indicate the *T* and log*a*<sub>H<sub>2</sub></sub> that optimize a t
 # Experimental features
 
 Some experimental features in CHNOSZ implement provisional algorithms and/or have not been extensively tested.
-Two experimental features are described here; <span style="color:green">`transfer()`</span> ([see below](#reaction-paths-experimental-feature)) provides another experimental feature.
 
 ## Activity coefficients
 
@@ -1996,11 +1995,6 @@ Some functions in CHNOSZ lie outside the main workflow described above.
 
 <span style="color:green">`wjd()`</span> implements a Gibbs energy minimization using the method of steepest descent described by @WJD58.
 See <span style="color:blue">`?wjd`</span> as well as the vignette, [<span style="color:blue">*Winding journey down (in Gibbs energy)*</span>](wjd.pdf).
-
-## Reaction paths (experimental feature)
-
-<span style="color:green">`transfer()`</span> offers an implementation of a reaction path model (mass transfer combined with chemical equilibrium).
-This is an experimental feature; the example in <span style="color:blue">`?transfer`</span> shows a calculated reaction path for weathering of potassium feldspar in a closed system [@HGM69; @SLS94].
 
 ## Animations
 

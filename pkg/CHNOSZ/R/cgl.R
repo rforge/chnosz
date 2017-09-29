@@ -8,9 +8,6 @@ cgl <- function(property = NULL, parameters = NULL, T = 298.15, P = 1) {
   thermo <- get("thermo")
   Tr <- thermo$opt$Tr
   Pr <- thermo$opt$Pr
-  eargs <- eos.args("mk", property = property)
-  prop <- eargs$prop
-  EOS.Prop <- eargs$Prop
 
   # the number of T, P conditions
   ncond <- max(c(length(T), length(P)))
@@ -22,13 +19,13 @@ cgl <- function(property = NULL, parameters = NULL, T = 298.15, P = 1) {
     # the parameters for *this* species
     PAR <- parameters[k, ]
     # start with NA values
-    values <- data.frame(matrix(NA, ncol = length(prop), nrow=ncond))
-    colnames(values) <- EOS.Prop
+    values <- data.frame(matrix(NA, ncol = length(property), nrow=ncond))
+    colnames(values) <- property
     # additional calculations for quartz and coesite
     qtz <- quartz_coesite(PAR, T, P)
     isqtz <- !identical(qtz$V, 0)
-    for(i in 1:length(prop)) {
-      PROP <- prop[i]
+    for(i in 1:length(property)) {
+      PROP <- property[i]
       # a test for availability of the EoS parameters
       # here we assume that the parameters are in the same position as in thermo$obigt
       # leave T transition (in 20th column) alone
@@ -36,20 +33,20 @@ cgl <- function(property = NULL, parameters = NULL, T = 298.15, P = 1) {
       # if at least one of the EoS parameters is available, zero out any NA's in the rest
       if(hasEOS) PAR[, 13:19][, is.na(PAR[, 13:19])] <- 0
       # equations for lambda adapted from HOK+98
-      if(PROP == "cp") {
+      if(PROP == "Cp") {
         # use constant Cp if the EoS parameters are not available
         if(!hasEOS) p <- PAR$Cp
         else p <- PAR$a + PAR$b * T + PAR$c * T^-2 + PAR$d * T^-0.5 + PAR$e * T^2 + PAR$f * T^PAR$lambda
       }
-      if(PROP == "v") {
+      if(PROP == "V") {
         if(isqtz) p <- qtz$V
         else p <- rep(PAR$V, ncond)
       }
-      if(PROP %in% c("e", "kt")) {
+      if(PROP %in% c("E", "kT")) {
         p <- rep(NA, ncond)
         warning("cgl: E and/or kT of cr, gas and/or liq species are NA.")
       }
-      if(PROP == "g") {
+      if(PROP == "G") {
         # use constant Cp if the EoS parameters are not available
         if(!hasEOS) p <- PAR$Cp * (T - Tr - T * log(T/Tr)) else {
           # Gibbs energy integral: the value at Tref plus heat capacity terms
@@ -70,7 +67,7 @@ cgl <- function(property = NULL, parameters = NULL, T = 298.15, P = 1) {
         else if(!is.na(PAR$V)) p <- p + convert(PAR$V * (P - Pr), "calories")
         p <- PAR$G + p
       }
-      if(PROP == "h") { 
+      if(PROP == "H") { 
         # use constant Cp if the EoS parameters are not available
         if(!hasEOS) p <- PAR$Cp * (T - Tr) else {
           p <- PAR$a * (T - Tr) + PAR$b * (T^2 - Tr^2) / 2 +
@@ -86,7 +83,7 @@ cgl <- function(property = NULL, parameters = NULL, T = 298.15, P = 1) {
         #else p <- p + convert(PAR$V*(P-Pr),'calories')
         p <- PAR$H + p
       }
-      if(PROP=="s") {
+      if(PROP=="S") {
         # use constant Cp if the EoS parameters are not available
         if(!hasEOS) p <- PAR$Cp * log(T/Tr) else {
           p <- PAR$a * log(T / Tr) + PAR$b * (T - Tr) + 

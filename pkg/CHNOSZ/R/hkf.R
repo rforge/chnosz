@@ -6,7 +6,7 @@
 #source("util.args.R")
 
 hkf <- function(property = NULL, parameters = NULL, T = 298.15, P = 1,
-  contrib = c('n', 's', 'o'), H2O.props="rho") {
+  contrib = c("n", "s", "o"), H2O.props="rho") {
   # calculate G, H, S, Cp, V, kT, and/or E using
   # the revised HKF equations of state
   # H2O.props - H2O properties needed for subcrt() output
@@ -16,19 +16,14 @@ hkf <- function(property = NULL, parameters = NULL, T = 298.15, P = 1,
   Pr <- thermo$opt$Pr
   Theta <- thermo$opt$Theta
   Psi <- thermo$opt$Psi
-  # argument handling
-  eargs <- eos.args('hkf', property)
-  property <- eargs$prop
-  EOS.props <- eargs$props
-  EOS.Props <- eargs$Prop
   # make T and P equal length
   if(!identical(P, "Psat")) {
     if(length(P) < length(T)) P <- rep(P, length.out = length(T))
     if(length(T) < length(P)) T <- rep(T, length.out = length(P))
   }
   # nonsolvation, solvation, and origination contribution
-  notcontrib <- ! contrib %in% c('n', 's', 'o')
-  if(TRUE %in% notcontrib) stop(paste("contrib must be in c('n', 's', 'o'); got", c2s(contrib[notcontrib])))
+  notcontrib <- ! contrib %in% c("n", "s", "o")
+  if(TRUE %in% notcontrib) stop(paste("contrib must be in c('n', 's', 'o); got", c2s(contrib[notcontrib])))
   # get water properties
   # rho - for subcrt() output and g function
   # Born functions and epsilon - for HKF calculations
@@ -101,18 +96,18 @@ hkf <- function(property = NULL, parameters = NULL, T = 298.15, P = 1,
         # various contributions to the properties
         if(icontrib == "n") {
           # nonsolvation ghs equations
-          if(PROP == "h") {
+          if(PROP == "H") {
             p.c <- PAR$c1*(T-Tr) - PAR$c2*(1/(T-Theta)-1/(Tr-Theta))
             p.a <- PAR$a1*(P-Pr) + PAR$a2*log((Psi+P)/(Psi+Pr)) + 
               ((2*T-Theta)/(T-Theta)^2)*(PAR$a3*(P-Pr)+PAR$a4*log((Psi+P)/(Psi+Pr)))
             p <- p.c + p.a
-          } else if(PROP == "s") {
+          } else if(PROP == "S") {
             p.c <- PAR$c1*log(T/Tr) - 
               (PAR$c2/Theta)*( 1/(T-Theta)-1/(Tr-Theta) + 
               log( (Tr*(T-Theta))/(T*(Tr-Theta)) )/Theta )
             p.a <- (T-Theta)^(-2)*(PAR$a3*(P-Pr)+PAR$a4*log((Psi+P)/(Psi+Pr)))
             p <- p.c + p.a
-          } else if(PROP == "g") {
+          } else if(PROP == "G") {
             p.c <- -PAR$c1*(T*log(T/Tr)-T+Tr) - 
               PAR$c2*( (1/(T-Theta)-1/(Tr-Theta))*((Theta-T)/Theta) - 
               (T/Theta^2)*log((Tr*(T-Theta))/(T*(Tr-Theta))) )
@@ -122,53 +117,53 @@ hkf <- function(property = NULL, parameters = NULL, T = 298.15, P = 1,
             # at Tr,Pr, if the origination contribution is not NA, ensure the solvation contribution is 0, not NA
             if(!is.na(PAR$G)) p[T==Tr & P==Pr] <- 0
           # nonsolvation cp v kt e equations
-          } else if(PROP == 'cp') {
+          } else if(PROP == "Cp") {
             p <- PAR$c1 + PAR$c2 * ( T - Theta ) ^ (-2)        
-          } else if(PROP == 'v') {
-            p <- convert(PAR$a1, 'cm3bar') + 
-              convert(PAR$a2, 'cm3bar') / (Psi + P) +
-              (convert(PAR$a3, 'cm3bar') + convert(PAR$a4,'cm3bar') / (Psi + P)) / (T - Theta)
-          } else if(PROP == 'kt') {
-            p <- (convert(PAR$a2, 'cm3bar') + 
-              convert(PAR$a4, 'cm3bar') / (T - Theta)) * (Psi + P) ^ (-2)
-          } else if(PROP == 'e') {
-            p <- convert( - (PAR$a3 + PAR$a4 / convert((Psi + P),'calories')) * 
-              (T - Theta) ^ (-2), 'cm3bar')
+          } else if(PROP == "V") {
+            p <- convert(PAR$a1, "cm3bar") + 
+              convert(PAR$a2, "cm3bar") / (Psi + P) +
+              (convert(PAR$a3, "cm3bar") + convert(PAR$a4, "cm3bar") / (Psi + P)) / (T - Theta)
+          } else if(PROP == "kT") {
+            p <- (convert(PAR$a2, "cm3bar") + 
+              convert(PAR$a4, "cm3bar") / (T - Theta)) * (Psi + P) ^ (-2)
+          } else if(PROP == "E") {
+            p <- convert( - (PAR$a3 + PAR$a4 / convert((Psi + P), "calories")) * 
+              (T - Theta) ^ (-2), "cm3bar")
           }
         }
         if(icontrib == "s") {
           # solvation ghs equations
-          if(PROP == "g") {
+          if(PROP == "G") {
             p <- -omega.PT*(ZBorn+1) + omega*(ZBorn.PrTr+1) + omega*H2O.PrTr$YBorn*(T-Tr)
             # at Tr,Pr, if the origination contribution is not NA, ensure the solvation contribution is 0, not NA
             if(!is.na(PAR$G)) p[T==Tr & P==Pr] <- 0
           }
-          if(PROP == "h") 
+          if(PROP == "H") 
             p <- -omega.PT*(ZBorn+1) + omega.PT*T*H2O.PT$YBorn + T*(ZBorn+1)*dwdT +
                    omega*(ZBorn.PrTr+1) - omega*Tr*H2O.PrTr$YBorn
-          if(PROP == "s") 
+          if(PROP == "S") 
             p <- omega.PT*H2O.PT$YBorn + (ZBorn+1)*dwdT - omega*H2O.PrTr$YBorn
           # solvation cp v kt e equations
-          if(PROP == 'cp') p <- omega.PT*T*H2O.PT$XBorn + 2*T*H2O.PT$YBorn*dwdT + 
+          if(PROP == "Cp") p <- omega.PT*T*H2O.PT$XBorn + 2*T*H2O.PT$YBorn*dwdT + 
             T*(ZBorn+1)*d2wdT2
-          if(PROP == 'v') p <- -convert(omega.PT,'cm3bar') * 
-            H2O.PT$QBorn + convert(dwdP,'cm3bar') * (-ZBorn - 1)
+          if(PROP == "V") p <- -convert(omega.PT, "cm3bar") * 
+            H2O.PT$QBorn + convert(dwdP, "cm3bar") * (-ZBorn - 1)
           # TODO: the partial derivatives of omega are not included here here for kt and e
-          # (to do it, see p. 820 of SOJ+92 ... but kt requires d2wdP2 which we don't have yet)
-          if(PROP == 'kt') p <- convert(omega,'cm3bar') * H2O.PT$NBorn
-          if(PROP == 'e') p <- -convert(omega,'cm3bar') * H2O.PT$UBorn
+          # (to do it, see p. 820 of SOJ+92 ... but kt requires d2wdP2 which we don"t have yet)
+          if(PROP == "kT") p <- convert(omega, "cm3bar") * H2O.PT$NBorn
+          if(PROP == "E") p <- -convert(omega, "cm3bar") * H2O.PT$UBorn
         }
-        if(icontrib == 'o') {
+        if(icontrib == "o") {
           # origination ghs equations
-          if(PROP == 'g') {
+          if(PROP == "G") {
             p <- PAR$G - PAR$S * (T-Tr)
-            # don't inherit NA from PAR$S at Tr
+            # don"t inherit NA from PAR$S at Tr
             p[T==Tr] <- PAR$G
           }
-          else if(PROP == 'h') p <- PAR$H
-          else if(PROP == 's') p <- PAR$S
-          # origination eos equations: senseless
-          else if(PROP %in% tolower(EOS.props)) p <- 0 * T
+          else if(PROP == "H") p <- PAR$H
+          else if(PROP == "S") p <- PAR$S
+          # origination eos equations (Cp, V, kT, E): senseless
+          else p <- 0 * T
         }
         # accumulate the contribution
         hkf.p <- hkf.p + p
@@ -176,7 +171,7 @@ hkf <- function(property = NULL, parameters = NULL, T = 298.15, P = 1,
       wnew <- data.frame(hkf.p)
       if(i > 1) w <- cbind(w, wnew) else w <- wnew
     }
-    colnames(w) <- EOS.Props
+    colnames(w) <- property
     aq.out[[k]] <- w
   }
   return(list(aq=aq.out, H2O=H2O.PT))

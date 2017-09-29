@@ -41,7 +41,7 @@ for(P in unique(PT$P)) {
   text(lastT+25, tail(logm, 1), Pkb, adj=0)
 }
 t1 <- quote("Solubility of"~alpha*"-quartz")
-t2 <- "(Sverjensky et al., 2014)"
+t2 <- "(after Sverjensky et al., 2014)"
 mtitle(as.expression(c(t1, t2)))
 # TODO: lines are a little low at highest P and P ...
 # does the Berman, 1988 quartz data increase high-PT solubilities?

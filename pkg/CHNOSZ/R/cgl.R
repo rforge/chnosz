@@ -2,7 +2,7 @@
 # calculate standard thermodynamic properties of non-aqueous species
 # 20060729 jmd
 
-cgl <- function(property=NULL,T=298.15,P=1,parameters=NULL) {
+cgl <- function(property=NULL,parameters=NULL,T=298.15,P=1) {
   # calculate properties of crystalline, liquid (except H2O) and gas species
   # argument handling
   thermo <- get("thermo")

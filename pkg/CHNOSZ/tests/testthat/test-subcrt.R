@@ -95,6 +95,38 @@ test_that("calculations using IAPWS-95 are possible", {
   water(oldwat)
 })
 
+test_that("calculations for quartz are consistent with SUPCRT92", {
+  # output from SUPCRT92 for reaction specified as "1 QUARTZ" run at 1 bar
+  # (SUPCRT shows phase transition at 574.850 deg C, and does not give Cp values around the transition)
+  S92_1bar <- read.table(header = TRUE, text = "
+      T       G       H    S       V
+    572	-214482	-209535	24.7	23.3
+    573	-214507	-209517	24.7	23.3
+    574	-214532	-209499	24.8	23.3
+    575	-214557	-209192	25.1	23.7
+    576	-214582	-209176	25.1	23.7
+    577	-214607	-209159	25.2	23.7
+  ")
+  CHNOSZ_1bar <- subcrt("quartz", T=seq(572, 577), P=1)$out[[1]]
+  expect_equal(CHNOSZ_1bar$G, S92_1bar$G, tolerance = 1e-5)
+  expect_equal(CHNOSZ_1bar$H, S92_1bar$H, tolerance = 1e-5)
+  expect_equal(CHNOSZ_1bar$S, S92_1bar$S, tolerance = 1e-2)
+#  expect_equal(CHNOSZ_1bar$V, S92_1bar$V, tolerance = 1e-2)
+
+  # output from SUPCRT92 for reaction specified as "1 QUARTZ" run at 500 bar
+  # (SUPCRT shows phase transition at 587.811 deg C)
+  S92_500bar <- read.table(header = TRUE, text = "
+      T       G       H    S       V
+    585	-214523	-209335	24.6	23.3
+    586	-214548	-209318	24.7	23.3
+    587	-214573	-209301	24.7	23.3
+    588	-214602	-208700	25.4	23.7
+    589	-214627	-208684	25.4	23.7
+    590	-214653	-208668	25.4	23.7
+  ")
+  CHNOSZ_500bar <- subcrt("quartz", T=seq(585, 590), P=500)$out[[1]]
+})
+
 # references
 
 # Amend, J. P. and Shock, E. L. (2001) 

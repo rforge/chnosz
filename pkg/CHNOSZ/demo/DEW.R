@@ -4,7 +4,7 @@
 par(mfrow = c(2, 2), mar=c(3.0, 3.5, 2.5, 1.0), mgp=c(1.7, 0.3, 0), las=1, tcl=0.3, xaxs="i", yaxs="i")
 
 # activate DEW model
-water("DEW")
+oldwat <- water("DEW")
 
 #### plot 1: quartz solubility at high pressure
 ## after Figure 7D of Sverjensky et al., 2014 
@@ -52,7 +52,7 @@ mtitle(as.expression(c(t1, t2)))
 # load the fitted parameters for species as used by SHA14
 # TODO: also use their Ca+2??
 # NOTE: don't load NaCl, NH4+, or HS- here because the DEW spreadsheet lists a1 from the correlation
-add.obigt("DEW_aq", c("CO3-2", "BO2-", "MgCl+", "SiO2", "HCO3-", "Si2O4"))
+add.obigt("DEW", c("CO3-2", "BO2-", "MgCl+", "SiO2", "HCO3-", "Si2O4"))
 # set up the plot
 V0nlab <- expression(Delta * italic(V) * degree[n]~~(cm^3~mol^-1))
 a1lab <- expression(italic(a)[1]%*%10~~(cal~mol~bar^-1))
@@ -63,7 +63,7 @@ plotfun <- function(species, col, pch, cex, dy, error, xlim, corrfun) {
   par <- info(info(species))
   a1 <- par$a1 * 10
   # get the nonsolvation volume
-  Vn <- unlist(hkf("V", parameters=par, contrib="n")$aq)
+  Vn <- unlist(hkf("V", par, contrib="n")$aq)
   points(Vn, a1, col=col, pch=pch, cex=cex)
   for(i in 1:length(species)) text(Vn[i], a1[i]+dy, expr.species(species[i]))
   arrows(Vn, a1 - error, Vn, a1 + error, length = 0.03, angle = 90, code = 3, col=col)
@@ -104,6 +104,7 @@ dfun <- function(T = 600, P = 50000, res=300) {
 }
 
 # first plot: CHNOSZ default database
+data(OBIGT)
 dfun()
 t1 <- quote("CHNOSZ default database"[])
 t2 <- quote("(not recommended for high"~italic(P)*")")
@@ -115,5 +116,6 @@ CO2quote <- quote(list(CO[2], HCO[3]^"-", CO[3]^"-2"))
 DEWexpr <- substitute("DEW data for"~x, list(x=CO2quote))
 mtitle(as.expression(c(DEWexpr, "and methane")))
 
-# reset the database (including the default water computational option)
-data(thermo)
+# reset the database and previous water computational option
+data(OBIGT)
+water(oldwat)

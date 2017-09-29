@@ -5,7 +5,7 @@
 ## if this file is interactively sourced, the following is also needed to provide unexported functions:
 #source("util.args.R")
 
-hkf <- function(property = NULL, T = 298.15, P = 1, parameters = NULL,
+hkf <- function(property = NULL, parameters = NULL, T = 298.15, P = 1,
   contrib = c('n', 's', 'o'), H2O.props="rho") {
   # calculate G, H, S, Cp, V, kT, and/or E using
   # the revised HKF equations of state

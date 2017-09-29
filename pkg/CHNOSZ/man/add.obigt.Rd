@@ -23,10 +23,13 @@ Add or modify species in the thermodynamic database.
 }
 
 \details{
-
 \code{\link{add.obigt}} is used to update the thermodynamic database (\code{\link{thermo}$obigt}) in the running session.
-The format (column names) of the file must be the same as the \code{extdata/OBIGT/*.csv} files provided with CHNOSZ.
-\code{file} can be the path to a user-supplied file or the name, sans any file suffixes, of any file in the \code{extdata/OBIGT} directory packaged with CHNOSZ (e.g. \samp{DEW_aq} or \samp{organic_aq}).
+The format (column names) of the specified file must be the same as the \code{extdata/OBIGT/*.csv} files provided with CHNOSZ.
+
+\code{file} is first matched against the names of files in the \code{extdata/OBIGT} directory packaged with CHNOSZ.
+In this case, the filename suffixes are removed, so \samp{DEW_aq}, \samp{organic_aq}, and \samp{organic_cr} are valid names.
+The function also accepts single matches with the state suffix dropped (\samp{DEW} but not \samp{organic}).
+If there are no matches to a system file, then \code{file} is interpreted as the path a user-supplied file.
 
 If \code{species} is NULL (default), all species listed in the file are used.
 If \code{species} is given and matches the name(s) of species in the file, only those species are added to the database.
@@ -75,7 +78,7 @@ mod.obigt("buckminsterfullerene", formula="C60", state="cr", date=today())
 # retrieve the species data (thermodynamic properties in this toy example are NA)
 info(info("C60"))
 # reset database
-data(thermo)
+data(OBIGT)
 
 # using add.obigt():
 # compare stepwise stability constants of cadmium chloride complexes
@@ -92,7 +95,8 @@ BZA10 <- lapply(1:4, function(i) {
   subcrt(c(Cdspecies[i], "Cl-", Cdspecies[i+1]),
     c(-1, -1, 1), T=25, P=P)$out$logK
 })
-data(thermo)
+# reset default database
+data(OBIGT)
 matplot(P, do.call(cbind, SSH97), type="l")
 matplot(P, do.call(cbind, BZA10), type="l", add=TRUE, lwd=2)
 legend("topleft", legend=c("", "", "Sverjensky et al., 1997",

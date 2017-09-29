@@ -19,7 +19,7 @@ Calculate thermodynamic and electrostatic properties of water.
 }
 
 \arguments{
-  \item{property}{character, name(s) of property(s) to calculate, or name of computational option}
+  \item{property}{character, computational setting or property(s) to calculate}
   \item{T}{numeric, temperature (K)}
   \item{P}{numeric, pressure (bar), or \samp{Psat} for vapor-liquid saturation}
   \item{formulation}{character, name of formulation for which to return names of available properties}
@@ -40,11 +40,11 @@ The high-level function \code{water} performs different computations, depending 
 
 }
 
-Calling the function with no arguments returns the current computational option.
-Use e.g. \code{water("DEW")} to set the option; the previous option (at the time of the function call) is returned invisibly.
-Subsequent calculations with \code{water}, or other functions such as \code{subcrt} and \code{affinity}, will use that option.
+Calling the function with no arguments returns the current computational setting.
+Use e.g. \code{water("DEW")} to make the setting; the previous setting (at the time of the function call) is returned invisibly.
+Subsequent calculations with \code{water}, or other functions such as \code{subcrt} and \code{affinity}, will use that setting.
 
-The allowed \code{property}s for \code{water} are one or more of those given below, depending on the computational option; availability is shown by an asterisk.
+The allowed \code{property}s for \code{water} are one or more of those given below, depending on the computational setting; availability is shown by an asterisk.
 The names of properties in the arguments are not case sensitive. Note that some of the properties that can actually be calculated using the different formulations are not implemented here.
 Except for \code{rho}, the units are those used by Johnson and Norton, 1991.
 

@@ -282,7 +282,7 @@ subcrt <- function(species, coeff=1, state=NULL, property=c('logK','G','H','S','
     H2O.props <- "rho"
     # get other properties for H2O only if it's in the reaction
     if(any(isH2O)) H2O.props <- c(H2O.props, eosprop)
-    hkfstuff <- hkf(eosprop, T = T, P = P, parameters = si, H2O.props=H2O.props)
+    hkfstuff <- hkf(eosprop, parameters = si, T = T, P = P, H2O.props=H2O.props)
     p.aq <- hkfstuff$aq
     H2O.PT <- hkfstuff$H2O
     if(any(IS != 0)) p.aq <- nonideal(inpho[isaq], p.aq, newIS, T)
@@ -299,7 +299,7 @@ subcrt <- function(species, coeff=1, state=NULL, property=c('logK','G','H','S','
   if(TRUE %in% iscgl) {
     #si <- info(inpho[iscgl],quiet=TRUE)
     si <- obigt2eos(thermo$obigt[inpho[iscgl],], "cgl", fixGHS = TRUE)
-    p.cgl <- cgl(eosprop, T = T, P = P, parameters = si)
+    p.cgl <- cgl(eosprop, parameters = si, T = T, P = P)
     # replace Gibbs energies with NA where the
     # phases are beyond their temperature range
     if('g' %in% eosprop) {

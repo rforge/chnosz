@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-23 (2017-09-28)
+CHANGES IN CHNOSZ 1.1.0-24 (2017-09-29)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -8,7 +8,7 @@ MAJOR CHANGES:
   calculateGibbsofWater(), calculateEpsilon(), calculateQ(), and
   water.DEW().
 
-- The computational option for water (thermo$opt$par) can now be
+- The computational setting for water (thermo$opt$par) can now be
   set using water("DEW"), water("IAPWS"), etc.
 
 - Add demo DEW.R.
@@ -16,6 +16,11 @@ MAJOR CHANGES:
 - water.lines() now works for diagrams of Eh, pe, logfO2, logaO2,
   logfH2, or logaH2 vs pH, T, or P. It is possible to have T or P on
   either the x- or y-axis.
+
+- Add data(OBIGT) and data(CHNOSZ) commands to reset only the
+  thermodynamic database (OBIGT) or system settings (CHNOSZ: basis and
+  species) to their defaults. data(thermo) is still used to reset
+  *everything* (the database and all computational and system settings).
 
 DATABASE UPDATES:
 

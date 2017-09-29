@@ -3,27 +3,39 @@
 \docType{data}
 \alias{thermo}
 \alias{OBIGT}
+\alias{CHNOSZ}
 \alias{opt}
 \alias{element}
 \alias{refs}
 \alias{groups}
 \alias{buffers}
-\title{Thermodynamic Database and System Definition}
+\title{Thermodynamic Database and System Settings}
 \description{
-Data files provided with CHNOSZ are in the \code{data} and \code{extdata} directories of the package.
-The \code{*.csv} files under \code{data} and \code{extdata/OBIGT} are used to build the \code{thermo} data object on loading the package.
-Other data files, supporting the examples and vignettes, are documented separately at \code{\link{extdata}}. 
+Run \code{data(thermo)} to initialize all of the data used in CHNOSZ.
+This includes the computational settings, thermodynamic database, and system settings (chemical species).
 
-The \code{thermo} object holds the thermodynamic database of properties of species, some thermodynamic constants and operational parameters for functions in CHNOSZ, the properties of elements, references to literature sources of thermodynamic data, compositions of chemical activity buffers, and amino acid compositions of proteins.
-The \code{thermo} object also holds intermediate data used in calculations, in particular the definitions of basis species and species of interest input by the user, and the calculated properties of \code{\link{water}} so that subsequent calculations at the same temperature-pressure conditions can be accelerated.
+The system settings are changed using \code{\link{basis}} and \code{\link{species}}.
+To restore the default system settings (no species loaded), use \code{data(CHNOSZ)}.
 
-The \code{thermo} object is a \code{\link{list}} composed of \code{\link{data.frame}}s or lists each representing a class of data.
-The object is created in an environment named \code{thermo}.
-At any time, the user can restore the data object to its initial state by calling \code{data(thermo)}.
-This is sometimes a useful command to use during an interactive session, when previous definitions of basis species and species of interest are longer desired.
+The thermodynamic database is changed using \code{\link{add.obigt}} and \code{\link{mod.obigt}}.
+To restore the default database, use \code{data(OBIGT)}.
+
+The computational settings are changed using \code{\link{water}}, \code{\link{P.units}}, \code{\link{T.units}}, \code{\link{E.units}} or by direct manipulation of \code{thermo$opt}, as well as some other commands (e.g. \code{\link{mod.buffer}}).
+To restore the default computational settings, thermodynamic database, and system settings, use \code{data(thermo)}.
+
+In an interactive session, use \code{data(thermo)} to restore the thermodynamic database and computational and system settings to their initial state.
+Or, use \code{data(CHNOSZ)} to clear the system settings (basis and species), or \code{data(OBIGT)} to restore the default database.
+
+The data files provided with CHNOSZ are in the \code{data} and \code{extdata/OBIGT} directories of the package.
+The \code{*.csv} files in these directories are used to build the \code{thermo} data object in an environment named \code{CHNOSZ}.
+The structure of the \code{thermo} object is described below.
 }
 
-\usage{data(thermo)}
+\usage{
+  data(thermo)
+  data(OBIGT)
+  data(CHNOSZ)
+}
 
 \format{
 
@@ -212,7 +224,9 @@ Columns 13-20 for crystalline, gas and liquid species (\eqn{Cp=a+bT+cT^{-2}+dT^{
 
 } % end of format
 
-\seealso{ \code{\link{add.obigt}} }
+\seealso{
+Other data files, supporting the examples and vignettes, are documented separately at \code{\link{extdata}}. 
+}
 
 \examples{
 \dontshow{data(thermo)}

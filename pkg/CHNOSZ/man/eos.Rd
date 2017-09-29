@@ -8,16 +8,16 @@ Calculate thermodynamic properties using the revised Helgeson-Kirkham-Flowers (H
 }
 
 \usage{
-  cgl(property = NULL, T = 298.15, P = 1, parameters = NULL)
-  hkf(property = NULL, T = 298.15, P = 1, parameters = NULL,
+  cgl(property = NULL, parameters = NULL, T = 298.15, P = 1)
+  hkf(property = NULL, parameters = NULL, T = 298.15, P = 1,
     contrib = c("n", "s", "o"), H2O.props = "rho")
 }
 
 \arguments{
   \item{property}{character, name(s) of properties to calculate}
+  \item{parameters}{dataframe, species parameters as one or more rows from \code{thermo$obigt}}
   \item{T}{numeric, temperature(s) at which to calculate properties (K)}
   \item{P}{numeric, pressure(s) at which to calculate properties (bar)}
-  \item{parameters}{dataframe, species parameters as one or more rows from \code{thermo$obigt}}
   \item{contrib}{character, which contributions to consider in the revised HKF equations equations of state: (\code{n})onsolvation, (\code{s})olvation (the \eqn{\omega}{omega} terms), or (o)rigination contributions (i.e., the property itself at 25 \eqn{^{\circ}}{°}C and 1 bar). Default is \code{c("n","s","o")}, for all contributions}
   \item{H2O.props}{character, properties to calculate for water}
 }

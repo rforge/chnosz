@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-28 (2017-09-29)
+CHANGES IN CHNOSZ 1.1.0-30 (2017-09-30)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -73,10 +73,15 @@ OTHER CHANGES:
 - To save space, taxid_names.csv has been trimmed to hold only those
   taxids listed in extdata/bison/gi.taxid.txt.
 
+CLEANUP:
+
 - Remove Eco.csv.xz and rename more.aa() to yeast.aa().
 
 - Remove transfer() and associated functions draw.transfer(), apc(), and
   feldspar().
+
+- Remove read.expr() and extdata/abundance/ISR+08.csv (protein abundance
+  in E. coli).
 
 CHANGES IN CHNOSZ 1.1.0 (2017-05-04)
 ------------------------------------

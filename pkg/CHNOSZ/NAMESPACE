@@ -30,7 +30,7 @@ export(
   "getrank", "parent", "sciname", "allparents", "getnodes", "getnames",
   "protein.obigt", "hkf", "cgl", "which.pmax",
   "equil.boltzmann", "equil.reaction", "find.tp",
-  "ionize.aa", "MP90.cp", "aasum", "read.expr",
+  "ionize.aa", "MP90.cp", "aasum",
   "anim.carboxylase",
   "qqr", "RMSD", "CVRMSD", "spearman", "DGmix", "DDGmix", "DGtr",
   "ratlab",

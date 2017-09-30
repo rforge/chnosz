@@ -10,7 +10,7 @@ examples <- function(do.png=FALSE) {
     "util.fasta", "util.formula", "util.matrix", "util.misc", "util.seq", "util.units",
     "util.water", "taxonomy", "info", "protein.info", "hkf", "water", "IAPWS95", "subcrt",
     "makeup", "basis", "swap.basis", "species", "affinity", "equil.boltzmann", 
-    "diagram", "buffer", "nonideal", "add.protein", "protein", "ionize.aa", "yeast.aa", "read.expr",
+    "diagram", "buffer", "nonideal", "add.protein", "protein", "ionize.aa", "yeast.aa",
     "anim", "objective", "revisit", "EOSregress", "wjd")
   plot.it <- FALSE
   if(is.character(do.png))

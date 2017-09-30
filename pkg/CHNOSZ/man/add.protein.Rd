@@ -63,8 +63,6 @@ as.chemical.formula(protein.formula(aa))
 
 \code{\link{pinfo}} for protein-level functions (length, chemical formulas, reaction coefficients of basis species).
 
-\code{\link{read.expr}} for working with protein abundance and subcellular localization data.
-
 \code{\link{protein}} for examples of affinity calculations and diagrams.
 }
 

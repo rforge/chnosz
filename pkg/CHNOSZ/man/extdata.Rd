@@ -12,8 +12,7 @@
 
   Files in \code{abundance} contain protein abundance and microbial occurrence data:
   \itemize{
-    \item \code{TBD+05.csv} lists genes with transcriptomic expression changes in carbon limitation stress response experiments in yeast (Tai et al., 2005). See \code{\link{read.expr}} for an example that uses this file.
-    \item \code{ISR+08.csv} has columns excerpted from Additional File 2 of Ishihama et al. (2008) for protein abundances in \emph{E. coli} cytosol. The columns in this file are ID (Swiss-Prot ID), accession (Swiss-Prot accession), emPAI (exponentially modified protein abundance index), copynumber (emPAI-derived copy number/cell), GRAVY (Kyte-Doolittel), FunCat (FunCat class description), PSORT (PSORT localisation), ribosomal (yes/no). See \code{\link{read.expr}} for an example that uses this file.
+    \item \code{TBD+05.csv} lists genes with transcriptomic expression changes in carbon limitation stress response experiments in yeast (Tai et al., 2005). See \code{\link{yeast.aa}} for an example that uses this file.
     \item \code{yeastgfp.csv.xz} Has 28 columns; the names of the first five are \code{yORF}, \code{gene name}, \code{GFP tagged?}, \code{GFP visualized?}, and \code{abundance}. The remaining columns correspond to the 23 subcellular localizations considered in the YeastGFP project (Huh et al., 2003 and Ghaemmaghami et al., 2003) and hold values of either \code{T} or \code{F} for each protein. \samp{yeastgfp.csv} was downloaded on 2007-02-01 from http://yeastgfp.ucsf.edu using the Advanced Search, setting options to download the entire dataset and to include localization table and abundance, sorted by orf number. See \code{\link{yeastgfp}} and \code{demo("yeastgfp")} for examples that use this file.
     \item \code{microbes.csv} has data for microbial occurrence (i.e. relative enrichement) in colorectal cancer and normal tissue. The file is from the Supporting Information of Dick (2016). This file is used by \code{demo("bugstab")}.
   }
@@ -44,12 +43,12 @@
   }
 
   Files in \code{protein} contain amino acid compositions for proteins.
-  See \code{\link{yeast.aa}} and \code{\link{read.expr}} for examples that use these files.
   \itemize{
     \item \code{Sce.csv.xz}
       Data frame of amino acid composition of 6716 proteins from the \emph{Saccharomyces} Genome Database (SGD).
       Values in the first three columns are the \code{ORF} names of proteins, \code{SGDID}, and \code{GENE} names. The remaining twenty columns (\code{ALA}..\code{VAL}) contain the numbers of the respective amino acids in each protein.
       The sources of data for \samp{Sce.csv} are the files \samp{protein_properties.tab} and \samp{SGD_features.tab} (for the gene names), downloaded from \url{http://www.yeastgenome.org} on 2013-08-24.
+      See \code{\link{yeast.aa}} for an example.
     \item \code{DS11.csv}, \code{DS13.csv}
       These two files contain amino acid compositions of metagenomically encoded proteins, averaged together according to functional annotation (DS11) or taxonomic affiliation (DS13).
       The data are from Dick and Shock, 2011 and 2013.
@@ -128,8 +127,6 @@ HAMAP system. HAMAP FTP directory, \url{ftp://ftp.expasy.org/databases/hamap/}
 Hnědkovský, L., Wood, R. H. and Majer, V. (1996) Volumes of aqueous solutions of CH4, CO2, H2S, and NH3 at temperatures from 298.15 K to 705 K and pressures to 35 MPa. \emph{J. Chem. Thermodyn.} \bold{28}, 125--142. \url{https://doi.org/10.1006/jcht.1996.0011}
 
 Hnědkovský, L. and Wood, R. H. (1997) Apparent molar heat capacities of aqueous solutions of CH4, CO2, H2S, and NH3 at temperatures from 304 K to 704 K at a pressure of 28 MPa. \emph{J. Chem. Thermodyn.} \bold{29}, 731--747. \url{https://doi.org/10.1006/jcht.1997.0192}
-
-Ishihama, Y., Schmidt, T., Rappsilber, J., Mann, M., Hartl, F. U., Kerner, M. J. and Frishman, D. (2008) Protein abundance profiling of the \emph{Escherichia coli} cytosol. \emph{BMC Genomics} \bold{9}:102. \url{https://doi.org/10.1186/1471-2164-9-102}
 
 Joint Genome Institute (2007) Bison Pool Environmental Genome. Protein sequence files downloaded from IMG/M (\url{http://img.jgi.doe.gov/cgi-bin/m/main.cgi?section=FindGenomes&page=findGenomes})
 

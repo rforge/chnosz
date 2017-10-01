@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-30 (2017-09-30)
+CHANGES IN CHNOSZ 1.1.0-32 (2017-10-01)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -26,6 +26,12 @@ MAJOR CHANGES:
   species) to their defaults. data(thermo) is still used to reset
   *everything* (the database and all computational and system settings).
 
+- In add.obigt(), using 'file' without a file suffix now can be used to
+  locate corresponding files (such as CHNOSZ_aq.csv or DEW_aq.csv) in
+  the extdata/OBIGT package directory.
+
+- add.obigt() gets new argument 'species' for selecting species to add.
+
 DATABASE UPDATES:
 
 - Add DEW_aq.csv with aqueous species data from the DEW spreadsheet
@@ -33,11 +39,10 @@ DATABASE UPDATES:
   database in CHNOSZ are not included. For the time being, only
   selected species are fully referenced.
 
-- In add.obigt(), using 'file' without a file suffix now can be used to
-  locate corresponding files (such as CHNOSZ_aq.csv or DEW_aq.csv) in
-  the extdata/OBIGT package directory.
-
-- add.obigt() gets new argument 'species' for selecting species to add.
+- Add Berman_cr.csv with names and formulas for minerals whose
+  thermodynamic properties are calculated using the Berman (1988)
+  formulation. The state "cr_Berman" is used to distinguish these
+  minerals from the Helgeson data.
 
 - Data file CHNOSZ_aq.csv is no longer added to the database by default.
   It is now intended to hold provisional updates. Updated heat capacity

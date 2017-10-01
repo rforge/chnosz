@@ -73,7 +73,7 @@ info.text <- function(ispecies) {
   return(out)
 }
 
-info.character <- function(species, state=NULL, check.protein=TRUE) {
+info.character <- function(species, state=NULL, check.protein=TRUE, grep.state=FALSE) {
   # returns the rownumbers of thermo$obigt having an exact match of 'species' to
   # thermo$obigt$[species|abbrv|formula] or NA otherwise
   # a match to thermo$obigt$state is also required if 'state' is not NULL
@@ -113,7 +113,8 @@ info.character <- function(species, state=NULL, check.protein=TRUE) {
     # special treatment for H2O: aq retrieves the liq
     if(species %in% c("H2O", "water") & state=="aq") state <- "liq"
     # the matches for both species and state
-    matches.state <- matches.species & grepl(state, get("thermo")$obigt$state)
+    if(grep.state) matches.state <- matches.species & grepl(state, thermo$obigt$state)
+    else matches.state <- matches.species & state == thermo$obigt$state
     if(!any(matches.state)) {
       # the requested state is not available for this species
       available.states <- thermo$obigt$state[matches.species]
@@ -160,19 +161,19 @@ info.numeric <- function(ispecies, check.it=TRUE) {
   # use new obigt2eos function here
   this <- obigt2eos(this, this$state)
   # identify any missing GHS values
-  naGHS <- which(is.na(this[8:10]))
+  naGHS <- is.na(this[8:10])
   # a missing one of G, H or S can cause problems for subcrt calculations at high T
-  if(length(naGHS)==1) {
+  if(sum(naGHS)==1) {
     # calculate a single missing one of G, H, or S from the others
     GHS <- as.numeric(GHS(as.character(this$formula), G=this[,8], H=this[,9], S=this[,10]))
     message("info.numeric: ", colnames(this)[8:10][naGHS], " of ",
       this$name, "(", this$state, ") is NA; set to ", round(GHS[naGHS],2))
-    this[, naGHS+7] <- GHS[naGHS]
+    this[, which(naGHS)+7] <- GHS[naGHS]
   } 
   # now perform consistency checks for GHS and EOS parameters if check.it=TRUE
   if(check.it) {
     # check GHS if they were all present
-    if(length(naGHS)==0) calcG <- checkGHS(this)
+    if(sum(naGHS)==0) calcG <- checkGHS(this)
     # check tabulated heat capacities against EOS parameters
     calcCp <- checkEOS(this, this$state, "Cp")
     # fill in NA heat capacity

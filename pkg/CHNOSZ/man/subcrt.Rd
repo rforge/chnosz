@@ -132,7 +132,7 @@ subcrt("water", property=c("G", "E"))
 subcrt(c("glucose", "ethanol", "CO2"))
 
 ## properties of reactions
-subcrt(c("H2O", "H+", "k-feldspar", "kaolinite", "K+", "SiO2"),
+subcrt(c("H2O", "H+", "K-feldspar", "kaolinite", "K+", "SiO2"),
   c(-1, -2, -2, 1, 2, 4))
 subcrt(c("glucose", "ethanol", "CO2"), c(-1, 2, 2))
 # to specify the states

@@ -14,8 +14,7 @@ These functions convert values between units and set the user's preferred units.
   P.units(units = NULL)
   T.units(units = NULL)
   E.units(units = NULL)
-  convert(value, units, T = get("thermo")$opt$Tr,
-    P = get("thermo")$opt$Pr, pH = 7, logaH2O = 0)
+  convert(value, units, T = 298.15, P = 1, pH = 7, logaH2O = 0)
 }
 
 \arguments{

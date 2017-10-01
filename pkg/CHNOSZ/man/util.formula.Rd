@@ -17,7 +17,7 @@ Calculate the standard molal entropy of elements in a compound; calculate the st
   as.chemical.formula(makeup, drop.zero = TRUE)
   mass(formula)
   entropy(formula)
-  GHS(formula, G = NA, H = NA, S = NA, T = get("thermo")$opt$Tr)
+  GHS(formula, G = NA, H = NA, S = NA, T = 298.15)
   ZC(formula)
   i2A(formula)
 }

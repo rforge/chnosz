@@ -156,6 +156,7 @@ checkEOS <- function(eos, state, prop, ret.diff=FALSE) {
   # 20110808 jmd
   thermo <- get("thermo")
   # get calculated value based on EOS
+  Theta <- 228  # K
   if(identical(state, "aq")) {
     if(prop=="Cp") {
       # value of X consistent with IAPWS95
@@ -163,7 +164,7 @@ checkEOS <- function(eos, state, prop, ret.diff=FALSE) {
       # we use the value of X consistent with SUPCRT
       X <- -3.055586E-7
       refval <- eos$Cp
-      calcval <- eos$c1 + eos$c2/(298.15-thermo$opt$Theta)^2 + eos$omega*298.15*X
+      calcval <- eos$c1 + eos$c2/(298.15-Theta)^2 + eos$omega*298.15*X
       tol <- thermo$opt$Cp.tol
       units <- "cal K-1 mol-1"
     } else if(prop=="V") {
@@ -173,7 +174,7 @@ checkEOS <- function(eos, state, prop, ret.diff=FALSE) {
       Q <- 0.00002775729
       refval <- eos$V
       calcval <- 41.84*eos$a1 + 41.84*eos$a2/2601 + 
-        (41.84*eos$a3 + 41.84*eos$a4/2601) / (298.15-thermo$opt$Theta) - Q * eos$omega
+        (41.84*eos$a3 + 41.84*eos$a4/2601) / (298.15-Theta) - Q * eos$omega
       tol <- thermo$opt$V.tol
       units <- "cm3 mol-1"
     }
@@ -181,7 +182,7 @@ checkEOS <- function(eos, state, prop, ret.diff=FALSE) {
     # all other states
     if(prop=="Cp") {
       refval <- eos$Cp
-      Tr <- thermo$opt$Tr
+      Tr <- 298.15
       calcval <- eos$a + eos$b*Tr + eos$c*Tr^-2 + eos$d*Tr^-0.5 + eos$e*Tr^2 + eos$f*Tr^eos$lambda
       tol <- thermo$opt$Cp.tol
       units <- "cal K-1 mol-1"
@@ -222,7 +223,8 @@ checkGHS <- function(ghs, ret.diff=FALSE) {
   refval <- ghs[,8]
   DH <- ghs[,9]
   S <- ghs[,10]
-  calcval <- DH - thermo$opt$Tr * (S - Se)
+  Tr <- 298.15
+  calcval <- DH - Tr * (S - Se)
   # now on to the comparison
   # calculate the difference
   diff <- calcval - refval

@@ -26,11 +26,12 @@ nonideal <- function(species,proptable,IS,T) {
     # Alberty, 2003 Eq. 3.6-1
     loggamma <- function(a,Z,I,B) { - a * Z^2 * I^(1/2) / (1 + B * I^(1/2)) }
     # TODO: check the following equations 20080208 jmd
+    R <- 1.9872  # gas constant, cal K^-1 mol^-1
     if(prop=='log') return(loggamma(eval(A),Z,I,B))
-    else if(prop=='G') return(thermo$opt$R * T * loggamma(eval(A),Z,I,B))
-    else if(prop=='H') return(thermo$opt$R * T^2 * loggamma(eval(DD(A,'T',1)),Z,I,B))
-    else if(prop=='S') return(- thermo$opt$R * T * loggamma(eval(DD(A,'T',1)),Z,I,B))
-    else if(prop=='Cp') return(thermo$opt$R * T^2 *loggamma(eval(DD(A,'T',2)),Z,I,B))
+    else if(prop=='G') return(R * T * loggamma(eval(A),Z,I,B))
+    else if(prop=='H') return(R * T^2 * loggamma(eval(DD(A,'T',1)),Z,I,B))
+    else if(prop=='S') return(- R * T * loggamma(eval(DD(A,'T',1)),Z,I,B))
+    else if(prop=='Cp') return(R * T^2 *loggamma(eval(DD(A,'T',2)),Z,I,B))
   }
   if(!is.numeric(species[[1]])) species <- info(species,'aq')
   proptable <- as.list(proptable)
@@ -50,7 +51,7 @@ nonideal <- function(species,proptable,IS,T) {
     if(species[i] == info("e-") & thermo$opt$ideal.e) next
     didit <- FALSE
     for(j in 1:ncol(myprops)) {
-      #if(colnames(myprops)[j]=='G') myprops[,j] <- myprops[,j] + thermo$opt$R * T * mlg(Z,IS,convert(T,'C'))
+      #if(colnames(myprops)[j]=='G') myprops[,j] <- myprops[,j] + R * T * mlg(Z,IS,convert(T,'C'))
       cname <- colnames(myprops)[j]
       if(cname %in% c('G','H','S','Cp')) {
         myprops[,j] <- myprops[,j] + loggamma2(Z,IS,T,cname)

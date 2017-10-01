@@ -149,7 +149,8 @@ EOSplot(d, coefficients=CH4coeffs, T.plot=600)
 title("Cp from EOS parameters in database")
 
 # continuing from above, with user-defined variables
-invTTTheta3 <- function(T, P) (2*T)/(T-T*thermo$opt$Theta)^3
+Theta <- 228  # K 
+invTTTheta3 <- function(T, P) (2*T)/(T-T*Theta)^3
 invTX <- function(T, P) 1/T*water("XBorn", T=T, P=P)[,1]
 # print the calculated values of invTTTheta3
 EOSvar("invTTTheta3", d$T, d$P)

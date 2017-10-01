@@ -10,7 +10,7 @@ Calculate thermodynamic and electrostatic properties of water.
 }
 
 \usage{
-  water(property = NULL, T = get("thermo")$opt$Tr, P = "Psat")
+  water(property = NULL, T = 298.15, P = "Psat")
   water.SUPCRT92(property=NULL, T = 298.15, P = 1)
   water.IAPWS95(property=NULL, T = 298.15, P = 1)
   water.DEW(property=NULL, T = 373.15, P = 1000)

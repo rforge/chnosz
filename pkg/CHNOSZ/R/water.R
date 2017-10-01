@@ -2,7 +2,7 @@
 # calculate thermodynamic and electrostatic properties of H2O
 # 20061016 jmd
 
-water <- function(property = NULL, T = get("thermo")$opt$Tr, P = "Psat") {
+water <- function(property = NULL, T = 298.15, P = "Psat") {
   # calculate the properties of liquid H2O as a function of T and P
   # T in Kelvin, P in bar
   if(is.null(property)) return(get("thermo")$opt$water)
@@ -156,15 +156,16 @@ water.IAPWS95 <- function(property=NULL, T=298.15, P=1) {
     return(convert(P, "bar"))
   }
   ## thermodynamic properties
+  Tr <- 298.15
   # convert to SUPCRT reference state
   # at the triple point
   # I2S = SUPCRT - IAPWS ( + entropy in G )
   dH <- -68316.76 - 451.75437
   dS <- 16.7123 - 1.581072
-  dG <- -56687.71 + 19.64228 - dS * (T - get("thermo")$opt$Tr)
+  dG <- -56687.71 + 19.64228 - dS * (T - Tr)
   # does the reference state used for GHS also go here?
   dU <- -67434.5 - 451.3229
-  dA <- -55814.06 + 20.07376 - dS * (T - get("thermo")$opt$Tr)
+  dA <- -55814.06 + 20.07376 - dS * (T - Tr)
   # calculate pressure from the given T and estimated rho
   pressure <- function() return(convert(IAPWS95("p", T=T, rho=my.rho), "bar"))
   # convert IAPWS95() (specific, joule) to (molar, cal) 
@@ -344,7 +345,7 @@ water.DEW <- function(property = NULL, T = 373.15, P = 1000) {
   ilow <- T < 373.15 | P < 1000
   if(any(ilow)) {
     out[ilow, ] <- water.SUPCRT92(property, T=T[ilow], P=P[ilow])
-    iPrTr <- T==get("thermo")$opt$Tr & P==get("thermo")$opt$Pr
+    iPrTr <- T == 298.15 & P == 1
     if(sum(iPrTr)==sum(ilow)) message(paste("water.DEW: using SUPCRT calculations for Pr,Tr"))
     if(sum(iPrTr)==0) message(paste("water.DEW: using SUPCRT calculations for", sum(ilow), "low-T or low-P condition(s)"))
     if(sum(iPrTr)==1 & sum(ilow) > sum(iPrTr)) message(paste("water.DEW: using SUPCRT calculations for Pr,Tr and", sum(ilow)-1, "other low-T or low-P condition(s)"))

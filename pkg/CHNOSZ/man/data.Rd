@@ -44,20 +44,14 @@ The structure of the \code{thermo} object is described below.
   \itemize{
      
     \item \code{thermo$opt} 
-    List of operational parameters. Square brackets indicate default values.
+    List of computational settings. Square brackets indicate default values.
     \tabular{lll}{
-      \code{Tr} \tab numeric \tab Reference temperature (K) [298.15]\cr 
-      \code{Pr} \tab numeric \tab Reference pressure (bar) [1]\cr 
-      \code{Theta} \tab numeric \tab \eqn{\Theta}{Theta} in the revised HKF equations of state (K) [228]\cr 
-      \code{Psi} \tab numeric \tab \eqn{\Psi}{Psi} in the revised HKF equations of state (bar) [2600]\cr
-      \code{R} \tab numeric \tab Value of the gas constant (cal K\ifelse{latex}{\eqn{^{-1}}}{\ifelse{html}{\out{<sup>-1</sup>}}{^-1}} mol\ifelse{latex}{\eqn{^{-1}}}{\ifelse{html}{\out{<sup>-1</sup>}}{^-1}}) [1.9872]\cr
       \code{cutoff} \tab numeric \tab Cutoff below which values are taken to be zero [1e-10] (see \code{\link{makeup}})\cr
-      \code{E.units} \tab character \tab The user's units of energy ([\samp{cal}] or \samp{J})\cr
+      \code{E.units} \tab character \tab The user's units of energy ([\samp{cal}] or \samp{J}) (see \code{\link{subcrt}})\cr
       \code{T.units} \tab character \tab The user's units of temperature ([\samp{C}] or \samp{K})\cr
       \code{P.units} \tab character \tab The user's units of pressure ([\samp{bar}] or \samp{MPa})\cr
-      \code{state} \tab character \tab The default physical state for searching species [\samp{aq}]\cr
-      \code{water} \tab character \tab Computational option for properties of water ([\samp{SUPCRT}] or \samp{IAPWS})\cr
-      \code{online} \tab logical \tab Allow online searches of protein composition? Default [\code{NA}] is to ask the user.\cr
+      \code{state} \tab character \tab The default physical state for searching species [\samp{aq}] (see \code{\link{info}})\cr
+      \code{water} \tab character \tab Computational option for properties of water ([\samp{SUPCRT}] or \samp{IAPWS}; see \code{\link{water}})\cr
       \code{G.tol} \tab numeric \tab Difference in G above which \code{\link{checkGHS}} produces a message (cal mol\ifelse{latex}{\eqn{^{-1}}}{\ifelse{html}{\out{<sup>-1</sup>}}{^-1}}) [100]\cr
       \code{Cp.tol} \tab numeric \tab Difference in Cp above which \code{\link{checkEOS}} produces a message (cal K\ifelse{latex}{\eqn{^{-1}}}{\ifelse{html}{\out{<sup>-1</sup>}}{^-1}} mol\ifelse{latex}{\eqn{^{-1}}}{\ifelse{html}{\out{<sup>-1</sup>}}{^-1}}) [1]\cr
       \code{V.tol} \tab numeric \tab Difference in V above which \code{\link{checkEOS}} produces a message (cm\ifelse{latex}{\eqn{^{3}}}{\ifelse{html}{\out{<sup>3</sup>}}{^3}} mol\ifelse{latex}{\eqn{^{-1}}}{\ifelse{html}{\out{<sup>-1</sup>}}{^-1}}) [1]\cr

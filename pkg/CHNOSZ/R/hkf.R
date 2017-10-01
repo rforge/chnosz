@@ -10,12 +10,11 @@ hkf <- function(property = NULL, parameters = NULL, T = 298.15, P = 1,
   # calculate G, H, S, Cp, V, kT, and/or E using
   # the revised HKF equations of state
   # H2O.props - H2O properties needed for subcrt() output
-  thermo <- get("thermo")
   # constants
-  Tr <- thermo$opt$Tr
-  Pr <- thermo$opt$Pr
-  Theta <- thermo$opt$Theta
-  Psi <- thermo$opt$Psi
+  Tr <- 298.15 # K
+  Pr <- 1      # bar
+  Theta <- 228 # K
+  Psi <- 2600  # bar
   # make T and P equal length
   if(!identical(P, "Psat")) {
     if(length(P) < length(T)) P <- rep(P, length.out = length(T))
@@ -28,6 +27,7 @@ hkf <- function(property = NULL, parameters = NULL, T = 298.15, P = 1,
   # rho - for subcrt() output and g function
   # Born functions and epsilon - for HKF calculations
   H2O.props <- c(H2O.props, "QBorn", "XBorn", "YBorn", "epsilon")
+  thermo <- get("thermo")
   if(grepl("SUPCRT", thermo$opt$water)) {
     # using H2O92D.f from SUPCRT92: alpha, daldT, beta - for partial derivatives of omega (g function)
     H2O.props <- c(H2O.props, "alpha", "daldT", "beta")
@@ -40,7 +40,7 @@ hkf <- function(property = NULL, parameters = NULL, T = 298.15, P = 1,
     # using DEW model: get beta to calculate dgdP
     H2O.props <- c(H2O.props, "beta")
   }
-  H2O <- water(H2O.props, T = c(thermo$opt$Tr, T), P = c(thermo$opt$Pr, P))
+  H2O <- water(H2O.props, T = c(Tr, T), P = c(Pr, P))
   H2O.PrTr <- H2O[1, ]
   H2O.PT <- H2O[-1, ]
   ZBorn <- -1 / H2O.PT$epsilon

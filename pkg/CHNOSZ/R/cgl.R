@@ -4,14 +4,10 @@
 
 cgl <- function(property = NULL, parameters = NULL, T = 298.15, P = 1) {
   # calculate properties of crystalline, liquid (except H2O) and gas species
-  # argument handling
-  thermo <- get("thermo")
-  Tr <- thermo$opt$Tr
-  Pr <- thermo$opt$Pr
-
+  Tr <- 298.15
+  Pr <- 1
   # the number of T, P conditions
   ncond <- max(c(length(T), length(P)))
-
   # initialize output list
   out <- list()
   # loop over each species
@@ -27,7 +23,7 @@ cgl <- function(property = NULL, parameters = NULL, T = 298.15, P = 1) {
     for(i in 1:length(property)) {
       PROP <- property[i]
       # a test for availability of the EoS parameters
-      # here we assume that the parameters are in the same position as in thermo$obigt
+      # here we assume that the parameters are in the same columns as in thermo$obigt
       # leave T transition (in 20th column) alone
       hasEOS <- any(!is.na(PAR[, 13:19]))
       # if at least one of the EoS parameters is available, zero out any NA's in the rest
@@ -110,10 +106,10 @@ quartz_coesite <- function(PAR, T, P) {
   # the corrections are 0 for anything other than quartz and coesite
   if(!PAR$name %in% c("quartz", "coesite")) return(list(G=0, H=0, S=0, V=0))
   ncond <- max(c(length(T), length(P)))
-  # get Tr, Pr and TtPr (transition temperature at Pr)
-  Pr <- get("thermo")$opt$Pr # 1 bar
-  Tr <- get("thermo")$opt$Tr # 298.15 K
-  TtPr <- 848                # Kelvin
+  # Tr, Pr and TtPr (transition temperature at Pr)
+  Pr <- 1      # bar
+  Tr <- 298.15 # K
+  TtPr <- 848  # K
   # constants from SUP92D.f
   aa <- 549.824
   ba <- 0.65995

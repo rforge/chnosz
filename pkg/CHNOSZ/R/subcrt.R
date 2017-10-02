@@ -293,8 +293,8 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
   }
 
   # crystalline, gas, liquid (except water) species
-  iscgl <- reaction$state %in% c('liq','cr','gas','cr1','cr2','cr3',
-    'cr4','cr5','cr6','cr7','cr8','cr9') & reaction$name != 'water'
+  cglstates <- c("liq", "cr", "gas", "cr1", "cr2", "cr3", "cr4", "cr5", "cr6", "cr7", "cr8", "cr9", "cr_Berman")
+  iscgl <- reaction$state %in% cglstates & reaction$name != "water"
 
   if(TRUE %in% iscgl) {
     #si <- info(inpho[iscgl],quiet=TRUE)
@@ -314,9 +314,12 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
         # name and state
         myname <- reaction$name[i]
         mystate <- reaction$state[i]
+        # don't proceed if the state is cr_Berman
+        if(mystate=="cr_Berman") next
         # check if we're below the transition temperature
         if(!(reaction$state[i] %in% c('cr1','liq','cr','gas'))) {
           Ttr <- Ttr(inpho[i]-1,P=P,dPdT=dPdTtr(inpho[i]-1))
+          if(all(is.na(Ttr))) next
           if(any(T < Ttr)) {
             status.Ttr <- "(extrapolating G)"
             if(!exceed.Ttr) {
@@ -332,10 +335,9 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
           Ttr <- Ttr(inpho[i],P=P,dPdT=dPdTtr(inpho[i]))
         else {
           Ttr <- thermo$obigt$z.T[inpho[i]]
-          if(is.na(Ttr)) next
         }
-        if(all(Ttr==0)) next
-        if(any(T >= Ttr)) {
+        if(all(is.na(Ttr))) next
+        if(!all(Ttr==0) & any(T >= Ttr)) {
           status.Ttr <- "(extrapolating G)"
           if(!exceed.Ttr) {
             p.cgl[[ncgl[i]]]$G[T>=Ttr] <- NA
@@ -357,14 +359,13 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
 
   # use variable-pressure standard Gibbs energy for gases
   isgas <- reaction$state %in% "gas" 
-  if(any(isgas) & "g" %in% eosprop & thermo$opt$varP) {
+  if(any(isgas) & "G" %in% eosprop & thermo$opt$varP) {
     for(i in which(isgas)) out[[i]]$G <- out[[i]]$G - convert(log10(P), "G", T=T)
   }
 
   # logK
   if('logK' %in% calcprop) {
     for(i in 1:length(out)) {
-      # NOTE: the following depends on the water function renaming g to G
       out[[i]] <- cbind(out[[i]],data.frame(logK=convert(out[[i]]$G,'logK',T=T)))
       colnames(out[[i]][ncol(out[[i]])]) <- 'logK'
     }

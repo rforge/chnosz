@@ -7,13 +7,15 @@ Calculate thermodynamic properties of minerals using the equations of Berman (19
 }
 
 \usage{
-  berman(name, T = 298.15, P = 1)
+  berman(name, T = 298.15, P = 1, thisinfo = NULL, check.G = FALSE)
 }
 
 \arguments{
   \item{name}{character, name of mineral}
   \item{T}{numeric, temperature(s) at which to calculate properties (K)}
   \item{P}{numeric, pressure(s) at which to calculate properties (bar)}
+  \item{thisinfo}{dataframe, row for mineral from \code{thermo$obigt}}
+  \item{check.G}{logical, check consistency of G, H, and S?}
 }
 
 \details{
@@ -23,6 +25,11 @@ This file also holds the chemical formula, which is required for calculating the
 These entropies are used to convert the apparent Gibbs energies from the Berman-Brown convention to the the Benson-Helgeson convention.
 
 Becuase they use a different set of parameters than Helgeson et al., 1978 (see \code{\link{cgl}}), the standard state thermodynamic properties and parameters for the calculations are stored in files under \code{extdata/Berman}.
+
+If \code{check.G} is TRUE, the tabulated value of DGfTrPr is compared with one calculated from DHfPrTr - T*DSPrTr (DS is the difference between the summed entropies of the elements and the tabulated entropy for the mineral).
+A warning is produced if the absolute value of the difference between tabulated and calculated DGfTrPr is greater than 1000 J/mol.
+
+Providing \code{thisinfo} means that the mineral name is not searched in \code{thermo$obigt}, potentially saving some running time.
 }
 
 \examples{
@@ -34,13 +41,25 @@ info(info("quartz", "cr_Berman"))
 berman("quartz")
 # Gibbs energies of aQz and coesite at higher T and P
 T <- seq(200, 1300, 100)
-P <- seq(23000, 32000, length.out=length(T))
+P <- seq(22870, 31900, length.out=length(T))
 G_aQz <- berman("quartz", T=T, P=P)$G
 G_Cs <- berman("coesite", T=T, P=P)$G
 # that is close to the univariant curve (Ber88 Fig. 4),
 # so the difference in G is close to 0
 DGrxn <- G_Cs - G_aQz
 stopifnot(all(abs(DGrxn) < 100))
+
+# calculate the properties of a "reaction" between
+# the Helgeson and Berman versions of quartz
+T <- 1000
+P <- c(10000, 20000)
+subcrt(rep("quartz", 2), c("cr", "cr_Berman"), c(-1, 1), T=T, P=P)
+
+# make a P-T diagram for SiO2 minerals (Ber88 Fig. 4)
+basis(c("SiO2", "O2"), c("cr_Berman", "gas"))
+species(c("quartz", "quartz,beta", "coesite"), "cr_Berman")
+a <- affinity(T=c(200, 1700, 200), P=c(0, 50000, 200))
+diagram(a)
 }
 
 \references{

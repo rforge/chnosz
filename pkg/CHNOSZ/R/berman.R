@@ -1,7 +1,7 @@
 # CHNOSZ/berman.R 20170930
 # calculate thermodynamic properties of minerals using Berman formulation
 
-berman <- function(name, T = 298.15, P = 1) {
+berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE) {
   # reference temperature and pressure
   Pr <- 1
   Tr <- 298.15
@@ -23,15 +23,17 @@ berman <- function(name, T = 298.15, P = 1) {
     d0 <- d1 <- d2 <- d3 <- d4 <- d5 <- k0 <- k1 <- k2 <- k3 <- v1 <- v2 <- v3 <- v4 <- NA
   # assign values to the variables used below
   for(i in 1:ncol(dat)) assign(colnames(dat)[i], dat[irow, i])
+  # get the entropy of the elements using the chemical formula in thermo$obigt
+  if(is.null(thisinfo)) thisinfo <- info(info(name, "cr_Berman", check.it=FALSE))
+  SPrTr_elements <- convert(entropy(thisinfo$formula), "J")
   # check that G in data file is the G of formation from the elements --> Benson-Helgeson convention (DG = DH - T*DS)
-  # we get the entropy of the elements using the chemical formula in thermo$obigt
-  iname <- info(name, "cr_Berman", check.it=FALSE)
-  SPrTr_elements <- convert(entropy(info(iname)$formula), "J")
-  GfPrTr_calc <- HfPrTr - Tr * (SPrTr - SPrTr_elements)
-  Gdiff <- GfPrTr_calc - GfPrTr
-  if(abs(Gdiff) >= 1000) warning(paste0(name, ": GfPrTr(calc) - GfPrTr(table) is too big! == ",
-                                        round(GfPrTr_calc - GfPrTr), " J/mol"), call.=FALSE)
-  # (the tabulated GfPrTr is unused below)
+  if(check.G) {
+    GfPrTr_calc <- HfPrTr - Tr * (SPrTr - SPrTr_elements)
+    Gdiff <- GfPrTr_calc - GfPrTr
+    if(abs(Gdiff) >= 1000) warning(paste0(name, ": GfPrTr(calc) - GfPrTr(table) is too big! == ",
+                                          round(GfPrTr_calc - GfPrTr), " J/mol"), call.=FALSE)
+    # (the tabulated GfPrTr is unused below)
+  }
 
   ### thermodynamic properties ###
   # calculate Cp and V (Berman, 1988 Eqs. 4 and 5)

@@ -14,88 +14,95 @@ cgl <- function(property = NULL, parameters = NULL, T = 298.15, P = 1) {
   for(k in 1:nrow(parameters)) {
     # the parameters for *this* species
     PAR <- parameters[k, ]
-    # start with NA values
-    values <- data.frame(matrix(NA, ncol = length(property), nrow=ncond))
-    colnames(values) <- property
-    # additional calculations for quartz and coesite
-    qtz <- quartz_coesite(PAR, T, P)
-    isqtz <- !identical(qtz$V, 0)
-    for(i in 1:length(property)) {
-      PROP <- property[i]
-      # a test for availability of the EoS parameters
-      # here we assume that the parameters are in the same columns as in thermo$obigt
-      # leave T transition (in 20th column) alone
-      hasEOS <- any(!is.na(PAR[, 13:19]))
-      # if at least one of the EoS parameters is available, zero out any NA's in the rest
-      if(hasEOS) PAR[, 13:19][, is.na(PAR[, 13:19])] <- 0
-      # equations for lambda adapted from HOK+98
-      if(PROP == "Cp") {
-        # use constant Cp if the EoS parameters are not available
-        if(!hasEOS) p <- PAR$Cp
-        else p <- PAR$a + PAR$b * T + PAR$c * T^-2 + PAR$d * T^-0.5 + PAR$e * T^2 + PAR$f * T^PAR$lambda
-      }
-      if(PROP == "V") {
-        if(isqtz) p <- qtz$V
-        else p <- rep(PAR$V, ncond)
-      }
-      if(PROP %in% c("E", "kT")) {
-        p <- rep(NA, ncond)
-        warning("cgl: E and/or kT of cr, gas and/or liq species are NA.")
-      }
-      if(PROP == "G") {
-        # use constant Cp if the EoS parameters are not available
-        if(!hasEOS) p <- PAR$Cp * (T - Tr - T * log(T/Tr)) else {
-          # Gibbs energy integral: the value at Tref plus heat capacity terms
-          p <-   PAR$a * (T - Tr - T * log(T/Tr)) - 
-                 PAR$b * (T - Tr)^2 / 2 - PAR$c * (1/T + T/Tr^2 - 2/Tr) / 2 -
-                 PAR$d * (T^0.5 - 0.5 * T * Tr^-0.5 - 0.5 * Tr^0.5) / -0.25 -
-                 PAR$e * (T^3 - 3 * T * Tr^2 + 2 * Tr^3) / 6
+    if(PAR$state=="cr_Berman") {
+      # use Berman equations (parameters not in thermo$obigt)
+      properties <- berman(PAR$name, T=T, P=P, thisinfo=PAR)
+      iprop <- match(property, colnames(properties))
+      values <- properties[, iprop, drop=FALSE]
+    } else {
+      # start with NA values
+      values <- data.frame(matrix(NA, ncol = length(property), nrow=ncond))
+      colnames(values) <- property
+      # additional calculations for quartz and coesite
+      qtz <- quartz_coesite(PAR, T, P)
+      isqtz <- !identical(qtz$V, 0)
+      for(i in 1:length(property)) {
+        PROP <- property[i]
+        # a test for availability of the EoS parameters
+        # here we assume that the parameters are in the same columns as in thermo$obigt
+        # leave T transition (in 20th column) alone
+        hasEOS <- any(!is.na(PAR[, 13:19]))
+        # if at least one of the EoS parameters is available, zero out any NA's in the rest
+        if(hasEOS) PAR[, 13:19][, is.na(PAR[, 13:19])] <- 0
+        # equations for lambda adapted from HOK+98
+        if(PROP == "Cp") {
+          # use constant Cp if the EoS parameters are not available
+          if(!hasEOS) p <- PAR$Cp
+          else p <- PAR$a + PAR$b * T + PAR$c * T^-2 + PAR$d * T^-0.5 + PAR$e * T^2 + PAR$f * T^PAR$lambda
         }
-        # use additional heat capacity term if it's defined
-        if(!is.na(PAR$f) & !is.na(PAR$lambda)) if(PAR$f != 0) {
-          if(PAR$lambda == -1) p <- p + PAR$f * (log(T/Tr) - T * (1/Tr - 1/T))
-          else p <- p + PAR$f * ( T^(PAR$lambda + 1) - (PAR$lambda + 1) * T * Tr^PAR$lambda + 
-            PAR$lambda * Tr^(PAR$lambda + 1) ) / ( PAR$lambda * (PAR$lambda + 1) ) 
+        if(PROP == "V") {
+          if(isqtz) p <- qtz$V
+          else p <- rep(PAR$V, ncond)
         }
-        # entropy and volume terms
-        if(!is.na(PAR$S)) p <- p - PAR$S * (T - Tr)
-        if(isqtz) p <- p + qtz$G
-        else if(!is.na(PAR$V)) p <- p + convert(PAR$V * (P - Pr), "calories")
-        p <- PAR$G + p
+        if(PROP %in% c("E", "kT")) {
+          p <- rep(NA, ncond)
+          warning("cgl: E and/or kT of cr, gas and/or liq species are NA.")
+        }
+        if(PROP == "G") {
+          # use constant Cp if the EoS parameters are not available
+          if(!hasEOS) p <- PAR$Cp * (T - Tr - T * log(T/Tr)) else {
+            # Gibbs energy integral: the value at Tref plus heat capacity terms
+            p <-   PAR$a * (T - Tr - T * log(T/Tr)) - 
+                   PAR$b * (T - Tr)^2 / 2 - PAR$c * (1/T + T/Tr^2 - 2/Tr) / 2 -
+                   PAR$d * (T^0.5 - 0.5 * T * Tr^-0.5 - 0.5 * Tr^0.5) / -0.25 -
+                   PAR$e * (T^3 - 3 * T * Tr^2 + 2 * Tr^3) / 6
+          }
+          # use additional heat capacity term if it's defined
+          if(!is.na(PAR$f) & !is.na(PAR$lambda)) if(PAR$f != 0) {
+            if(PAR$lambda == -1) p <- p + PAR$f * (log(T/Tr) - T * (1/Tr - 1/T))
+            else p <- p + PAR$f * ( T^(PAR$lambda + 1) - (PAR$lambda + 1) * T * Tr^PAR$lambda + 
+              PAR$lambda * Tr^(PAR$lambda + 1) ) / ( PAR$lambda * (PAR$lambda + 1) ) 
+          }
+          # entropy and volume terms
+          if(!is.na(PAR$S)) p <- p - PAR$S * (T - Tr)
+          if(isqtz) p <- p + qtz$G
+          else if(!is.na(PAR$V)) p <- p + convert(PAR$V * (P - Pr), "calories")
+          p <- PAR$G + p
+        }
+        if(PROP == "H") { 
+          # use constant Cp if the EoS parameters are not available
+          if(!hasEOS) p <- PAR$Cp * (T - Tr) else {
+            p <- PAR$a * (T - Tr) + PAR$b * (T^2 - Tr^2) / 2 +
+                 PAR$c * (1/T - 1/Tr) / -1 + PAR$d * (T^0.5 - Tr^0.5) / 0.5 + 
+                 PAR$e * (T^3 - Tr^3) / 3 
+          }
+          if(!is.na(PAR$f) & !is.na(PAR$lambda)) if(PAR$f != 0) {
+             if(PAR$lambda == -1) p <- p + PAR$f * log(T/Tr) 
+             else p <- p - PAR$f * ( T^(PAR$lambda + 1) - Tr^(PAR$lambda + 1) ) / (PAR$lambda + 1)
+          }
+          if(isqtz) p <- p + qtz$H
+          ## SUPCRT seems to ignore this term? ... 20070802
+          #else p <- p + convert(PAR$V*(P-Pr),'calories')
+          p <- PAR$H + p
+        }
+        if(PROP=="S") {
+          # use constant Cp if the EoS parameters are not available
+          if(!hasEOS) p <- PAR$Cp * log(T/Tr) else {
+            p <- PAR$a * log(T / Tr) + PAR$b * (T - Tr) + 
+                 PAR$c * (T^-2 - Tr^-2) / -2 + PAR$e * (T^2 - Tr^2) / 2 + 
+                 PAR$d * (T^-0.5 - Tr^-0.5) / -0.5
+          }
+          if(!is.na(PAR$f) & !is.na(PAR$lambda)) if(PAR$f != 0) {
+            p <- p + PAR$f * (T^PAR$lambda - Tr^PAR$lambda) / PAR$lambda
+          }
+          p <- PAR$S + p + qtz$S
+        }
+        values[, i] <- p
       }
-      if(PROP == "H") { 
-        # use constant Cp if the EoS parameters are not available
-        if(!hasEOS) p <- PAR$Cp * (T - Tr) else {
-          p <- PAR$a * (T - Tr) + PAR$b * (T^2 - Tr^2) / 2 +
-               PAR$c * (1/T - 1/Tr) / -1 + PAR$d * (T^0.5 - Tr^0.5) / 0.5 + 
-               PAR$e * (T^3 - Tr^3) / 3 
-        }
-        if(!is.na(PAR$f) & !is.na(PAR$lambda)) if(PAR$f != 0) {
-           if(PAR$lambda == -1) p <- p + PAR$f * log(T/Tr) 
-           else p <- p - PAR$f * ( T^(PAR$lambda + 1) - Tr^(PAR$lambda + 1) ) / (PAR$lambda + 1)
-        }
-        if(isqtz) p <- p + qtz$H
-        ## SUPCRT seems to ignore this term? ... 20070802
-        #else p <- p + convert(PAR$V*(P-Pr),'calories')
-        p <- PAR$H + p
-      }
-      if(PROP=="S") {
-        # use constant Cp if the EoS parameters are not available
-        if(!hasEOS) p <- PAR$Cp * log(T/Tr) else {
-          p <- PAR$a * log(T / Tr) + PAR$b * (T - Tr) + 
-               PAR$c * (T^-2 - Tr^-2) / -2 + PAR$e * (T^2 - Tr^2) / 2 + 
-               PAR$d * (T^-0.5 - Tr^-0.5) / -0.5
-        }
-        if(!is.na(PAR$f) & !is.na(PAR$lambda)) if(PAR$f != 0) {
-          p <- p + PAR$f * (T^PAR$lambda - Tr^PAR$lambda) / PAR$lambda
-        }
-        p <- PAR$S + p + qtz$S
-      }
-      values[, i] <- p
-    }
-  out[[k]] <- values
- }
- return(out)
+    } # end calculations using parameters from thermo$obigt
+    out[[k]] <- values
+  } # end loop over species
+  return(out)
 }
 
 ### unexported function ###

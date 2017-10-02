@@ -11,7 +11,7 @@ test_that("properties of all minerals are computed without warnings", {
   # running this without error means that:
   # - formulas for the minerals are found in thermo$obigt
   # - there are no warnings for minerals with GfPrTr(calc) >= 1000 J/cal different from GfPrTr(table)
-  expect_silent(properties <- lapply(mineral, berman))
+  expect_silent(properties <- lapply(mineral, berman, check.G=TRUE))
   # save the results so we can use them in the next tests
   assign("prop_Berman", properties, inherits=TRUE)
   

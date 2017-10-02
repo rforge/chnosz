@@ -13,6 +13,11 @@
 \newcommand{\NH4plus}{\ifelse{latex}{\eqn{\mathrm{NH_{4}^{+}}}}{\ifelse{html}{\out{NH<sub>4</sub><sup>+</sup>}}{NH4+}}}
 \newcommand{\H2}{\ifelse{latex}{\eqn{\mathrm{H_{2}}}}{\ifelse{html}{\out{H<sub>2</sub>}}{H2}}}
 
+% subscripted numbers
+\newcommand{\s2}{\ifelse{latex}{\eqn{_2}}{\ifelse{html}{\out{<sub>2</sub>}}{2}}}
+\newcommand{\s3}{\ifelse{latex}{\eqn{_3}}{\ifelse{html}{\out{<sub>3</sub>}}{3}}}
+\newcommand{\s4}{\ifelse{latex}{\eqn{_4}}{\ifelse{html}{\out{<sub>4</sub>}}{4}}}
+
 % other common variables
 \newcommand{\T}{\ifelse{latex}{\eqn{T}}{\ifelse{html}{\out{<I>T</I>}}{T}}}
 \newcommand{\P}{\ifelse{latex}{\eqn{P}}{\ifelse{html}{\out{<I>P</I>}}{P}}}

@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-32 (2017-10-01)
+CHANGES IN CHNOSZ 1.1.0-33 (2017-10-02)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -11,7 +11,10 @@ MAJOR CHANGES:
 - The computational setting for water (thermo$opt$par) can now be
   set using water("DEW"), water("IAPWS"), etc.
 
-- Add demo DEW.R.
+- Usage of the DEW model is demonstrated in the new demo DEW.R.
+
+- Add berman() function and extdata/Berman/*.csv files for calculating
+  the thermodynamic properties using equations of Berman, 1988.
 
 - Implement SUPCRT92's handling of variable volume for quartz and
   coesite. Calculations for other minerals still assume constant
@@ -40,9 +43,10 @@ DATABASE UPDATES:
   selected species are fully referenced.
 
 - Add Berman_cr.csv with names and formulas for minerals whose
-  thermodynamic properties are calculated using the Berman (1988)
+  thermodynamic properties are calculated using the Berman 1988
   formulation. The state "cr_Berman" is used to distinguish these
-  minerals from the Helgeson data.
+  minerals from the Helgeson data. The parameters themselves are
+  stored in extdata/Berman/*.csv.
 
 - Data file CHNOSZ_aq.csv is no longer added to the database by default.
   It is now intended to hold provisional updates. Updated heat capacity

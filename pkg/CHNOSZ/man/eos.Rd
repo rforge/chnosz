@@ -42,8 +42,6 @@ The standard molal volumes (\samp{V}) of species in these calculations are taken
 
 For both \code{hkf} and \code{cgl}, if at least one equations-of-state parameter for a species is provided, any NA values of the other parameters are reset to zero.
 If all equations-of-state parameters are NA, but values of \samp{Cp} and/or \samp{V} are available, those values are used in the integration of \samp{G}, \samp{H} and \samp{S} as a function of temperature. 
-
-The \code{T} and \code{P} arguments should all be the same length; the functions perform no argument validating.
 }
 
 \section{Warning}{

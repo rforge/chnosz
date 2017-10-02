@@ -58,7 +58,7 @@ export(
   "nonideal", "anim.TCA", "uniprot.aa", "run.guess",
 # added 20170301 or later
   "GHS_Tr", "calculateDensity", "calculateGibbsOfWater",
-  "calculateEpsilon", "calculateQ", "water.DEW"
+  "calculateEpsilon", "calculateQ", "water.DEW", "berman"
 )
 
 # Load shared objects

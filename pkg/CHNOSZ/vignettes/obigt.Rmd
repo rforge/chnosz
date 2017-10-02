@@ -172,6 +172,16 @@ cat("Parameters used here for goethite differ slightly from those listed in the 
 ```{r reflist, results="asis", echo=FALSE}
 ```
 
+### `r setfile("Berman_cr.csv")`
+```{r Berman_cr, results="asis", echo=FALSE}
+cat("This file gives the identifiying information for minerals whose properties are calculated using the formulation of @Ber88.\n")
+cat("To distinguish these minerals from the original set of mineral data in CHNOSZ (based on the compliation of @HDNB78), the physical states are listed as `cr_Berman`.\n")
+cat("The actual data are stored separately (`extdata/Berman/*.csv`).<hr>")
+```
+
+```{r reflist, results="asis", echo=FALSE}
+```
+
 ## Liquids {.tabset .tabset-pills}
 
 ### `r setfile("organic_liq.csv")`
@@ -253,6 +263,13 @@ used2 <- c(used2, filerefs(csvfile))
 ```
 
 #### `r setfile("organic_cr.csv")`
+```{r reflist2, results="asis", echo=FALSE}
+```
+
+### `r setfile("Berman_cr.csv")`
+```{r Berman_cr, results="asis", echo=FALSE}
+```
+
 ```{r reflist2, results="asis", echo=FALSE}
 ```
 

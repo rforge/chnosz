@@ -24,9 +24,9 @@ PT10.0 <- data.frame(P=10000, T=seq(200, 825, 10))
 PT20.0 <- data.frame(P=20000, T=seq(200, 800, 10))
 PT <- rbind(PT0.5, PT1.0, PT2.0, PT5.0, PT10.0, PT20.0)
 # reaction 1: quartz = SiO2(aq) [equivalent to quartz + 3 H2O = Si(OH)4]
-SiO2_logK <- subcrt(c("quartz", "SiO2"), c(-1, 1), P=PT$P, T=PT$T)$out$logK
+SiO2_logK <- subcrt(c("quartz", "SiO2"), c("cr_Berman", "aq"), c(-1, 1), P=PT$P, T=PT$T)$out$logK
 # reaction 2: 2 quartz = Si2O4(aq) [equivalent to 2 quartz + 3 H2O = Si2O(OH)6]
-Si2O4_logK <- subcrt(c("quartz", "Si2O4"), c(-2, 1), P=PT$P, T=PT$T)$out$logK
+Si2O4_logK <- subcrt(c("quartz", "Si2O4"), c("cr_Berman", "aq"), c(-2, 1), P=PT$P, T=PT$T)$out$logK
 # plot the sum of molalities (== activities) for each pressure
 plot(c(200, 1000), c(-2.5, 0.5), type="n", xlab=axis.label("T"), ylab="log molality")
 for(P in unique(PT$P)) {

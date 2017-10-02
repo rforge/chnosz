@@ -96,9 +96,11 @@ expr.property <- function(property) {
     # D for greek Delta
     # p for subscript italic P (in Cp)
     # 0 for degree sign (but not immediately following a number e.g. 2.303)
+    # l for subscript small lambda
     if(thischar=='D') thisexpr <- substitute(Delta)
     if(thischar=='p') thisexpr <- substitute(a[italic(P)], list(a=""))
     if(thischar=='0' & !can.be.numeric(prevchar)) thisexpr <- substitute(degree)
+    if(thischar=='l') thisexpr <- substitute(a[lambda], list(a=""))
     # put it together
     expr <- substitute(a*b, list(a=expr, b=thisexpr))
   }

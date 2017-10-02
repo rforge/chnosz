@@ -1,10 +1,16 @@
 # CHNOSZ/berman.R 20170930
-# calculate thermodynamic properties of minerals using Berman formulation
+# calculate thermodynamic properties of minerals using equations from:
+#   Berman, R. G. (1988) Internally-consistent thermodynamic data for minerals
+#      in the system Na2O-K2O-CaO-MgO-FeO-Fe2O3-Al2O3-SiO2-TiO2-H2O-CO2.
+#      J. Petrol. 29, 445-522. https://doi.org/10.1093/petrology/29.2.445
 
-berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE) {
+berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.transition=TRUE, calc.disorder=TRUE, units="cal") {
   # reference temperature and pressure
   Pr <- 1
   Tr <- 298.15
+  # the number of conditions we have
+  ncond <- max(length(T), length(P))
+  # get thermodynamic parameters
   file <- system.file("extdata/Berman/Ber88.csv", package="CHNOSZ")
   dat <- read.csv(file, as.is=TRUE)
   # remove the multipliers
@@ -17,10 +23,10 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE) {
   dat[, 2:27] <- t(t(dat[, 2:27]) / 10^multexp)
   # which row has data for this mineral?
   irow <- which(dat$name == name)
-  # only the immediately following assign() call is needed for the function to work,
+  # the function works fine with just the following assign() call,
   # but an explicit dummy assignment here is used to avoid "Undefined global functions or variables" in R CMD check
-  GfPrTr <- HfPrTr <- SPrTr <- Tmax <- Tmin <- VPrTr <-
-    d0 <- d1 <- d2 <- d3 <- d4 <- d5 <- k0 <- k1 <- k2 <- k3 <- v1 <- v2 <- v3 <- v4 <- NA
+  GfPrTr <- HfPrTr <- SPrTr <- Tlambda <- Tmax <- Tmin <- Tref <- VPrTr <-
+    d0 <- d1 <- d2 <- d3 <- d4 <- d5 <- dTdP <- k0 <- k1 <- k2 <- k3 <- l1 <- l2 <- v1 <- v2 <- v3 <- v4 <- NA
   # assign values to the variables used below
   for(i in 1:ncol(dat)) assign(colnames(dat)[i], dat[irow, i])
   # get the entropy of the elements using the chemical formula in thermo$obigt
@@ -58,8 +64,46 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE) {
   intdVdT <- -VPrTr*(v3 + v4*(-2*Tr + 2*T)) + P*VPrTr*(v3 + v4*(-2*Tr + 2*T))
   S <- SPrTr + intCpoverT - intdVdT
 
+  ### polymorphic transition properties ***
+  if(!is.na(Tlambda) & !is.na(Tref) & any(T > Tref) & calc.transition) {
+    # starting transition contributions are 0
+    Cptr <- Htr <- Str <- Gtr <- numeric(ncond)
+    ## Ber88 Eq. 8: Cp at 1 bar
+    #Cplambda_1bar <- T * (l1 + l2 * T)^2
+    # Eq. 9: Tlambda at P
+    Tlambda_P <- Tlambda + dTdP * (P - 1)
+    # Eq. 8a: Cp at P
+    Td <- Tlambda - Tlambda_P
+    Tprime <- T + Td
+    # with the condition that Tref < Tprime < Tlambda(1bar)
+    iTprime <- Tref < Tprime & Tprime < Tlambda
+    Tprime <- Tprime[iTprime]
+    Cptr[iTprime] <- Tprime * (l1 + l2 * Tprime)^2
+    # we got Cp, now calculate the integrations for H and S
+    # the lower integration limit is Tref
+    iTtr <- T > Tref
+    Ttr <- T[iTtr]
+    # the upper integration limit is Tlambda_P
+    Ttr[Ttr > Tlambda_P] <- Tlambda_P
+    # derived variables
+    tref <- Tref - Td
+    x1 <- l1^2 * Td + 2 * l1 * l2 * Td^2 + l2^2 * Td^3
+    x2 <- l1^2 + 4 * l1 * l2 * Td + 3 * l2^2 * Td^2
+    x3 <- 2 * l1 * l2 + 3 * l2^2 * Td
+    x4 <- l2 ^ 2
+    # Eqs. 10, 11, 12
+    Htr[iTtr] <- x1 * (Ttr - tref) + x2 / 2 * (Ttr^2 - tref^2) + x3 / 3 * (Ttr^3 - tref^3) + x4 / 4 * (Ttr^4 - tref^4)
+    Str[iTtr] <- x1 * (log(Ttr) - log(tref)) + x2 * (Ttr - tref) + x3 / 2 * (Ttr^2 - tref^2) + x4 / 3 * (Ttr^3 - tref^3)
+    Gtr <- Htr - T * Str
+    # apply the transition contributions
+    Ga <- Ga + Gtr
+    Ha <- Ha + Htr
+    S <- S + Str
+    Cp <- Cp + Cptr
+  }
+
   ### disorder thermodynamic properties ###
-  if(!is.na(Tmin) & !is.na(Tmax) & any(T > Tmin)) {
+  if(!is.na(Tmin) & !is.na(Tmax) & any(T > Tmin) & calc.disorder) {
     # starting disorder contributions are 0
     Cpds <- Hds <- Sds <- Vds <- Gds <- 0
     # the lower integration limit is Tmin
@@ -95,11 +139,16 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE) {
   ### thermodynamic and unit conventions used in SUPCRT ###
   # use entropy of the elements in calculation of G --> Benson-Helgeson convention (DG = DH - T*DS)
   Gf <- Ga + Tr * SPrTr_elements
+  # the output will just have "G" and "H"
+  G <- Gf
+  H <- Ha
   # convert J to cal
-  G <- convert(Gf, "cal")
-  H <- convert(Ha, "cal")
-  S <- convert(S, "cal")
-  Cp <- convert(Cp, "cal")
+  if(grepl("cal", units)) {
+    G <- convert(Gf, "cal")
+    H <- convert(Ha, "cal")
+    S <- convert(S, "cal")
+    Cp <- convert(Cp, "cal")
+  }
   # convert J/bar to cm^3/mol
   V <- V * 10
 

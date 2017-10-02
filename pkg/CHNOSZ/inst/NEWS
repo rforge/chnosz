@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-33 (2017-10-02)
+CHANGES IN CHNOSZ 1.1.0-35 (2017-10-02)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -14,7 +14,10 @@ MAJOR CHANGES:
 - Usage of the DEW model is demonstrated in the new demo DEW.R.
 
 - Add berman() function and extdata/Berman/*.csv files for calculating
-  the thermodynamic properties using equations of Berman, 1988.
+  thermodynamic properties of mineral using equations of Berman, 1988.
+
+- Calculations related to Berman's (1988) Figs. 1 and 2 for the lambda
+  transition of quartz are presented in the new demo lambda.R.
 
 - Implement SUPCRT92's handling of variable volume for quartz and
   coesite. Calculations for other minerals still assume constant

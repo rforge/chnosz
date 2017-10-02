@@ -7,7 +7,8 @@ Calculate thermodynamic properties of minerals using the equations of Berman (19
 }
 
 \usage{
-  berman(name, T = 298.15, P = 1, thisinfo = NULL, check.G = FALSE)
+  berman(name, T = 298.15, P = 1, thisinfo = NULL, check.G = FALSE,
+         calc.transition = TRUE, calc.disorder = TRUE, units = "cal")
 }
 
 \arguments{
@@ -16,13 +17,16 @@ Calculate thermodynamic properties of minerals using the equations of Berman (19
   \item{P}{numeric, pressure(s) at which to calculate properties (bar)}
   \item{thisinfo}{dataframe, row for mineral from \code{thermo$obigt}}
   \item{check.G}{logical, check consistency of G, H, and S?}
+  \item{calc.transition}{logical, include calculation of polymorphic transition properties?}
+  \item{calc.disorder}{logical, include calculation of disordering properties?}
+  \item{units}{character, energy units, \samp{cal} or \samp{J}}
 }
 
 \details{
 This function calculates the thermodynamic properties of minerals at high \P and \T using equations given by Berman (1988).
 The \code{name} refers to a mineral that must be listed in \code{thermo$obigt} with the state \samp{cr_Berman}.
 This file also holds the chemical formula, which is required for calculating the entropies of the elements in the mineral.
-These entropies are used to convert the apparent Gibbs energies from the Berman-Brown convention to the the Benson-Helgeson convention.
+These entropies are used to convert the apparent Gibbs energies from the Berman-Brown convention to the the Benson-Helgeson convention (cf. Anderson, 2005).
 
 Becuase they use a different set of parameters than Helgeson et al., 1978 (see \code{\link{cgl}}), the standard state thermodynamic properties and parameters for the calculations are stored in files under \code{extdata/Berman}.
 
@@ -63,6 +67,8 @@ diagram(a)
 }
 
 \references{
+Anderson, G. M. (2005) \emph{Thermodynamics of Natural Systems}, 2nd ed., Cambridge University Press, 648 p. \url{http://www.worldcat.org/oclc/474880901}
+
 Berman, R. G. (1988) Internally-consistent thermodynamic data for minerals in the system Na{\s2}O–K{\s2}O–CaO–MgO–FeO–Fe{\s2}O{\s3}–Al{\s2}O{\s3}–SiO{\s2}–TiO{\s2}–H{\s2}O–CO{\s2}. \emph{J. Petrol.} \bold{29}, 445-522. \url{https://doi.org/10.1093/petrology/29.2.445}
 
 Helgeson, H. C., Delany, J. M., Nesbitt, H. W. and Bird, D. K. (1978) Summary and critique of the thermodynamic properties of rock-forming minerals. \emph{Am. J. Sci.} \bold{278-A}, 1--229. \url{http://www.worldcat.org/oclc/13594862}

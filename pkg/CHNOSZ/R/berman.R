@@ -11,8 +11,14 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.t
   # the number of conditions we have
   ncond <- max(length(T), length(P))
   # get thermodynamic parameters
-  file <- system.file("extdata/Berman/Ber88.csv", package="CHNOSZ")
-  dat <- read.csv(file, as.is=TRUE)
+  dir <- system.file("extdata/Berman/", package="CHNOSZ")
+  Ber88 <- read.csv(paste0(dir, "/Ber88.csv"), as.is=TRUE)
+  Ber90 <- read.csv(paste0(dir, "/Ber90.csv"), as.is=TRUE)
+  SHD91 <- read.csv(paste0(dir, "/SHD91.csv"), as.is=TRUE)
+  ZS92 <- read.csv(paste0(dir, "/ZS92.csv"), as.is=TRUE)
+  # assemble the files and remove duplicates (keep the latest)
+  dat <- rbind(ZS92, SHD91, Ber90, Ber88)
+  dat <- dat[!duplicated(dat$name), ]
   # remove the multipliers
   multexp <- c(0, 0, 0, 0,          # Ber88 Table 2
                0, -2, -5, -7,             # Table 3a
@@ -36,7 +42,8 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.t
   if(check.G) {
     GfPrTr_calc <- HfPrTr - Tr * (SPrTr - SPrTr_elements)
     Gdiff <- GfPrTr_calc - GfPrTr
-    if(abs(Gdiff) >= 1000) warning(paste0(name, ": GfPrTr(calc) - GfPrTr(table) is too big! == ",
+    if(is.na(GfPrTr)) warning(paste0(name, ": GfPrTr(table) is NA"), call.=FALSE)
+    else if(abs(Gdiff) >= 1000) warning(paste0(name, ": GfPrTr(calc) - GfPrTr(table) is too big! == ",
                                           round(GfPrTr_calc - GfPrTr), " J/mol"), call.=FALSE)
     # (the tabulated GfPrTr is unused below)
   }

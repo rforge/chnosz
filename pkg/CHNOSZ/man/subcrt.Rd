@@ -63,7 +63,7 @@ Reactions that do not conserve elements are permitted; \code{subcrt} prints the 
 Alternatively, if the \code{\link{basis}} species of a system were previously defined, and if the species being considered are within the compositional range of the basis species, an unbalanced reaction given in the arguments to \code{subcrt} will be balanced automatically, without altering the coefficients on the species identified in the arguments (unless perhaps they correspond to basis species), and without a warning.
 However, if a reaction is unbalanced and \code{action.unbalanced} is set to NULL, no warnings are generated and no attempt is made to balance the reaction.
 
-Minerals with phase transitions (denoted by having states \samp{cr} (lowest T phase), \samp{cr2}, \samp{cr3} etc.) can be defined generically by \samp{cr} in the \code{state} argument with a character value for \code{species}.
+Minerals with polymorphic transitions (denoted by having states \samp{cr} (lowest T phase), \samp{cr2}, \samp{cr3} etc.) can be defined generically by \samp{cr} in the \code{state} argument with a character value for \code{species}.
 \code{subcrt} in this case simultaneously calculates the requested properties of all the phases of each such mineral (phase species) and, using the values of the transition temperatures calculated from those at P = 1 bar given in the thermodynamic database together with functions of the entropies and volumes of transitions (see \code{\link{dPdTtr}}), determines the stable phase of the mineral at any grid point and substitutes the properties of this phase at that point for further calculations.
 If individual phase species of minerals are specified (by \samp{cr}, \samp{cr2} etc. in \code{state}), and \code{exceed.Ttr} is \code{FALSE} (the default), the Gibbs energies of these minerals are assigned values of NA at conditions beyond their transition temperature, where another of the phases is stable.
 If you set \code{exceed.Ttr} to \code{TRUE} while investigating the properties of phases of minerals identified generically (by \samp{cr}) the function will identify the stable phase on the basis not of the transition temperatures but of the calculated Gibbs energies of the phase species.
@@ -158,12 +158,12 @@ subcrt("C2H5OH")    # species
 basis("CHNOS")
 subcrt("C2H5OH", 1) # reaction
 
-## properties of mineral phases
-# properties of the stable phases
+## mineral polymorphs
+# properties of the stable polymorph
 subcrt("pyrrhotite")
 # properties of just the high-T phase
 subcrt(c("pyrrhotite"), state="cr2")
-# phase transitions in a reaction
+# polymorphic transitions in a reaction
 subcrt(c("pyrite", "pyrrhotite", "H2O", "H2S", "O2"), c(-1, 1, -1, 1, 0.5))
 
 ## these produce messages about problems with the calculation

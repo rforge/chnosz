@@ -430,7 +430,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
       }
 
       # update our objects
-      out.new[[i]] <- cbind(out.new.entry,data.frame(state=phasestate))
+      out.new[[i]] <- cbind(out.new.entry,data.frame(polymorph=phasestate))
       reaction.new[i,] <- reaction[iphases[phasestate[1]],]
       # mark the minerals with multiple phases
       rs <- as.character(reaction.new$state)
@@ -470,7 +470,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
   if(length(calcprop)>1) for(i in 1:length(out)) {
     # keep state/loggam columns if they exists
     ipp <- match(calcprop, colnames(out[[i]]))
-    if('state' %in% colnames(out[[i]])) ipp <- c(ipp,match('state',colnames(out[[i]]))) 
+    if('polymorph' %in% colnames(out[[i]])) ipp <- c(ipp,match('polymorph',colnames(out[[i]]))) 
     if('loggam' %in% colnames(out[[i]])) ipp <- c(ipp,match('loggam',colnames(out[[i]]))) 
     out[[i]] <- out[[i]][,ipp,drop=FALSE]
   }
@@ -478,7 +478,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
   # add up reaction properties
   if(do.reaction) {
     o <- 0
-    statecols <- NULL
+    morphcols <- NULL
     # do our affinity calculations here
     if(!is.null(logact)) {
       logQ <- logK <- rep(0,length(T))
@@ -495,12 +495,12 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
     # the addition of properties
     for(i in 1:length(coeff)) {
       # assemble state columns if they exist
-      if('state' %in% colnames(out[[i]])) {
-         sc <- as.data.frame(out[[i]]$state)
-         out[[i]] <- out[[i]][,-match('state',colnames(out[[i]]))]
+      if('polymorph' %in% colnames(out[[i]])) {
+         sc <- as.data.frame(out[[i]]$polymorph)
+         out[[i]] <- out[[i]][,-match('polymorph',colnames(out[[i]]))]
          colnames(sc) <- as.character(reaction$name[i])
-         if(is.null(statecols)) statecols <- sc
-         else statecols <- cbind(statecols,sc)
+         if(is.null(morphcols)) morphcols <- sc
+         else morphcols <- cbind(morphcols,sc)
       }
       # include a zero loggam column if we need it
       # for those species that are ideal
@@ -511,8 +511,8 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
         o.i <- cbind(o.i,loggam=0)
       o <- o + o.i * coeff[i]
     }
-    # output for reaction (stack on state columns if exist)
-    if(!is.null(statecols)) out <- list(reaction=reaction,out=o,state=statecols)
+    # output for reaction (stack on polymorph columns if exist)
+    if(!is.null(morphcols)) out <- list(reaction=reaction,out=o,polymorphs=morphcols)
     else out <- list(reaction=reaction,out=o)
   } else {
     # output for species: strip the coeff column from reaction
@@ -532,7 +532,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
       if(convert) P.out <- outvert(P,"bar") else P.out <- P
       # try to stuff in a column of rho if we have aqueous species
       # watch out! supcrt-ish densities are in g/cc not kg/m3
-      if('rho' %in% calcprop | (missing(property) & any(c(isaq,isH2O))) & (names(out)[i])!='state') 
+      if('rho' %in% calcprop | (missing(property) & any(c(isaq,isH2O))) & (names(out)[i])!='polymorph') 
         out[[i]] <- cbind(data.frame(T=T.out,P=P.out,rho=H2O.PT$rho/1000),out[[i]])
       else
         out[[i]] <- cbind(data.frame(T=T.out,P=P.out,out[[i]]))

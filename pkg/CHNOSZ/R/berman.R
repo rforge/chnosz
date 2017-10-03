@@ -91,7 +91,7 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.t
     iTtr <- T > Tref
     Ttr <- T[iTtr]
     # the upper integration limit is Tlambda_P
-    Ttr[Ttr > Tlambda_P] <- Tlambda_P
+    Ttr[Ttr >= Tlambda_P] <- Tlambda_P[Ttr >= Tlambda_P]
     # derived variables
     tref <- Tref - Td
     x1 <- l1^2 * Td + 2 * l1 * l2 * Td^2 + l2^2 * Td^3

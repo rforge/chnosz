@@ -48,6 +48,14 @@ test_that("add.obigt() replaces existing entries without changing species index"
   expect_true(all(newdat$name %in% thermo$obigt$name[isp]))
 })
 
+test_that("data(thermo) and data(OBIGT) produce the same database", {
+  data(thermo)
+  d1 <- get("thermo")$obigt
+  data(OBIGT)
+  d2 <- get("thermo")$obigt
+  expect_equal(d1, d2)
+})
+
 # reference
 
 # Richard, L. and Helgeson, H. C. (1998) Calculation of the thermodynamic properties at elevated 

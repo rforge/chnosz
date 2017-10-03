@@ -20,7 +20,7 @@ test_that("properties of all minerals are computed without warnings", {
   #expect_silent(properties <- lapply(mineral, berman, check.G=TRUE))
   # - warnings are produced for 3 minerals with GfPrTr(calc) >= 1000 J/cal different from GfPrTr(table)
   expect_warning(properties <- lapply(mineral, berman, check.G=TRUE),
-                 "almandine|annite|phlogopite|fluortremolite", all=TRUE)
+                 "fluortremolite", all=TRUE)
   # save the results so we can use them in the next tests
   assign("prop_Berman", properties, inherits=TRUE)
   

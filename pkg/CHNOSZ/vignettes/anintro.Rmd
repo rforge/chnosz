@@ -600,7 +600,7 @@ info(" CuCl")
 We wish to include chalcocite (Cu<sub>2</sub>S) in the system.
 This mineral undergoes phase transitions; to find out the temperatures of the phase transitions, we can also use <span style="color:green">`info()`</span>:
 ```{r info_chalcocite, message=FALSE}
-info(info("chalcocite", c("cr1", "cr2", "cr3")))$T
+info(info("chalcocite", c("cr", "cr2", "cr3")))$T
 ```
 
 Those are temperatures in Kelvin (regardless of the <span style="color:red">`T.units()`</span>); at 200 °C we should use the second phase.

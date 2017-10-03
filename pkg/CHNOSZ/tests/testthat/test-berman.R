@@ -33,9 +33,6 @@ test_that("properties of all minerals are computed without warnings", {
 prop_Berman <- do.call(rbind, prop_Berman)
 # find the mineral data using Helgeson formulation
 icr <- suppressMessages(info(mineral, "cr"))
-icr1 <- suppressMessages(info(mineral, "cr1"))
-# if there's no match for "cr", try to get "cr1" (lowest-temperature phase)
-icr[is.na(icr)] <- icr1[is.na(icr)]
 # all of these except rutile (Robie et al., 1979) reference Helgeson et al., 1978
 # NOTE: with check.it = TRUE (the default), this calculates Cp from the tabulated Maier-Kelley parameters
 prop_Helgeson <- suppressMessages(info(icr))

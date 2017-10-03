@@ -16,8 +16,8 @@ test_that("unbalanced reactions are balanced given sufficient basis species", {
 
 test_that("phase transitions of minerals give expected messages and results", {
   iacanthite <- info("acanthite", "cr2")
-  expect_message(subcrt(iacanthite), "subcrt: some points below transition temperature for acanthite cr2 \\(using NA for G\\)")
-  expect_message(subcrt(iacanthite), "subcrt: some points above transition temperature for acanthite cr2 \\(using NA for G\\)")
+  #expect_message(subcrt(iacanthite), "subcrt: some points below transition temperature for acanthite cr2 \\(using NA for G\\)")
+  expect_message(subcrt(iacanthite), "subcrt: some points above temperature limit for acanthite cr2 \\(using NA for G\\)")
   expect_equal(subcrt("acanthite")$out$acanthite$state, c(1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3))
 })
 
@@ -129,6 +129,21 @@ test_that("calculations for quartz are consistent with SUPCRT92", {
   expect_equal(CHNOSZ_500bar$H, S92_500bar$H, tolerance = 1e-4)
   expect_equal(CHNOSZ_500bar$S, S92_500bar$S, tolerance = 1e-3)
   expect_equal(CHNOSZ_500bar$V, S92_500bar$V, tolerance = 1e-2)
+})
+
+test_that("duplicated species yield correct phase transitions", {
+  # If a mineral with phase transitions is in both the basis and species lists,
+  # energy()'s call to subcrt() will have duplicated species.
+  # This wasn't working (produced NAs at low T) for a long time prior to 20171003.
+  s1 <- subcrt("quartz", T=c(100, 1000), P=1000)
+  s2 <- subcrt(rep("quartz", 2), T=c(100, 1000), P=1000)
+  expect_equal(s1$out[[1]]$logK, s2$out[[1]]$logK)
+  expect_equal(s1$out[[1]]$logK, s2$out[[2]]$logK)
+  ## another way to test it ...
+  #basis(c("quartz", "oxygen"))
+  #species("quartz")
+  #a <- affinity(T=c(0, 1000, 2), P=1)
+  #expect_equal(as.numeric(a$values[[1]]), c(0, 0))
 })
 
 # references

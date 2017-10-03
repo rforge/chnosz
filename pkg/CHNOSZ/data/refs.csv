@@ -5,7 +5,7 @@ Kel60.2,"K. K. Kelley",1960,"U. S. Bureau of Mines Bull. 584","iron Cp",http://w
 Kel60.3,"K. K. Kelley",1960,"U. S. Bureau of Mines Bull. 584","gypsum Cp",http://www.worldcat.org/oclc/693388901
 Pan70,"L. B. Pankratz",1970,"U. S. Bureau of Mines Report of Investigations 7430",chlorargyrite,http://www.worldcat.org/oclc/14154245
 PK70,"L. B. Pankratz and E. G. King",1970,"U. S. Bureau of Mines Report of Investigations 7435","bornite and chalcopyrite",http://www.worldcat.org/oclc/14154292
-HDNB78,"H. C. Helgeson, J. M. Delany et al.",1978,"Am. J. Sci. 278A, 1-229","minerals and phase transitions",http://www.worldcat.org/oclc/13594862
+HDNB78,"H. C. Helgeson, J. M. Delany et al.",1978,"Am. J. Sci. 278A, 1-229","data for minerals (n = 167) and phase transitions",http://www.worldcat.org/oclc/13594862
 HDNB78.1,"H. C. Helgeson, J. M. Delany et al.",1978,"Am. J. Sci. 278A, 1-229","litharge S, V, and Cp parameters",http://www.worldcat.org/oclc/13594862
 RHF79,"R. A. Robie, B. S. Hemingway and J. R. Fisher",1979,"U. S. Geological Survey Bull. 1452","chlorargyrite, rutile, and titanite",http://pubs.er.usgs.gov/publication/b1452
 RHF79.1,"R. A. Robie, B. S. Hemingway and J. R. Fisher",1979,"U. S. Geological Survey Bull. 1452","dickite, fluorphlogopite, halloysite, and pyrope",http://pubs.er.usgs.gov/publication/b1452
@@ -22,10 +22,12 @@ SH88,"E. L. Shock and H. C. Helgeson",1988,"Geochim. Cosmochim. Acta 52, 2009-20
 SHS89,"E. L. Shock, H. C. Helgeson and D. A. Sverjensky",1989,"Geochim. Cosmochim. Acta 53, 2157-2183","inorganic neutral species",https://doi.org/10.1016/0016-7037(89)90341-4
 Ber90,"R. G. Berman",1990,"Am. Mineral. 75, 328-344","annite",http://ammin.geoscienceworld.org/content/75/3-4/328
 Ber90.1,"R. G. Berman",1990,"Am. Mineral. 75, 328-344","almandine and ilmenite: modified H and/or S",http://ammin.geoscienceworld.org/content/75/3-4/328
+Eva90,"B. W. Evans",1990,"Lithos 25, 3-23","glaucophane and pumpellyite",https://doi.org/10.1016/0024-4937(90)90003-J
 SH90,"E. L. Shock and H. C. Helgeson",1990,"Geochim. Cosmochim. Acta 54, 915-945","organic species",https://doi.org/10.1016/0016-7037(90)90429-O
 SHD91,"D. A. Sverjensky, J. J. Hemley and W. M. D'Angelo",1991,"Geochim. Cosmochim. Acta 55, 989-1004","G and H revisions for K- and Al-bearing silicates",https://doi.org/10.1016/0016-7037(89)90341-4
 SHD91.1,"D. A. Sverjensky, J. J. Hemley and W. M. D'Angelo",1991,"Geochim. Cosmochim. Acta 55, 989-1004","phlogopite: H and S modified by @Ber90, followed by G and H revision for K-bearing silicates [after @SHD91]",https://doi.org/10.1016/0016-7037(89)90341-4
 SHD91.2,"D. A. Sverjensky, J. J. Hemley and W. M. D'Angelo",1991,"Geochim. Cosmochim. Acta 55, 989-1004","annite: G and H revision for K-bearing silicates [after @SHD91]",https://doi.org/10.1016/0016-7037(89)90341-4
+JUN92,"C. de Capitani",1992,"JUN92.bs database supplied with Theriak/Domino software","data as listed in JUN92.bs database",http://titan.minpet.unibas.ch/minpet/theriak/theruser.html
 SPRONS92.1,"H. C. Helgeson et al.",1992,"sprons92.dat computer data file","titanite: @BH83 + &quot;Gibbs free energies and enthalpies were corrected to be consistent with updated values of Gibbs free energies of Ca<sup>2+</sup> and CO<sub>3</sub><sup>2-</sup> [@SH88] together with the solubilities of calcite and aragonite reported by @PB82 &quot;",
 SPRONS92.2,"H. C. Helgeson et al.",1992,"sprons92.dat computer data file","Ca-bearing minerals; &quot;Gibbs free energies and enthalpies were corrected to be consistent with updated values of Gibbs free energies of Ca<sup>2+</sup> and CO<sub>3</sub><sup>2-</sup> [@SH88] together with the solubilities of calcite and aragonite reported by @PB82 &quot;",
 Sho92,"E. L. Shock",1992,"Geochim. Cosmochim. Acta 56, 3481-3491","diglycine, alanylglycine, leucylglycine, and diketopiperazine",https://doi.org/10.1016/0016-7037(92)90392-V
@@ -73,7 +75,7 @@ SAJ00,"R. E. Stoffregen, C. N. Alpers and J. L. Jambor",2000,"Rev. Mineral. Geoc
 AP01,"J. P. Amend and A. V. Plyasunov",2001,"Geochim. Cosmochim. Acta 65, 3901-3917",carbohydrates,https://doi.org/10.1016/S0016-7037(01)00707-4
 AS01,"J. P. Amend and E. L. Shock",2001,"FEMS Microbiol. Rev. 25, 175-243","NO and N<sub>2</sub>O",https://doi.org/10.1111/j.1574-6976.2001.tb00576.x
 AS01.1,"J. P. Amend and E. L. Shock",2001,"FEMS Microbiol. Rev. 25, 175-243","selenium and molybdenite",https://doi.org/10.1111/j.1574-6976.2001.tb00576.x
-MVT01,"L. Mercury, P. Vieillard. and Y. Tardy",2001,"Appl. Geochem. 16, 161-181","ice polymorphs",https://doi.org/10.1016/S0883-2927(00)00025-1
+MVT01,"L. Mercury, P. Vieillard. and Y. Tardy",2001,"Appl. Geochem. 16, 161-181","polymorphs of ice",https://doi.org/10.1016/S0883-2927(00)00025-1
 PS01,"A. V. Plyasunov and E. L. Shock",2001,"Geochim. Cosmochim. Acta 65, 3879-3900","aqueous nonelectrolytes",https://doi.org/10.1016/S0016-7037(01)00678-0
 PS01.1,"A. V. Plyasunov and E. L. Shock",2001,"Geochim. Cosmochim. Acta 65, 3879-3900","acetic acid and methane",https://doi.org/10.1016/S0016-7037(01)00678-0
 Ric01,"L. Richard",2001,"Geochim. Cosmochim. Acta 65, 3827-3877","organic sulfur compounds",https://doi.org/10.1016/S0016-7037(01)00761-X

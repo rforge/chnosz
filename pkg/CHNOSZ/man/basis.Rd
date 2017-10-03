@@ -44,7 +44,7 @@ Any current basis definition (before being deleted) is returned by this call or 
 
 If the value of \code{basis} is one of the keywords in the following table, the corresponding set of basis species is loaded, and their activities are given preset values.
 This approach is used by many of the examples in the package.
-The basis species identified by these keywords are aqueous except for \H2O (liq), \O2 (gas) and \Fe2O3 (hematite, cr1).
+The basis species identified by these keywords are aqueous except for \H2O (liq), \O2 (gas) and \Fe2O3 (hematite).
 
   \tabular{ll}{
     \code{CHNOS} \tab \CO2, \H2O, \NH3, \H2S, \O2 \cr

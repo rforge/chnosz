@@ -31,7 +31,7 @@ Ttr <- function(ispecies,P=1,dPdT=NULL) {
 GHS_Tr <- function(ispecies, Htr) {
   # calculate G, H, and S at Tr for cr2, cr3, ... phases 20170301
   # Htr: enthalpy(ies) of transition
-  # ispecies: the species index for cr1
+  # ispecies: the species index for cr (the lowest-T phase)
   thisinfo <- info(ispecies)
   name <- thisinfo$name
   # start from Tr (T=298.15 K)
@@ -43,10 +43,10 @@ GHS_Tr <- function(ispecies, Htr) {
   # where to store the calculated GHS at Tr
   Gf_Tr <- Hf_Tr <- S_Tr <- numeric()
   for(i in 1:(length(Htr)+1)) {
-    # check that we have the correct one of cr1, cr2, ...
-    thiscr <- paste0("cr", i)
+    # check that we have the correct one of cr, cr2, cr3, ...
+    if(i==1) thiscr <- "cr" else thiscr <- paste0("cr", i)
     if(thisinfo$state!=thiscr | thisinfo$name!=name) stop(paste("species", thisis, "is not", name, thiscr))
-    # if we're above cr1, calculate the equivalent GHS at Tr
+    # if we're above cr (lowest-T), calculate the equivalent GHS at Tr
     if(i > 1) {
       # set the starting GHS to 0 (in case they're NA - we only need the increments over temperature)
       thisinfo$G <- thisinfo$H <- thisinfo$S <- 0

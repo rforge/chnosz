@@ -11,7 +11,6 @@ test_that("invalid basis definitions cause an error", {
   expect_error(basis(c("HCN", "H2O", "O2", "H2")), "singular")
   expect_error(basis(c("CN", "H2O", "O2", "H2")), "species not available")
   expect_error(basis(c("CN")), "species not available")
-  expect_error(basis("Fe", "cr"), "species not available: Fe\\(cr\\)")
   ina <- nrow(thermo$obigt) + 1
   expect_error(basis(ina), "species not available")
   expect_error(preset.basis(c("CN")), "is not a keyword")
@@ -35,7 +34,7 @@ test_that("invalid basis modification requests cause an error", {
 test_that("changing state maintains species name", {
   b1 <- basis(c("Al2O3", "quartz", "oxygen"))
   b2 <- basis("SiO2", "cr2")
-  # we went from quartz cr1 to cr2, which is the next row in the database
+  # we went from quartz cr to cr2, which is the next row in the database
   expect_equal(sum(b2$ispecies - b1$ispecies), 1)
   expect_error(basis("SiO2", "cr3"), "state or buffer 'cr3' not found for quartz")
 })

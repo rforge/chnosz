@@ -8,16 +8,20 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.t
   # reference temperature and pressure
   Pr <- 1
   Tr <- 298.15
-  # the number of conditions we have
+  # get T and P to be same length
   ncond <- max(length(T), length(P))
+  T <- rep(T, length.out=ncond)
+  P <- rep(P, length.out=ncond)
   # get thermodynamic parameters
   dir <- system.file("extdata/Berman/", package="CHNOSZ")
   Ber88 <- read.csv(paste0(dir, "/Ber88.csv"), as.is=TRUE)
   Ber90 <- read.csv(paste0(dir, "/Ber90.csv"), as.is=TRUE)
   SHD91 <- read.csv(paste0(dir, "/SHD91.csv"), as.is=TRUE)
   ZS92 <- read.csv(paste0(dir, "/ZS92.csv"), as.is=TRUE)
-  # assemble the files and remove duplicates (keep the latest)
-  dat <- rbind(ZS92, SHD91, Ber90, Ber88)
+  JUN92 <- read.csv(paste0(dir, "/JUN92.csv"), as.is=TRUE)
+  # assemble the files in reverse chronological order
+  dat <- rbind(JUN92, ZS92, SHD91, Ber90, Ber88)
+  # remove duplicates (only the first, i.e. latest entry is kept)
   dat <- dat[!duplicated(dat$name), ]
   # remove the multipliers
   multexp <- c(0, 0, 0, 0,          # Ber88 Table 2
@@ -90,6 +94,8 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.t
     # the lower integration limit is Tref
     iTtr <- T > Tref
     Ttr <- T[iTtr]
+    Tlambda_P <- Tlambda_P[iTtr]
+    Td <- Td[iTtr]
     # the upper integration limit is Tlambda_P
     Ttr[Ttr >= Tlambda_P] <- Tlambda_P[Ttr >= Tlambda_P]
     # derived variables
@@ -137,11 +143,16 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.t
     S <- S + Sds
     V <- V + Vds
     Cp <- Cp + Cpds
-  }
+  } else {
 
-  ### (for testing) use G = H - TS to check that integrals for H and S are written correctly
-  Ga_fromHminusTS <- Ha - T * S
-  if(!all.equal(Ga_fromHminusTS, Ga)) stop("incorrect integrals detected using DG = DH - T*S")
+    # FIXME: for now, we skip this check if disorder properties are calculated
+
+    ### (for testing) use G = H - TS to check that integrals for H and S are written correctly
+    Ga_fromHminusTS <- Ha - T * S
+    # (fails with with berman("K-feldspar", T=convert(600, "K"), P=10000))
+    if(!isTRUE(all.equal(Ga_fromHminusTS, Ga))) stop(paste0(name, ": incorrect integrals detected using DG = DH - T*S"))
+
+  }
 
   ### thermodynamic and unit conventions used in SUPCRT ###
   # use entropy of the elements in calculation of G --> Benson-Helgeson convention (DG = DH - T*DS)

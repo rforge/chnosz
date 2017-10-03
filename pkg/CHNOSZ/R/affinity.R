@@ -1,6 +1,13 @@
 # CHNOSZ/affinity.R
 # calculate affinities of formation reactions
 
+## if this file is interactively sourced, the following are also needed to provide unexported functions:
+#source("util.affinity.R")
+#source("util.units.R")
+#source("util.character.R")
+#source("util.list.R")
+#source("subcrt.R")
+
 affinity <- function(...,property=NULL,sout=NULL,exceed.Ttr=FALSE,
   return.buffer=FALSE,balance="PBB",iprotein=NULL,loga.protein=-3) {
   # ...: variables over which to calculate

@@ -116,7 +116,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
     sinfo <- ispecies
   } else {
     # from names, get species indices and states and possibly
-    # keep track of phase species (cr1 cr2 ...)
+    # keep track of phase species (cr,cr2 ...)
     sinfo <- numeric()
     newstate <- character()
     for(i in 1:length(species)) {
@@ -127,7 +127,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
       thermo <- get("thermo", "CHNOSZ")
       if(is.na(si[1])) stop('no info found for ',species[i],' ',state[i])
       if(!is.null(state[i])) is.cr <- state[i]=='cr' else is.cr <- FALSE
-      if(thermo$obigt$state[si[1]]=='cr1' & (is.null(state[i]) | is.cr)) {
+      if(thermo$obigt$state[si[1]]=='cr' & (is.null(state[i]) | is.cr)) {
         newstate <- c(newstate,'cr')
         sinfo <- c(sinfo,si[1])
       } else {
@@ -151,7 +151,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
   state <- as.character(tos[sinfo])
   name <- as.character(ton[sinfo])
   # a counter of all species considered
-  # inpho is longer than sinfo if cr1 cr2 ... phases are present
+  # inpho is longer than sinfo if cr,cr2 ... phases are present
   # sinph shows which of sinfo correspond to inpho
   # pre-20091114: the success of this depends on there not being duplicated aqueous or other
   # non-mineral-phase species (i.e., two entries in obigt for Cu+ screw this up
@@ -160,7 +160,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
   inpho <- sinph <- coeff.new <- numeric()
   for(i in 1:length(sinfo)) {
      if(newstate[i]=='cr') {
-       searchstates <- c('cr','cr1','cr2','cr3','cr4','cr5','cr6','cr7','cr8','cr9') 
+       searchstates <- c('cr','cr2','cr3','cr4','cr5','cr6','cr7','cr8','cr9') 
        tghs <- thermo$obigt[(ton %in% name[i]) & tos %in% searchstates,]
        # we only take one if they are in fact duplicated species and not phase species
        if(all(tghs$state==tghs$state[1])) tghs <- thermo$obigt[sinfo[i],]
@@ -293,11 +293,10 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
   }
 
   # crystalline, gas, liquid (except water) species
-  cglstates <- c("liq", "cr", "gas", "cr1", "cr2", "cr3", "cr4", "cr5", "cr6", "cr7", "cr8", "cr9", "cr_Berman")
+  cglstates <- c("liq", "cr", "gas", "cr2", "cr3", "cr4", "cr5", "cr6", "cr7", "cr8", "cr9", "cr_Berman")
   iscgl <- reaction$state %in% cglstates & reaction$name != "water"
 
   if(TRUE %in% iscgl) {
-    #si <- info(inpho[iscgl],quiet=TRUE)
     si <- obigt2eos(thermo$obigt[inpho[iscgl],], "cgl", fixGHS = TRUE)
     p.cgl <- cgl(eosprop, parameters = si, T = T, P = P)
     # replace Gibbs energies with NA where the
@@ -316,8 +315,8 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
         mystate <- reaction$state[i]
         # don't proceed if the state is cr_Berman
         if(mystate=="cr_Berman") next
-        # check if we're below the transition temperature
-        if(!(reaction$state[i] %in% c('cr1','liq','cr','gas'))) {
+        # if this phase is cr2 or higher, check if we're below the transition temperature
+        if(!(reaction$state[i] %in% c('liq','cr','gas'))) {
           Ttr <- Ttr(inpho[i]-1,P=P,dPdT=dPdTtr(inpho[i]-1))
           if(all(is.na(Ttr))) next
           if(any(T < Ttr)) {
@@ -327,14 +326,20 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
               p.cgl[[ncgl[i]]]$G[T<Ttr] <- NA
               status.Ttr <- "(using NA for G)"
             } 
-            message(paste('subcrt: some points below transition temperature for',myname, mystate, status.Ttr))
+            #message(paste('subcrt: some points below transition temperature for',myname, mystate, status.Ttr))
           }
         }
-        # check if we're above the transition temperature
-        if(!(reaction$state[i] %in% c('cr','liq','gas')))
-          Ttr <- Ttr(inpho[i],P=P,dPdT=dPdTtr(inpho[i]))
-        else {
-          Ttr <- thermo$obigt$z.T[inpho[i]]
+        # check if we're above the temperature limit or transition temperature
+        # T limit (or Ttr) from the database
+        warn.above <- TRUE
+        Ttr <- thermo$obigt$z.T[inpho[i]]
+        # calculate Ttr at higher P if a phase transition is present
+        if(i < nrow(reaction)) {
+          # if the next one is cr2, cr3, etc we have a transition
+          if(reaction$state[i+1] %in% c("cr1", "cr2", "cr3", "cr4", "cr5", "cr6", "cr7", "cr8", "cr9"))
+            Ttr <- Ttr(inpho[i],P=P,dPdT=dPdTtr(inpho[i]))
+          # we don't warn here about the transition
+          warn.above <- FALSE
         }
         if(all(is.na(Ttr))) next
         if(!all(Ttr==0) & any(T >= Ttr)) {
@@ -343,7 +348,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
             p.cgl[[ncgl[i]]]$G[T>=Ttr] <- NA
             status.Ttr <- "(using NA for G)"
           }
-          message(paste('subcrt: some points above transition temperature for',myname, mystate, status.Ttr))
+          if(warn.above) message(paste('subcrt: some points above temperature limit for',myname, mystate, status.Ttr))
         }
       }
     }
@@ -380,7 +385,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
   for(i in 1:length(is))  v[[i]] <- out[[match(ns[i],is)]]
   out <- v
 
-  # deal with phases (cr1 cr2) here
+  # deal with phases (cr,cr2) here
   # we have to eliminate rows from out, 
   # reaction and values from isaq, iscgl, isH2O
   out.new <- list()
@@ -390,10 +395,12 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
   isH2O.new <- logical()
   for(i in 1:length(sinfo)) {
     iphases <- which(sinfo[i]==sinph)
-    # deal with repeated species here ... divide iphases 
-    # by the number of duplicates
+    # deal with repeated species here
     if(TRUE %in% duplicated(inpho[iphases])) {
-      iphases <- iphases[length(which(sinfo==sinfo[i]))]
+      # only take the first, not the duplicates
+      ndups <- length(which(sinfo==sinfo[i]))
+      nphases <- length(iphases) / ndups
+      iphases <- iphases[1:nphases]
     }
     if(length(iphases)>1) {
       message(paste('subcrt:',length(iphases),'phases for',thermo$obigt$name[sinfo[i]],'... '), appendLF=FALSE)

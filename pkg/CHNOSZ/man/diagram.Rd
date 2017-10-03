@@ -201,8 +201,8 @@ title(main=paste("Degrees of formation of ATP species,\n",
 basis(c("Fe", "O2", "S2"))
 species(c("iron", "ferrous-oxide", "magnetite",
   "hematite", "pyrite", "pyrrhotite"))
-# include the high-temperature phase of pyrrhotite
-species("pyrrhotite", "cr2")
+# the calculations include the phase transitions of
+# pyrrhotite; no additional step is needed
 a <- affinity(S2=c(-50, 0), O2=c(-90, -10), T=200)
 diagram(a, fill="heat")
 title(main=paste("Fe-S-O, 200 degrees C, 1 bar",
@@ -224,10 +224,13 @@ text(3, 21, describe.property(c("T", "P"), c(25, 1), oneline=TRUE))
 
 ## Temperature-Pressure: kayanite-sillimanite-andalusite
 # cf. Fig. 49 of Helgeson et al., 1978
-# this is a system of one component (Al2SiO5), but we need the same 
-# number of basis species as elements; and avoid using H2O or other 
-# aqueous species because of T/P limits of the water() calculations;
-basis(c("corundum", "quartz", "oxygen"))
+# this is a system of one component (Al2SiO5), however:
+# - number of basis species must be the same as of elements
+# - avoid using H2O or other aqueous species because of
+#     T/P limits of the water() calculations;
+# - because it triggers calculations for phase transitions,
+#    (takes more time), don't use quartz unless it's needed
+basis(c("corundum", "chalcedony", "oxygen"))
 species(c("kyanite", "sillimanite", "andalusite"))
 # database has transition temperatures of kyanite and andalusite
 # at 1 bar only, so we permit calculation at higher temperatures

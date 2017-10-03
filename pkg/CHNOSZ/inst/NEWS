@@ -1,12 +1,12 @@
-CHANGES IN CHNOSZ 1.1.0-37 (2017-10-03)
+CHANGES IN CHNOSZ 1.1.0-38 (2017-10-03)
 ---------------------------------------
 
 MAJOR CHANGES:
 
 - Add functions implementing the Deep Earth Water (DEW) model
-  (Sverjensky et al., 2014): calculateDensity(),
-  calculateGibbsofWater(), calculateEpsilon(), calculateQ(), and
-  water.DEW().
+  (Sverjensky et al., 2014): water.DEW() and its supporting functions
+  calculateDensity(), calculateGibbsofWater(), calculateEpsilon(),
+  calculateQ().
 
 - The computational setting for water (thermo$opt$par) can now be
   set using water("DEW"), water("IAPWS"), etc.
@@ -19,13 +19,26 @@ MAJOR CHANGES:
 - Calculations related to Berman's (1988) Figs. 1 and 2 for the lambda
   transition of quartz are presented in the new demo lambda.R.
 
+COMPUTATIONAL IMPROVEMENTS:
+
+- For minerals with phase transitions (states 'cr2' 'cr3' etc.) in
+  thermo$obigt (i.e. the Helgeson minerals), it is now possible to use
+  the minerals in basis(), species(), affinity() with proper accounting
+  for transition effects. Just set the state to 'cr' or omit it,
+  e.g. species("quartz").
+
 - Implement SUPCRT92's handling of variable volume for quartz and
   coesite. Calculations for other minerals still assume constant
   volume of each phase.
 
+- calculations of the g function are now enabled for DEW (with
+  pressure derivative) and IAPWS-95 (no derivatives included).
+
 - water.lines() now works for diagrams of Eh, pe, logfO2, logaO2,
   logfH2, or logaH2 vs pH, T, or P. It is possible to have T or P on
   either the x- or y-axis.
+
+DATABASE UPDATES:
 
 - Add data(OBIGT) and data(CHNOSZ) commands to reset only the
   thermodynamic database (OBIGT) or system settings (CHNOSZ: basis and
@@ -37,8 +50,6 @@ MAJOR CHANGES:
   the extdata/OBIGT package directory.
 
 - add.obigt() gets new argument 'species' for selecting species to add.
-
-DATABASE UPDATES:
 
 - Add DEW_aq.csv with aqueous species data from the DEW spreadsheet
   (May 2017 version). Species with data unchanged from the default
@@ -79,13 +90,10 @@ OTHER CHANGES:
 
 - In water.* functions, rename the "diel" variable to "epsilon".
 
-- calculations of the g function (but not its derivatives) are now
-  enabled for DEW and IAPWS-95.
+CLEANUP:
 
 - To save space, taxid_names.csv has been trimmed to hold only those
   taxids listed in extdata/bison/gi.taxid.txt.
-
-CLEANUP:
 
 - Remove Eco.csv.xz and rename more.aa() to yeast.aa().
 

@@ -41,6 +41,8 @@ setfile <- function(csvfile, dat=NULL) {
   file <- system.file(paste0("extdata/OBIGT/", csvfile), package="CHNOSZ")
   if(file=="") file <- system.file(paste0("extdata/OBIGT/", csvfile, ".xz"), package="CHNOSZ")
   dat <- read.csv(file, as.is=TRUE)
+  ## exclude entries for phase transitions
+  #dat <- dat[!dat$state %in% c("cr2", "cr3", "cr4", "cr5", "cr6", "cr7", "cr8", "cr9"), ]
   # the class of substance, followed by number of species
   class <- gsub("_.*", "", csvfile)
   substr(class, 1, 1) <- toupper(substr(class, 1, 1))
@@ -59,6 +61,8 @@ filerefs <- function(csvfile, dat=NULL, message=FALSE) {
     dat <- read.csv(file, as.is=TRUE)
     whichref <- "ref1"
   }
+  ## exclude entries for phase transitions
+  #dat <- dat[!dat$state %in% c("cr2", "cr3", "cr4", "cr5", "cr6", "cr7", "cr8", "cr9"), ]
   # count number of times each reference is used
   tab <- table(dat[, whichref])
   # there are no references in H2O_aq.csv so we return the species here
@@ -175,7 +179,7 @@ cat("Parameters used here for goethite differ slightly from those listed in the 
 ### `r setfile("Berman_cr.csv")`
 ```{r Berman_cr, results="asis", echo=FALSE}
 cat("This file gives the identifiying information for minerals whose properties are calculated using the formulation of @Ber88.\n")
-cat("To distinguish these minerals from the original set of mineral data in CHNOSZ (based on the compliation of @HDNB78), the physical states are listed as `cr_Berman`.\n")
+cat("To distinguish these minerals from the original set of mineral data in CHNOSZ [based on the compliation of @HDNB78], the physical states are listed as `cr_Berman`.\n")
 cat("The actual data are stored separately (`extdata/Berman/*.csv`).<hr>")
 ```
 

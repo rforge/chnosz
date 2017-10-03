@@ -204,13 +204,10 @@ s <- subcrt(c("andradite", "carbon dioxide", "H2S", "Cu+", "quartz",
   coeff=c(-1, -3, -4, -2, 3, 3, 2, 2, 3),
   state=c("cr", "g", "aq", "aq", "cr", "cr", "cr", "aq", "liq"),
   P=P, T=T, grid="P")
-# the results are not identical to SUPCRT92, at least because CHNOSZ
-# doesn't have volume changes for quartz, and has updated
-# parameters for species e.g. Cu+ from Shock et al., 1997
-# the following is to help detect unintended changes to the code
-# across revisions; the code *should* be fixed sometime so that 
-# the last 1 becomes a 3
-stopifnot(all.equal(s$state$chalcopyrite[1:11], 
+# The results are not identical to SUPCRT92, as CHNOSZ has updated
+# parameters for species e.g. Cu+ from Shock et al., 1997.
+# FIXME: the last 1 should be a 3
+stopifnot(all.equal(s$polymorphs$chalcopyrite[1:11], 
   c(1, 1, 1, 1, 1, 1, 2, 3, 3, 3, 1)))
 
 ## Standard Gibbs energy of reactions with HCN and 

@@ -4,7 +4,7 @@
 #      in the system Na2O-K2O-CaO-MgO-FeO-Fe2O3-Al2O3-SiO2-TiO2-H2O-CO2.
 #      J. Petrol. 29, 445-522. https://doi.org/10.1093/petrology/29.2.445
 
-berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.transition=TRUE, calc.disorder=TRUE, units="cal") {
+berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.transition=TRUE, calc.disorder=FALSE, units="cal") {
   # reference temperature and pressure
   Pr <- 1
   Tr <- 298.15
@@ -143,16 +143,13 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.t
     S <- S + Sds
     V <- V + Vds
     Cp <- Cp + Cpds
-  } else {
-
-    # FIXME: for now, we skip this check if disorder properties are calculated
-
-    ### (for testing) use G = H - TS to check that integrals for H and S are written correctly
-    Ga_fromHminusTS <- Ha - T * S
-    # (fails with with berman("K-feldspar", T=convert(600, "K"), P=10000))
-    if(!isTRUE(all.equal(Ga_fromHminusTS, Ga))) stop(paste0(name, ": incorrect integrals detected using DG = DH - T*S"))
-
   }
+
+  ### (for testing) use G = H - TS to check that integrals for H and S are written correctly
+  Ga_fromHminusTS <- Ha - T * S
+  # FIXME: this check fails if disorder properties are calculated:
+  # berman("K-feldspar", T=convert(600, "K"), P=10000, calc.disorder=TRUE)
+  if(!isTRUE(all.equal(Ga_fromHminusTS, Ga))) stop(paste0(name, ": incorrect integrals detected using DG = DH - T*S"))
 
   ### thermodynamic and unit conventions used in SUPCRT ###
   # use entropy of the elements in calculation of G --> Benson-Helgeson convention (DG = DH - T*DS)

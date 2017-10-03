@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-38 (2017-10-03)
+CHANGES IN CHNOSZ 1.1.0-40 (2017-10-03)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -89,6 +89,9 @@ OTHER CHANGES:
   subcrt().
 
 - In water.* functions, rename the "diel" variable to "epsilon".
+
+- Components of subcrt() output indicating the stable polymorph of a
+  mineral are now named 'polymorph', not 'state'.
 
 CLEANUP:
 

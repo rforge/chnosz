@@ -18,7 +18,7 @@ test_that("phase transitions of minerals give expected messages and results", {
   iacanthite <- info("acanthite", "cr2")
   #expect_message(subcrt(iacanthite), "subcrt: some points below transition temperature for acanthite cr2 \\(using NA for G\\)")
   expect_message(subcrt(iacanthite), "subcrt: some points above temperature limit for acanthite cr2 \\(using NA for G\\)")
-  expect_equal(subcrt("acanthite")$out$acanthite$state, c(1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3))
+  expect_equal(subcrt("acanthite")$out$acanthite$polymorph, c(1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3))
 })
 
 test_that("heat capacity of minerals are consistent with literature", {
@@ -63,7 +63,7 @@ test_that("standard Gibbs energies of reactions involving aqueous species are co
   sout.C7 <- s.C7$out
   expect_equal(sout.C7$G/1000, AS01.C7, tolerance=1e-4)
   # we can also check that sulfur has expected phase transitions
-  expect_equal(s.C7$state$sulfur, c(1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3))
+  expect_equal(s.C7$polymorphs$sulfur, c(1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3))
 
   ## AS01 Table 8.3 Reaction E12: 4(2-)propanol(aq) + 3CO2(aq) + 2H2O(l) = 3CH4(aq) + 4lactic acid(aq)
   #DG0.E12 <- c(132.52, 132.26, 132.29, 132.49, 132.74, 133.15, 133.98, 135.04, 136.31, 137.79, 141.97, 149.53)

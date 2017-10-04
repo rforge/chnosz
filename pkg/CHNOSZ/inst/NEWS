@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-40 (2017-10-03)
+CHANGES IN CHNOSZ 1.1.0-41 (2017-10-04)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -70,6 +70,11 @@ DATABASE UPDATES:
 - Remove H2O(gas) from the database (taken from SUPCRT92), as it gives
   inconsistent results for metastable steam (Zavarin et al., 2016,
   LLNL-TR-701407, doi: 10.2172/1325873).
+
+- Change the formula of the electron from "Z0-1" (parsed as "zero Z
+  with minus one charge") to the equivalent but nicer-to-read "(Z-1)"
+  (parsed as "minus one Z"; the parentheses cause "-1" to be interpreted
+  as the coefficient on Z instead of the charge in the formula).
 
 OTHER CHANGES:
 

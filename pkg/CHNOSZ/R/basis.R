@@ -104,7 +104,7 @@ put.basis <- function(ispecies, logact = rep(NA, length(ispecies))) {
   rownames(comp) <- as.character(thermo$obigt$formula[ispecies])
   # FIXME: the electron doesn't look like a chemical formula
   # this is needed for affinity() to understand a 'pe' or 'Eh' variable
-  if("Z0-1" %in% rownames(comp)) rownames(comp)[rownames(comp)=="Z0-1"] <- "e-"
+  if("(Z-1)" %in% rownames(comp)) rownames(comp)[rownames(comp)=="(Z-1)"] <- "e-"
   # now check it for validity of basis species
   # the first test: matrix is square
   if( nrow(comp) > ncol(comp) ) stop("overdetermined system; square stoichiometric matrix needed")

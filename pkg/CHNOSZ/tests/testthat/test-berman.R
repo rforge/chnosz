@@ -23,10 +23,6 @@ test_that("properties of all minerals are computed without warnings", {
                  "fluortremolite", all=TRUE)
   # save the results so we can use them in the next tests
   assign("prop_Berman", properties, inherits=TRUE)
-  
-  ## - warnings are produced for 7 minerals with GfPrTr(calc) >= 1000 J/cal different from GfPrTr(table)
-  #expect_warning(Berman <- lapply(mineral, berman),
-  #               "annite|dawsonite|dravite|fluortremolite|greenalite|siderite|Na-Fe-saponite.3W", all=TRUE)
 })
 
 # assemble a data frame for Berman properties
@@ -41,14 +37,11 @@ prop_Helgeson <- suppressMessages(info(icr))
 # minerals with missing properties are not matched here
 # (i.e. fluorphlogopite, fluortremolite, glaucophane, and pyrope: no G and H in prop_Helgeson data)
 
-test_that("Berman and Helgeson properties have large differences for few minerals", {
+test_that("Berman and Helgeson tabulated properties have large differences for few minerals", {
   # which minerals differ in DGf by more than 4 kcal/mol?
   idiffG <- which(abs(prop_Berman$G - prop_Helgeson$G) > 4000)
   expect_match(mineral[idiffG],
                "paragonite|anthophyllite|antigorite|Ca-Al-pyroxene|lawsonite|margarite|merwinite")
-  ## we find 9 of them, as follow:
-  #expect_match(mineral[idiffG],
-  #             "anthophyllite|antigorite|Ca-Al-pyroxene|cordierite,dry|cordierite,hydrous|lawsonite|margarite|merwinite|paragonite")
 
   # which minerals differ in DHf by more than 4 kcal/mol?
   idiffH <- which(abs(prop_Berman$H - prop_Helgeson$H) > 4000)
@@ -59,17 +52,52 @@ test_that("Berman and Helgeson properties have large differences for few mineral
   # which minerals differ in S by more than 4 cal/K/mol?
   idiffS <- which(abs(prop_Berman$S - prop_Helgeson$S) > 4)
   expect_match(mineral[idiffS], "albite|annite|almandine|fluortremolite")
-  #expect_match(mineral[idiffS], "albite|almandine|annite|cordierite,hydrous|fluortremolite")
 
   # which minerals differ in Cp by more than 4 cal/K/mol?
   idiffCp <- which(abs(prop_Berman$Cp - prop_Helgeson$Cp) > 4)
   expect_match(mineral[idiffCp], "antigorite|cristobalite,beta|K-feldspar|fluortremolite")
-  #expect_match(mineral[idiffCp],
-  #             "antigorite|cordierite,hydrous|cristobalite,beta|fluortremolite|glaucophane|greenalite|K-feldspar")
 
   # which minerals differ in V by more than 1 cm^3/mol?
   idiffV <- which(abs(prop_Berman$V - prop_Helgeson$V) > 1)
   expect_match(mineral[idiffV], "anthophyllite|antigorite|chrysotile|merwinite")
-  #expect_match(mineral[idiffV],
-  #             "anthophyllite|antigorite|chrysotile|cordierite,hydrous|glaucophane|greenalite|merwinite")
+})
+
+
+test_that("Berman and Helgeson calculated properties are similar", {
+  # Reference values for G were taken from the spreadsheet Berman_Gibbs_Free_Energies.xlsx
+  #   (http://www.dewcommunity.org/uploads/4/1/7/6/41765907/sunday_afternoon_sessions__1_.zip accessed on 2017-10-03)
+  # The spreadsheet also has values for some minerals using the Helgeson data
+  T <- c(100, 100, 1000, 1000)
+  P <- c(5000, 50000, 5000, 50000)
+
+  ## Start with uncomplicated minerals (no transitions)
+  # Helgeson akermanite
+  Ak_Hel_G <- c(-872485, -772662, -970152, -870328)
+  Ak_Hel <- subcrt("akermanite", T=T, P=P)$out[[1]]
+  expect_equal(Ak_Hel_G, Ak_Hel$G, tol=1e-5)
+  # Berman andalusite
+  And_Ber_G <- c(-579368, -524987, -632421, -576834)
+  And_Ber <- subcrt("andalusite", "cr_Berman", T=T, P=P)$out[[1]]
+  expect_equal(And_Ber_G, And_Ber$G, tol=1e-4)
+
+  ## Now a more complicated case with polymorphic transitions
+  # Helgeson quartz
+  Qz_Hel_G <- c(-202778, -179719, -223906, -199129)
+  Qz_Hel <- subcrt("quartz", T=T, P=P)$out[[1]]
+  # they're very close, but less so at the extremest condition
+  expect_equal(Qz_Hel_G[-4], Qz_Hel$G[-4], tol=1e-5)
+  expect_equal(Qz_Hel_G[4], Qz_Hel$G[4], tol=1e-2)
+  # Berman alpha-quartz
+  aQz_Ber_G <- c(-202800, -179757, -223864, -200109)
+  aQz_Ber <- subcrt("quartz", "cr_Berman", T=T, P=P)$out[[1]]
+  # here, the high-P, low-T point suffers
+  expect_equal(aQz_Ber_G[-2], aQz_Ber$G[-2], tol=1e-5)
+  expect_equal(aQz_Ber_G[2], aQz_Ber$G[2], tol=1e-2)
+
+  ## This one has disordering effects
+  Kfs_Ber_G <- c(-888115, -776324, -988950, -874777)
+  Kfs_Ber <- subcrt("K-feldspar", "cr_Berman", T=T, P=P)$out[[1]]
+  # we lose some accuracy at high T
+  expect_equal(Kfs_Ber_G[1:2], Kfs_Ber$G[1:2], tol=1e-5)
+  expect_equal(Kfs_Ber_G[3:4], Kfs_Ber$G[3:4], tol=1e-2)
 })

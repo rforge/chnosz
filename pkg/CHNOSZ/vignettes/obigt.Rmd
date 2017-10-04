@@ -14,7 +14,7 @@ vignette: >
 bibliography: obigt.bib
 # so that these appear in the bibliography
 nocite: | 
-  @SPRONS92, @SLOP98, @SLOP07, @SLOP15, @CHNOSZ
+  @SPRONS92, @SLOP98, @SLOP07, @SLOP15, @CHNOSZ, @JOH92, @WP02, @CWM89, @PRPG97, @TH88, @Kul06
 # 20170212: comment the csl line to build package on R-Forge, to avoid
 # getting an error there (pandoc-citeproc: error while parsing the XML string)
 csl: elementa.csl
@@ -119,7 +119,13 @@ Each reference is followed by the number of species, and a note (from `thermo$re
 Symbols show whether the data were present in the earliest of the sprons92.dat (ø), slop98.dat (\*), slop07.dat (†), or slop15.dat (‡) datafiles for the SUPCRT92 package.
 
 Any additional comments are placed at the beginning of the sections.
-Abbreviations used below are: Cp (heat capacity), GHS (standard Gibbs energy, enthalpy, entropy), HKF (Helgeson-Kirkham-Flowers equations), V (volume).
+Abbreviations used below are: Cp (heat capacity), GHS (standard Gibbs energy, enthalpy, entropy), HKF (Helgeson-Kirkham-Flowers equations), *V* (volume), *T* (temperature), *P* (pressure).
+
+# Recent additions (late 2017)
+
+* Mineral data using the [Berman (1988)]() equations are listed under **Solids**.
+
+* Aqueous species data compatible with the [Deep Earth Water](http://www.dewcommunity.org/) model are listed under **Optional Data**.
 
 # Sources of data {.tabset .tabset-fade}
 
@@ -131,7 +137,19 @@ Select "All at once" to show all sections.
 
 ### `r setfile("H2O_aq.csv")`
 ```{r H2O_aq, results="asis", echo=FALSE}
-cat('This file contains H<sub>2</sub>O, *e*<sup>-</sup>, and H<sup>+</sup>. The properties of H<sub>2</sub>O are listed as NA; CHNOSZ calculates its properties using a Fortran subroutine taken from SUPRCT92 [@JOH92]. The properties of the proton (H<sup>+</sup>) are 0. The properties of the electron (*e*<sup>-</sup>) are 0, except for *S*°, which is the opposite of *S*° for the "element" of charge, Z (see `?thermo`).\n')
+cat('This file contains H<sub>2</sub>O, *e*<sup>-</sup>, and H<sup>+</sup>.\n')
+cat('The properties of H<sub>2</sub>O are listed as NA; CHNOSZ calculates its properties using a Fortran subroutine taken from SUPRCT92 ([Johnson et al., 1992](https://doi.org/10.1016/0098-3004(92)90029-Q)) (default) or using the IAPWS-95 equations ([Wagner and Pruß, 2002](https://doi.org/10.1063/1.1461829)) or the [Deep Earth Water](http://www.dewcommunity.org/) (DEW) model ([Sverjensky et al., 2014](https://doi.org/10.1016/j.gca.2013.12.019)).\n\n')
+cat('By convention, the standard Gibbs energy of formation, entropy, and heat capacity of the aqueous proton (H<sup>+</sup>) are 0 at all *T* and *P* ([e.g. Cox et al., 1989](http://www.worldcat.org/oclc/18559968)).\n')
+cat('The formation reaction of the proton can be expressed as &frac12;H<sub>2,(*g*)</sub> + Z = H<sup>+</sup>, where Z is the "element" of positive charge.\n')
+cat('Because the conventional standard Gibbs energy of this reaction is 0 at all *T*, the standard entropy of the reaction is also constrained to be zero (cf. [Puigdomenech et al., 1997](http://www.oecd-nea.org/dbtdb/pubs/book-pdf/427-494.pdf)).\n')
+cat('Therefore, the "element" of positive charge (Z) has zero thermodynamic properties except for an entropy, *S*°<sub>*T*<sub>r</sub></sub>, that is negative one-half that of H<sub>2,(*g*)</sub>.\n')
+cat('The standard entropy of the aqueous electron, which is a solely a pseudospecies defined by *e*<sup>-</sup> = -Z, is opposite that of Z.<span style="color:red">**</span>\n\n')
+cat('Despite these considerations, the final column of the thermodynamic database (`thermo$obigt`) lists a charge of "0" for both the aqueous proton and electron.\n')
+cat('Data in this this column are used in CHNOSZ only to specify the charge that is input to the "*g*-function" ([Tanger and Helgeson, 1988](https://doi.org/10.2475/ajs.288.1.19); [Shock and Helgeson, 1988](https://doi.org/10.1016/0016-7037(88)90181-0)).\n')
+cat('Setting it to zero prevents activation of the *g*-function, which would result in non-zero contributions to thermodynamic properties, conflicting with the conventions mentioned above.\n')
+cat('All other calculations in CHNOSZ obtain the elemental makeup, including the correct charge for the species, by parsing the chemical formulas stored in the database.<span style="color:red">^^</span>\n\n')
+cat('<span style="color:red">**</span>Likewise, [GEM-Selektor](http://gems.web.psi.ch/) defines "independent components" to be stoichiometric units usually consisting of elements and charge; the latter, [which is named Zz](http://gems.web.psi.ch/tests/TestNaCl-dep.html) and has a standard molal entropy of -65.34 J/mol/K and heat capacity of -14.418 J/mol/K (negative one-half those of gaseous hydrogen), is negated in the formula of the hypothetical "aqueous electron" ([Kulik, 2006](https://doi.org/10.1016/j.chemgeo.2005.08.014)).\n\n')
+cat('<span style="color:red">^^</span> Relatedly, charged amino acid sidechain groups have a charge that is tabulated as zero, because other values would be incompatible with group additivity of cations and anions (for which the *g*-function produces derivatives of the omega parameter (&omega;) in the revised HKF equations of state that are not opposite each other) to give a neutral species (for which the derivatives of &omega; are taken to be zero) (cf. [Dick et al., 2006](https://doi.org/10.5194/bg-3-311-2006)).\n')
 ```
 ```{r used, include=FALSE}
 # initialize the list of used species
@@ -147,7 +165,7 @@ nothing <- filerefs(csvfile)
 
 ### `r setfile("inorganic_aq.csv")`
 ```{r inorganic_aq, results="asis", echo=FALSE}
-cat("ZnCl4-2 was present in sprons92.dat but not in slop98.dat or later files, and is not included in CHNOSZ.<hr>")
+cat("ZnCl<sub>4</sub><sup>-2</sup> was present in sprons92.dat but not in slop98.dat or later files, and is not included in CHNOSZ.<hr>")
 ```
 
 ```{r reflist, results="asis", echo=FALSE}

@@ -14,10 +14,11 @@ test_that("unparseable chemical formulas cause an error", {
 test_that("numeric species indices, and coefficients indicating charge can be parsed", {
   # these are all equivalent formulas for the electron
   expect_equal(makeup("-1"), makeup("Z0-1"))
+  expect_equal(makeup("-1"), makeup("(Z-1)")[1])
   expect_equal(makeup("-1"), makeup("Z-1+0"))
   # the species index of the electron in thermo$obigt
   ie <- info("e-")
-  expect_equal(makeup("-1"), makeup(ie))
+  expect_equal(makeup("-1"), makeup(ie)[1])
 })
 
 test_that("signed and fractional coefficients can be parsed", {

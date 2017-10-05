@@ -62,8 +62,7 @@ test_that("Berman and Helgeson tabulated properties have large differences for f
   expect_match(mineral[idiffV], "anthophyllite|antigorite|chrysotile|merwinite")
 })
 
-
-test_that("Berman and Helgeson calculated properties are similar", {
+test_that("high-T,P calculated properties are similar to precalculated ones", {
   # Reference values for G were taken from the spreadsheet Berman_Gibbs_Free_Energies.xlsx
   #   (http://www.dewcommunity.org/uploads/4/1/7/6/41765907/sunday_afternoon_sessions__1_.zip accessed on 2017-10-03)
   # The spreadsheet also has values for some minerals using the Helgeson data
@@ -74,30 +73,32 @@ test_that("Berman and Helgeson calculated properties are similar", {
   # Helgeson akermanite
   Ak_Hel_G <- c(-872485, -772662, -970152, -870328)
   Ak_Hel <- subcrt("akermanite", T=T, P=P)$out[[1]]
-  expect_equal(Ak_Hel_G, Ak_Hel$G, tol=1e-5)
+  expect_maxdiff(Ak_Hel_G, Ak_Hel$G, 5)
   # Berman andalusite
   And_Ber_G <- c(-579368, -524987, -632421, -576834)
   And_Ber <- subcrt("andalusite", "cr_Berman", T=T, P=P)$out[[1]]
-  expect_equal(And_Ber_G, And_Ber$G, tol=1e-4)
+  expect_maxdiff(And_Ber_G, And_Ber$G, 10)
 
   ## Now a more complicated case with polymorphic transitions
   # Helgeson quartz
   Qz_Hel_G <- c(-202778, -179719, -223906, -199129)
   Qz_Hel <- subcrt("quartz", T=T, P=P)$out[[1]]
   # they're very close, but less so at the extremest condition
-  expect_equal(Qz_Hel_G[-4], Qz_Hel$G[-4], tol=1e-5)
-  expect_equal(Qz_Hel_G[4], Qz_Hel$G[4], tol=1e-2)
+  expect_maxdiff(Qz_Hel_G[-4], Qz_Hel$G[-4], 1)
+  expect_maxdiff(Qz_Hel_G[4], Qz_Hel$G[4], 250)
   # Berman alpha-quartz
   aQz_Ber_G <- c(-202800, -179757, -223864, -200109)
   aQz_Ber <- subcrt("quartz", "cr_Berman", T=T, P=P)$out[[1]]
   # here, the high-P, low-T point suffers
-  expect_equal(aQz_Ber_G[-2], aQz_Ber$G[-2], tol=1e-5)
-  expect_equal(aQz_Ber_G[2], aQz_Ber$G[2], tol=1e-2)
+  expect_maxdiff(aQz_Ber_G[-2], aQz_Ber$G[-2], 1.2)
+  expect_maxdiff(aQz_Ber_G[2], aQz_Ber$G[2], 1250)
 
   ## This one has disordering effects
+  # (see test-subcrt.R for test with Helgeson/SUPCRT92 values)
+  # Berman K-feldspar
   Kfs_Ber_G <- c(-888115, -776324, -988950, -874777)
   Kfs_Ber <- subcrt("K-feldspar", "cr_Berman", T=T, P=P)$out[[1]]
   # we lose some accuracy at high T
-  expect_equal(Kfs_Ber_G[1:2], Kfs_Ber$G[1:2], tol=1e-5)
-  expect_equal(Kfs_Ber_G[3:4], Kfs_Ber$G[3:4], tol=1e-2)
+  expect_maxdiff(Kfs_Ber_G[1:2], Kfs_Ber$G[1:2], 7)
+  expect_maxdiff(Kfs_Ber_G[3:4], Kfs_Ber$G[3:4], 1600)
 })

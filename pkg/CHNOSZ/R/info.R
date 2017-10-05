@@ -132,18 +132,22 @@ info.character <- function(species, state=NULL, check.protein=TRUE, grep.state=F
   ispecies.out <- ispecies[1]
   # let user know if there is more than one state for this species
   if(length(ispecies) > length(ispecies.out)) {
+    mystate <- thermo$obigt$state[ispecies.out]
     ispecies.other <- ispecies[!ispecies %in% ispecies.out]
     otherstates <- thermo$obigt$state[ispecies.other]
     transtext <- othertext <- ""
     # we count, but don't show the states for phase transitions (cr2, cr3, etc)
     istrans <- otherstates %in% c("cr2", "cr3", "cr4", "cr5", "cr6", "cr7", "cr8", "cr9")
-    ntrans <- sum(istrans)
-    if(ntrans == 1) transtext <- paste(" with", ntrans, "phase transition")
-    else if(ntrans > 1) transtext <- paste(" with", ntrans, "phase transitions")
+    if(mystate=="cr") {
+      # if we are "cr" we show the number of phase transitions
+      ntrans <- sum(istrans)
+      if(ntrans == 1) transtext <- paste(" with", ntrans, "phase transition")
+      else if(ntrans > 1) transtext <- paste(" with", ntrans, "phase transitions")
+    }
     otherstates <- otherstates[!istrans]
     if(length(otherstates) > 0) othertext <- paste0(", also available in ", paste(otherstates, collapse=", "))
     if(transtext != "" | othertext != "") {
-      starttext <- paste0("info.character: found ", species, "(", thermo$obigt$state[ispecies.out], ")")
+      starttext <- paste0("info.character: found ", species, "(", mystate, ")")
       message(starttext, transtext, othertext)
     }
   }

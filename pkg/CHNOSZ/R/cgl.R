@@ -2,6 +2,7 @@
 # calculate standard thermodynamic properties of non-aqueous species
 # 20060729 jmd
 
+
 cgl <- function(property = NULL, parameters = NULL, T = 298.15, P = 1) {
   # calculate properties of crystalline, liquid (except H2O) and gas species
   Tr <- 298.15
@@ -20,6 +21,10 @@ cgl <- function(property = NULL, parameters = NULL, T = 298.15, P = 1) {
       iprop <- match(property, colnames(properties))
       values <- properties[, iprop, drop=FALSE]
     } else {
+      # in CHNOSZ, we have
+      # 1 cm^3 bar --> convert(1, "calories") == 0.02390057 cal
+      # but SUPCRT92 in REAC92D.F uses
+      cm3bar_to_cal <- 0.023901488 # cal
       # start with NA values
       values <- data.frame(matrix(NA, ncol = length(property), nrow=ncond))
       colnames(values) <- property
@@ -66,7 +71,7 @@ cgl <- function(property = NULL, parameters = NULL, T = 298.15, P = 1) {
           # entropy and volume terms
           if(!is.na(PAR$S)) p <- p - PAR$S * (T - Tr)
           if(isqtz) p <- p + qtz$G
-          else if(!is.na(PAR$V)) p <- p + convert(PAR$V * (P - Pr), "calories")
+          else if(!is.na(PAR$V)) p <- p + PAR$V * (P - Pr) * cm3bar_to_cal
           p <- PAR$G + p
         }
         if(PROP == "H") { 
@@ -81,8 +86,7 @@ cgl <- function(property = NULL, parameters = NULL, T = 298.15, P = 1) {
              else p <- p - PAR$f * ( T^(PAR$lambda + 1) - Tr^(PAR$lambda + 1) ) / (PAR$lambda + 1)
           }
           if(isqtz) p <- p + qtz$H
-          ## SUPCRT seems to ignore this term? ... 20070802
-          #else p <- p + convert(PAR$V*(P-Pr),'calories')
+          else if(!is.na(PAR$V)) p <- p + PAR$V * (P-Pr) * cm3bar_to_cal
           p <- PAR$H + p
         }
         if(PROP=="S") {
@@ -147,11 +151,12 @@ quartz_coesite <- function(PAR, T, P) {
     VPrTtb <- VPrTtb - Vdiff
     V <- V - Vdiff
   }
-  GVterm <- convert(1, "calories") * (VPrTra * (P - Pstar) + VPrTtb * (Pstar - Pr) -
+  cm3bar_to_cal <- 0.023901488
+  GVterm <- cm3bar_to_cal * (VPrTra * (P - Pstar) + VPrTtb * (Pstar - Pr) -
     0.5 * ca * (2 * Pr * (P - Pstar) - (P^2 - Pstar^2)) -
     ca * k * (T - Tr) * (P - Pstar) +
     k * (ba + aa * ca * k) * (T - Tr) * log((aa + P/k) / (aa + Pstar/k)))
-  SVterm <- convert(1, "calories") * (-k * (ba + aa * ca * k) *
+  SVterm <- cm3bar_to_cal * (-k * (ba + aa * ca * k) *
     log((aa + P/k) / (aa + Pstar/k)) + ca * k * (P - Pstar)) - Sstar
   list(G=GVterm, S=SVterm, H=GVterm + T*SVterm, V=V)
 }

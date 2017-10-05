@@ -150,7 +150,7 @@ mod.basis <- function(species, state=NULL, logact=NULL) {
           ispecies <- suppressMessages(info(as.character(thermo$buffers$species)[ibuff[k]],
             as.character(thermo$buffers$state)[ibuff[k]], check.it=FALSE))
           bufmakeup <- makeup(ispecies)
-          inbasis <- rownames(bufmakeup) %in% colnames(basis()) 
+          inbasis <- names(bufmakeup) %in% colnames(basis()) 
           if(FALSE %in% inbasis) {
             stop(paste("the elements '",c2s(rownames(bufmakeup)[!inbasis]),
               "' of species '",thermo$buffers$species[ibuff[k]],"' in buffer '",state[i],

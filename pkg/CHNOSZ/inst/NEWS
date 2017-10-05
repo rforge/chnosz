@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-41 (2017-10-04)
+CHANGES IN CHNOSZ 1.1.0-42 (2017-10-05)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -97,6 +97,9 @@ OTHER CHANGES:
 
 - Components of subcrt() output indicating the stable polymorph of a
   mineral are now named 'polymorph', not 'state'.
+
+- Add maxdiff() and expect_maxdiff() for calculating and testing the
+  maximum absolute pairwise difference between two objects.
 
 CLEANUP:
 

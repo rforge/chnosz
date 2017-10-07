@@ -61,8 +61,10 @@ Other specific characters are parsed as follows (case-sensitive):
   \tabular{ll}{
      \samp{D} \tab Delta \cr
      \samp{A} \tab bold A (chemical affinity) \cr
-     \samp{p} \tab subscript italic P (isobaric heat capacity) \cr
-     \samp{0} \tab degree sign (standard-state property) \cr  }
+     \samp{p} \tab subscript italic P (for isobaric heat capacity) \cr
+     \samp{0} \tab degree sign (for a standard-state property) \cr  
+     \samp{l} \tab subscript lambda \cr  
+  }
 
 A \samp{0} gets interpreted as a degree sign only if it does not immediately follow a number (so that e.g. \samp{2.303} can be included in an expression).
 

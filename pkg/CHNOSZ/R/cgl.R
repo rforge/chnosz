@@ -2,7 +2,6 @@
 # calculate standard thermodynamic properties of non-aqueous species
 # 20060729 jmd
 
-
 cgl <- function(property = NULL, parameters = NULL, T = 298.15, P = 1) {
   # calculate properties of crystalline, liquid (except H2O) and gas species
   Tr <- 298.15
@@ -23,85 +22,60 @@ cgl <- function(property = NULL, parameters = NULL, T = 298.15, P = 1) {
     } else {
       # in CHNOSZ, we have
       # 1 cm^3 bar --> convert(1, "calories") == 0.02390057 cal
-      # but SUPCRT92 in REAC92D.F uses
+      # but REAC92D.F in SUPCRT92 uses
       cm3bar_to_cal <- 0.023901488 # cal
       # start with NA values
       values <- data.frame(matrix(NA, ncol = length(property), nrow=ncond))
       colnames(values) <- property
-      # additional calculations for quartz and coesite
-      qtz <- quartz_coesite(PAR, T, P)
-      isqtz <- !identical(qtz$V, 0)
+      # a test for availability of heat capacity coefficients (a, b, c, d, e, f)
+      # based on the column assignments in thermo$obigt
+      if(any(!is.na(PAR[, 13:18]))) {
+        # we have at least one of the heat capacity coefficients;
+        # zero out any NA's in the rest (leave lambda and T of transition (columns 19-20) alone)
+        PAR[, 13:18][, is.na(PAR[, 13:18])] <- 0
+        # calculate the heat capacity and its integrals
+        Cp <- PAR$a + PAR$b*T + PAR$c*T^-2 + PAR$d*T^-0.5 + PAR$e*T^2 + PAR$f*T^PAR$lambda
+        intCpdT <- PAR$a*(T - Tr) + PAR$b*(T^2 - Tr^2)/2 + PAR$c*(1/T - 1/Tr)/-1 + PAR$d*(T^0.5 - Tr^0.5)/0.5 + PAR$e*(T^3-Tr^3)/3
+        intCpdlnT <- PAR$a*log(T / Tr) + PAR$b*(T - Tr) + PAR$c*(T^-2 - Tr^-2)/-2 + PAR$d*(T^-0.5 - Tr^-0.5)/-0.5  + PAR$e*(T^2 - Tr^2)/2
+        # do we also have the lambda parameter (Cp term with adjustable exponent on T)?
+        if(!is.na(PAR$lambda) & !identical(PAR$lambda, 0)) {
+           # equations for lambda adapted from Helgeson et al., 1998 (doi:10.1016/S0016-7037(97)00219-6)
+           if(PAR$lambda == -1) intCpdT <- intCpdT + PAR$f*log(T/Tr) 
+           else intCpdT <- intCpdT - PAR$f*( T^(PAR$lambda + 1) - Tr^(PAR$lambda + 1) ) / (PAR$lambda + 1)
+           intCpdlnT <- intCpdlnT + PAR$f*(T^PAR$lambda - Tr^PAR$lambda) / PAR$lambda
+        }
+      } else {
+        # use constant heat capacity if the coefficients are not available
+        Cp <- PAR$Cp
+        CpdT <- PAR$Cp*(T - Tr)
+        intCpdlnT <- PAR$Cp*log(T / Tr)
+      }
+      # volume and its integrals
+      if(PAR$name %in% c("quartz", "coesite")) {
+        # volume calculations for quartz and coesite
+        qtz <- quartz_coesite(PAR, T, P)
+        V <- qtz$V
+        intVdP <- qtz$intVdP
+        intdVdTdP <- qtz$intdVdTdP
+      } else {
+        # for other minerals, volume is constant (Helgeson et al., 1978)
+        V <- rep(PAR$V, ncond)
+        # if the volume is NA, set its integrals to zero
+        if(is.na(PAR$V)) intVdP <- intdVdTdP <- numeric(ncond)
+        else {
+          intVdP <- PAR$V*(P - Pr) * cm3bar_to_cal
+          intdVdTdP <- 0
+        }
+      }
+      # get the values of each of the requested thermodynamic properties
       for(i in 1:length(property)) {
-        PROP <- property[i]
-        # a test for availability of the EoS parameters
-        # here we assume that the parameters are in the same columns as in thermo$obigt
-        # leave T transition (in 20th column) alone
-        hasEOS <- any(!is.na(PAR[, 13:19]))
-        # if at least one of the EoS parameters is available, zero out any NA's in the rest
-        if(hasEOS) PAR[, 13:19][, is.na(PAR[, 13:19])] <- 0
-        # equations for lambda adapted from HOK+98
-        if(PROP == "Cp") {
-          # use constant Cp if the EoS parameters are not available
-          if(!hasEOS) p <- PAR$Cp
-          else p <- PAR$a + PAR$b * T + PAR$c * T^-2 + PAR$d * T^-0.5 + PAR$e * T^2 + PAR$f * T^PAR$lambda
-        }
-        if(PROP == "V") {
-          if(isqtz) p <- qtz$V
-          else p <- rep(PAR$V, ncond)
-        }
-        if(PROP %in% c("E", "kT")) {
-          p <- rep(NA, ncond)
-          warning("cgl: E and/or kT of cr, gas and/or liq species are NA.")
-        }
-        if(PROP == "G") {
-          # use constant Cp if the EoS parameters are not available
-          if(!hasEOS) p <- PAR$Cp * (T - Tr - T * log(T/Tr)) else {
-            # Gibbs energy integral: the value at Tref plus heat capacity terms
-            p <-   PAR$a * (T - Tr - T * log(T/Tr)) - 
-                   PAR$b * (T - Tr)^2 / 2 - PAR$c * (1/T + T/Tr^2 - 2/Tr) / 2 -
-                   PAR$d * (T^0.5 - 0.5 * T * Tr^-0.5 - 0.5 * Tr^0.5) / -0.25 -
-                   PAR$e * (T^3 - 3 * T * Tr^2 + 2 * Tr^3) / 6
-          }
-          # use additional heat capacity term if it's defined
-          if(!is.na(PAR$f) & !is.na(PAR$lambda)) if(PAR$f != 0) {
-            if(PAR$lambda == -1) p <- p + PAR$f * (log(T/Tr) - T * (1/Tr - 1/T))
-            else p <- p + PAR$f * ( T^(PAR$lambda + 1) - (PAR$lambda + 1) * T * Tr^PAR$lambda + 
-              PAR$lambda * Tr^(PAR$lambda + 1) ) / ( PAR$lambda * (PAR$lambda + 1) ) 
-          }
-          # entropy and volume terms
-          if(!is.na(PAR$S)) p <- p - PAR$S * (T - Tr)
-          if(isqtz) p <- p + qtz$G
-          else if(!is.na(PAR$V)) p <- p + PAR$V * (P - Pr) * cm3bar_to_cal
-          p <- PAR$G + p
-        }
-        if(PROP == "H") { 
-          # use constant Cp if the EoS parameters are not available
-          if(!hasEOS) p <- PAR$Cp * (T - Tr) else {
-            p <- PAR$a * (T - Tr) + PAR$b * (T^2 - Tr^2) / 2 +
-                 PAR$c * (1/T - 1/Tr) / -1 + PAR$d * (T^0.5 - Tr^0.5) / 0.5 + 
-                 PAR$e * (T^3 - Tr^3) / 3 
-          }
-          if(!is.na(PAR$f) & !is.na(PAR$lambda)) if(PAR$f != 0) {
-             if(PAR$lambda == -1) p <- p + PAR$f * log(T/Tr) 
-             else p <- p - PAR$f * ( T^(PAR$lambda + 1) - Tr^(PAR$lambda + 1) ) / (PAR$lambda + 1)
-          }
-          if(isqtz) p <- p + qtz$H
-          else if(!is.na(PAR$V)) p <- p + PAR$V * (P-Pr) * cm3bar_to_cal
-          p <- PAR$H + p
-        }
-        if(PROP=="S") {
-          # use constant Cp if the EoS parameters are not available
-          if(!hasEOS) p <- PAR$Cp * log(T/Tr) else {
-            p <- PAR$a * log(T / Tr) + PAR$b * (T - Tr) + 
-                 PAR$c * (T^-2 - Tr^-2) / -2 + PAR$e * (T^2 - Tr^2) / 2 + 
-                 PAR$d * (T^-0.5 - Tr^-0.5) / -0.5
-          }
-          if(!is.na(PAR$f) & !is.na(PAR$lambda)) if(PAR$f != 0) {
-            p <- p + PAR$f * (T^PAR$lambda - Tr^PAR$lambda) / PAR$lambda
-          }
-          p <- PAR$S + p + qtz$S
-        }
-        values[, i] <- p
+        if(property[i] == "Cp") values[, i] <- Cp
+        if(property[i] == "V") values[, i] <- V
+        if(property[i] == "E") values[, i] <- rep(NA, ncond)
+        if(property[i] == "kT") values[, i] <- rep(NA, ncond)
+        if(property[i] == "G") values[, i] <- PAR$G - PAR$S*(T - Tr) + intCpdT - T*intCpdlnT + intVdP
+        if(property[i] == "H") values[, i] <- PAR$H + intCpdT + intVdP - T*intdVdTdP
+        if(property[i] == "S") values[, i] <- PAR$S + intCpdlnT - intdVdTdP
       }
     } # end calculations using parameters from thermo$obigt
     out[[k]] <- values
@@ -112,7 +86,7 @@ cgl <- function(property = NULL, parameters = NULL, T = 298.15, P = 1) {
 ### unexported function ###
 
 # calculate GHS and V corrections for quartz and coesite 20170929
-# (these are the only mineral phases which SUPCRT92 applies a variable volume)
+# (these are the only mineral phases for which SUPCRT92 uses an inconstant volume)
 quartz_coesite <- function(PAR, T, P) {
   # the corrections are 0 for anything other than quartz and coesite
   if(!PAR$name %in% c("quartz", "coesite")) return(list(G=0, H=0, S=0, V=0))
@@ -131,8 +105,8 @@ quartz_coesite <- function(PAR, T, P) {
   # constants from REAC92D.f
   VPrTra <- 22.688 # VPrTr(a-quartz)
   Vdiff <- 2.047   # VPrTr(a-quartz) - VPrTr(coesite)
-  #k <- 38.5       # dPdTtr(a/b-quartz)
-  k <- 38.45834    # calculated in CHNOSZ: dPdTtr(info("quartz"))
+  k <- 38.5       # dPdTtr(a/b-quartz)
+  #k <- 38.45834    # calculated in CHNOSZ: dPdTtr(info("quartz"))
   # code adapted from REAC92D.f
   qphase <- gsub("cr", "", PAR$state)
   if(qphase == 2) {
@@ -158,6 +132,7 @@ quartz_coesite <- function(PAR, T, P) {
     k * (ba + aa * ca * k) * (T - Tr) * log((aa + P/k) / (aa + Pstar/k)))
   SVterm <- cm3bar_to_cal * (-k * (ba + aa * ca * k) *
     log((aa + P/k) / (aa + Pstar/k)) + ca * k * (P - Pstar)) - Sstar
-  list(G=GVterm, S=SVterm, H=GVterm + T*SVterm, V=V)
+  # note the minus sign on "SVterm" in order that intdVdTdP has the correct sign
+  list(intVdP=GVterm, intdVdTdP=-SVterm, V=V)
 }
 

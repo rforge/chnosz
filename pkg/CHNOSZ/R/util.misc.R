@@ -21,11 +21,12 @@ dPdTtr <- function(ispecies) {
 }
 
 Ttr <- function(ispecies,P=1,dPdT=NULL) {
-  # calculate a phase transition temperature
-  # taking account of P (from dP/dT)
-  T <- get("thermo")$obigt$z.T[ispecies]
+  # calculate a phase transition temperature for given P
+  TtrPr <- get("thermo")$obigt$z.T[ispecies]
+  # the constant slope, dP/dT
   if(is.null(dPdT)) dPdT <- dPdTtr(ispecies)
-  return(T + P / dPdT)
+  Pr <- 1
+  TtrPr + (P - Pr) / dPdT
 }
 
 GHS_Tr <- function(ispecies, Htr) {

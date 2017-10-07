@@ -11,12 +11,6 @@ test_that("unbalanced reactions give a warning or are balanced given sufficient 
   expect_equal(s$reaction$name, c("malic acid", "citric acid", "CO2", "water", "oxygen"))
 })
 
-#test_that("heat capacity of wollastonite is consistent with the literature", {
-#  # from Helgeson et al., 1978 Table 6
-#  # here, set P to NA so that water() is not called to get Psat
-#  expect_maxdiff(subcrt("wollastonite", T=c(200, 500, 800), P=NA)$out$wollastonite$Cp, c(25.4, 28.3, 29.9), 0.05)
-#})
-
 test_that("standard Gibbs energies of reactions involving aqueous species are consistent with the literature", {
   # from Amend and Shock, 2001 [AS01] Table 3
   T <- c(2, 18, 25, 37, 45, 55, 70, 85, 100, 115, 150, 200)
@@ -89,7 +83,33 @@ test_that("calculations for K-feldspar are consistent with SUPCRT92", {
   expect_equal(round(CHNOSZ$Cp, 1), SUPCRT_Cp)
 })
 
-test_that("calculations for quartz are consistent with SUPCRT92", {
+test_that("calculations for quartz are nearly consistent with SUPCRT92", {
+  # using SUPCRT's equations, the alpha-beta transition occurs at
+  # 705 degC at 5000 bar and 1874 degC at 50000 bar,
+  # so here beta-quartz is stable only at T=1000, P=5000
+  T <- c(100, 100, 1000, 1000)
+  P <- c(5000, 50000, 5000, 50000)
+  SUPCRT_G <- c(-202778, -179719, -223906, -199129)
+  SUPCRT_H <- c(-214133, -191708, -199359, -177118)
+  SUPCRT_S <- c(12.3, 10.6, 31.8, 29.8)
+  SUPCRT_V <- c(22.5, 20.3, 23.7, 21.9)
+  SUPCRT_Cp <- c(12.3, 12.3, 16.9, 16.9)
+  CHNOSZ <- subcrt("quartz", T=T, P=P)$out[[1]]
+  # NOTE: Testing has shown that, where alpha-quartz is stable above Ttr(Pr) but below Ttr(P),
+  # SUPCRT92 computes the heat capacity and its integrals using parameters of beta-quartz.
+  # (see e.g. the equation for CprdT under the (Cpreg .EQ. 2) case in the Cptrms subroutine of SUPCRT).
+  # ... is that incorrect?
+  # CHNOSZ's behavior is different - it only uses the lower-T polymorph below Ttr(P);
+  # so we get different values from SUPCRT at T=1000, P=50000 (4th condition) where alpha-quartz is stable
+  # (above Ttr@1 bar (575 degC), but below Ttr@50000 bar)
+  expect_equal(round(CHNOSZ$G)[-4], SUPCRT_G[-4])
+  expect_equal(round(CHNOSZ$H)[-4], SUPCRT_H[-4])
+  expect_equal(round(CHNOSZ$S, 1)[-4], SUPCRT_S[-4])
+  expect_equal(round(CHNOSZ$Cp, 1)[-4], SUPCRT_Cp[-4])
+  expect_equal(round(CHNOSZ$V, 1), SUPCRT_V)
+})
+
+test_that("more calculations for quartz are nearly consistent with SUPCRT92", {
   # output from SUPCRT92 for reaction specified as "1 QUARTZ" run at 1 bar
   # (SUPCRT shows phase transition at 574.850 deg C, and does not give Cp values around the transition)
   S92_1bar <- read.table(header = TRUE, text = "
@@ -100,24 +120,10 @@ test_that("calculations for quartz are consistent with SUPCRT92", {
     576	-214582	-209176	25.1	23.7
   ")
   CHNOSZ_1bar <- subcrt("quartz", T=seq(573, 576), P=1)$out[[1]]
-  expect_maxdiff(CHNOSZ_1bar$G, S92_1bar$G, 0.5)
-  expect_maxdiff(CHNOSZ_1bar$H, S92_1bar$H, 0.5)
-  expect_maxdiff(CHNOSZ_1bar$S, S92_1bar$S, 0.05)
-  expect_maxdiff(CHNOSZ_1bar$V, S92_1bar$V, 0.05)
-
-  # 500 bar: SUPCRT shows phase transition at 587.811 deg C
-  S92_500bar <- read.table(header = TRUE, text = "
-      T       G       H    S       V
-    586	-214548	-209318	24.7	23.3
-    587	-214573	-209301	24.7	23.3
-    588	-214602	-208700	25.4	23.7
-    589	-214627	-208684	25.4	23.7
-  ")
-  CHNOSZ_500bar <- subcrt("quartz", T=seq(586, 589), P=500)$out[[1]]
-  expect_maxdiff(CHNOSZ_500bar$G, S92_500bar$G, 0.5)
-  expect_maxdiff(CHNOSZ_500bar$H, S92_500bar$H, 25)
-  expect_maxdiff(CHNOSZ_500bar$S, S92_500bar$S, 0.05)
-  expect_maxdiff(CHNOSZ_500bar$V, S92_500bar$V, 0.05)
+  expect_equal(round(CHNOSZ_1bar$G), S92_1bar$G)
+  expect_equal(round(CHNOSZ_1bar$H), S92_1bar$H)
+  expect_equal(round(CHNOSZ_1bar$S, 1), S92_1bar$S)
+  expect_equal(round(CHNOSZ_1bar$V, 1), S92_1bar$V)
 
   # 5000 bar: SUPCRT shows phase transition at 704.694 deg C
   S92_5000bar <- read.table(header = TRUE, text = "
@@ -128,6 +134,7 @@ test_that("calculations for quartz are consistent with SUPCRT92", {
     706	-215170	-204238	27.5	23.7
   ")
   CHNOSZ_5000bar <- subcrt("quartz", T=seq(703, 706), P=5000)$out[[1]]
+  # NOTE: calculated values *below* the transition are different
   expect_maxdiff(CHNOSZ_5000bar$G, S92_5000bar$G, 20)
   expect_maxdiff(CHNOSZ_5000bar$H, S92_5000bar$H, 300)
   expect_maxdiff(CHNOSZ_5000bar$S, S92_5000bar$S, 0.5)

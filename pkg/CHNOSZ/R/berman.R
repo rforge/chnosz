@@ -4,7 +4,7 @@
 #      in the system Na2O-K2O-CaO-MgO-FeO-Fe2O3-Al2O3-SiO2-TiO2-H2O-CO2.
 #      J. Petrol. 29, 445-522. https://doi.org/10.1093/petrology/29.2.445
 
-berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.transition=TRUE, calc.disorder=FALSE, units="cal") {
+berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.transition=TRUE, calc.disorder=TRUE, units="cal") {
   # reference temperature and pressure
   Pr <- 1
   Tr <- 298.15
@@ -124,19 +124,28 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.t
     Tds <- T[iTds]
     # the upper integration limit is Tmax
     Tds[Tds > Tmax] <- Tmax
-    # Ber88 Eqs. 15, 16, 17, 18, 19
-    Cpds[iTds] <- d0 + d1 * Tds^-0.5 + d2 * Tds^-2 + d3 * Tds + d4 * Tds^2
-    Hds[iTds] <- d0 * (Tds - Tmin) + 2 * d1 * (Tds^-0.5 - Tmin^-0.5) -
-      d2 * (Tds^-1 - Tmin^-1) + d3 * (Tds^2 - Tmin^2) / 2 + d4 * (Tds^3 - Tmin^3) / 3
-    Sds[iTds] <- d0 * (log(Tds) - log(Tmin)) - 2 * d1 * (Tds^-0.5 - Tmin^-0.5) -
-      d2 * (Tds^-2 - Tmin^-2) / 2 + d3 * (Tds - Tmin) + d4 * (Tds^2 - Tmin^2) / 2
-    # we can't do this if d5 == 0 (dolomite and gehlenite)
+    # Ber88 Eqs. 15, 16, 17
+    Cpds[iTds] <- d0 + d1*Tds^-0.5 + d2*Tds^-2 + d3*Tds + d4*Tds^2
+    Hds[iTds] <- d0*(Tds - Tmin) + d1*(Tds^0.5 - Tmin^0.5)/0.5 +
+      d2*(Tds^-1 - Tmin^-1)/-1 + d3*(Tds^2 - Tmin^2)/2 + d4*(Tds^3 - Tmin^3)/3
+    Sds[iTds] <- d0*(log(Tds) - log(Tmin)) + d1*(Tds^-0.5 - Tmin^-0.5)/-0.5 +
+      d2*(Tds^-2 - Tmin^-2)/-2 + d3*(Tds - Tmin) + d4*(Tds^2 - Tmin^2)/2
+    # Eq. 18; we can't do this if d5 == 0 (dolomite and gehlenite)
+    # "d5 is a constant computed in such as way as to scale the disordring enthalpy to the volume of disorder" (Berman, 1988)
     if(d5 != 0) Vds <- Hds / d5
-    Gds <- Hds - T * Sds + Vds * (P - Pr)
-    # Gds above Tmax (Eq. 20)
+    # Berman puts the Vds term directly into Eq. 19 (commented below), but that necessarily makes Gds != Hds - T * Sds
+    #Gds <- Hds - T * Sds + Vds * (P - Pr)
+    # instead, we include the Vds term with Hds
+    Hds <- Hds + Vds * (P - Pr)
+    # disordering properties above Tmax (Eq. 20)
     ihigh <- T > Tmax
-    # note that Gds[ihigh] and Sds[ihigh] on the rhs were both calculated at Tmax (above)
-    Gds[ihigh] <- Gds[ihigh] - (T[ihigh] - Tmax) * Sds[ihigh]
+    # again, Berman put the Sds term (for T > Tmax) into Eq. 20 for Gds (commented below), which would also make Gds != Hds - T * Sds
+    #Gds[ihigh] <- Gds[ihigh] - (T[ihigh] - Tmax) * Sds[ihigh]
+    # instead, we add the Sds[ihigh] term to Hds
+    Hds[ihigh] <- Hds[ihigh] - (T[ihigh] - Tmax) * Sds[ihigh]
+    # by writing Gds = Hds - T * Sds, the above two changes w.r.t. Berman's
+    # equations affect the computed values only for Hds, not Gds
+    Gds <- Hds - T * Sds
     # apply the disorder contributions
     Ga <- Ga + Gds
     Ha <- Ha + Hds
@@ -147,8 +156,6 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.t
 
   ### (for testing) use G = H - TS to check that integrals for H and S are written correctly
   Ga_fromHminusTS <- Ha - T * S
-  # FIXME: this check fails if disorder properties are calculated:
-  # berman("K-feldspar", T=convert(600, "K"), P=10000, calc.disorder=TRUE)
   if(!isTRUE(all.equal(Ga_fromHminusTS, Ga))) stop(paste0(name, ": incorrect integrals detected using DG = DH - T*S"))
 
   ### thermodynamic and unit conventions used in SUPCRT ###

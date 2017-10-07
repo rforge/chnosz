@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-42 (2017-10-06)
+CHANGES IN CHNOSZ 1.1.0-44 (2017-10-07)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -40,9 +40,8 @@ COMPUTATIONAL IMPROVEMENTS:
 
 DATABASE UPDATES:
 
-- Add data(OBIGT) and data(CHNOSZ) commands to reset only the
-  thermodynamic database (OBIGT) or system settings (CHNOSZ: basis and
-  species) to their defaults. data(thermo) is still used to reset
+- Add data(OBIGT) command to reset only the thermodynamic database
+  (OBIGT) to its default. data(thermo) is still used to reset
   *everything* (the database and all computational and system settings).
 
 - In add.obigt(), using 'file' without a file suffix now can be used to

@@ -14,7 +14,7 @@ vignette: >
 bibliography: obigt.bib
 # so that these appear in the bibliography
 nocite: | 
-  @SPRONS92, @SLOP98, @SLOP07, @SLOP15, @CHNOSZ, @JOH92, @WP02, @CWM89, @PRPG97, @TH88, @Kul06
+  @SPRONS92, @SLOP98, @SLOP07, @SLOP15, @CHNOSZ, @JOH92, @WP02, @CWM89, @PRPG97, @TH88, @Kul06, @Sho09
 # 20170212: comment the csl line to build package on R-Forge, to avoid
 # getting an error there (pandoc-citeproc: error while parsing the XML string)
 csl: elementa.csl
@@ -123,9 +123,9 @@ Abbreviations used below are: Cp (heat capacity), GHS (standard Gibbs energy, en
 
 # Recent additions (late 2017)
 
-* Mineral data using the [Berman (1988)]() equations are listed under **Solids**.
+* Mineral data using the [Berman (1988)]() equations are listed under **Solids** / **Berman**.
 
-* Aqueous species data compatible with the [Deep Earth Water](http://www.dewcommunity.org/) model are listed under **Optional Data**.
+* Aqueous species data intended for use with the [Deep Earth Water](http://www.dewcommunity.org/) model are listed under **Optional Data** / **DEW**.
 
 # Sources of data {.tabset .tabset-fade}
 
@@ -184,7 +184,7 @@ cat("ZnCl<sub>4</sub><sup>-2</sup> was present in sprons92.dat but not in slop98
 ### `r setfile("inorganic_cr.csv")`
 ```{r inorganic_cr, results="asis", echo=FALSE}
 cat("Chamosite,7A and witherite were present in sprons92.dat but not in slop98.dat or later files, and are not included in CHNOSZ.\n\n")
-cat("Parameters used here for goethite differ slightly from those listed in the slop files [@Sho09].<hr>")
+cat("The source of parameters used here for goethite is different from that in the slop files ([Shock, 2009](https://doi.org/10.2113/gsecongeo.104.8.1235)).<hr>")
 ```
 
 ```{r reflist, results="asis", echo=FALSE}
@@ -196,8 +196,8 @@ cat("Parameters used here for goethite differ slightly from those listed in the 
 
 ### `r setfile("Berman_cr.csv")`
 ```{r Berman_cr, results="asis", echo=FALSE}
-cat("This file gives the identifiying information for minerals whose properties are calculated using the formulation of @Ber88.\n")
-cat("To distinguish these minerals from the original set of mineral data in CHNOSZ [based on the compliation of @HDNB78], the physical states are listed as `cr_Berman`.\n")
+cat("This file gives the identifiying information for minerals whose properties are calculated using the formulation of [Berman (1988)](https://doi.org/10.1093/petrology/29.2.445).\n")
+cat("To distinguish these minerals from the original set of mineral data in CHNOSZ (based on the compliation of [Helgeson et al., 1978](http://www.worldcat.org/oclc/13594862)), the physical states are listed as `cr_Berman`.\n")
 cat("The actual data are stored separately (`extdata/Berman/*.csv`).<hr>")
 ```
 
@@ -223,7 +223,7 @@ cat("The actual data are stored separately (`extdata/Berman/*.csv`).<hr>")
 ## Optional Data {.tabset .tabset-pills}
 
 ```{r Optional_Data, results="asis", echo=FALSE}
-cat("These files contain optional data updates that are not loaded by default (using `data(thermo)`). To load these data, run `add.obigt('CHNOSZ_aq')` or `add.obigt('DEW_aq')`.\n\n")
+cat("These files contain optional data updates that are not loaded by default (using `data(thermo)`). To load these data, run `add.obigt('CHNOSZ')` or `add.obigt('DEW')`.\n\n")
 ```
 
 ### `r setfile("DEW_aq.csv")`
@@ -236,8 +236,8 @@ cat("The Deep Earth Water (DEW) model extends the applicability of the revised H
 
 ### `r setfile("CHNOSZ_aq.csv")`
 ```{r CHNOSZ_aq, results="asis", echo=FALSE}
-cat("The primary aqueous silica species in CHNSOZ is SiO<sub>2</sub> [@SHS89]. The pseudospecies H<sub>4</sub>SiO<sub>4</sub> is used to make activity diagrams with *a*<sub>H<sub>4</sub>SiO<sub>4</sub></sub> as a variable. The GHS and HKF parameters for this pseudospecies were calculated using CHNOSZ; see the vignette [*Regressing thermodynamic data*](eos-regress.html) for more information.\n\n")
-cat("HKF coefficients for adenine regressed from experimental Cp and V data were reported by Lowe et al. (2017). See [`demo(adenine)`](../demo/adenine.R).<hr>")
+cat("The primary aqueous silica species in CHNSOZ is SiO<sub>2</sub> ([Shock et al., 1989](https://doi.org/10.1016/0016-7037(89)90341-4)). The pseudospecies H<sub>4</sub>SiO<sub>4</sub> is used to make activity diagrams with *a*<sub>H<sub>4</sub>SiO<sub>4</sub></sub> as a variable. The GHS and HKF parameters for this pseudospecies were calculated using CHNOSZ; see the vignette [*Regressing thermodynamic data*](eos-regress.html) for more information.\n\n")
+cat("HKF coefficients for adenine regressed from experimental Cp and V data were reported by [Lowe et al. (2017)](https://doi.org/10.1016/j.jct.2017.04.005). See [`demo(adenine)`](../demo/adenine.R).<hr>")
 ```
 
 ```{r noreflist, results="asis", echo=FALSE}

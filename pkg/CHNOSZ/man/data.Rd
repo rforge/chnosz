@@ -3,7 +3,6 @@
 \docType{data}
 \alias{thermo}
 \alias{OBIGT}
-\alias{CHNOSZ}
 \alias{opt}
 \alias{element}
 \alias{refs}
@@ -15,7 +14,7 @@ Run \code{data(thermo)} to initialize all of the data used in CHNOSZ.
 This includes the computational settings, thermodynamic database, and system settings (chemical species).
 
 The system settings are changed using \code{\link{basis}} and \code{\link{species}}.
-To restore the default system settings (no species loaded), use \code{data(CHNOSZ)}.
+To restore the default system settings (no species loaded), use \code{basis("")}.
 
 The thermodynamic database is changed using \code{\link{add.obigt}} and \code{\link{mod.obigt}}.
 To restore the default database, use \code{data(OBIGT)}.
@@ -24,7 +23,7 @@ The computational settings are changed using \code{\link{water}}, \code{\link{P.
 To restore the default computational settings, thermodynamic database, and system settings, use \code{data(thermo)}.
 
 In an interactive session, use \code{data(thermo)} to restore the thermodynamic database and computational and system settings to their initial state.
-Or, use \code{data(CHNOSZ)} to clear the system settings (basis and species), or \code{data(OBIGT)} to restore the default database.
+Or, use \code{basis("")} to clear the system settings (basis and species), or \code{data(OBIGT)} to restore the default database.
 
 The data files provided with CHNOSZ are in the \code{data} and \code{extdata/OBIGT} directories of the package.
 The \code{*.csv} files in these directories are used to build the \code{thermo} data object in an environment named \code{CHNOSZ}.
@@ -34,7 +33,6 @@ The structure of the \code{thermo} object is described below.
 \usage{
   data(thermo)
   data(OBIGT)
-  data(CHNOSZ)
 }
 
 \format{

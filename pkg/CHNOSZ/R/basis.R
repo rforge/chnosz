@@ -3,11 +3,13 @@
 
 basis <- function(species=NULL, state=NULL, logact=NULL, delete=FALSE) {
   thermo <- get("thermo")
-  ## delete the basis species if requested
   oldbasis <- thermo$basis
-  if(delete) {
+  ## delete the basis species if requested
+  if(delete | identical(species, "")) {
     thermo$basis <- NULL
+    thermo$species <- NULL
     assign("thermo", thermo, "CHNOSZ")
+    return(invisible(oldbasis))
   }
   ## return the basis definition if requested
   if(is.null(species)) return(oldbasis)
@@ -182,7 +184,7 @@ preset.basis <- function(key=NULL) {
   # just list the keywords if none is specified
   if(is.null(key)) return(basis.key)
   # delete any previous basis definition
-  basis(delete=TRUE)
+  basis("")
   # match the keyword to the available ones
   ibase <- match(key, basis.key)
   if(is.na(ibase)) stop(paste(key, "is not a keyword for preset basis species"))

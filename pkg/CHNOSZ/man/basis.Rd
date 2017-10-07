@@ -39,8 +39,8 @@ Whenever \code{basis} is called with NULL values of both \code{state} and \code{
 If this occurs, any existing species definition (created by the \code{species} function) is deleted.
 However, \code{\link{swap.basis}} can be used to change the species (the compositions and/or physical states thereof) in the basis set while maintaining the list of species of interest, with the added benefit of equivalence of the chemical potentials of the elements before and after the swap.
 
-Call \code{basis} with \code{delete} set to TRUE to clear the basis definition.
-Any current basis definition (before being deleted) is returned by this call or by calling \code{basis} with all default arguments.
+Call \code{basis} with \code{delete} set to TRUE or code{species} set to \code{""} to clear the basis definition.
+This also deletes the \code{\link{species}} list, if any.
 
 If the value of \code{basis} is one of the keywords in the following table, the corresponding set of basis species is loaded, and their activities are given preset values.
 This approach is used by many of the examples in the package.
@@ -63,7 +63,7 @@ The logarithms of activities of amino acids in the \samp{QEC4} basis are -4 (i.e
 }
 
 \value{
-Returns the value of \code{thermo$basis} after any modifications; or, if \code{delete} is TRUE, its value before deletion.
+Returns the value of \code{thermo$basis} after any modifications; or, if \code{delete} is TRUE, its value before deletion (invisibly).
 }
 
 \section{Side Effects}{
@@ -91,7 +91,7 @@ basis("O2")
 basis(c("H2O", "O2"))
 basis(c("H2O", "O2", "H+"))
 ## clear the basis species
-basis(delete=TRUE)
+basis("")
 
 \dontrun{
 ## marked dontrun because they produce errors

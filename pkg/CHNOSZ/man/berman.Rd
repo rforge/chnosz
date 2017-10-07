@@ -8,7 +8,7 @@ Calculate thermodynamic properties of minerals using the equations of Berman (19
 
 \usage{
   berman(name, T = 298.15, P = 1, thisinfo = NULL, check.G = FALSE,
-         calc.transition = TRUE, calc.disorder = FALSE, units = "cal")
+         calc.transition = TRUE, calc.disorder = TRUE, units = "cal")
 }
 
 \arguments{
@@ -34,8 +34,6 @@ If \code{check.G} is TRUE, the tabulated value of DGfTrPr is compared with one c
 A warning is produced if the absolute value of the difference between tabulated and calculated DGfTrPr is greater than 1000 J/mol.
 
 Providing \code{thisinfo} means that the mineral name is not searched in \code{thermo$obigt}, potentially saving some running time.
-
-FIXME: the default for \code{calc.disorder} is temporarily FALSE, as the code produces incorrect Gibbs energies.
 }
 
 \examples{

@@ -48,7 +48,7 @@ diagram <- function(
   } else if(what %in% rownames(eout$basis)) {
     # to calculate the loga of basis species at equilibrium
     if(!missing(groups)) stop("can't plot equilibrium activities of basis species for grouped species")
-    if(alpha) stop("equilibrium activities of basis species not available with alpha=TRUE")
+    if(isTRUE(alpha) | is.character(alpha)) stop("equilibrium activities of basis species not available with alpha=TRUE")
     plot.loga.basis <- TRUE
   } else if(what=="loga.equil" & !"loga.equil" %in% names(eout)) stop("'eout' is not the output from equil()") 
   else if(what!="loga.equil") stop(what, " is not a basis species or 'loga.equil'")
@@ -127,10 +127,12 @@ diagram <- function(
   }
 
   ## alpha: plot fractional degree of formation
-  ## scale the activities to sum=1  ... 20091017
-  if(alpha) {
+  # scale the activities to sum=1  ... 20091017
+  # allow scaling by balancing component 20171008
+  if(isTRUE(alpha) | is.character(alpha)) {
     # remove the logarithms
     act <- lapply(plotvals, function(x) 10^x)
+    if(identical(alpha, "balance")) for(i in 1:length(act)) act[[i]] <- act[[i]] * eout$n.balance[i]
     # sum the activities
     sumact <- Reduce("+", act)
     # divide activities by the total

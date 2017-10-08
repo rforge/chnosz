@@ -1,25 +1,39 @@
-CHANGES IN CHNOSZ 1.1.0-44 (2017-10-07)
+CHANGES IN CHNOSZ 1.1.0-45 (2017-10-08)
 ---------------------------------------
 
 MAJOR CHANGES:
+
+- Add berman() function and extdata/Berman/*.csv files for calculating
+  thermodynamic properties of minerals using equations of Berman, 1988.
+
+- Calculations related to Berman's (1988) Figs. 1 and 2 for the lambda
+  transition of quartz are presented in the new demo lambda.R.
 
 - Add functions implementing the Deep Earth Water (DEW) model
   (Sverjensky et al., 2014): water.DEW() and its supporting functions
   calculateDensity(), calculateGibbsofWater(), calculateEpsilon(),
   calculateQ().
 
-- The computational setting for water (thermo$opt$par) can now be
-  set using water("DEW"), water("IAPWS"), etc.
+- The computational setting for water (thermo$opt$par) can now be set
+  using water("DEW"), water("IAPWS"), etc.
 
-- Usage of the DEW model is demonstrated in the new demo DEW.R.
+- Usage of the DEW model is shown in the new demo DEW.R. This demo also
+  depends on the Berman equations (above) and, for the last diagram, the
+  following two NEWS items:
 
-- Add berman() function and extdata/Berman/*.csv files for calculating
-  thermodynamic properties of mineral using equations of Berman, 1988.
-
-- Calculations related to Berman's (1988) Figs. 1 and 2 for the lambda
-  transition of quartz are presented in the new demo lambda.R.
+- In equilibrate(), it is now possible to combine affinity calculations
+  with changing activity of the balancing basis species (loga.balance).
+  For example, in the last plot of the DEW demo, the affinity transect
+  involves simultaneously varying temperature and logfO2 (given as
+  arguments to affinity()) as well as total concentration of carbon
+  (approximated by the loga.balance argument in equilibrate()).
 
 COMPUTATIONAL IMPROVEMENTS:
+
+- The 'alpha' argument of diagram() can be set to 'balance' to scale
+  the values by the balancing component. This is useful for making
+  "percent carbon" plots for systems where the species have different
+  carbon numbers.
 
 - For minerals with phase transitions (states 'cr2' 'cr3' etc.) in
   thermo$obigt (i.e. the Helgeson minerals), it is now possible to use

@@ -1,6 +1,8 @@
 # CHNOSZ/demo/berman.R  20171003
 # make some mineral activity diagrams using Berman (1988) and related data
 
+res <- 200
+
 # using the Helgeson data
 # set up basis species
 basis(c("K+", "Al+3", "quartz", "H2O", "O2", "H+"))
@@ -9,7 +11,7 @@ basis("pH", 0)
 # load the species
 species(c("K-feldspar", "muscovite", "kaolinite", "pyrophyllite", "andalusite"), "cr")
 # calculate affinities in aK+ - temperature space
-a <- affinity(`K+`=c(0, 6), T=c(25, 650), P=1000)
+a <- affinity(`K+`=c(0, 5, res), T=c(200, 650, res), P=1000)
 # note that we go just past the quartz transition, but it has no effect on the diagram
 diagram(a)
 
@@ -22,7 +24,8 @@ species(delete=TRUE)
 # load the Berman minerals
 species(c("K-feldspar", "muscovite", "kaolinite", "pyrophyllite", "andalusite"), "cr_Berman")
 # calculate affinities in aK+ - temperature space
-a <- affinity(`K+`=c(0, 6), T=c(25, 650), P=1000)
+a <- affinity(`K+`=c(0, 5, res), T=c(200, 650, res), P=1000)
 diagram(a, add=TRUE, names="", col="blue", lwd=2)
 
-legend("topleft", lty=c(1, 1), lwd=c(1, 2), col=c("black", "blue"), legend=c("Helgeson et al., 1978", "Berman, 1988"))
+legend("topleft", lty=c(1, 1), lwd=c(1, 2), col=c("black", "blue"),
+       legend=c("Helgeson et al., 1978 (unadjusted)", "Berman, 1988 (adjusted by Sverjensky et al., 1991)"))

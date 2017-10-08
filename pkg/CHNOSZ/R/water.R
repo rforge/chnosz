@@ -318,7 +318,7 @@ water.DEW <- function(property = NULL, T = 373.15, P = 1000) {
   available_properties <- c("G", "epsilon", "QBorn", "V", "rho", "beta")
   if(is.null(property)) return(available_properties)
   # we can't use Psat here
-  if(identical(P, "Psat")) stop("Psat isn't supported in this implementation of the DEW model")
+  if(identical(P, "Psat")) stop("Psat isn't supported in this implementation of the DEW model. Try setting P to at least 1000 bar.")
   # use uppercase property names (including H, S, etc., so we get them from the SUPCRT properties)
   wprop <- water.SUPCRT92()
   iprop <- match(property, wprop)

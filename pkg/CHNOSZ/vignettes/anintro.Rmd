@@ -930,7 +930,7 @@ diagram(e, alpha = TRUE, ylim = c(0, 0.16), lty = lty, names = names)
 
 That makes a diagram that is similar to Figure 6b of Shock and Schulte (1998).
 ```{marginfigure}
-Some differences from the original diagrams may be caused by the sensitivity of the calculations to log*f*<sub>O<sub>2</sub></sub>, for which the values we use here may carry artifacts introduced by digitization of their plot.
+Some differences from the original diagrams could be caused by the sensitivity of the calculations to log*f*<sub>O<sub>2</sub></sub>, for which the values we use here may carry artifacts introduced by digitization of their plot.
 ```
 It is also possible to plot the distribution of species within individual groups, such as alcohols and ketones.
 We do this by setting the names and line types for the *other* species to values that prevent them from being plotted:

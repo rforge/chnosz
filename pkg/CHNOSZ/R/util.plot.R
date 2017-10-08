@@ -72,8 +72,14 @@ water.lines <- function(eout, which=c('oxidation','reduction'),
   # (i.e. redox variable is on the y axis)
   # get axes, T, P, and xpoints from output of affinity() or equilibrate()
   if(missing(eout)) stop("'eout' (the output of affinity(), equilibrate(), or diagram()) is missing")
+  # number of variables used in affinity()
+  nvar1 <- length(eout$vars)
+  # if these were on a transect, the actual number of variables is less
+  dim <- dim(eout$loga.equil[[1]]) # for output from equilibrate()
+  if(is.null(dim)) dim <- dim(eout$values[[1]]) # for output from affinity()
+  nvar2 <- length(dim)
   # we only work on diagrams with 2 variables
-  if(length(eout$vars) != 2) return(NA)
+  if(nvar1 != 2 | nvar2 != 2) return(NA)
   # if needed, swap axes so T or P is on x-axis
   swapped <- FALSE
   if(eout$vars[2] %in% c("T", "P")) {

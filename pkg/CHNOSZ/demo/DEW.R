@@ -7,7 +7,7 @@ par(mfrow = c(2, 2), mar=c(3.0, 3.5, 2.5, 1.0), mgp=c(1.7, 0.3, 0), las=1, tcl=0
 oldwat <- water("DEW")
 
 #### plot 1: quartz solubility at high pressure
-## after Figure 7D of Sverjensky et al., 2014 
+## after Figure 7D of Sverjensky et al., 2014a [SHA14]
 ## (Geochim. Cosmochim. Acta, https://doi.org/10.1016/j.gca.2013.12.019)
 
 # load SiO2 and Si2O4 data taken from DEW spreadsheet
@@ -41,14 +41,13 @@ for(P in unique(PT$P)) {
   text(lastT+25, tail(logm, 1), Pkb, adj=0)
 }
 t1 <- quote("Solubility of"~alpha*"-quartz")
-t2 <- "(after Sverjensky et al., 2014)"
+t2 <- "after Sverjensky et al., 2014a"
 mtitle(as.expression(c(t1, t2)))
 # TODO: lines are a little low at highest P and P ...
 # does the Berman, 1988 quartz data increase high-PT solubilities?
 
 #### plot 2: correlations between non-solvation volume and HKF a1 parameter
-## after Figures 12B and 12C of Sverjensky et al., 2014
-## (Geochim. Cosmochim. Acta, https://doi.org/10.1016/j.gca.2013.12.019)
+## after Figures 12B and 12C of Sverjensky et al., 2014a [SHA14]
 # load the fitted parameters for species as used by SHA14
 # TODO: also use their Ca+2??
 # NOTE: don't load NaCl, NH4+, or HS- here because the DEW spreadsheet lists a1 from the correlation
@@ -86,8 +85,8 @@ t1 <- quote("Correlations between non-solvation"[])
 t2 <- quote("volume and HKF "*italic(a)[1]*" parameter")
 mtitle(as.expression(c(t1, t2)))
 
-#### plots 3 and 4: aqueous inorganic and organic carbon species at high pressure
-## after Figure 1b of Sverjensky et al., 2014
+#### plot 3: aqueous inorganic and organic carbon species at high pressure
+## after Figure 1b of Sverjensky et al., 2014b [SSH14]
 ## (Nature Geoscience, https://doi.org/10.1038/NGEO2291)
 
 # define system with loga.species = 0
@@ -103,19 +102,100 @@ dfun <- function(T = 600, P = 50000, res=300) {
   legend("bottomleft", legend=dp, bty="n")
 }
 
-# first plot: CHNOSZ default database
 data(OBIGT)
-dfun()
-t1 <- quote("CHNOSZ default database"[])
-t2 <- quote("(not recommended for high"~italic(P)*")")
-mtitle(as.expression(c(t1, t2)))
-# second plot: use CO2, HCO3-, CO3-2, and methane data from DEW spreadsheet
+## (not run) make diagram using CHNOSZ default database
+#dfun()
+#t1 <- quote("CHNOSZ default database"[])
+#t2 <- quote("(not recommended for high"~italic(P)*")")
+#mtitle(as.expression(c(t1, t2)))
+# make diagram using CO2, HCO3-, CO3-2, and methane data from DEW spreadsheet
 add.obigt("DEW_aq", c("CO2", "HCO3-", "CO3-2", "methane"))
 dfun()
 CO2quote <- quote(list(CO[2], HCO[3]^"-", CO[3]^"-2"))
 DEWexpr <- substitute("DEW data for"~x, list(x=CO2quote))
 mtitle(as.expression(c(DEWexpr, "and methane")))
 
+#### plot 4: after SSH14 Fig. 3 (added 20171008)
+# conditions:
+# T = 600, 700, 800, 900, 1000 degC
+# P = 5.0GPa (50000 bar)
+# fO2 = QFM - 2
+# pH set by jadeite + kyanite + coesite
+# dissolved carbon 0.03, 0.2, 1, 4, 20 molal
+
+T <- seq(600, 1000, 5)
+
+## use DEW model
+data(thermo)
+water("DEW")
+# add species data for DEW
+inorganics <- c("methane", "CO2", "HCO3-", "CO3-2")
+organics <- c("formic acid", "formate", "acetic acid", "acetate", "propanoic acid", "propanoate")
+
+# skip updating acetate because the new data from the DEW spreadsheet give different logK
+add.obigt("DEW", c(inorganics, organics[-4]))
+## set basis species
+b.species <- c("Fe", "CO3-2", "H2O", "O2", "SiO2", "H+")
+b.state <- c("cr", "aq", "liq", "gas", "aq", "aq")
+basis(b.species, b.state)
+# for the time being we use a constant pH
+basis("H+", -4)
+
+## define a QFM buffer using Berman minerals
+mod.buffer("QFM_Berman", c("quartz", "fayalite", "magnetite"), "cr_Berman", 0)
+
+## calculate fO2 in QFM buffer minus 2
+basis("O2", "QFM_Berman")
+a <- affinity(T=T, P=50000, return.buffer=TRUE)
+QFM_2 <- a$O2 - 2
+
+## now that we have QFM-2, remove QFM buffer for calculations below
+basis("O2", 0)
+
+## add species
+species(c(inorganics, organics))
+
+## calculate affinities on the T-logfO2 transect
+a <- affinity(T=T, O2=QFM_2, P=50000)
+
+## use the total carbon molality as an approximation of total activity
+molC <- splinefun(seq(600, 1000, 100), c(0.03, 0.2, 1, 4, 20))(T)
+loga.C <- log10(molC)
+
+## calculate metastable equilibrium activities
+e <- equilibrate(a, loga.balance=loga.C)
+
+## make the diagram; don't plot names of low-abundance species
+names <- c(inorganics, organics)
+names[c(4, 5, 7, 9)] <- ""
+col <- rep("black", length(names))
+col[c(1, 3, 6, 8, 10)] <- c("red", "darkgreen", "purple", "orange", "navyblue")
+diagram(e, alpha="balance", names=names, col=col, ylim=c(0, 0.8))
+
+## add legend and title
+ltxt1 <- "P = 50000 bar"
+ltxt2 <- substitute(logfO2=="QFM-2", list(logfO2=axis.label("O2")))
+ltxt3 <- "pH = 4"
+legend("left", legend=as.expression(c(ltxt1, ltxt2, ltxt3)), bty="n")
+t1 <- "Aqueous carbon speciation"
+t2 <- "after Sverjensky et al., 2014b"
+mtitle(c(t1, t2))
+
+### additional checks
+# check that we're within 0.1 of the QFM-2 values used by SSH14
+stopifnot(maxdiff(QFM_2[T %% 100 == 0], c(-17.0, -14.5, -12.5, -10.8, -9.4)) < 0.1)
+# Here are the logKs of aqueous species dissociation reactions at 600 degC and 50000 bar,
+# taken from the Supporting Information of the paper (p. 103-109):
+inorganic.logK <- c(24.4765, -9.0784, -5.3468, 0)
+organic.logK <- c(1.7878, 2.5648, 15.3182, 16.9743, 30.4088, 28.9185)
+# calculate equilibrium constants of the reactions in CHNOSZ; use a negative sign to change from formation to dissociation
+logK.calc <- -unlist(affinity(T=600, P=50000, property="logK")$values)
+logK.calc - c(inorganic.logK, organic.logK)
+# check that we're within 0.021 of the logK values used by SSH14
+stopifnot(maxdiff(logK.calc, c(inorganic.logK, organic.logK)) < 0.021)
+
+#############
+### all done!
 # reset the database and previous water computational option
 data(OBIGT)
 water(oldwat)

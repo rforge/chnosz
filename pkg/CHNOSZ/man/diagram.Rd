@@ -27,7 +27,7 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
 \arguments{
   \item{eout}{list, object returned by \code{\link{equilibrate}} or \code{\link{affinity}}}
   \item{what}{character, what property to calculate and plot}
-  \item{alpha}{logical, for speciation diagrams, plot degree of formation instead of activities?}
+  \item{alpha}{logical or character (\samp{balance}), for speciation diagrams, plot degree of formation instead of activities?}
   \item{normalize}{logical, divide chemical affinities by balance coefficients (rescale to whole formulas)?}
   \item{as.residue}{logical, divide chemical affinities by balance coefficients (no rescaling)?}
   \item{balance}{character, balancing constraint; see \code{\link{equilibrate}}}
@@ -80,6 +80,7 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
 The allowed variables are any that \code{\link{affinity}} accepts: temperature, pressure, or the chemical activities of the basis species
 
 If \code{alpha} is TRUE, the fractional degrees of formation (ratios of activities to total activity) are plotted.
+Or, setting \code{alpha} to \samp{balance} allows the activities to be multiplied by the number of the balancing component; this is useful for making \dQuote{percent carbon} diagrams where the species differ in carbon number.
 If \code{groups} is supplied, the activities of the species identified in each numeric element of this list are multiplied by the balance coefficients of the species, then summed together.
 The names of the list are used to label the lines or fields for the summed activities of the resulting groups.
 

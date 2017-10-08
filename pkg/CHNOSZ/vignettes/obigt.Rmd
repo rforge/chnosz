@@ -117,9 +117,11 @@ In each section, the primary references (`ref1` in `thermo$obigt`) are listed in
 Any secondary references (`ref2`) are listed with bullet points.
 Each reference is followed by the number of species, and a note (from `thermo$refs`).
 Symbols show whether the data were present in the earliest of the sprons92.dat (ø), slop98.dat (\*), slop07.dat (†), or slop15.dat (‡) datafiles for the SUPCRT92 package.
+NOTE: URLs for the slop files and other data files cited below (`JUN92.bs`, `berman.dat`, and the DEW model spreadsheet) are given in the References.
 
 Any additional comments are placed at the beginning of the sections.
-Abbreviations used below are: Cp (heat capacity), GHS (standard Gibbs energy, enthalpy, entropy), HKF (Helgeson-Kirkham-Flowers equations), *V* (volume), *T* (temperature), *P* (pressure).
+Abbreviations used below are: Cp (heat capacity), GHS (standard Gibbs energy, enthalpy, entropy), HKF (Helgeson-Kirkham-Flowers equations), V (volume), T (temperature), P (pressure).
+
 
 # Recent additions (late 2017)
 

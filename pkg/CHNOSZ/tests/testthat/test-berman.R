@@ -7,8 +7,11 @@ Ber88 <- read.csv(paste0(dir, "/Ber88.csv"), as.is=TRUE)
 Ber90 <- read.csv(paste0(dir, "/Ber90.csv"), as.is=TRUE)
 SHD91 <- read.csv(paste0(dir, "/SHD91.csv"), as.is=TRUE)
 ZS92 <- read.csv(paste0(dir, "/ZS92.csv"), as.is=TRUE)
+JUN92 <- read.csv(paste0(dir, "/JUN92.csv"), as.is=TRUE)
+FDM14 <- read.csv(paste0(dir, "/FDM+14.csv"), as.is=TRUE)
+BDat17 <- read.csv(paste0(dir, "/BDat17.csv"), as.is=TRUE)
 # assemble the files and remove duplicates (keep the latest)
-dat <- rbind(ZS92, SHD91, Ber90, Ber88)
+dat <- rbind(BDat17, FDM14, JUN92, ZS92, SHD91, Ber90, Ber88)
 dat <- dat[!duplicated(dat$name), ]
 mineral <- unique(dat$name)
 prop_Berman <- NULL
@@ -16,9 +19,7 @@ prop_Berman <- NULL
 test_that("properties of all minerals are computed without warnings", {
   # running this without error means that:
   # - formulas for the minerals are found in thermo$obigt
-  # - there are no warnings for minerals with GfPrTr(calc) >= 1000 J/cal different from GfPrTr(table)
-  #expect_silent(properties <- lapply(mineral, berman, check.G=TRUE))
-  # - warnings are produced for 3 minerals with GfPrTr(calc) >= 1000 J/cal different from GfPrTr(table)
+  # - warnings are produced for mineral(s) with GfPrTr(calc) >= 1000 J/cal different from GfPrTr(table)
   expect_warning(properties <- lapply(mineral, berman, check.G=TRUE),
                  "fluortremolite", all=TRUE)
   # save the results so we can use them in the next tests
@@ -55,11 +56,11 @@ test_that("Berman and Helgeson tabulated properties have large differences for f
 
   # which minerals differ in Cp by more than 4 cal/K/mol?
   idiffCp <- which(abs(prop_Berman$Cp - prop_Helgeson$Cp) > 4)
-  expect_match(mineral[idiffCp], "antigorite|cristobalite,beta|K-feldspar|fluortremolite")
+  expect_match(mineral[idiffCp], "glaucophane|antigorite|cristobalite,beta|K-feldspar|fluortremolite")
 
   # which minerals differ in V by more than 1 cm^3/mol?
   idiffV <- which(abs(prop_Berman$V - prop_Helgeson$V) > 1)
-  expect_match(mineral[idiffV], "anthophyllite|antigorite|chrysotile|merwinite")
+  expect_match(mineral[idiffV], "glaucophane|anthophyllite|antigorite|chrysotile|merwinite")
 })
 
 test_that("high-T,P calculated properties are similar to precalculated ones", {

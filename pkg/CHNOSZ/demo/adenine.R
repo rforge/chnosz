@@ -57,7 +57,10 @@ plot(AdH$T, AdH$Cp, type = "p", xlim = range(TK), ylim = c(150, 350),
 # error bars (arrows trick from https://stackoverflow.com/questions/13032777/scatter-plot-with-error-bars)
 arrows(AdH$T, AdH$Cp - AdH$Cp_SD, AdH$T, AdH$Cp + AdH$Cp_SD, length = 0.05, angle = 90, code = 3)
 # get LH06 predictions using HKF model
-LH06 <- subcrt("adenine", T = TK)$out$adenine
+# this version of adenine parameters has been superseded by LCT17
+# but are still available as optional data
+add.obigt("CHNOSZ", "adenine-old")
+LH06 <- subcrt("adenine-old", T = TK)$out$adenine
 lines(TK, LH06$Cp, lty = 3)
 # density model (parameters from LCT17 Table 11)
 lines(TK, Cpfun(160.4, -653239, -7930.3, TK), lty = 2)
@@ -104,9 +107,7 @@ arrows(AdH$T, AdH$V - AdH$V_SD, AdH$T, AdH$V + AdH$V_SD, length = 0.05, angle = 
 lines(TK, LH06$V, lty = 3)
 # density model with coefficients from LCT17
 lines(TK, Vfun(73.9, -917.0, -7930.3, TK), lty = 2)
-# load HKF coefficients for adenine reported by LCT17
-# note that the Cp coefficients here are very close to those regressed above!
-add.obigt("CHNOSZ_aq", "adenine")
+# HKF heat capacity coefficients from LCT17
 LCT17 <- subcrt("adenine", T = TK)$out$adenine
 lines(TK, LCT17$V, lwd = 2, col = "royalblue")
 legend("bottomright", lty = c(3, 2, 1), lwd = c(1, 1, 2), col = c("black", "black", "royalblue"), bty = "n",

@@ -31,32 +31,33 @@ If \code{do.png} is TRUE, the plots in the examples are saved as \code{\link{png
 \code{demos} is a function to run other examples that are provided as \code{\link{demo}s}.
 \code{\link{demo}} is called with settings to not echo the source code and to not ask before making each plot.
 The demo(s) to run is/are specified by \code{which}; the default is to run them in the order of the list below.
+Demos that are displayed on the CHNOSZ website (\url{http://chnosz.net/demos}) are indicated with an asterisk.
 See the comments in the source code for more information about each demo.
 
   \tabular{ll}{
     \code{sources} \tab cross-check the reference list with the thermodynamic database \cr
     \code{protein.equil} \tab chemical activities of two proteins in metastable equilibrium (Dick and Shock, 2011) \cr
-    \code{affinity} \tab affinities of metabolic reactions and amino acid synthesis \cr
-    \code{NaCl} \tab equilibrium constant for aqueous NaCl dissociation (Shock et al., 1992) \cr
-    \code{density} \tab density of \H2O, inverted from IAPWS-95 equations (\code{\link{rho.IAPWS95}}) \cr
-    \code{ORP} \tab temperature dependence of oxidation-reduction potential for redox standards \cr
-    \code{revisit} \tab coefficient of variation of metastable equilibrium activities of proteins \cr
-    \code{findit} \tab minimize the standard deviation of logarithms of activities of sulfur species \cr
+    \code{affinity} \tab affinities of metabolic reactions and amino acid synthesis (Amend and Shock, 1998, 2001) \cr
+    \code{NaCl} \tab * equilibrium constant for aqueous NaCl dissociation (Shock et al., 1992) \cr
+    \code{density} \tab * density of \H2O, inverted from IAPWS-95 equations (\code{\link{rho.IAPWS95}}) \cr
+    \code{ORP} \tab * temperature dependence of oxidation-reduction potential for redox standards \cr
+    \code{revisit} \tab * coefficient of variation of metastable equilibrium activities of proteins \cr
+    \code{findit} \tab * minimize the standard deviation of logarithms of activities of sulfur species \cr
     \code{ionize} \tab ionize.aa(): contour plots of net charge and ionization properties of LYSC_CHICK \cr
-    \code{buffer} \tab  minerals and aqueous species as buffers of hydrogen fugacity (Schulte and Shock, 1995) \cr
+    \code{buffer} \tab  * minerals and aqueous species as buffers of hydrogen fugacity (Schulte and Shock, 1995) \cr
     \code{protbuff} \tab chemical activities buffered by thiol peroxidases or sigma factors \cr
-    \code{yeastgfp} \tab subcellular locations: log fO2 - log aH2O and log a - log fO2 diagrams (Dick, 2009) \cr
-    \code{mosaic} \tab Eh-pH diagram with two sets of changing basis species (Garrels and Christ, 1965) \cr
-    \code{copper} \tab another example of \code{\link{mosaic}}: complexation of Cu with glycine (Aksu and Doyle, 2001) \cr
-    \code{solubility} \tab solubility of calcite (cf. Manning et al., 2013) or \CO2 (cf. Stumm and Morgan, 1996) \cr
-    \code{wjd} \tab Gibbs energy minimization: prebiological atmospheres and cell periphery of yeast \cr
-    \code{dehydration} \tab log K of dehydration reactions; SVG file contains tooltips and links \cr
-    \code{bugstab} \tab formation potential of microbial proteins in colorectal cancer (Dick, 2016) \cr
-    \code{Shh} \tab affinities of transcription factors relative to Sonic hedgehog \cr
-    \code{activity_ratios} \tab mineral stability plots with activity ratios on the axes \cr
-    \code{adenine} \tab HKF parameters regressed from heat capacity and volume of aqueous adenine (Lowe et al., 2017) \cr
-    \code{adenine} \tab Deep Earth Water (DEW) model for high pressures (Sverjensky et al., 2014a and 2014b) \cr
-    \code{lambda} \tab Effects of lambda transtion on thermodynamic properties of quartz (Berman, 1988) \cr
+    \code{yeastgfp} \tab * subcellular locations: log fO2 - log aH2O and log a - log fO2 diagrams (Dick, 2009) \cr
+    \code{mosaic} \tab * Eh-pH diagram with two sets of changing basis species (Garrels and Christ, 1965) \cr
+    \code{copper} \tab * another example of \code{\link{mosaic}}: complexation of Cu with glycine (Aksu and Doyle, 2001) \cr
+    \code{solubility} \tab * solubility of calcite (cf. Manning et al., 2013) or \CO2 (cf. Stumm and Morgan, 1996) \cr
+    \code{wjd} \tab * Gibbs energy minimization: prebiological atmospheres (Dayhoff et al., 1964) and cell periphery of yeast \cr
+    \code{dehydration} \tab * log K of dehydration reactions; SVG file contains tooltips and links \cr
+    \code{bugstab} \tab * formation potential of microbial proteins in colorectal cancer (Dick, 2016) \cr
+    \code{Shh} \tab * affinities of transcription factors relative to Sonic hedgehog (Dick, 2015) \cr
+    \code{activity_ratios} \tab * mineral stability plots with activity ratios on the axes \cr
+    \code{adenine} \tab * HKF parameters regressed from heat capacity and volume of aqueous adenine (Lowe et al., 2017) \cr
+    \code{DEW} \tab * Deep Earth Water (DEW) model for high pressures (Sverjensky et al., 2014a and 2014b) \cr
+    \code{lambda} \tab * Effects of lambda transition on thermodynamic properties of quartz (Berman, 1988) \cr
   }
 
 }
@@ -64,11 +65,19 @@ See the comments in the source code for more information about each demo.
 \references{
 Aksu, S. and Doyle, F. M. (2001) Electrochemistry of copper in aqueous glycine solutions. \emph{J. Electrochem. Soc.} \bold{148}, B51--B57. \url{https://doi.org/10.1149/1.1344532}
 
+Amend, J. P. and Shock, E. L. (1998) Energetics of amino acid synthesis in hydrothermal ecosystems. \emph{Science} \bold{281}, 1659--1662. \url{https://doi.org/10.1126/science.281.5383.1659}
+
+Amend, J. P. and Shock, E. L. (2001) Energetics of overall metabolic reactions of thermophilic and hyperthermophilic Archaea and Bacteria. \emph{FEMS Microbiol. Rev.} \bold{25}, 175--243. \url{https://doi.org/10.1016/S0168-6445(00)00062-0}
+
 Berman, R. G. (1988) Internally-consistent thermodynamic data for minerals in the system Na{\s2}O–K{\s2}O–CaO–MgO–FeO–Fe{\s2}O{\s3}–Al{\s2}O{\s3}–SiO{\s2}–TiO{\s2}–H{\s2}O–CO{\s2}. \emph{J. Petrol.} \bold{29}, 445-522. \url{https://doi.org/10.1093/petrology/29.2.445}
+
+Dayhoff, M. O. and Lippincott, E. R. and Eck, R. V. (1964) Thermodynamic Equilibria In Prebiological Atmospheres. \emph{Science} \bold{146}, 1461--1464. \url{https://doi.org/10.1126/science.146.3650.1461}
 
 Dick, J. M. (2009) Calculation of the relative metastabilities of proteins in subcellular compartments of \emph{Saccharomyces cerevisiae}. \emph{BMC Syst. Biol.} \bold{3}:75. \url{https://doi.org/10.1186/1752-0509-3-75}
 
 Dick, J. M. and Shock, E. L. (2011) Calculation of the relative chemical stabilities of proteins as a function of temperature and redox chemistry in a hot spring. \emph{PLoS ONE} \bold{6}, e22782. \url{https://doi.org/10.1371/journal.pone.0022782}
+
+Dick, J. M. (2015) Chemical integration of proteins in signaling and development. \emph{bioRxiv}. \url{https://doi.org/10.1101/015826}
 
 Dick, J. M. (2016) Proteomic indicators of oxidation and hydration state in colorectal cancer. \emph{PeerJ} \bold{4}:e2238. \url{https://doi.org/10.7717/peerj.2238}
 

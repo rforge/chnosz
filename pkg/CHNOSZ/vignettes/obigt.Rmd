@@ -239,7 +239,6 @@ cat("The Deep Earth Water (DEW) model extends the applicability of the revised H
 ### `r setfile("CHNOSZ_aq.csv")`
 ```{r CHNOSZ_aq, results="asis", echo=FALSE}
 cat("The primary aqueous silica species in CHNSOZ is SiO<sub>2</sub> ([Shock et al., 1989](https://doi.org/10.1016/0016-7037(89)90341-4)). The pseudospecies H<sub>4</sub>SiO<sub>4</sub> is used to make activity diagrams with *a*<sub>H<sub>4</sub>SiO<sub>4</sub></sub> as a variable. The GHS and HKF parameters for this pseudospecies were calculated using CHNOSZ; see the vignette [*Regressing thermodynamic data*](eos-regress.html) for more information.\n\n")
-cat("HKF coefficients for adenine regressed from experimental Cp and V data were reported by [Lowe et al. (2017)](https://doi.org/10.1016/j.jct.2017.04.005). See [`demo(adenine)`](../demo/adenine.R).<hr>")
 ```
 
 ```{r noreflist, results="asis", echo=FALSE}

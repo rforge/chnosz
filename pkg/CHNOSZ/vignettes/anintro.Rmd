@@ -1838,7 +1838,7 @@ See <span style="color:blue">`?thermo`</span> for details about what's in the da
 
 Another use of <span style="color:red">`add.obigt()`</span> is to add data from the file `CHNOSZ_aq.csv`, which holds provisional updates that aren't loaded by default (i.e., using <span style="color:red">`data(thermo)`</span>).
 In this mode, only the name of the species is used as the argument.
-Currently available species are `adenine` and `pseudo-H4SiO4` (see [<span style="color:blue">`demo(adenine)`</span>](../demo/adenine.R) and the vignette, [<span style="color:blue">*Regressing thermodynamic data*</span>](eos-regress.html)).
+Currently available species are `adenine-old` and `pseudo-H4SiO4` (see [<span style="color:blue">`demo(adenine)`</span>](../demo/adenine.R) and the vignette, [<span style="color:blue">*Regressing thermodynamic data*</span>](eos-regress.html)).
 
 ## Modifying data
 

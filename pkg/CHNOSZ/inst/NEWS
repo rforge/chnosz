@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-45 (2017-10-08)
+CHANGES IN CHNOSZ 1.1.0-48 (2017-10-09)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -75,10 +75,13 @@ DATABASE UPDATES:
   minerals from the Helgeson data. The parameters themselves are
   stored in extdata/Berman/*.csv.
 
+- Update HKF parameters of adenine based on experimental heat capacity
+  and volume data (Lowe et al., 2017). Add demo/adenine.R comparing
+  the updates with the previous data (LaRowe and Helgeson, 2006).
+
 - Data file CHNOSZ_aq.csv is no longer added to the database by default.
-  It is now intended to hold provisional updates. Updated heat capacity
-  and volume HKF parameters for adenine (Lowe et al., 2017) have been
-  added to this file.
+  It is now intended to hold optional data. Currently it contains
+  pseudo-H4SiO4 and adenine-old.
 
 - Remove H2O(gas) from the database (taken from SUPCRT92), as it gives
   inconsistent results for metastable steam (Zavarin et al., 2016,

@@ -165,12 +165,12 @@ water.lines <- function(eout, which=c('oxidation','reduction'),
   return(invisible(list(xpoints=xpoints, y.oxidation=y.oxidation, y.reduction=y.reduction, swapped=swapped)))
 }
 
-mtitle <- function(main, line=0, ...) {
+mtitle <- function(main, line=0, spacing=1, ...) {
   # make a possibly multi-line plot title 
   # useful for including expressions on multiple lines 
   # 'line' is the margin line of the last (bottom) line of the title
-  l <- length(main)
-  for(i in 1:l) mtext(main[i], line=line+l-i, ...)
+  len <- length(main)
+  for(i in 1:len) mtext(main[i], line = line + (len - i)*spacing, ...)
 }
 
 # get colors for range of ZC values 20170206

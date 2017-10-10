@@ -72,8 +72,10 @@ diagram <- function(
     })
     plotvar <- eout$property
     # we change 'A' to 'A/2.303RT' so the axis label is made correctly
-    if(plotvar=="A") plotvar <- "A/2.303RT"
-    message(paste("diagram: plotting", plotvar, "from affinity(), divided by balancing coefficients"))
+    if(plotvar=="A") {
+      plotvar <- "A/2.303RT"
+      message("diagram: plotting A/2.303RT / n.balance (maximum affinity method for 2-D diagrams)")
+    } else message(paste("diagram: plotting", plotvar, " / n.balance"))
   }
 
   ## number of dimensions (T, P or chemical potentials that are varied)
@@ -498,7 +500,7 @@ diagram <- function(
         if(is.null(xlab)) xlab <- axis.label(eout$vars[1], basis=eout$basis)
         if(is.null(ylab)) ylab <- axis.label(eout$vars[2], basis=eout$basis)
         if(tplot) thermo.plot.new(xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab,
-          cex=cex, cex.axis=cex.axis, mar=mar, yline=yline, side=side)
+          cex=cex, cex.axis=cex.axis, mar=mar, yline=yline, side=side, ...)
         else plot(0, 0, type="n", xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab, ...)
         # add a title
         if(!is.null(main)) title(main=main)

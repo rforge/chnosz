@@ -132,7 +132,10 @@ mtitle(as.expression(c(DEWexpr, "and methane")))
 # P = 5.0GPa (50000 bar)
 # fO2 = QFM - 2
 # pH set by jadeite + kyanite + coesite (approximated here as constant)
-# dissolved carbon 0.03, 0.2, 1, 4, 20 molal
+# output from EQ3 calculations:
+# dissolved carbon: 0.03, 0.2, 1, 4, 20 molal
+# ionic strength: 0.39, 0.57, 0.88, 1.45, 2.49
+# activity coefficient (log gamma for singly charged species): -0.15, -0.18, -0.22, -0.26, -0.31
 
 T <- seq(600, 1000, 5)
 

@@ -18,7 +18,7 @@
     "density", "ORP", "revisit", "findit", "ionize", "buffer",
     "protbuff", "yeastgfp", "mosaic", "copper", "solubility",
     "wjd", "dehydration", "bugstab", "Shh", "activity_ratios",
-    "adenine", "DEW", "lambda"),
+    "adenine", "DEW", "lambda", "TCA"),
     to.file=FALSE)
 }
 
@@ -58,6 +58,7 @@ See the comments in the source code for more information about each demo.
     \code{adenine} \tab * HKF parameters regressed from heat capacity and volume of aqueous adenine (Lowe et al., 2017) \cr
     \code{DEW} \tab * Deep Earth Water (DEW) model for high pressures (Sverjensky et al., 2014a and 2014b) \cr
     \code{lambda} \tab * Effects of lambda transition on thermodynamic properties of quartz (Berman, 1988) \cr
+    \code{TCA} \tab * Standard Gibbs energies of the tricarboxylic (citric) acid cycle (Canovas and Shock, 2016) \cr
   }
 
 }
@@ -70,6 +71,8 @@ Amend, J. P. and Shock, E. L. (1998) Energetics of amino acid synthesis in hydro
 Amend, J. P. and Shock, E. L. (2001) Energetics of overall metabolic reactions of thermophilic and hyperthermophilic Archaea and Bacteria. \emph{FEMS Microbiol. Rev.} \bold{25}, 175--243. \url{https://doi.org/10.1016/S0168-6445(00)00062-0}
 
 Berman, R. G. (1988) Internally-consistent thermodynamic data for minerals in the system Na{\s2}O–K{\s2}O–CaO–MgO–FeO–Fe{\s2}O{\s3}–Al{\s2}O{\s3}–SiO{\s2}–TiO{\s2}–H{\s2}O–CO{\s2}. \emph{J. Petrol.} \bold{29}, 445-522. \url{https://doi.org/10.1093/petrology/29.2.445}
+
+Canovas, P. A., III and Shock, E. L. (2016) Geobiochemistry of metabolism: Standard state thermodynamic properties of the citric acid cycle. \emph{Geochim. Cosmochim. Acta} \bold{195}, 293--322. \url{https://doi.org/10.1016/j.gca.2016.08.028}
 
 Dayhoff, M. O. and Lippincott, E. R. and Eck, R. V. (1964) Thermodynamic Equilibria In Prebiological Atmospheres. \emph{Science} \bold{146}, 1461--1464. \url{https://doi.org/10.1126/science.146.3650.1461}
 

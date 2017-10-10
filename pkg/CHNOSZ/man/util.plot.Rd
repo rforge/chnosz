@@ -27,7 +27,7 @@
     italic = FALSE, ...)
   water.lines(eout, which = c("oxidation","reduction"),
     lty = 2, lwd=1, col = par("fg"), plot.it = TRUE)
-  mtitle(main, line=0, ...)
+  mtitle(main, line=0, spacing=1, ...)
   ZC.col(z)
 }
 
@@ -60,6 +60,7 @@
   \item{plot.it}{logical, plot the lines?}
   \item{main}{character, text for plot title}
   \item{line}{numeric, margin line to place title}
+  \item{spacing}{numeric, spacing between multiple lines}
   \item{z}{numeric, set of values}
 }
 

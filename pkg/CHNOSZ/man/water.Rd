@@ -83,6 +83,8 @@ Except for \code{rho}, the units are those used by Johnson and Norton, 1991.
      \code{de.dP} \tab Pressure derivative \tab bar\eqn{^{-1}}{^-1} \tab * \tab NA \tab NA \cr
      \tab of dielectric constant \tab \tab \tab \tab \cr
      \code{P} \tab Pressure \tab bar \tab * \tab NA \tab NA \cr
+     \code{A_DH} \tab A Debye-Huckel parameter \tab kg\eqn{^{0.5}}{0.5} mol\eqn{^{-0.5}}{-0.5} \tab * \tab * \tab * \cr
+     \code{B_DH} \tab B Debye-Huckel parameter \tab kg\eqn{^{0.5}}{0.5} mol\eqn{^{-0.5}}{-0.5} cm\eqn{^{-1}}{-1} \tab * \tab * \tab * \cr
   }
 
 Call \code{water.SUPCRT92}, \code{water.IAPWS95}, or \code{water.DEW} with no arguments to list the available properties.
@@ -104,6 +106,8 @@ A primary check is still enforced (Tbtm), giving a minimum valid temperature of 
 The function also contains routines for calculating the Born functions as numerical derivatives of the static dielectric constant (from \code{water.AW90}).
 For compatibility with geochemical modeling conventions, the values of Gibbs energy, enthalpy and entropy output by \code{IAPWS95} are converted by \code{water.IAPWS95} to the triple point reference state adopted in \code{SUPCRT92} (Johnson and Norton, 1991; Helgeson and Kirkham, 1974).
 \code{water.IAPWS95} also accepts setting \code{P} to \samp{Psat}, with the saturation pressure calculated from \code{\link{WP02.auxiliary}}; by default the returned properties are for the liquid, but this can be changed to the vapor in \code{\link{thermo}$opt$IAPWS.sat}.
+
+\code{A_DH} and \code{B_DH} are solvent parameters in the \dQuote{B-dot} (extended Debye-Huckel) equation (Helgeson, 1969; Manning, 2013).
 }
 
 
@@ -112,7 +116,7 @@ A data frame, the number of rows of which corresponds to the number of input tem
 }
 
 \seealso{
-Equations for thermodynamic properties of species other than water are coded in \code{\link{hkf}} and \code{\link{cgl}}.
+For calculating properties of reactions, \code{\link{subcrt}} coordinates the calculation of properties among \code{water} and \code{\link{hkf}} and \code{\link{cgl}} for other species.
 }
 
 \examples{\dontshow{data(thermo)}
@@ -158,11 +162,15 @@ Haar, L., Gallagher, J. S. and Kell, G. S. (1984) \emph{NBS/NRC Steam Tables}. H
 
 Helgeson, H. C. and Kirkham, D. H. (1974) Theoretical prediction of the thermodynamic behavior of aqueous electrolytes at high pressures and temperatures. I. Summary of the thermodynamic/electrostatic properties of the solvent. \emph{Am. J. Sci.} \bold{274}, 1089--1098. \url{http://www.ajsonline.org/cgi/content/abstract/274/10/1089}
 
+Helgeson, H. C. (1969) Thermodynamics of hydrothermal systems at elevated temperatures and pressures. \emph{Am. J. Sci.} \bold{267}, 729--804. \url{https://doi.org/10.2475/ajs.267.7.729}
+
 Johnson, J. W. and Norton, D. (1991) Critical phenomena in hydrothermal systems: state, thermodynamic, electrostatic, and transport properties of H\eqn{_2}{2}O in the critical region. \emph{Am. J. Sci.} \bold{291}, 541--648. \url{http://www.ajsonline.org/cgi/content/abstract/291/6/541}
 
 Johnson, J. W., Oelkers, E. H. and Helgeson, H. C. (1992) SUPCRT92: A software package for calculating the standard molal thermodynamic properties of minerals, gases, aqueous species, and reactions from 1 to 5000 bar and 0 to 1000\eqn{^{\circ}}{°}C. \emph{Comp. Geosci.} \bold{18}, 899--947. \url{https://doi.org/10.1016/0098-3004(92)90029-Q}
 
 Levelt-Sengers, J. M. H., Kamgarparsi, B., Balfour, F. W. and Sengers, J. V. (1983) Thermodynamic properties of steam in the critical region. \emph{J. Phys. Chem. Ref. Data} \bold{12}, 1--28. \url{https://doi.org/10.1063/1.555676}
+
+Manning, C. E. (2013) Thermodynamic modeling of fluid-rock interaction at mid-crustal to upper-mantle conditions \emph{Rev. Mineral. Geochem.} \bold{76}, 135--164. \url{https://doi.org/10.2138/rmg.2013.76.5}
 
 Sverjensky, D. A., Harrison, B. and Azzolini, D. (2014) Water in the deep Earth: The dielectric constant and the solubilities of quartz and corundum to 60 kb and 1,200 \degC. \emph{Geochim. Cosmochim. Acta} \bold{129}, 125--145. \url{https://doi.org/10.1016/j.gca.2013.12.019}
 

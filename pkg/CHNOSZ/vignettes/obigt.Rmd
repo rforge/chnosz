@@ -125,7 +125,7 @@ Abbreviations used below are: Cp (heat capacity), GHS (standard Gibbs energy, en
 
 # Recent additions (late 2017)
 
-* Mineral data using the [Berman (1988)]() equations are listed under **Solids** / **Berman**.
+* Mineral data using the [Berman (1988)](https://doi.org/10.1093/petrology/29.2.445) equations are listed under **Solids** / **Berman**.
 
 * Aqueous species data intended for use with the [Deep Earth Water](http://www.dewcommunity.org/) model are listed under **Optional Data** / **DEW**.
 

@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-49 (2017-10-10)
+CHANGES IN CHNOSZ 1.1.0-50 (2017-10-11)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -34,6 +34,10 @@ COMPUTATIONAL IMPROVEMENTS:
   the values by the balancing component. This is useful for making
   "percent carbon" plots for systems where the species have different
   carbon numbers.
+
+- All three water options (SUPCRT92, IAPWS95, DEW) can be used to
+  calculate 'A_DH' and 'B_DH', i.e. A and B coefficients in the B-dot
+  (extended Debye-Huckel) equation of Helgeson, 1969.
 
 - For minerals with phase transitions (states 'cr2' 'cr3' etc.) in
   thermo$obigt (i.e. the Helgeson minerals), it is now possible to use

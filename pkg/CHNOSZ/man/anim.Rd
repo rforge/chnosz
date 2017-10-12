@@ -37,7 +37,7 @@ To ensure the calculations are performed as intended, each function first remove
 
 \code{anim.TCA} creates a series of figures showing how a logaH2O - logfO2 activity diagram for various species involved in the tricarboxylic acid (TCA) cycle changes as a function of pH.
 Alternatively, set \code{redox} to \code{list(H2=c(-20,0))} to draw a logaH2O - logaH2 diagram.
-The diagrams are made at 25 \eqn{^{\circ}}{°}C unless \code{high.T} is TRUE, in which case high-temperature (100 \eqn{^{\circ}}{°}C) stability fields are overlaid.
+The diagrams are made at 25 \degC unless \code{high.T} is TRUE, in which case high-temperature (100 \degC) stability fields are overlaid.
 
 \code{anim.carboxylase} animates equilibrium rank-activity diagrams along a combined temperature and logaH2 gradient, or makes a single plot on the default device (without conversion to animated GIF) if a single \code{temperature} is provided.
 The proteins in the calculation are 24 carboxylases from a variety of organisms.

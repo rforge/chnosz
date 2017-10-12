@@ -39,14 +39,14 @@ Otherwise, if \code{key} is character, the citation information for those refere
 If \code{key} is numeric, the values refer to the species in those rows of \code{thermo$obigt}, and the citation information for each listed reference (\code{thermo$obigt$ref1}, \code{thermo$obigt$ref2}) is returned.
 If \code{key} is a list, it is interpreted as the result of a call to \code{subcrt}, and the citation information for each species involved in the calculation is returned.
 
-\code{checkEOS} compares heat capacity and volume calculated from equation-of-state parameters with reference (tabulated) values at 25 \eqn{^{\circ}}{°}C and 1 bar and prints a message and returns the calculated value if tolerance is exceeded.
+\code{checkEOS} compares heat capacity and volume calculated from equation-of-state parameters with reference (tabulated) values at 25 \degC and 1 bar and prints a message and returns the calculated value if tolerance is exceeded.
 The Helgeson-Kirkham-Flowers equations of state parameters are in \code{eos}, which is a data frame with columns (and column names) in the same format as \code{\link{thermo}$obigt}.
 The \code{prop}erty can be one of \samp{Cp} or \code{V}.
 The code only distinguishes between \code{state}s of \samp{aq} and all others.
 The default tolerances, given in \code{thermo$opt$Cp.tol} and \code{thermo$opt$V.tol}, are 1 cal/K.mol for Cp and 1 cm3/mol for V.
 If \code{ret.diff} is TRUE, the differences are returned irrespective of their values, and no messages are printed.
 
-\code{checkGHS} compares G (standard molal Gibbs energy of formation from the elements) calculated from H (standard molal enthalpy of formation) and S (standard molal entropy) with reference (tabulated) values of G at 25 \eqn{^{\circ}}{°}C and 1 bar.
+\code{checkGHS} compares G (standard molal Gibbs energy of formation from the elements) calculated from H (standard molal enthalpy of formation) and S (standard molal entropy) with reference (tabulated) values of G at 25 \degC and 1 bar.
 A message is printed and the calculated difference is returned if it exceeds the value given in \code{thermo$opt$G.tol}, which has a default value of 100 cal/mol.
 The calculation requires that G, H and S, and the chemical formula of the species all be present.
 

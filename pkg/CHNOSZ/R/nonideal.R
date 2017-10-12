@@ -1,49 +1,55 @@
 # CHNOSZ/nonideal.R
 # first version of function: 20080308 jmd
 # moved to nonideal.R from util.misc.R 20151107
+# added Helgeson method 20171012
 
-nonideal <- function(species,proptable,IS,T) {
+nonideal <- function(species, proptable, IS, T, P) {
   thermo <- get("thermo")
   # generate nonideal contributions to thermodynamic properties
   # number of species, same length as proptable list
   # T in Kelvin, same length as nrows of proptables
-  # a function that does a lot of the work
-  loggamma2 <- function(Z,I,T,prop='log') {
-    # extended Debye-Huckel equation ('log')
-    # and its partial derivatives ('G','H','S','Cp')
+
+  # function to calculate extended Debye-Huckel equation and derivatives using Alberty's parameters
+  Alberty <- function(Z, I, T, prop = "log") {
+    # extended Debye-Huckel equation ("log")
+    # and its partial derivatives ("G","H","S","Cp")
     # T in Kelvin
-    B <- 1.6
+    B <- 1.6 # L^0.5 mol^-0.5 (Alberty, 2003 p. 47)
     # equation for A from Clarke and Glew, 1980
     #A <- expression(-16.39023 + 261.3371/T + 3.3689633*log(T)- 1.437167*(T/100) + 0.111995*(T/100)^2)
-    # equation for alpha from Alberty, 2003 p. 48
-    A <- alpha <- expression(1.10708 - 1.54508E-3 * T + 5.95584E-6 * T^2)
+    # equation for A (alpha) from Alberty, 2003 p. 48
+    A <- expression(1.10708 - 1.54508E-3 * T + 5.95584E-6 * T^2)
     # from examples for deriv to take first and higher-order derivatives
-    DD <- function(expr,name, order = 1) {
+    DD <- function(expr, name, order = 1) {
       if(order < 1) stop("'order' must be >= 1")
-      if(order == 1) D(expr,name)
+      if(order == 1) D(expr, name)
       else DD(D(expr, name), name, order - 1)
     }
     # Alberty, 2003 Eq. 3.6-1
-    loggamma <- function(a,Z,I,B) { - a * Z^2 * I^(1/2) / (1 + B * I^(1/2)) }
+    loggamma <- function(a, Z, I, B) - a * Z^2 * I^(1/2) / (1 + B * I^(1/2))
     # TODO: check the following equations 20080208 jmd
     R <- 1.9872  # gas constant, cal K^-1 mol^-1
-    if(prop=='log') return(loggamma(eval(A),Z,I,B))
-    else if(prop=='G') return(R * T * loggamma(eval(A),Z,I,B))
-    else if(prop=='H') return(R * T^2 * loggamma(eval(DD(A,'T',1)),Z,I,B))
-    else if(prop=='S') return(- R * T * loggamma(eval(DD(A,'T',1)),Z,I,B))
-    else if(prop=='Cp') return(R * T^2 *loggamma(eval(DD(A,'T',2)),Z,I,B))
+    if(prop=="log") return(loggamma(eval(A), Z, I, B))
+    else if(prop=="G") return(R * T * loggamma(eval(A), Z, I, B))
+    else if(prop=="H") return(R * T^2 * loggamma(eval(DD(A, "T", 1)), Z, I, B))
+    else if(prop=="S") return(- R * T * loggamma(eval(DD(A, "T", 1)), Z, I, B))
+    else if(prop=="Cp") return(R * T^2 *loggamma(eval(DD(A, "T", 2)), Z, I, B))
   }
+  
+  # function for Debye-Huckel equation with B-dot extended term parameter (Helgeson, 1969)
   Helgeson <- function() {
     # "distance of closest approach" of ions in NaCl solutions
     # HKF81 Table 2
     acirc <- 3.72  # Angstrom
   }
 
-  if(!is.numeric(species[[1]])) species <- info(species,'aq')
+  # get species indices
+  if(!is.numeric(species[[1]])) species <- info(species, "aq")
+  iH <- info("H+")
+  ie <- info("e-")
   proptable <- as.list(proptable)
-  # which gamma function to use
-  #mlg <- get(paste('loggamma',which,sep=''))
   ndid <- 0
+  # loop over species
   for(i in 1:length(species)) {
     myprops <- proptable[[i]]
     # get the charge from the chemical formula
@@ -53,27 +59,26 @@ nonideal <- function(species,proptable,IS,T) {
     # don't do anything for neutral species
     if(Z==0) next
     # to keep unit activity coefficients of the proton and electron
-    if(species[i] == info("H+") & thermo$opt$ideal.H) next
-    if(species[i] == info("e-") & thermo$opt$ideal.e) next
+    if(species[i] == iH & get("thermo")$opt$ideal.H) next
+    if(species[i] == ie & get("thermo")$opt$ideal.e) next
     didit <- FALSE
     for(j in 1:ncol(myprops)) {
-      #if(colnames(myprops)[j]=='G') myprops[,j] <- myprops[,j] + R * T * mlg(Z,IS,convert(T,'C'))
-      cname <- colnames(myprops)[j]
-      if(cname %in% c('G','H','S','Cp')) {
-        myprops[,j] <- myprops[,j] + loggamma2(Z,IS,T,cname)
+      pname <- colnames(myprops)[j]
+      if(pname %in% c("G", "H", "S", "Cp")) {
+        myprops[,j] <- myprops[,j] + Alberty(Z, IS, T, pname)
         didit <- TRUE
       }
     }
     # append a loggam column if we did any nonideal calculations of thermodynamic properties
-    if(didit) myprops <- cbind(myprops,loggam=loggamma2(Z,IS,T))
+    if(didit) myprops <- cbind(myprops, loggam = Alberty(Z, IS, T))
     proptable[[i]] <- myprops
     if(didit) ndid <- ndid + 1
   }
-  if(ndid > 0) message(paste('nonideal:',ndid,'species were nonideal'))
+  if(ndid > 0) message(paste("nonideal:", ndid, "species were nonideal"))
   return(proptable)
 }
 
-Bdot <- function(TC=25, P=1, showsplines="") {
+Bdot <- function(TC = 25, P = 1, showsplines = "") {
   # 20171012 calculate B-dot (bgamma) using P, T, points from:
   # Helgeson, 1969 (doi:10.2475/ajs.267.7.729)
   # Helgeson et al., 1981 (doi:10.2475/ajs.281.10.1249)

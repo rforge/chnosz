@@ -23,7 +23,7 @@ Calculate thermodynamic properties of water following the IAPWS-95 formulation.
 The \code{IAPWS95} function returns values of thermodynamic properties in specific units (per gram).
 The IAPWS-95 formulation follows the triple point convention used in engineering (values of internal energy and entropy are taken to be zero at the triple point).
 
-For \code{IAPWS95} the upper temperature limit of validity is 1000 \eqn{^{\circ}}{°}C, but extrapolation to much higher temperatures is possible (Wagner and Pruss, 2002).
+For \code{IAPWS95} the upper temperature limit of validity is 1000 \degC, but extrapolation to much higher temperatures is possible (Wagner and Pruss, 2002).
 Valid pressures are from the greater of zero bar or the melting pressure at temperature to 10000 bar (with the provision for extrapolation to more extreme conditions).
 The function does not check these limits and will attempt calculations for any range of input parameters, but may return \code{NA} for properties that fail to be calculated at given temperatures and pressures and/or produce warnings or even errors when problems are encountered.
 }

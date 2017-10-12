@@ -35,7 +35,7 @@ The value of each argument is of the form \code{c(min, max)} or \code{c(min, max
 For any arguments that refer to basis species, the numerical values are the logarithms of activity (or fugacity for gases) of that basis species.
 
 If \samp{T}, \samp{P}, and/or \samp{IS} are not among the \code{var}s, their constant values can be supplied in \code{T}, \code{P}, or \code{IS} (in mol kg\eqn{^{-1}}{^-1}).
-The units of \samp{T} and \samp{P} are those set by \code{\link{T.units}} and \code{\link{P.units}} (on program start-up these are \eqn{^{\circ}}{°}C and bar, respectively). 
+The units of \samp{T} and \samp{P} are those set by \code{\link{T.units}} and \code{\link{P.units}} (on program start-up these are \degC and bar, respectively). 
 \code{sout}, if provided, replaces the call to \code{\link{subcrt}}, which can greatly speed up the calculations if this intermediate result is stored by other functions.
 \code{exceed.Ttr} is passed to \code{\link{subcrt}} so that the properties of mineral phases beyond their transition temperatures can optionally be calculated.
 

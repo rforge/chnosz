@@ -18,7 +18,7 @@ Calculate thermodynamic properties using the revised Helgeson-Kirkham-Flowers (H
   \item{parameters}{dataframe, species parameters as one or more rows from \code{thermo$obigt}}
   \item{T}{numeric, temperature(s) at which to calculate properties (K)}
   \item{P}{numeric, pressure(s) at which to calculate properties (bar)}
-  \item{contrib}{character, which contributions to consider in the revised HKF equations equations of state: (\code{n})onsolvation, (\code{s})olvation (the \eqn{\omega}{omega} terms), or (o)rigination contributions (i.e., the property itself at 25 \eqn{^{\circ}}{°}C and 1 bar). Default is \code{c("n","s","o")}, for all contributions}
+  \item{contrib}{character, which contributions to consider in the revised HKF equations equations of state: (\code{n})onsolvation, (\code{s})olvation (the \eqn{\omega}{omega} terms), or (o)rigination contributions (i.e., the property itself at 25 \degC and 1 bar). Default is \code{c("n","s","o")}, for all contributions}
   \item{H2O.props}{character, properties to calculate for water}
 }
 
@@ -45,7 +45,7 @@ If all equations-of-state parameters are NA, but values of \samp{Cp} and/or \sam
 }
 
 \section{Warning}{
-The temperature and pressure range of validity of the revised HKF equations of state for aqueous species corresponds to the stability region of liquid water or the supercritical fluid at conditions between 0 to 1000 \eqn{^{\circ}}{°}C and 1 to 5000 bar (Tanger and Helgeson, 1988; Shock and Helgeson, 1988).
+The temperature and pressure range of validity of the revised HKF equations of state for aqueous species corresponds to the stability region of liquid water or the supercritical fluid at conditions between 0 to 1000 \degC and 1 to 5000 bar (Tanger and Helgeson, 1988; Shock and Helgeson, 1988).
 The \code{hkf} function does not check these limits and will compute properties as long as the requisite electrostatic properties of water are available. There are conceptually no temperature limits (other than 0 Kelvin) for the validity of the \code{cgl} equations of state.
 However, the actual working upper temperature limits correspond to the temperatures of phase transitions of minerals or to those temperatures beyond which extrapolations from experimental data become highly uncertain.
 These temperature limits are stored in the thermodynamic database for some minerals, but \code{cgl} ignores them; however, \code{\link{subcrt}} warns if they are exceeded.
@@ -93,9 +93,9 @@ print(C8H18par)
 
   Robie, R. A. and Hemingway, B. S. (1995) \emph{Thermodynamic Properties of Minerals and Related Substances at 298.15 K and 1 Bar (\eqn{10^5} Pascals) Pressure and at Higher Temperatures}. U. S. Geol. Surv., Bull. 2131, 461 p. \url{http://www.worldcat.org/oclc/32590140}
 
-  Shock, E. L. and Helgeson, H. C. (1988) Calculation of the thermodynamic and transport properties of aqueous species at high pressures and temperatures: Correlation algorithms for ionic species and equation of state predictions to 5 kb and 1000\eqn{^{\circ}}{°}C. \emph{Geochim. Cosmochim. Acta} \bold{52}, 2009--2036. \url{https://doi.org/10.1016/0016-7037(88)90181-0}
+  Shock, E. L. and Helgeson, H. C. (1988) Calculation of the thermodynamic and transport properties of aqueous species at high pressures and temperatures: Correlation algorithms for ionic species and equation of state predictions to 5 kb and 1000\degC. \emph{Geochim. Cosmochim. Acta} \bold{52}, 2009--2036. \url{https://doi.org/10.1016/0016-7037(88)90181-0}
   
-  Shock, E. L., Oelkers, E. H., Johnson, J. W., Sverjensky, D. A. and Helgeson, H. C. (1992) Calculation of the thermodynamic properties of aqueous species at high pressures and temperatures: Effective electrostatic radii, dissociation constants and standard partial molal properties to 1000 \eqn{^{\circ}}{°}C and 5 kbar. \emph{J. Chem. Soc. Faraday Trans.} \bold{88}, 803--826. \url{https://doi.org/10.1039/FT9928800803}
+  Shock, E. L., Oelkers, E. H., Johnson, J. W., Sverjensky, D. A. and Helgeson, H. C. (1992) Calculation of the thermodynamic properties of aqueous species at high pressures and temperatures: Effective electrostatic radii, dissociation constants and standard partial molal properties to 1000 \degC and 5 kbar. \emph{J. Chem. Soc. Faraday Trans.} \bold{88}, 803--826. \url{https://doi.org/10.1039/FT9928800803}
 
   Tanger, J. C. IV and Helgeson, H. C. (1988) Calculation of the thermodynamic and transport properties of aqueous species at high pressures and temperatures: Revised equations of state for the standard partial molal properties of ions and electrolytes. \emph{Am. J. Sci.} \bold{288}, 19--98. \url{https://doi.org/10.2475/ajs.288.1.19}
 

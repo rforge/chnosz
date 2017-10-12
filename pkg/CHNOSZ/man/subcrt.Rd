@@ -82,7 +82,7 @@ Calculations can also be performed on a \code{P}-\code{IS}, \code{T}-\code{IS} o
 Values of \code{logK} of reactions calculated for \code{IS} not equal to zero are consistent with the apparent Gibbs energies of the charged aqueous species.
 
 \code{subcrt} is modeled after the functionality of the \acronym{SUPCRT92} package (Johnson et al., 1992).
-Certain features of \acronym{SUPCRT92} are not available here, for example, calculations as a function of density of \H2O instead of pressure, or calculations of temperatures of univariant curves (i.e. for which \code{logK} is zero), or calculations of the molar volumes of quartz and coesite as a function of temperature (taken here to be constant).
+Certain features of \acronym{SUPCRT92} are not available here, for example, calculations as a function of density of \H2O instead of pressure, or calculations of temperatures of univariant curves (i.e. for which \code{logK} is zero).
 The informative messages produced by \code{SUPCRT92} when temperature or pressure limits of the equations of state are exceeded generally are not reproduced here.
 However, \code{NA}s may be produced in the output of \code{subcrt} if the requisite thermodynamic or electrostatic properties of water can not be calculated at given conditions.
 Specifically, \code{NA}s are produced for calculations at \samp{Psat} when the temperature exceeds the critical temperature of \H2O.
@@ -94,9 +94,9 @@ This is useful for constructing e.g. boiling curves for organic compounds.
 }
 
 \section{Warning}{
-Comparison of the output of \code{subcrt} with that of \acronym{SUPCRT92} indicates the two give similar values of properties for neutral aqueous species up to 1000 \eqn{^{\circ}}{°}C and 5000 bar.
-Changes were made in CHNOSZ 0.9-9 to improve the calculation of the \eqn{g}{g}- and \eqn{f}{f}-functions (Shock et al., 1992) for the partial derivatives of the omega parameter which are used by the \code{\link{hkf}} function, so thermodynamic properties of charged aqueous species over the temperature range 0 to 1000 \eqn{^{\circ}}{°}C are now mostly consistent with \acronym{SUPCRT92}.
-Note, however, that while \acronym{SUPCRT92} limits calculations at Psat to 350 \eqn{^{\circ}}{°}C (\dQuote{beyond range of applicability of aqueous species equations}), there is no corresponding limit in place in \code{subcrt} (or \code{\link{hkf}}), so that inapplicable calculations will be performed up to the critical temperature (373.917 \eqn{^{\circ}}{°}C) without any warning.
+Comparison of the output of \code{subcrt} with that of \acronym{SUPCRT92} indicates the two give similar values of properties for neutral aqueous species up to 1000 \degC and 5000 bar.
+Changes were made in CHNOSZ 0.9-9 to improve the calculation of the \eqn{g}{g}- and \eqn{f}{f}-functions (Shock et al., 1992) for the partial derivatives of the omega parameter which are used by the \code{\link{hkf}} function, so thermodynamic properties of charged aqueous species over the temperature range 0 to 1000 \degC are now mostly consistent with \acronym{SUPCRT92}.
+Note, however, that while \acronym{SUPCRT92} limits calculations at Psat to 350 \degC (\dQuote{beyond range of applicability of aqueous species equations}), there is no corresponding limit in place in \code{subcrt} (or \code{\link{hkf}}), so that inapplicable calculations will be performed up to the critical temperature (373.917 \degC) without any warning.
 It is probably for this reason that there is a noticeable jump in the value of logK at Psat shown in the one of the examples (\code{demo("NaCl")}).
 
 A known bug is misidentification of the stable polymorph of some minerals at high temperature; an example of this bug is shown in the \code{\link{stopifnot}} at the end of the skarn example below.
@@ -285,13 +285,13 @@ title(main=substitute(H2O~and~Na~to~-20~degC, list(H2O=H2O, Na=Na, degC=degC)))
 \references{
   Anderson, G. M. and Crerar, D. A. (1993) \emph{Thermodynamics in Geochemistry: The Equilibrium Model}, Oxford University Press. \url{http://www.worldcat.org/oclc/803272549}
 
-  Johnson, J. W., Oelkers, E. H. and Helgeson, H. C. (1992) SUPCRT92: A software package for calculating the standard molal thermodynamic properties of minerals, gases, aqueous species, and reactions from 1 to 5000 bar and 0 to 1000\eqn{^{\circ}}{°}C. \emph{Comp. Geosci.} \bold{18}, 899--947. \url{https://doi.org/10.1016/0098-3004(92)90029-Q}
+  Johnson, J. W., Oelkers, E. H. and Helgeson, H. C. (1992) SUPCRT92: A software package for calculating the standard molal thermodynamic properties of minerals, gases, aqueous species, and reactions from 1 to 5000 bar and 0 to 1000\degC. \emph{Comp. Geosci.} \bold{18}, 899--947. \url{https://doi.org/10.1016/0098-3004(92)90029-Q}
 
   LaRowe, D. E. and Helgeson, H. C. (2007) Quantifying the energetics of metabolic reactions in diverse biogeochemical systems: electron flow and ATP synthesis. \emph{Geobiology} \bold{5}, 153--168. \url{https://doi.org/10.1111/j.1472-4669.2007.00099.x}
 
   Schulte, M. D. and Shock, E. L. (1995) Thermodynamics of Strecker synthesis in hydrothermal systems. \emph{Orig. Life Evol. Biosph.} \bold{25}, 161--173. \url{https://doi.org/10.1007/BF01581580}
 
-  Shock, E. L., Oelkers, E. H., Johnson, J. W., Sverjensky, D. A. and Helgeson, H. C. (1992) Calculation of the thermodynamic properties of aqueous species at high pressures and temperatures: Effective electrostatic radii, dissociation constants and standard partial molal properties to 1000 \eqn{^{\circ}}{°}C and 5 kbar. \emph{J. Chem. Soc. Faraday Trans.} \bold{88}, 803--826. \url{https://doi.org/10.1039/FT9928800803}
+  Shock, E. L., Oelkers, E. H., Johnson, J. W., Sverjensky, D. A. and Helgeson, H. C. (1992) Calculation of the thermodynamic properties of aqueous species at high pressures and temperatures: Effective electrostatic radii, dissociation constants and standard partial molal properties to 1000 \degC and 5 kbar. \emph{J. Chem. Soc. Faraday Trans.} \bold{88}, 803--826. \url{https://doi.org/10.1039/FT9928800803}
 }
 
 \concept{Primary thermodynamic modeling}

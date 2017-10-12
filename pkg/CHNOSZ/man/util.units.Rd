@@ -37,7 +37,7 @@ Note that \samp{Eh} and \samp{E0} both stand for the value of Eh (oxidation-redu
 
   \tabular{lll}{
      property \tab units \tab setting of \code{units} argument \cr
-     temperature \tab \eqn{^{\circ}}{°}C, K \tab \code{C}, \code{K} \cr
+     temperature \tab \degC, K \tab \code{C}, \code{K} \cr
      pressure \tab bar, MPa \tab \code{bar}, \code{MPa} \cr
      energy \tab cal, J \tab \code{cal}, \code{J} \cr
      energy \tab cal, cm\eqn{^3}{^3} bar \tab \code{calories}, \code{cm3bar} \cr

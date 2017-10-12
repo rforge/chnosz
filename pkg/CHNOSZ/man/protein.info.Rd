@@ -29,7 +29,7 @@
   \item{regexp}{logical, find matches using regular expressions?}
   \item{normalize}{logical, return per-residue values (those of the proteins divided by their lengths)?}
   \item{state}{character, physical state}
-  \item{T}{numeric, temperature in \eqn{^{\circ}}{°}C}
+  \item{T}{numeric, temperature in \degC}
   \item{loga.protein}{numeric, decimal logarithms of reference activities of proteins}
   \item{digits}{integer, number of significant digits (see \code{\link{signif}})}
 }

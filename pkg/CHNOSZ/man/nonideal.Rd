@@ -1,6 +1,7 @@
 \encoding{UTF-8}
 \name{nonideal}
 \alias{nonideal}
+\alias{Bdot}
 \title{Activity coefficients of aqueous species}
 \description{
 Calculate activity coefficients and non-ideal contributions to apparent standard molal properties of aqueous species.
@@ -8,13 +9,17 @@ Calculate activity coefficients and non-ideal contributions to apparent standard
 
 \usage{
   nonideal(species, proptable, IS, T)
+  Bdot(TC, P, showsplines = "")
 }
 
 \arguments{
   \item{species}{names or indices of species for which to calculate nonideal properties}
   \item{proptable}{list of dataframes of species properties}
   \item{IS}{numeric, ionic strength(s) used in nonideal calculations, mol kg\eqn{^{-1}}{^-1}}
-  \item{T}{numeric, temperature (K) (\code{lines.water}, \code{nonideal})}
+  \item{T}{numeric, temperature (K)}
+  \item{TC}{numeric, temperature (\degC)}
+  \item{P}{numeric, pressure (bar)}
+  \item{showsplines}{character, show isobaric (\samp{T}) or isothermal (\samp{P}) splines}
 }
 
 \details{
@@ -25,6 +30,14 @@ The values of \code{IS} are combined with Alberty's (2003) equation 3.6-1 (exten
 The lengths of \code{IS} and \code{T} supplied in the arguments should be equal to the number of rows of each dataframe in \code{proptable}, or one to use single values throughout.
 The apparent molal properties that can be calculated include \code{G}, \code{H}, \code{S} and \code{Cp}; any columns in the dataframes of \code{proptable} with other names are left untouched.
 A column named \code{loggam} (logarithm of gamma, the activity coefficient) is appended to the output dataframe of species properties.
+
+\code{Bdot} calculates the \dQuote{B-dot} deviation function (Helgeson, 1969) or extended term parameter (written as b_gamma; Helgeson et al., 1981) for activity coefficients in NaCl solutions at high temperature and pressure.
+Data at Psat and 0.5 to 5 kb are taken from Helgeson (1969, Table 2 and Figure 3) and Helgeson et al. (1981, Table 27) and extrapolated values at 10 to 30 kb from Manning et al. (2013, Figure 11).
+Furthermore, the 10 to 30 kb data were used to generate super-extrapolated values at 40, 50, and 60 kb, which may be encountered using the \code{\link{water.DEW}} calculations.
+If all \code{P} correspond to one of the isobaric conditions, the values of \code{Bdot} at \code{T} are calculated by spline fits to the isobaric data.
+Otherwise, particular (dependent on the \code{T}) isobaric spline fits are themselves used to construct isothermal splines for the given values of \code{T}; the isothermal splines are then used to generate the values of \code{Bdot} for the given \code{P}.
+To see the splines, set \code{showsplines} to \samp{T} to make the first set (isobaric splines) along with the data points, or \samp{P} for examples of isothermal splines at even temperature intervals (here, the symbols are not data, but values generated from the isobaric splines).
+This is a crude method of kriging the data, but produces fairly smooth interpolations without adding any external dependencies.
 }
 
 \section{Warning}{
@@ -100,10 +113,21 @@ d <- diagram(a, fill=NULL)
 a <- affinity(IS=c(0, 0.14), pH=c(6, 13), T=Ts[2])
 d <- diagram(a, add=TRUE, names=NULL, col="red")
 par(opar)
+
+## data and splines used for calculating B-dot
+## (extended term parameter)
+Bdot(showsplines = "T")
+Bdot(showsplines = "P")
 }
 
 \references{
 Alberty, R. A. (2003) \emph{Thermodynamics of Biochemical Reactions}, John Wiley & Sons, Hoboken, New Jersey, 397 p. \url{http://www.worldcat.org/oclc/51242181}
+
+Helgeson, H. C. (1969) Thermodynamics of hydrothermal systems at elevated temperatures and pressures. \emph{Am. J. Sci.} \bold{267}, 729--804. \url{https://doi.org/10.2475/ajs.267.7.729}
+
+Helgeson, H. C., Kirkham, D. H. and Flowers, G. C. (1981) Theoretical prediction of the thermodynamic behavior of aqueous electrolytes at high pressures and temperatures. IV. Calculation of activity coefficients, osmotic coefficients, and apparent molal and standard and relative partial molal properties to 600\degC and 5 Kb. \emph{Am. J. Sci.} \bold{281}, 1249--1516. \url{https://doi.org/10.2475/ajs.281.10.1249}
+
+Manning, C. E., Shock, E. L. and Sverjensky, D. A. (2013) The chemistry of carbon in aqueous fluids at crustal and upper-mantle conditions: Experimental and theoretical constraints. \emph{Rev. Mineral. Geochem.} \bold{75}, 109--148. \url{https://doi.org/10.2138/rmg.2013.75.5}
 }
 
 \concept{Secondary thermodynamic modeling}

@@ -1516,6 +1516,11 @@ The calculations can be invoked by setting the `IS` argument in <span style="col
 The activity coefficients are calculated as a function of ionic strength (*I*), temperature, and charge of each species, without any other species-specific parameters.
 Due to these assumptions, as well as the limited applicability of the implemented equations to very high *I* and/or *T*, <span style="color:green">`nonideal()`</span> is presented as an experimental feature.
 
+For the following examples, we change the nonideality method to `Alberty`:
+```{r Alberty}
+oldnon <- nonideal("Alberty")
+```
+
 Let's take a look at calculated activity coefficients at two temperatures and their effect on the standard Gibbs energies of formation (Δ*G*°<sub>*f*</sub>) of species with different charge:
 ```{r subcrt_IS}
 subcrt(c("MgATP-2", "MgHATP-", "MgH2ATP"),
@@ -1646,6 +1651,12 @@ Those models invoke Legendre-transformed thermodynamic properties, such as trans
 Although the conceptual pathways are different, the two approaches lead to equivalent results concerning the energetics of the overall reactions and the conditions for equilibrium [@SVI12].
 The example here shows how the required calculations can be performed at the species level using conventional standard Gibbs energies for species referenced to infinite dilution (zero ionic strength).
 The effects of ionic strength are modeled "on the fly" in CHNOSZ by setting the `IS` argument in <span style="color:green">`subcrt()`</span> or <span style="color:green">`affinity()`</span> to invoke the nonideality model on top of the standard Gibbs energies of species.
+
+Now that we're finished, we can reset the nonideality method to the default.
+(This really isn't needed here, because there aren't any nonideality calculations below):
+```{r oldnon}
+nonideal(oldnon)
+```
 
 ## Optimization of chemical activities
 

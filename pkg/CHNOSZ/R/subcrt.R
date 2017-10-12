@@ -466,10 +466,11 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
   iscgl <- iscgl.new
   isH2O <- isH2O.new
 
-  # the order of the properties
-  if(length(calcprop)>1) for(i in 1:length(out)) {
-    # keep state/loggam columns if they exists
+  # adjust the output order of the properties
+  for(i in 1:length(out)) {
+    # the calculated properties are first
     ipp <- match(calcprop, colnames(out[[i]]))
+    # move polymorph/loggam columns to end
     if('polymorph' %in% colnames(out[[i]])) ipp <- c(ipp,match('polymorph',colnames(out[[i]]))) 
     if('loggam' %in% colnames(out[[i]])) ipp <- c(ipp,match('loggam',colnames(out[[i]]))) 
     out[[i]] <- out[[i]][,ipp,drop=FALSE]
@@ -492,9 +493,9 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
       # then to the user's units (outvert) from cal
       A <- outvert(convert(-A,'G',T=T),'cal')
     }
-    # the addition of properties
+    # loop over reaction coefficients
     for(i in 1:length(coeff)) {
-      # assemble state columns if they exist
+      # assemble polymorph columns separately
       if('polymorph' %in% colnames(out[[i]])) {
          sc <- as.data.frame(out[[i]]$polymorph)
          out[[i]] <- out[[i]][,-match('polymorph',colnames(out[[i]]))]
@@ -502,13 +503,13 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
          if(is.null(morphcols)) morphcols <- sc
          else morphcols <- cbind(morphcols,sc)
       }
-      # include a zero loggam column if we need it
-      # for those species that are ideal
+      # include a zero loggam column if needed (for those species that are ideal)
       o.i <- out[[i]]
       if('loggam' %in% colnames(o.i)) if(!'loggam' %in% colnames(o))
         o <- cbind(o,loggam=0)
       if('loggam' %in% colnames(o)) if(!'loggam' %in% colnames(o.i))
         o.i <- cbind(o.i,loggam=0)
+      # the real addition of properties
       o <- o + o.i * coeff[i]
     }
     # output for reaction (stack on polymorph columns if exist)

@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-51 (2017-10-12)
+CHANGES IN CHNOSZ 1.1.0-53 (2017-10-12)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -19,7 +19,7 @@ MAJOR CHANGES:
 
 - Usage of the DEW model is shown in the new demo DEW.R. This demo also
   depends on the Berman equations (above) and, for the last diagram, the
-  following two NEWS items:
+  following *two* NEWS items:
 
 - In equilibrate(), it is now possible to combine affinity calculations
   with changing activity of the balancing basis species (loga.balance).
@@ -34,6 +34,11 @@ COMPUTATIONAL IMPROVEMENTS:
   the values by the balancing component. This is useful for making
   "percent carbon" plots for systems where the species have different
   carbon numbers.
+
+- nonideal() now has two methods for calculating activity coefficients:
+  'Helgeson', which utilizes the "B-dot" equation of Helgeson, 1969,
+  and 'Alberty' (the only method previously available). The 'Helgeson'
+  method depends on the following *two* NEWS items:
 
 - All three water options (SUPCRT92, IAPWS95, DEW) can be used to
   calculate 'A_DH' and 'B_DH', i.e. A and B coefficients in the extended

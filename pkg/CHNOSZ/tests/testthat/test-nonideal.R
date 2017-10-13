@@ -49,3 +49,25 @@ test_that("A and B parameters are calculated correctly", {
   expect_maxdiff(DEW30$A_DH, A30, 0.06)
   expect_maxdiff(DEW30$B_DH / 1e8, B30, 0.024)
 })
+
+#test_that("different methods give correct values of loggamma", {
+#
+#})
+
+test_that("affinity transect incorporates IS correctly", {
+  basis("CHNOS+")
+  species("acetate")
+  # calculations at single combinations of logfO2 and IS
+  basis("O2", -80); a80_0 <- affinity()
+  basis("O2", -60); a60_1 <- affinity(IS=1)
+  # calculations on a transect with those endpoints
+  a <- affinity(O2=seq(-80, -60, length.out=4), IS=seq(0, 1, length.out=4))
+  expect_equal(a$values[[1]][1], a80_0$values[[1]][1])
+  expect_equal(a$values[[1]][4], a60_1$values[[1]][1])
+  # 20171013: that was working fine, but how about a more complicated case involving T?
+  a25_0 <- affinity()
+  a50_1 <- affinity(T=50, IS=1)
+  a <- affinity(T=seq(25, 50, length.out=4), IS=seq(0, 1, length.out=4))
+  expect_equal(a$values[[1]][1], a25_0$values[[1]][1])
+  expect_equal(a$values[[1]][4], a50_1$values[[1]][1])
+})

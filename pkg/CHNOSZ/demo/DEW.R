@@ -139,7 +139,7 @@ mtitle(as.expression(c(DEWexpr, "and methane")))
 
 T <- seq(600, 1000, 5)
 
-## use DEW model
+## activate DEW model
 data(thermo)
 water("DEW")
 # add species data for DEW
@@ -167,12 +167,20 @@ basis("O2", 0)
 ## add species
 species(c(inorganics, organics))
 
+## generate spline function for ionic strength
+IS <- splinefun(seq(600, 1000, 100), c(0.39, 0.57, 0.88, 1.45, 2.49))
+
+## use Debye-Huckel equation with B-dot set to zero
+nonideal("Helgeson0")
+## and calculate activity coefficient for the proton
+thermo$opt$ideal.H <<- FALSE
+
 ## calculate affinities on the T-logfO2 transect
-a <- affinity(T=T, O2=QFM_2, P=50000)
+a <- affinity(T=T, O2=QFM_2, P=50000, IS=IS(T))
 
 ## use the total carbon molality as an approximation of total activity
-molC <- splinefun(seq(600, 1000, 100), c(0.03, 0.2, 1, 4, 20))(T)
-loga.C <- log10(molC)
+molC <- splinefun(seq(600, 1000, 100), c(0.03, 0.2, 1, 4, 20))
+loga.C <- log10(molC(T))
 
 ## calculate metastable equilibrium activities
 e <- equilibrate(a, loga.balance=loga.C)
@@ -193,18 +201,26 @@ t1 <- "Aqueous carbon speciation"
 t2 <- "after Sverjensky et al., 2014b"
 mtitle(c(t1, t2))
 
-## additional checks
-# check that we're within 0.1 of the QFM-2 values used by SSH14
+### additional checks
+
+## check that we're within 0.1 of the QFM-2 values used by SSH14
 stopifnot(maxdiff(QFM_2[T %% 100 == 0], c(-17.0, -14.5, -12.5, -10.8, -9.4)) < 0.1)
+
 # Here are the logKs of aqueous species dissociation reactions at 600 degC and 50000 bar,
-# taken from the Supporting Information of the paper (p. 103-109):
+# values from EQ3NR output in Supporting Information of the paper (p. 103-109):
 inorganic.logK <- c(24.4765, -9.0784, -5.3468, 0)
 organic.logK <- c(1.7878, 2.5648, 15.3182, 16.9743, 30.4088, 28.9185)
 # calculate equilibrium constants of the reactions in CHNOSZ; use a negative sign to change from formation to dissociation
 logK.calc <- -unlist(affinity(T=600, P=50000, property="logK")$values)
 logK.calc - c(inorganic.logK, organic.logK)
-# check that we're within 0.021 of the logK values used by SSH14
+## check that we're within 0.021 of the logK values used by SSH14
 stopifnot(maxdiff(logK.calc, c(inorganic.logK, organic.logK)) < 0.021)
+
+## check that we get similar activity coefficients
+# values for monovalent species from EQ3NR output
+loggamma <- c(-0.15, -0.18, -0.22, -0.26, -0.31)
+sres <- subcrt("propanoate", T=seq(600, 1000, 100), P=50000, IS=c(0.39, 0.57, 0.88, 1.45, 2.49))
+stopifnot(maxdiff(sres$out[[1]]$loggam, loggamma) < 0.004)
 
 ###########
 ### all done!

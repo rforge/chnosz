@@ -7,15 +7,21 @@ nonideal <- function(species, speciesprops, IS, T, P, A_DH, B_DH, method=get("th
   # generate nonideal contributions to thermodynamic properties
   # number of species, same length as speciesprops list
   # T in Kelvin, same length as nrows of speciespropss
-  # arguments P, A_DH, B_DH are needed for Helgeson method only
+  # arguments P, A_DH, B_DH are needed for Helgeson/Helgeson0 methods only
+
+  mettext <- function(method) {
+    mettext <- paste(method, "method")
+    if(method=="Helgeson0") mettext <- "Helgeson method with B-dot = 0"
+    mettext
+  }
 
   # we can use this function to change the nonideal method option
-  if(identical(species, "Helgeson") | identical(species, "Alberty")) {
+  if(identical(species, "Helgeson") | identical(species, "Helgeson0") | identical(species, "Alberty")) {
     thermo <- get("thermo")
     oldnon <- thermo$opt$nonideal
     thermo$opt$nonideal <- species
     assign("thermo", thermo, "CHNOSZ")
-    message("nonideal: setting method option to ", species)
+    message("nonideal: setting nonideal option to use ", mettext(species))
     return(invisible(oldnon))
   }
 
@@ -39,7 +45,8 @@ nonideal <- function(species, speciesprops, IS, T, P, A_DH, B_DH, method=get("th
     loggamma <- function(a, Z, I, B) - a * Z^2 * I^(1/2) / (1 + B * I^(1/2))
     # TODO: check the following equations 20080208 jmd
     R <- 1.9872  # gas constant, cal K^-1 mol^-1
-    if(prop=="loggamma") return(loggamma(eval(A), Z, I, B))
+    # 20171013 convert loggamma to common logarithm
+    if(prop=="loggamma") return(loggamma(eval(A), Z, I, B) / log(10))
     else if(prop=="G") return(R * T * loggamma(eval(A), Z, I, B))
     else if(prop=="H") return(R * T^2 * loggamma(eval(DD(A, "T", 1)), Z, I, B))
     else if(prop=="S") return(- R * T * loggamma(eval(DD(A, "T", 1)), Z, I, B))
@@ -50,10 +57,12 @@ nonideal <- function(species, speciesprops, IS, T, P, A_DH, B_DH, method=get("th
   Helgeson <- function(Z, I, T, P, A_DH, B_DH, prop = "loggamma") {
     # "distance of closest approach" of ions in NaCl solutions (HKF81 Table 2)
     acirc <- 3.72e-8  # cm
-    loggamma <- - A_DH * Z^2 * I^0.5 / (1 + acirc * B_DH * I^0.5) + Bdot * I
+    if(method=="Helgeson") loggamma <- - A_DH * Z^2 * I^0.5 / (1 + acirc * B_DH * I^0.5) + Bdot * I
+    else if(method=="Helgeson0") loggamma <- - A_DH * Z^2 * I^0.5 / (1 + acirc * B_DH * I^0.5)
     R <- 1.9872  # gas constant, cal K^-1 mol^-1
     if(prop=="loggamma") return(loggamma)
-    else if(prop=="G") return(R * T * loggamma)
+    else if(prop=="G") return(R * T * log(10) * loggamma)
+    # note the log(10) (=2.303) ... use natural logarithm to calculate G!!!
   }
 
   # get B-dot if we're using the Helgeson method
@@ -83,7 +92,7 @@ nonideal <- function(species, speciesprops, IS, T, P, A_DH, B_DH, method=get("th
       if(method=="Alberty" & pname %in% c("G", "H", "S", "Cp")) {
         myprops[, j] <- myprops[, j] + Alberty(Z, IS, T, pname)
         didit <- TRUE
-      } else if(method=="Helgeson" & pname %in% c("G", "H", "S", "Cp")) {
+      } else if(grepl("Helgeson", method) & pname %in% c("G", "H", "S", "Cp")) {
         myprops[, j] <- myprops[, j] + Helgeson(Z, IS, T, P, A_DH, B_DH, pname)
         didit <- TRUE
       }
@@ -91,14 +100,14 @@ nonideal <- function(species, speciesprops, IS, T, P, A_DH, B_DH, method=get("th
     # append a loggam column if we did any nonideal calculations of thermodynamic properties
     if(didit) {
       if(method=="Alberty") myprops <- cbind(myprops, loggam = Alberty(Z, IS, T))
-      else if(method=="Helgeson") {
+      else if(grepl("Helgeson", method)) {
         myprops <- cbind(myprops, loggam = Helgeson(Z, IS, T, P, A_DH, B_DH))
       }
     }
     speciesprops[[i]] <- myprops
     if(didit) ndid <- ndid + 1
   }
-  if(ndid > 0) message(paste("nonideal:", ndid, "species were nonideal"))
+  if(ndid > 0) message("nonideal: calculated activity coefficients for ", ndid, " species (", mettext(method), ")")
   return(speciesprops)
 }
 

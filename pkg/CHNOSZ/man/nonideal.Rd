@@ -20,7 +20,7 @@ Calculate activity coefficients and apparent (non-ideal) molal properties of aqu
   \item{P}{numeric, pressure (bar); required for Helgeson method}
   \item{A_DH}{numeric, A Debye-Huckel coefficient; required for Helgeson method}
   \item{B_DH}{numeric, B Debye-Huckel coefficient; required for Helgeson method}
-  \item{method}{character, \samp{Alberty} or \samp{Helgeson}}
+  \item{method}{character, \samp{Alberty}, \samp{Helgeson}, or \samp{Helgeson0}}
   \item{TC}{numeric, temperature (\degC)}
   \item{showsplines}{character, show isobaric (\samp{T}) or isothermal (\samp{P}) splines}
 }
@@ -35,9 +35,11 @@ The lengths of \code{IS} and \code{T} supplied in the arguments should be equal 
 If \code{method} is \samp{Alberty}, the values of \code{IS} are combined with Alberty's (2003) equation 3.6-1 (extended Debye-Hückel equation) and its derivatives, to calculate apparent molal properties at the specified ionic strength(s) and temperature(s).
 The apparent molal properties that can be calculated include \samp{G}, \samp{H}, \samp{S} and \samp{Cp}; any columns in the dataframes of \code{speciesprops} with other names are left untouched.
 
-If \code{method} is \samp{Helgeson}, the \dQuote{B-dot} equation (Helgeson, 1969; Helgeson et al., 1981; Manning, 2013) is used.
+If \code{method} is \samp{Helgeson}, the \dQuote{B-dot} equation is used.
+This equation seems to have been originally proposed by Huckel, 1925; parameters were derived for use at high temperature and pressure by Helgeson, 1969; Helgeson et al., 1981; Manning, 2013.
 In addition to \code{IS} and \code{T}, this method depends on values of \code{P}, \code{A_DH}, and \code{B_DH} given in the arguments.
 The calculation of \dQuote{B-dot}, also used in the equations, is made within \code{nonideal} by calling the \code{Bdot} function.
+For some uses, it is desirable to set the \dQuote{B-dot} parameter to zero; this can be done by setting the method to \code{Helgeson0}.
 Currently, \samp{G} is the only apparent molal property that is calculated (but this can be used by \code{\link{subcrt}} to calculate apparent equilibrium constants).
 
 \code{Bdot} calculates the \dQuote{B-dot} deviation function (Helgeson, 1969) a.k.a. extended term parameter (written as b_gamma; Helgeson et al., 1981) for activity coefficients in NaCl solutions at high temperature and pressure.
@@ -49,15 +51,9 @@ To see the splines, set \code{showsplines} to \samp{T} to make the first set (is
 This is a crude method of kriging the data, but produces fairly smooth interpolations without adding any external dependencies.
 }
 
-\section{Warning}{
-The logarithms of activity coefficients (\code{loggam}) returned by \code{nonideal} use the natural logarithm (cf. Alberty, 2003 Eq. 3.6-1).
-To maintain consistency with the conventions used elsewhere in the package (i.e. for logarithms of equilibrium constants and of chemical activities), the values of \code{loggam} returned by \code{\link{subcrt}} are expressed using the common (base 10) logarithm.
-Note that the first example below uses \code{loggam} returned by \code{subcrt}, therefore requiring a base of 10 for calculating gamma.
-}
-
 \value{
 One (\samp{G}) or more (\samp{H}, \samp{S}, \samp{Cp}; currently only with the Alberty method) standard thermodynamic properties (at IS=0) in \code{speciesprops} are replaced by the corresponding apparent thermodynamic properties (at higher IS).
-For all affected species, a column named \code{loggam} (logarithm of gamma, the activity coefficient) is appended to the output dataframe of species properties.
+For all affected species, a column named \code{loggam} (common (base-10) logarithm of gamma, the activity coefficient) is appended to the output dataframe of species properties.
 }
 
 \examples{\dontshow{data(thermo)}
@@ -82,7 +78,7 @@ for(j in 1:3) {
   speciesprops <- subcrt(species, T = rep(T[j], length(IS)))$out
   # use nonideal to calculate loggamma; this also adjusts G, H, S, Cp, but we don't use them here
   nonidealprops <- nonideal(species, speciesprops, IS = IS, T = convert(T[j], "K"))
-  for(i in 1:4) lines(IS, exp(nonidealprops[[i]]$loggam), lty=lty[j], col=col[i])
+  for(i in 1:4) lines(IS, 10^(nonidealprops[[i]]$loggam), lty=lty[j], col=col[i])
 }
 t1 <- "activity coefficient (gamma) of -1,-2,-3,-4 charged species"
 t2 <- quote("at 0, 25, and 40 "*degree*"C, after Alberty, 2003")
@@ -169,6 +165,8 @@ Alberty, R. A. (2003) \emph{Thermodynamics of Biochemical Reactions}, John Wiley
 Helgeson, H. C. (1969) Thermodynamics of hydrothermal systems at elevated temperatures and pressures. \emph{Am. J. Sci.} \bold{267}, 729--804. \url{https://doi.org/10.2475/ajs.267.7.729}
 
 Helgeson, H. C., Kirkham, D. H. and Flowers, G. C. (1981) Theoretical prediction of the thermodynamic behavior of aqueous electrolytes at high pressures and temperatures. IV. Calculation of activity coefficients, osmotic coefficients, and apparent molal and standard and relative partial molal properties to 600\degC and 5 Kb. \emph{Am. J. Sci.} \bold{281}, 1249--1516. \url{https://doi.org/10.2475/ajs.281.10.1249}
+
+Hückel, E. (1925). The theory of concentrated, aqueous solutions of strong electrolytes. \emph{Physikalische Zeitschrift} \bold{26}, 93--147.
 
 Manning, C. E. (2013) Thermodynamic modeling of fluid-rock interaction at mid-crustal to upper-mantle conditions. \emph{Rev. Mineral. Geochem.} \bold{76}, 135--164. \url{https://doi.org/10.2138/rmg.2013.76.5}
 

@@ -56,10 +56,6 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
   # length checking
   if(do.reaction & length(species)!=length(coeff)) 
     stop('coeff must be same length as the number of species.')
-  if(length(IS)>1) if(!identical(grid,'IS')) {
-    if(is.null(grid)) grid <- 'IS'
-    else stop('if you want length(IS) > 1, set grid=\'IS\'')
-  }
   if(!is.null(logact)) logact <- rep(logact,length.out=length(coeff))
   # normalize temperature units
   if(!missing(T)) {
@@ -100,6 +96,8 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
     # expansion of Psat and equivalence of argument lengths
     tpargs <- TP.args(T=T,P=P)
     T <- tpargs$T; P <- tpargs$P
+    if(length(newIS) > length(T)) T <- rep(T, length.out=length(newIS))
+    if(length(newIS) > length(P)) P <- rep(P, length.out=length(newIS))
   }
 
   # get species information
@@ -181,8 +179,6 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
   isH2O <- reaction$name=='water' & reaction$state=='liq'
   isaq <- reaction$state=='aq'
 
-  #if(length(T)==1) T.text <- paste(T,units('T')) else T.text <- paste(length(T),'values of T')
-  #if(length(P)==1) P.text <- paste(P,units('P')) else P.text <- paste(length(P),'values of P')
   ut <- T
   if(identical(grid,'IS')) ut <- unique(ut)
   if(length(ut)==1) T.text <- paste(ut,'K') else {
@@ -192,11 +188,10 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
     if(can.be.numeric(P)) P.text <- paste(round(as.numeric(P),2),'bar')
     else P.text <- "P"
   } else P.text <- 'P'
-  #} else P.text <- paste(length(P),'values of P')
   if(identical(P[[1]],'Psat')) P.text <- P
   if(any(c(isH2O,isaq))) P.text <- paste(P.text,' (wet)',sep='')
   if(length(species)==1 & convert==FALSE) {
-    # we don't think we want messages here
+    # no message produced here
   } else {
     message(paste('subcrt:',length(species),'species at',T.text,'and',P.text))
   }
@@ -280,12 +275,18 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
     si <- obigt2eos(thermo$obigt[inpho[isaq],], "aq", fixGHS = TRUE)
     # always get density
     H2O.props <- "rho"
+    # calculate A_DH and B_DH if we're using the B-dot (Helgeson) equation
+    if(any(IS != 0) & grepl("Helgeson", thermo$opt$nonideal)) H2O.props <- c(H2O.props, "A_DH", "B_DH")
     # get other properties for H2O only if it's in the reaction
     if(any(isH2O)) H2O.props <- c(H2O.props, eosprop)
     hkfstuff <- hkf(eosprop, parameters = si, T = T, P = P, H2O.props=H2O.props)
     p.aq <- hkfstuff$aq
     H2O.PT <- hkfstuff$H2O
-    if(any(IS != 0)) p.aq <- nonideal(inpho[isaq], p.aq, newIS, T)
+    # calculate activity coefficients if ionic strength is not zero
+    if(any(IS != 0)) {
+      if(grepl("Helgeson", thermo$opt$nonideal)) p.aq <- nonideal(inpho[isaq], p.aq, newIS, T, P, H2O.PT$A_DH, H2O.PT$B_DH)
+      else if(thermo$opt$nonideal=="Alberty") p.aq <- nonideal(inpho[isaq], p.aq, newIS, T)
+    }
     out <- c(out, p.aq)
   } else if(any(isH2O)) {
     # we're not using the HKF, but still want water
@@ -544,13 +545,9 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
       }
     }
   }
-  # convert loggam to common logarithm and
   # put ionic strength next to any loggam columns
   for(i in 2:length(out)) {
-    if('loggam' %in% colnames(out[[i]])) {
-      out[[i]] <- cbind(out[[i]],IS=newIS)
-      out[[i]][, "loggam"] <- out[[i]][, "loggam"]/log(10)
-    }
+    if('loggam' %in% colnames(out[[i]])) out[[i]] <- cbind(out[[i]],IS=newIS)
   }
   # more fanagling for species
   if(!do.reaction) {

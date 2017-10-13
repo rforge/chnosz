@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-54 (2017-10-13)
+CHANGES IN CHNOSZ 1.1.0-55 (2017-10-13)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -67,6 +67,9 @@ COMPUTATIONAL IMPROVEMENTS:
 - water.lines() now works for diagrams of Eh, pe, logfO2, logaO2,
   logfH2, or logaH2 vs pH, T, or P. It is possible to have T or P on
   either the x- or y-axis.
+
+- Variables that are in the aguments to affinity() now override any
+  buffers previously specified using basis().
 
 DATABASE UPDATES:
 

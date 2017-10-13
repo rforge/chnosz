@@ -7,6 +7,10 @@
 #source("util.character.R")
 #source("util.list.R")
 #source("subcrt.R")
+#source("buffer.R")
+#source("util.args.R")
+#source("util.data.R")
+#source("species.R")
 
 affinity <- function(...,property=NULL,sout=NULL,exceed.Ttr=FALSE,
   return.buffer=FALSE,balance="PBB",iprotein=NULL,loga.protein=-3) {
@@ -70,7 +74,10 @@ affinity <- function(...,property=NULL,sout=NULL,exceed.Ttr=FALSE,
 
     # buffer stuff
     buffer <- FALSE
-    ibufbasis <- which(!can.be.numeric(mybasis$logact))
+    hasbuffer <- !can.be.numeric(mybasis$logact)
+    # however, variables specified in the arguments take precedence over the buffer 20171013
+    isnotvar <- !rownames(mybasis) %in% args$vars
+    ibufbasis <- which(hasbuffer & isnotvar)
     if(!is.null(mybasis) & length(ibufbasis) > 0) {
       buffer <- TRUE
       message('affinity: loading buffer species')

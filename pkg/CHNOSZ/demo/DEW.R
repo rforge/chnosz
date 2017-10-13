@@ -131,71 +131,52 @@ mtitle(as.expression(c(DEWexpr, "and methane")))
 # T = 600, 700, 800, 900, 1000 degC
 # P = 5.0GPa (50000 bar)
 # fO2 = QFM - 2
-# pH set by jadeite + kyanite + coesite (approximated here as constant)
-# output from EQ3 calculations:
+# pH set by jadeite + kyanite + coesite
+# output from EQ3NR calculations (SSH14 Supporting Information)
 # dissolved carbon: 0.03, 0.2, 1, 4, 20 molal
 # ionic strength: 0.39, 0.57, 0.88, 1.45, 2.49
-# activity coefficient (log gamma for singly charged species): -0.15, -0.18, -0.22, -0.26, -0.31
-
+# pH: 3.80, 3.99, 4.14, 4.25, 4.33
 T <- seq(600, 1000, 5)
-
 ## activate DEW model
 data(thermo)
 water("DEW")
 # add species data for DEW
 inorganics <- c("methane", "CO2", "HCO3-", "CO3-2")
 organics <- c("formic acid", "formate", "acetic acid", "acetate", "propanoic acid", "propanoate")
-
 # skip updating acetate because the new data from the DEW spreadsheet give different logK
 add.obigt("DEW", c(inorganics, organics[-4]))
 ## set basis species
 basis(c("Fe", "SiO2", "CO3-2", "H2O", "oxygen", "H+"))
-# for the time being we use a constant pH
-basis("H+", -4)
-
 ## define a QFM buffer using Berman's equations for minerals
 mod.buffer("QFM_Berman", c("quartz", "fayalite", "magnetite"), "cr_Berman", 0)
-
-## calculate logfO2 as QFM minus 2
+## calculate logfO2 in QFM buffer
 basis("O2", "QFM_Berman")
-a <- affinity(T=T, P=50000, return.buffer=TRUE)
-QFM_2 <- a$O2 - 2
-
-## now that we have QFM-2, remove QFM buffer for calculations below
-basis("O2", 0)
-
+buf <- affinity(T=T, P=50000, return.buffer=TRUE)
 ## add species
 species(c(inorganics, organics))
-
-## generate spline function for ionic strength
-IS <- splinefun(seq(600, 1000, 100), c(0.39, 0.57, 0.88, 1.45, 2.49))
-
+## generate spline functions from IS, pH, and molC values at every 100 degC
+IS <- splinefun(T[!T%%100], c(0.39, 0.57, 0.88, 1.45, 2.49))
+pH <- splinefun(T[!T%%100], c(3.80, 3.99, 4.14, 4.25, 4.33))
+molC <- splinefun(T[!T%%100], c(0.03, 0.2, 1, 4, 20))
 ## use Debye-Huckel equation with B-dot set to zero
 nonideal("Helgeson0")
-## and calculate activity coefficient for the proton
-thermo$opt$ideal.H <<- FALSE
-
-## calculate affinities on the T-logfO2 transect
-a <- affinity(T=T, O2=QFM_2, P=50000, IS=IS(T))
-
-## use the total carbon molality as an approximation of total activity
-molC <- splinefun(seq(600, 1000, 100), c(0.03, 0.2, 1, 4, 20))
-loga.C <- log10(molC(T))
-
-## calculate metastable equilibrium activities
-e <- equilibrate(a, loga.balance=loga.C)
-
+## calculate affinities on the T-logfO2-pH-IS transect
+a <- affinity(T=T, O2=buf$O2 - 2, IS=IS(T), pH=pH(T), P=50000)
+## calculate metastable equilibrium activities using the total
+## carbon molality as an approximation of total activity
+e <- equilibrate(a, loga.balance=log10(molC(T)))
 ## make the diagram; don't plot names of low-abundance species
 names <- c(inorganics, organics)
 names[c(4, 5, 7, 9)] <- ""
 col <- rep("black", length(names))
 col[c(1, 3, 6, 8, 10)] <- c("red", "darkgreen", "purple", "orange", "navyblue")
-diagram(e, alpha="balance", names=names, col=col, ylim=c(0, 0.8))
+diagram(e, alpha="balance", ylab="carbon fraction", names=names, col=col, ylim=c(0, 0.8))
 
 ## add legend and title
 ltxt1 <- "P = 50000 bar"
 ltxt2 <- substitute(logfO2=="QFM-2", list(logfO2=axis.label("O2")))
 ltxt3 <- "pH = 4"
+pH <- seq(3.8, 4.3, length.out=length(T))
 legend("left", legend=as.expression(c(ltxt1, ltxt2, ltxt3)), bty="n")
 t1 <- "Aqueous carbon speciation"
 t2 <- "after Sverjensky et al., 2014b"
@@ -217,8 +198,9 @@ logK.calc - c(inorganic.logK, organic.logK)
 stopifnot(maxdiff(logK.calc, c(inorganic.logK, organic.logK)) < 0.021)
 
 ## check that we get similar activity coefficients
-# values for monovalent species from EQ3NR output
+# activity coefficients for monovalent species from EQ3NR output
 loggamma <- c(-0.15, -0.18, -0.22, -0.26, -0.31)
+# activity coefficients calculated in CHNOSZ
 sres <- subcrt("propanoate", T=seq(600, 1000, 100), P=50000, IS=c(0.39, 0.57, 0.88, 1.45, 2.49))
 stopifnot(maxdiff(sres$out[[1]]$loggam, loggamma) < 0.004)
 

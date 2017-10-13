@@ -62,7 +62,7 @@ nonideal <- function(species, speciesprops, IS, T, P, A_DH, B_DH, method=get("th
     R <- 1.9872  # gas constant, cal K^-1 mol^-1
     if(prop=="loggamma") return(loggamma)
     else if(prop=="G") return(R * T * log(10) * loggamma)
-    # note the log(10) (=2.303) ... use natural logarithm to calculate G!!!
+    # note the log(10) (=2.303) ... use natural logarithm to calculate G
   }
 
   # get B-dot if we're using the Helgeson method

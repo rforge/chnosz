@@ -29,7 +29,8 @@ Calculate activity coefficients and apparent (non-ideal) molal properties of aqu
 \code{nonideal} takes a list of dataframes (in \code{speciesprops}) containing the standard molal properties of the identified \code{species}.
 The function calculates the *apparent* properties for given ionic strength (\code{IS}); they are equal to the *standard* values at IS=0.
 The function bypasses (leaves unchanged) properties of all species whose charge (determined by the number of Z in their \code{\link{makeup}}) is equal to zero.
-The proton (H+) and electron (e-) are also bypassed by default; to apply the calculations to H+ and/or e-, change \code{\link{thermo}$opt$ideal.H} or \code{ideal.e} to FALSE.
+The proton (\Hplus) and electron (\eminus) are also bypassed by default; this makes sense if you are setting the pH, i.e. activity of \Hplus, to some value.
+To apply the calculations to H+ and/or e-, change \code{\link{thermo}$opt$ideal.H} or \code{ideal.e} to FALSE.
 The lengths of \code{IS} and \code{T} supplied in the arguments should be equal to the number of rows of each dataframe in \code{speciesprops}, or length one to use single values throughout.
 
 If \code{method} is \samp{Alberty}, the values of \code{IS} are combined with Alberty's (2003) equation 3.6-1 (extended Debye-Hückel equation) and its derivatives, to calculate apparent molal properties at the specified ionic strength(s) and temperature(s).

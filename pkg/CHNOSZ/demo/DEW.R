@@ -185,7 +185,7 @@ mtitle(c(t1, t2))
 ### additional checks
 
 ## check that we're within 0.1 of the QFM-2 values used by SSH14
-stopifnot(maxdiff(QFM_2[T %% 100 == 0], c(-17.0, -14.5, -12.5, -10.8, -9.4)) < 0.1)
+stopifnot(maxdiff((buf$O2-2)[!T%%100], c(-17.0, -14.5, -12.5, -10.8, -9.4)) < 0.1)
 
 # Here are the logKs of aqueous species dissociation reactions at 600 degC and 50000 bar,
 # values from EQ3NR output in Supporting Information of the paper (p. 103-109):

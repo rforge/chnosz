@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-55 (2017-10-13)
+CHANGES IN CHNOSZ 1.1.0-56 (2017-10-14)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -7,7 +7,7 @@ MAJOR CHANGES:
   thermodynamic properties of minerals using equations of Berman, 1988.
 
 - Calculations related to Berman's (1988) Figs. 1 and 2 for the lambda
-  transition of quartz are presented in the new demo lambda.R.
+  transition of quartz are available in the new demo lambda.R.
 
 - Add functions implementing the Deep Earth Water (DEW) model
   (Sverjensky et al., 2014): water.DEW() and its supporting functions
@@ -22,11 +22,11 @@ MAJOR CHANGES:
   the demo, the following *four* NEWS items:
 
 - In equilibrate(), it is now possible to combine affinity calculations
-  with changing activity of the balancing basis species (loga.balance).
+  with variable activity of the balancing basis species (loga.balance).
   For example, in the last plot of the DEW demo, the affinity transect
   involves simultaneously varying temperature and logfO2 (given as
   arguments to affinity()) as well as total concentration of carbon
-  (approximated by the loga.balance argument in equilibrate()).
+  (given by the loga.balance argument in equilibrate()).
 
 COMPUTATIONAL IMPROVEMENTS:
 
@@ -35,15 +35,16 @@ COMPUTATIONAL IMPROVEMENTS:
   "percent carbon" plots for systems where the species have different
   carbon numbers.
 
-- nonideal() now has three methods for calculating activity coefficients:
-  'Helgeson' and 'Helgeson0', which utilize the "B-dot" equation of
-  Helgeson, 1969, and 'Alberty' (the only method previously available).
-  The 'Helgeson' method depends on the following *two* NEWS items (but
-  the 'Helgeson0' method omits the B-dot term):
+- nonideal() now has three methods for calculating activity
+  coefficients: 'Helgeson' and 'Helgeson0', which utilize the
+  Debye-Huckel equation with parameters as described by Helgeson, 1969,
+  and 'Alberty' (the only method previously available). The 'Helgeson'
+  method depends on the following *two* NEWS items (but the 'Helgeson0'
+  method omits the B-dot term):
 
 - All three water options (SUPCRT92, IAPWS95, DEW) can be used to
   calculate 'A_DH' and 'B_DH', i.e. A and B coefficients in the extended
-  Debye-Huckel equation of Helgeson, 1969.
+  Debye-Huckel equation as described by Helgeson, 1969.
 
 - Add Bdot() to calculate the "B-dot" (or b_gamma) extended term
   parameter for activity coefficients in NaCl solutions at high
@@ -84,13 +85,14 @@ DATABASE UPDATES:
 - add.obigt() gets new argument 'species' for selecting species to add.
 
 - Add DEW_aq.csv with aqueous species data from the DEW spreadsheet
-  (May 2017 version). Species with data unchanged from the default
-  database in CHNOSZ are not included. For the time being, only
-  selected species are fully referenced.
+  (May 2017 version). Species with data that do not differ from the
+  default database in CHNOSZ are not included. Currently, detailed
+  reference keys and descriptions (in thermo$refs) are given for
+  selected species only.
 
 - Add Berman_cr.csv with names and formulas for minerals whose
-  thermodynamic properties are calculated using the Berman 1988
-  formulation. The state "cr_Berman" is used to distinguish these
+  thermodynamic properties are calculated using the Berman, 1988
+  equations. The state "cr_Berman" is used to distinguish these
   minerals from the Helgeson data. The parameters themselves are
   stored in extdata/Berman/*.csv.
 
@@ -114,24 +116,25 @@ DATABASE UPDATES:
 OTHER CHANGES:
 
 - Add 'tol' argument to equil.reaction() (convergence tolerance for
-  uniroot).
+  uniroot()).
 
 - In hkf() and cgl(), combine 'ghs' and 'eos' arguments into single
   argument named 'parameters'.
 
 - Remove 'H2O.PrTr' and 'domega' arguments from hkf(). Properties of
-  water at Pr and Tr and the logic for when to calculate derivatives of
-  omega are now calculated within the function, thereby simplifying the
+  water at Pr and Tr and the logic for when to find derivatives of omega
+  are now calculated within the function, thereby simplifying the
   function call from subcrt().
 
 - Add 'H2O.props' argument to hkf(). This lists the properties of water
-  to calculate (at P, T) so that the calculations aren't duplicated by
-  subcrt().
+  to calculate (at P, T); these are now included in the results, in
+  order to avoid duplicating the calculations in subcrt().
 
 - In water.* functions, rename the "diel" variable to "epsilon".
 
-- Components of subcrt() output indicating the stable polymorph of a
-  mineral are now named 'polymorph', not 'state'.
+- Components of subcrt() output indicating the stable polymorph of
+  minerals with phase transitions are now named 'polymorph', not
+  'state'.
 
 - Add maxdiff() and expect_maxdiff() for calculating and testing the
   maximum absolute pairwise difference between two objects.

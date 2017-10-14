@@ -1,11 +1,9 @@
 ---
 title: "Thermodynamic data in [CHNOSZ](http://www.chnosz.net)"
 output:
-# change to html_document for full version
   html_document:
     mathjax: null
-# uncomment the next two lines for full version
-    theme: cosmo
+    theme: default
     css: obigt.css
 vignette: >
   %\VignetteIndexEntry{Thermodynamic data in CHNOSZ}
@@ -15,8 +13,6 @@ bibliography: obigt.bib
 # so that these appear in the bibliography
 nocite: | 
   @SPRONS92, @SLOP98, @SLOP07, @SLOP15, @CHNOSZ, @JOH92, @WP02, @CWM89, @PRPG97, @TH88, @Kul06, @Sho09
-# 20170212: comment the csl line to build package on R-Forge, to avoid
-# getting an error there (pandoc-citeproc: error while parsing the XML string)
 csl: elementa.csl
 ---
 
@@ -125,17 +121,17 @@ Abbreviations used below are: Cp (heat capacity), GHS (standard Gibbs energy, en
 
 # Recent additions (late 2017)
 
-* Mineral data using the [Berman (1988)](https://doi.org/10.1093/petrology/29.2.445) equations are listed under **Solids** / **Berman**.
+* Mineral data using the [Berman (1988)](https://doi.org/10.1093/petrology/29.2.445) equations are listed under [**Solids** / **Berman**](#berman-107).
 
-* Aqueous species data intended for use with the [Deep Earth Water](http://www.dewcommunity.org/) model are listed under **Optional Data** / **DEW**.
+* Aqueous species data intended for use with the [Deep Earth Water](http://www.dewcommunity.org/) model are listed under [**Optional Data** / **DEW**](#dew-199).
 
-# Sources of data {.tabset .tabset-fade}
+# Sources of data {.tabset .tabset-fade .tabset-sticky}
 
 <!-- uncomment for full version -->
 Use the tabs below to select a section for viewing.
 Select "All at once" to show all sections.
 
-## Aqueous species {.tabset .tabset-pills}
+## Aqueous species {.tabset .tabset-pills .tabset-sticky}
 
 ### `r setfile("H2O_aq.csv")`
 ```{r H2O_aq, results="asis", echo=FALSE}
@@ -181,7 +177,7 @@ cat("ZnCl<sub>4</sub><sup>-2</sup> was present in sprons92.dat but not in slop98
 ```{r reflist, results="asis", echo=FALSE}
 ```
 
-## Solids {.tabset .tabset-pills}
+## Solids {.tabset .tabset-pills .tabset-sticky}
 
 ### `r setfile("inorganic_cr.csv")`
 ```{r inorganic_cr, results="asis", echo=FALSE}
@@ -206,13 +202,13 @@ cat("The actual data are stored separately (`extdata/Berman/*.csv`).<hr>")
 ```{r reflist, results="asis", echo=FALSE}
 ```
 
-## Liquids {.tabset .tabset-pills}
+## Liquids {.tabset .tabset-pills .tabset-sticky}
 
 ### `r setfile("organic_liq.csv")`
 ```{r reflist, results="asis", echo=FALSE}
 ```
 
-## Gases {.tabset .tabset-pills}
+## Gases {.tabset .tabset-pills .tabset-sticky}
 
 ### `r setfile("inorganic_gas.csv")`
 ```{r reflist, results="asis", echo=FALSE}
@@ -222,7 +218,7 @@ cat("The actual data are stored separately (`extdata/Berman/*.csv`).<hr>")
 ```{r reflist, results="asis", echo=FALSE}
 ```
 
-## Optional Data {.tabset .tabset-pills}
+## Optional Data {.tabset .tabset-pills .tabset-sticky}
 
 ```{r Optional_Data, results="asis", echo=FALSE}
 cat("These files contain optional data updates that are not loaded by default (using `data(thermo)`). To load these data, run `add.obigt('CHNOSZ')` or `add.obigt('DEW')`.\n\n")

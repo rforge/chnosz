@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-56 (2017-10-14)
+CHANGES IN CHNOSZ 1.1.0-57 (2017-10-14)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -14,7 +14,7 @@ MAJOR CHANGES:
   calculateDensity(), calculateGibbsofWater(), calculateEpsilon(),
   calculateQ().
 
-- The computational setting for water (thermo$opt$par) can now be set
+- The computational setting for water (thermo$opt$water) can now be set
   using water("DEW"), water("IAPWS"), etc.
 
 - Usage of the DEW model is shown in the new demo DEW.R. This demo also
@@ -154,6 +154,11 @@ CLEANUP:
 
 - Remove read.expr() and extdata/abundance/ISR+08.csv (protein abundance
   in E. coli).
+
+- Reduce the size of obigt.html by ~450 KB. This was done by 1) using
+  rmarkdown with files in rmd/h/bootstrap-3.3.5/fonts/ replaced with
+  empty files (291 KB), and 2) changing the theme from "cosmo" to
+  "default" (151 KB).
 
 CHANGES IN CHNOSZ 1.1.0 (2017-05-04)
 ------------------------------------

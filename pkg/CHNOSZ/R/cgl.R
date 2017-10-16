@@ -47,8 +47,11 @@ cgl <- function(property = NULL, parameters = NULL, T = 298.15, P = 1) {
       } else {
         # use constant heat capacity if the coefficients are not available
         Cp <- PAR$Cp
-        CpdT <- PAR$Cp*(T - Tr)
+        intCpdT <- PAR$Cp*(T - Tr)
         intCpdlnT <- PAR$Cp*log(T / Tr)
+        # in case Cp is listed as NA, set the integrals to 0 at Tr
+        intCpdT[T==Tr] <- 0
+        intCpdlnT[T==Tr] <- 0
       }
       # volume and its integrals
       if(PAR$name %in% c("quartz", "coesite")) {
@@ -73,7 +76,12 @@ cgl <- function(property = NULL, parameters = NULL, T = 298.15, P = 1) {
         if(property[i] == "V") values[, i] <- V
         if(property[i] == "E") values[, i] <- rep(NA, ncond)
         if(property[i] == "kT") values[, i] <- rep(NA, ncond)
-        if(property[i] == "G") values[, i] <- PAR$G - PAR$S*(T - Tr) + intCpdT - T*intCpdlnT + intVdP
+        if(property[i] == "G") {
+          # calculate S * (T - Tr), but set it to 0 at Tr (in case S is NA)
+          Sterm <- PAR$S*(T - Tr)
+          Sterm[T==Tr] <- 0
+          values[, i] <- PAR$G - Sterm + intCpdT - T*intCpdlnT + intVdP
+        }
         if(property[i] == "H") values[, i] <- PAR$H + intCpdT + intVdP - T*intdVdTdP
         if(property[i] == "S") values[, i] <- PAR$S + intCpdlnT - intdVdTdP
       }

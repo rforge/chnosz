@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-57 (2017-10-14)
+CHANGES IN CHNOSZ 1.1.0-58 (2017-10-16)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -79,22 +79,26 @@ DATABASE UPDATES:
   *everything* (the database and all computational and system settings).
 
 - In add.obigt(), using 'file' without a file suffix now can be used to
-  locate corresponding files (such as CHNOSZ_aq.csv or DEW_aq.csv) in
-  the extdata/OBIGT package directory.
+  locate corresponding files (such as DEW_aq.csv or SUPCRTBL.csv) in the
+  extdata/OBIGT package directory.
 
 - add.obigt() gets new argument 'species' for selecting species to add.
-
-- Add DEW_aq.csv with aqueous species data from the DEW spreadsheet
-  (May 2017 version). Species with data that do not differ from the
-  default database in CHNOSZ are not included. Currently, detailed
-  reference keys and descriptions (in thermo$refs) are given for
-  selected species only.
 
 - Add Berman_cr.csv with names and formulas for minerals whose
   thermodynamic properties are calculated using the Berman, 1988
   equations. The state "cr_Berman" is used to distinguish these
   minerals from the Helgeson data. The parameters themselves are
   stored in extdata/Berman/*.csv.
+
+- Add DEW_aq.csv with aqueous species data from the DEW spreadsheet
+  (May 2017 version). Species with data that do not differ from the
+  default database in CHNOSZ are not included. Currently, detailed
+  reference keys and descriptions (in thermo$refs) are given for
+  selected species only. [Optional Data; not loaded by data(thermo).]
+
+- Add SUPCRTBL.csv with mineral and aqueous species data from
+  spronsbl.dat (http://www.indiana.edu/~hydrogeo/supcrtbl.html), as
+  described by Zimmer et al., 2016. [Optional Data.]
 
 - Update HKF parameters of adenine based on experimental heat capacity
   and volume data (Lowe et al., 2017). Add demo/adenine.R comparing

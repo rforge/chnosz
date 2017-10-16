@@ -21,6 +21,7 @@
 % other common variables
 \newcommand{\T}{\ifelse{latex}{\eqn{T}}{\ifelse{html}{\out{<I>T</I>}}{T}}}
 \newcommand{\P}{\ifelse{latex}{\eqn{P}}{\ifelse{html}{\out{<I>P</I>}}{P}}}
+\newcommand{\logK}{\ifelse{latex}{\eqn{\log K}}{\ifelse{html}{\out{log<i>K</i>}}{log K}}}
 \newcommand{\logfO2}{\ifelse{latex}{\eqn{\log f_{\mathrm{O_{2}}}}}{\ifelse{html}{\out{log<i>f</i><sub>O<sub>2</sub></sub>}}{logfO2}}}
 \newcommand{\logfH2}{\ifelse{latex}{\eqn{\log f_{\mathrm{H_{2}}}}}{\ifelse{html}{\out{log<i>f</i><sub>H<sub>2</sub></sub>}}{logfH2}}}
 \newcommand{\logaH2O}{\ifelse{latex}{\eqn{\log a_{\mathrm{H_{2}O}}}}{\ifelse{html}{\out{log<i>a</i><sub>H<sub>2</sub>O</sub>}}{logaH2O}}}

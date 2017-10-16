@@ -97,7 +97,7 @@ This is useful for constructing e.g. boiling curves for organic compounds.
 Comparison of the output of \code{subcrt} with that of \acronym{SUPCRT92} indicates the two give similar values of properties for neutral aqueous species up to 1000 \degC and 5000 bar.
 Changes were made in CHNOSZ 0.9-9 to improve the calculation of the \eqn{g}{g}- and \eqn{f}{f}-functions (Shock et al., 1992) for the partial derivatives of the omega parameter which are used by the \code{\link{hkf}} function, so thermodynamic properties of charged aqueous species over the temperature range 0 to 1000 \degC are now mostly consistent with \acronym{SUPCRT92}.
 Note, however, that while \acronym{SUPCRT92} limits calculations at Psat to 350 \degC (\dQuote{beyond range of applicability of aqueous species equations}), there is no corresponding limit in place in \code{subcrt} (or \code{\link{hkf}}), so that inapplicable calculations will be performed up to the critical temperature (373.917 \degC) without any warning.
-It is probably for this reason that there is a noticeable jump in the value of logK at Psat shown in the one of the examples (\code{demo("NaCl")}).
+It is probably for this reason that there is a noticeable jump in the value of \logK at Psat shown in the one of the examples (\code{demo("NaCl")}).
 
 A known bug is misidentification of the stable polymorph of some minerals at high temperature; an example of this bug is shown in the \code{\link{stopifnot}} at the end of the skarn example below.
 }

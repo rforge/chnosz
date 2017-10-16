@@ -12,7 +12,7 @@ vignette: >
 bibliography: obigt.bib
 # so that these appear in the bibliography
 nocite: | 
-  @SPRONS92, @SLOP98, @SLOP07, @SLOP15, @CHNOSZ, @JOH92, @WP02, @CWM89, @PRPG97, @TH88, @Kul06, @Sho09
+  @SPRONS92, @SLOP98, @SLOP07, @SLOP15, @CHNOSZ, @JOH92, @WP02, @CWM89, @PRPG97, @TH88, @Kul06, @Sho09, @HP11
 csl: elementa.csl
 ---
 
@@ -39,8 +39,8 @@ setfile <- function(csvfile, dat=NULL) {
   dat <- read.csv(file, as.is=TRUE)
   ## exclude entries for phase transitions
   #dat <- dat[!dat$state %in% c("cr2", "cr3", "cr4", "cr5", "cr6", "cr7", "cr8", "cr9"), ]
-  # the class of substance, followed by number of species
-  class <- gsub("_.*", "", csvfile)
+  # the class of substance (used as section header), followed by number of species
+  class <- gsub(".csv", "", gsub("_.*", "", csvfile))
   substr(class, 1, 1) <- toupper(substr(class, 1, 1))
   paste0("`", class, "` (", nrow(dat), ")")
 }
@@ -107,13 +107,13 @@ filerefs <- function(csvfile, dat=NULL, message=FALSE) {
 ```
 
 This [vignette](index.html), produced on `r Sys.Date()`, documents the sources of thermodynamic data in CHNOSZ version `r sessionInfo()$otherPkgs$CHNOSZ$Version`.
+Running `data(thermo)` creates the default database, which is present in the R session as `thermo$obigt`.
 
-The sections below correspond to CSV data files read by `data(thermo)`.
+The sections below correspond to CSV data files that are stored in the `extdata/OBIGT` package directory and read by `data(thermo)` (except for Optional Data).
 In each section, the primary references (`ref1` in `thermo$obigt`) are listed in chronological order.
 Any secondary references (`ref2`) are listed with bullet points.
 Each reference is followed by the number of species, and a note (from `thermo$refs`).
 Symbols show whether the data were present in the earliest of the sprons92.dat (ø), slop98.dat (\*), slop07.dat (†), or slop15.dat (‡) datafiles for the SUPCRT92 package.
-NOTE: URLs for the slop files and other data files cited below (`JUN92.bs`, `berman.dat`, and the DEW model spreadsheet) are given in the References.
 
 Any additional comments are placed at the beginning of the sections.
 Abbreviations used below are: Cp (heat capacity), GHS (standard Gibbs energy, enthalpy, entropy), HKF (Helgeson-Kirkham-Flowers equations), V (volume), T (temperature), P (pressure).
@@ -121,17 +121,19 @@ Abbreviations used below are: Cp (heat capacity), GHS (standard Gibbs energy, en
 
 # Recent additions (late 2017)
 
-* Mineral data using the [Berman (1988)](https://doi.org/10.1093/petrology/29.2.445) equations are listed under [**Solids** / **Berman**](#berman-107).
+* Mineral data using the [Berman (1988)](https://doi.org/10.1093/petrology/29.2.445) equations are listed under **Solids** / **Berman**.
 
-* Aqueous species data intended for use with the [Deep Earth Water](http://www.dewcommunity.org/) model are listed under [**Optional Data** / **DEW**](#dew-199).
+* Aqueous species data intended for use with the [Deep Earth Water](http://www.dewcommunity.org/) model are listed under **Optional Data** / **DEW**.
 
-# Sources of data {.tabset .tabset-fade .tabset-sticky}
+* Updates included with [SUPCRTBL](http://www.indiana.edu/~hydrogeo/supcrtbl.html) are listed under **Optional Data** / **SUPCRTBL**.
+
+# Sources of data {.tabset .tabset-fade}
 
 <!-- uncomment for full version -->
 Use the tabs below to select a section for viewing.
 Select "All at once" to show all sections.
 
-## Aqueous species {.tabset .tabset-pills .tabset-sticky}
+## Aqueous species {.tabset .tabset-pills}
 
 ### `r setfile("H2O_aq.csv")`
 ```{r H2O_aq, results="asis", echo=FALSE}
@@ -177,7 +179,7 @@ cat("ZnCl<sub>4</sub><sup>-2</sup> was present in sprons92.dat but not in slop98
 ```{r reflist, results="asis", echo=FALSE}
 ```
 
-## Solids {.tabset .tabset-pills .tabset-sticky}
+## Solids {.tabset .tabset-pills}
 
 ### `r setfile("inorganic_cr.csv")`
 ```{r inorganic_cr, results="asis", echo=FALSE}
@@ -202,13 +204,13 @@ cat("The actual data are stored separately (`extdata/Berman/*.csv`).<hr>")
 ```{r reflist, results="asis", echo=FALSE}
 ```
 
-## Liquids {.tabset .tabset-pills .tabset-sticky}
+## Liquids {.tabset .tabset-pills}
 
 ### `r setfile("organic_liq.csv")`
 ```{r reflist, results="asis", echo=FALSE}
 ```
 
-## Gases {.tabset .tabset-pills .tabset-sticky}
+## Gases {.tabset .tabset-pills}
 
 ### `r setfile("inorganic_gas.csv")`
 ```{r reflist, results="asis", echo=FALSE}
@@ -218,15 +220,25 @@ cat("The actual data are stored separately (`extdata/Berman/*.csv`).<hr>")
 ```{r reflist, results="asis", echo=FALSE}
 ```
 
-## Optional Data {.tabset .tabset-pills .tabset-sticky}
+## Optional Data {.tabset .tabset-pills}
 
 ```{r Optional_Data, results="asis", echo=FALSE}
-cat("These files contain optional data updates that are not loaded by default (using `data(thermo)`). To load these data, run `add.obigt('CHNOSZ')` or `add.obigt('DEW')`.\n\n")
+cat("These files contain optional data updates that replace and/or may be inconsistent with other entries in the default database. Use e.g. `add.obigt('SUPCRTBL')` to load the data.\n\n")
 ```
 
 ### `r setfile("DEW_aq.csv")`
 ```{r DEW_aq, results="asis", echo=FALSE}
-cat("The Deep Earth Water (DEW) model extends the applicability of the revised HKF equations of state to 60 kbar. Accuracy of the thermodynamic calculations at these conditions is improved by revised correlations for the <i>a</i><sub>1</sub> HKF parameter, as described by [Sverjensky et al., 2014](https://doi.org/10.1016/j.gca.2013.12.019). The data here were taken from the May 2017 version of the DEW spreadsheet [@DEW17]. The following species are present in the spreadsheet, but are not listed in `DEW_aq.csv` because the parameters are unchanged from the default database in CHNOSZ: B(OH)<sub>3</sub>, Br<sup>-</sup>, Ca<sup>+2</sup>, Cl<sup>-</sup>, Cs<sup>+</sup>, F<sup>-</sup>, H<sup>+</sup>, H<sub>2</sub>, He, I<sup>-</sup>, K<sup>+</sup>, Kr, Li<sup>+</sup>, Mg<sup>+2</sup>, Na<sup>+</sup>, Ne, O<sub>2</sub>, Rb<sup>+</sup>, Rn.<hr>")
+cat("The [Deep Earth Water](http://www.dewcommunity.org/) (DEW) model extends the applicability of the revised HKF equations of state to 60 kbar. Accuracy of the thermodynamic calculations at these conditions is improved by revised correlations for the <i>a</i><sub>1</sub> HKF parameter, as described by [Sverjensky et al., 2014](https://doi.org/10.1016/j.gca.2013.12.019). The data here were taken from the May 2017 version of the DEW spreadsheet ([Dew Model, 2017](http://www.dewcommunity.org/resources.html)). The following species are present in the spreadsheet, but are not listed in `DEW_aq.csv` because the parameters are unchanged from the default database in CHNOSZ: B(OH)<sub>3</sub>, Br<sup>-</sup>, Ca<sup>+2</sup>, Cl<sup>-</sup>, Cs<sup>+</sup>, F<sup>-</sup>, H<sup>+</sup>, H<sub>2</sub>, He, I<sup>-</sup>, K<sup>+</sup>, Kr, Li<sup>+</sup>, Mg<sup>+2</sup>, Na<sup>+</sup>, Ne, O<sub>2</sub>, Rb<sup>+</sup>, Rn.<hr>")
+```
+
+```{r noreflist, results="asis", echo=FALSE}
+```
+
+### `r setfile("SUPCRTBL.csv")`
+```{r SUPCRTBL, results="asis", echo=FALSE}
+cat("<a href=http://www.indiana.edu/~hydrogeo/supcrtbl.html>SUPCRTBL</a> is a modification and data update for the SUPCRT92 package ([Zimmer et al., 2016](https://doi.org/10.1016/j.cageo.2016.02.013)). Data for SiO<sub>2(*aq*)</sub> were updated to reflect the higher observed solubility of quartz compared to the SUPCRT92 dataset, and other aqueous species and minerals relevant to environmental geochemistry were added.\n\n")
+cat("NOTE 1: The SUPCRTBL modifications apply the [Holland and Powell (2011)](https://doi.org/10.1111/j.1525-1314.2010.00923.x) equations and dataset for minerals, which are not available in CHNOSZ. As an alternative to the default dataset of [Helgeson et al. (1978)](http://www.worldcat.org/oclc/13594862), CHNOSZ offers the [Berman (1988)](https://doi.org/10.1093/petrology/29.2.445) formulation (see the **Solids** / **Berman** section of this vignette).\n")
+cat("NOTE 2: Although [Zimmer et al. (2016)](https://doi.org/10.1016/j.cageo.2016.02.013) remark that properties of HSiO<sub>3</sub><sup>-</sup> were recalculated, the values in `spronsbl.dat` ([downloaded here](http://www.indiana.edu/~hydrogeo/SUPCRTBL_linux.zip); file dated 2016-03-01) are identical to those in [Sverjensky et al. (1997)](https://doi.org/10.1016/S0016-7037(97)00009-4). Those data are not included here (they are part of the default database of CHNOSZ).<hr>")
 ```
 
 ```{r noreflist, results="asis", echo=FALSE}
@@ -234,7 +246,7 @@ cat("The Deep Earth Water (DEW) model extends the applicability of the revised H
 
 ### `r setfile("CHNOSZ_aq.csv")`
 ```{r CHNOSZ_aq, results="asis", echo=FALSE}
-cat("The primary aqueous silica species in CHNSOZ is SiO<sub>2</sub> ([Shock et al., 1989](https://doi.org/10.1016/0016-7037(89)90341-4)). The pseudospecies H<sub>4</sub>SiO<sub>4</sub> is used to make activity diagrams with *a*<sub>H<sub>4</sub>SiO<sub>4</sub></sub> as a variable. The GHS and HKF parameters for this pseudospecies were calculated using CHNOSZ; see the vignette [*Regressing thermodynamic data*](eos-regress.html) for more information.\n\n")
+cat("The primary aqueous silica species in CHNSOZ is SiO<sub>2</sub> ([Shock et al., 1989](https://doi.org/10.1016/0016-7037(89)90341-4)). The pseudospecies H<sub>4</sub>SiO<sub>4</sub> is used to make activity diagrams with *a*<sub>H<sub>4</sub>SiO<sub>4</sub></sub> as a variable. The GHS and HKF parameters for this pseudospecies were calculated using CHNOSZ; see the vignette [*Regressing thermodynamic data*](eos-regress.html) for more information.<hr>")
 ```
 
 ```{r noreflist, results="asis", echo=FALSE}

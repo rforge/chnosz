@@ -35,26 +35,26 @@ Demos that are displayed on the CHNOSZ website (\url{http://chnosz.net/demos}) a
 See the comments in the source code for more information about each demo.
 
   \tabular{ll}{
-    \code{sources} \tab cross-check the reference list with the thermodynamic database \cr
-    \code{protein.equil} \tab chemical activities of two proteins in metastable equilibrium (Dick and Shock, 2011) \cr
-    \code{affinity} \tab affinities of metabolic reactions and amino acid synthesis (Amend and Shock, 1998, 2001) \cr
-    \code{NaCl} \tab * equilibrium constant for aqueous NaCl dissociation (Shock et al., 1992) \cr
-    \code{density} \tab * density of \H2O, inverted from IAPWS-95 equations (\code{\link{rho.IAPWS95}}) \cr
-    \code{ORP} \tab * temperature dependence of oxidation-reduction potential for redox standards \cr
-    \code{revisit} \tab * coefficient of variation of metastable equilibrium activities of proteins \cr
-    \code{findit} \tab * minimize the standard deviation of logarithms of activities of sulfur species \cr
+    \code{sources} \tab Cross-check the reference list with the thermodynamic database \cr
+    \code{protein.equil} \tab Chemical activities of two proteins in metastable equilibrium (Dick and Shock, 2011) \cr
+    \code{affinity} \tab Affinities of metabolic reactions and amino acid synthesis (Amend and Shock, 1998, 2001) \cr
+    \code{NaCl} \tab * Equilibrium constant for aqueous NaCl dissociation (Shock et al., 1992) \cr
+    \code{density} \tab * Density of \H2O, inverted from IAPWS-95 equations (\code{\link{rho.IAPWS95}}) \cr
+    \code{ORP} \tab * Temperature dependence of oxidation-reduction potential for redox standards \cr
+    \code{revisit} \tab * Coefficient of variation of metastable equilibrium activities of proteins \cr
+    \code{findit} \tab * Minimize the standard deviation of logarithms of activities of sulfur species \cr
     \code{ionize} \tab ionize.aa(): contour plots of net charge and ionization properties of LYSC_CHICK \cr
-    \code{buffer} \tab  * minerals and aqueous species as buffers of hydrogen fugacity (Schulte and Shock, 1995) \cr
-    \code{protbuff} \tab chemical activities buffered by thiol peroxidases or sigma factors \cr
-    \code{yeastgfp} \tab * subcellular locations: log fO2 - log aH2O and log a - log fO2 diagrams (Dick, 2009) \cr
+    \code{buffer} \tab  * Minerals and aqueous species as buffers of hydrogen fugacity (Schulte and Shock, 1995) \cr
+    \code{protbuff} \tab Chemical activities buffered by thiol peroxidases or sigma factors \cr
+    \code{yeastgfp} \tab * Subcellular locations: log fO2 - log aH2O and log a - log fO2 diagrams (Dick, 2009) \cr
     \code{mosaic} \tab * Eh-pH diagram with two sets of changing basis species (Garrels and Christ, 1965) \cr
-    \code{copper} \tab * another example of \code{\link{mosaic}}: complexation of Cu with glycine (Aksu and Doyle, 2001) \cr
-    \code{solubility} \tab * solubility of calcite (cf. Manning et al., 2013) or \CO2 (cf. Stumm and Morgan, 1996) \cr
+    \code{copper} \tab * Another example of \code{\link{mosaic}}: complexation of Cu with glycine (Aksu and Doyle, 2001) \cr
+    \code{solubility} \tab * Solubility of calcite (cf. Manning et al., 2013) or \CO2 (cf. Stumm and Morgan, 1996) \cr
     \code{wjd} \tab * Gibbs energy minimization: prebiological atmospheres (Dayhoff et al., 1964) and cell periphery of yeast \cr
-    \code{dehydration} \tab * log K of dehydration reactions; SVG file contains tooltips and links \cr
-    \code{bugstab} \tab * formation potential of microbial proteins in colorectal cancer (Dick, 2016) \cr
-    \code{Shh} \tab * affinities of transcription factors relative to Sonic hedgehog (Dick, 2015) \cr
-    \code{activity_ratios} \tab * mineral stability plots with activity ratios on the axes \cr
+    \code{dehydration} \tab * \logK of dehydration reactions; SVG file contains tooltips and links \cr
+    \code{bugstab} \tab * Formation potential of microbial proteins in colorectal cancer (Dick, 2016) \cr
+    \code{Shh} \tab * Affinities of transcription factors relative to Sonic hedgehog (Dick, 2015) \cr
+    \code{activity_ratios} \tab * Mineral stability plots with activity ratios on the axes \cr
     \code{adenine} \tab * HKF parameters regressed from heat capacity and volume of aqueous adenine (Lowe et al., 2017) \cr
     \code{DEW} \tab * Deep Earth Water (DEW) model for high pressures (Sverjensky et al., 2014a and 2014b) \cr
     \code{lambda} \tab * Effects of lambda transition on thermodynamic properties of quartz (Berman, 1988) \cr

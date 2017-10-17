@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-58 (2017-10-16)
+CHANGES IN CHNOSZ 1.1.0-59 (2017-10-17)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -94,11 +94,12 @@ DATABASE UPDATES:
   (May 2017 version). Species with data that do not differ from the
   default database in CHNOSZ are not included. Currently, detailed
   reference keys and descriptions (in thermo$refs) are given for
-  selected species only. [Optional Data; not loaded by data(thermo).]
+  selected species only. [Optional Data; not loaded by data(thermo)]
 
-- Add SUPCRTBL.csv with mineral and aqueous species data from
-  spronsbl.dat (http://www.indiana.edu/~hydrogeo/supcrtbl.html), as
-  described by Zimmer et al., 2016. [Optional Data.]
+- Add SUPCRTBL.csv with mineral and aqueous species data compiled by
+  Zimmer et al., 2016. Data were taken from original references or
+  from spronsbl.dat (http://www.indiana.edu/~hydrogeo/supcrtbl.html).
+  [Optional Data]
 
 - Update HKF parameters of adenine based on experimental heat capacity
   and volume data (Lowe et al., 2017). Add demo/adenine.R comparing

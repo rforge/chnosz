@@ -73,7 +73,7 @@ info.text <- function(ispecies) {
   return(out)
 }
 
-info.character <- function(species, state=NULL, check.protein=TRUE, grep.state=FALSE) {
+info.character <- function(species, state=NULL, check.protein=TRUE) {
   # returns the rownumbers of thermo$obigt having an exact match of 'species' to
   # thermo$obigt$[species|abbrv|formula] or NA otherwise
   # a match to thermo$obigt$state is also required if 'state' is not NULL
@@ -113,8 +113,7 @@ info.character <- function(species, state=NULL, check.protein=TRUE, grep.state=F
     # special treatment for H2O: aq retrieves the liq
     if(species %in% c("H2O", "water") & state=="aq") state <- "liq"
     # the matches for both species and state
-    if(grep.state) matches.state <- matches.species & grepl(state, thermo$obigt$state)
-    else matches.state <- matches.species & state == thermo$obigt$state
+    matches.state <- matches.species & state == thermo$obigt$state
     if(!any(matches.state)) {
       # the requested state is not available for this species
       available.states <- thermo$obigt$state[matches.species]

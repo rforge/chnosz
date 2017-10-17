@@ -107,7 +107,7 @@ filerefs <- function(csvfile, dat=NULL, message=FALSE) {
 ```
 
 This [vignette](index.html), produced on `r Sys.Date()`, documents the sources of thermodynamic data in CHNOSZ version `r sessionInfo()$otherPkgs$CHNOSZ$Version`.
-Running `data(thermo)` creates the default database, which is present in the R session as `thermo$obigt`.
+Running `data(thermo)` creates the default database (`thermo$obigt`) in the R session.
 
 The sections below correspond to CSV data files that are stored in the `extdata/OBIGT` package directory and read by `data(thermo)` (except for Optional Data).
 In each section, the primary references (`ref1` in `thermo$obigt`) are listed in chronological order.
@@ -236,9 +236,10 @@ cat("The [Deep Earth Water](http://www.dewcommunity.org/) (DEW) model extends th
 
 ### `r setfile("SUPCRTBL.csv")`
 ```{r SUPCRTBL, results="asis", echo=FALSE}
-cat("<a href=http://www.indiana.edu/~hydrogeo/supcrtbl.html>SUPCRTBL</a> is a modification and data update for the SUPCRT92 package ([Zimmer et al., 2016](https://doi.org/10.1016/j.cageo.2016.02.013)). Data for SiO<sub>2(*aq*)</sub> were updated to reflect the higher observed solubility of quartz compared to the SUPCRT92 dataset, and other aqueous species and minerals relevant to environmental geochemistry were added.\n\n")
-cat("NOTE 1: The SUPCRTBL modifications apply the [Holland and Powell (2011)](https://doi.org/10.1111/j.1525-1314.2010.00923.x) equations and dataset for minerals, which are not available in CHNOSZ. As an alternative to the default dataset of [Helgeson et al. (1978)](http://www.worldcat.org/oclc/13594862), CHNOSZ offers the [Berman (1988)](https://doi.org/10.1093/petrology/29.2.445) formulation (see the **Solids** / **Berman** section of this vignette).\n")
-cat("NOTE 2: Although [Zimmer et al. (2016)](https://doi.org/10.1016/j.cageo.2016.02.013) remark that properties of HSiO<sub>3</sub><sup>-</sup> were recalculated, the values in `spronsbl.dat` ([downloaded here](http://www.indiana.edu/~hydrogeo/SUPCRTBL_linux.zip); file dated 2016-03-01) are identical to those in [Sverjensky et al. (1997)](https://doi.org/10.1016/S0016-7037(97)00009-4). Those data are not included here (they are part of the default database of CHNOSZ).<hr>")
+cat("<a href=http://www.indiana.edu/~hydrogeo/supcrtbl.html>SUPCRTBL</a> is a modification and data update for the SUPCRT92 package ([Zimmer et al., 2016](https://doi.org/10.1016/j.cageo.2016.02.013)). Data for SiO<sub>2(*aq*)</sub> were updated to reflect the higher observed solubility of quartz compared to the SUPCRT92 dataset, and other aqueous species and minerals relevant to environmental geochemistry were added. The data provided in CHNOSZ were taken from the original references cited below or, where indicated, from `spronsbl.dat` ([downloaded here](http://www.indiana.edu/~hydrogeo/SUPCRTBL_linux.zip); file dated 2016-03-01).\n\n")
+cat("NOTE 1: The SUPCRTBL modifications apply the [Holland and Powell (2011)](https://doi.org/10.1111/j.1525-1314.2010.00923.x) equations and dataset for minerals, which are not available in CHNOSZ. As an alternative to the default dataset of [Helgeson et al. (1978)](http://www.worldcat.org/oclc/13594862), CHNOSZ offers the dataset of [Berman (1988)](https://doi.org/10.1093/petrology/29.2.445) (see the **Solids** / **Berman** section of this vignette).\n")
+cat("NOTE 2: The minerals listed below are represented in the compilation of Zimmer et al. (2016) by constant volume and, where available, a 4-term heat capacity equation that, unlike the complete Holland and Powell formulation, **is** compatible with CHNOSZ.\n")
+cat("NOTE 3: Although Zimmer et al. (2016) remark that properties of HSiO<sub>3</sub><sup>-</sup> were recalculated, the values in `spronsbl.dat` are identical to those in [Sverjensky et al. (1997)](https://doi.org/10.1016/S0016-7037(97)00009-4). Those data are not included here (they are part of the default database of CHNOSZ).<hr>")
 ```
 
 ```{r noreflist, results="asis", echo=FALSE}

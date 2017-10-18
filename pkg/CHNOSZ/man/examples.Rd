@@ -41,8 +41,8 @@ See the comments in the source code for more information about each demo.
     \code{NaCl} \tab * Equilibrium constant for aqueous NaCl dissociation (Shock et al., 1992) \cr
     \code{density} \tab * Density of \H2O, inverted from IAPWS-95 equations (\code{\link{rho.IAPWS95}}) \cr
     \code{ORP} \tab * Temperature dependence of oxidation-reduction potential for redox standards \cr
-    \code{revisit} \tab * Coefficient of variation of metastable equilibrium activities of proteins \cr
-    \code{findit} \tab * Minimize the standard deviation of logarithms of activities of sulfur species \cr
+    \code{revisit} \tab Coefficient of variation of metastable equilibrium activities of proteins \cr
+    \code{findit} \tab Minimize the standard deviation of logarithms of activities of sulfur species \cr
     \code{ionize} \tab ionize.aa(): contour plots of net charge and ionization properties of LYSC_CHICK \cr
     \code{buffer} \tab  * Minerals and aqueous species as buffers of hydrogen fugacity (Schulte and Shock, 1995) \cr
     \code{protbuff} \tab Chemical activities buffered by thiol peroxidases or sigma factors \cr
@@ -59,6 +59,7 @@ See the comments in the source code for more information about each demo.
     \code{DEW} \tab * Deep Earth Water (DEW) model for high pressures (Sverjensky et al., 2014a and 2014b) \cr
     \code{lambda} \tab * Effects of lambda transition on thermodynamic properties of quartz (Berman, 1988) \cr
     \code{TCA} \tab * Standard Gibbs energies of the tricarboxylic (citric) acid cycle (Canovas and Shock, 2016) \cr
+    \code{go-IU} \tab * Diagrams using thermodynamic data in the SUPCRTBL compilation (Zimmer et al., 2016) \cr
   }
 
 }
@@ -99,6 +100,8 @@ Stumm, W. and Morgan, J. J. (1996) \emph{Aquatic Chemistry: Chemical Equilibria 
 Sverjensky, D. A., Harrison, B. and Azzolini, D. (2014a) Water in the deep Earth: The dielectric constant and the solubilities of quartz and corundum to 60 kb and 1,200 \degC. \emph{Geochim. Cosmochim. Acta} \bold{129}, 125--145. \url{https://doi.org/10.1016/j.gca.2013.12.019}
 
 Sverjensky, D. A., Stagno, V. and Huang, F. (2014b) Important role for organic carbon in subduction-zone fluids in the deep carbon cycle. \emph{Nat. Geosci.} \bold{7}, 909--913. \url{https://doi.org/10.1038/ngeo2291}
+
+Zimmer, K., Zhang, Y., Lu, P., Chen, Y., Zhang, G., Dalkilic, M. and Zhu, C. (2016) SUPCRTBL: A revised and extended thermodynamic dataset and software package of SUPCRT92. \emph{Comp. Geosci.} \bold{90}, 97--111. \url{https://doi.org/10.1016/j.cageo.2016.02.013}
 }
 
 

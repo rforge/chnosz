@@ -2,19 +2,21 @@
 # write descriptions of chemical species, properties, reactions, conditions
 # modified from describe(), axis.label()  20120121 jmd
 
-expr.species <- function(species, state="", log="", value=NULL) {
+expr.species <- function(species, state="", log="", value=NULL, use.makeup=FALSE) {
   # make plotting expressions for chemical formulas
   # that include subscripts, superscripts (if charged)
   # and optionally designations of states +/- loga or logf prefix
   if(length(species) > 1) (stop("more than one species"))
   # convert to character so that "1", "2", etc. don't get converted to chemical formulas via makeup()
   species <- as.character(species)
-  # the counts of elements in the species:
-  # here we don't care too much if an "element" is a real element
-  # (listed in thermo$element), so we suppress warnings
-  elements <- suppressWarnings(try(makeup(species), TRUE))
-  # if `species` can't be parsed as a chemical formula, we don't do the formula formatting
-  if(identical(class(elements), "try-error")) expr <- species
+  if(use.makeup) {
+    # the counts of elements in the species:
+    # here we don't care too much if an "element" is a real element
+    # (listed in thermo$element), so we suppress warnings
+    elements <- suppressWarnings(try(makeup(species), TRUE))
+  } else elements <- split.formula(species)
+  # if species can't be parsed as a chemical formula, we don't do the formula formatting
+  if(identical(class(elements), "try-error") | !is.numeric(elements)) expr <- species
   else {
     # where we'll put the expression
     expr <- ""
@@ -194,15 +196,18 @@ describe.basis <- function(basis=get("thermo")$basis, ibasis=1:nrow(basis), digi
   return(as.expression(desc))
 }
 
-describe.property <- function(property=NULL, value=NULL, digits=1, oneline=FALSE, ret.val=FALSE) {
+describe.property <- function(property=NULL, value=NULL, digits=0, oneline=FALSE, ret.val=FALSE) {
   # make expressions for pressure, temperature, other conditions
   if(is.null(property) | is.null(value)) stop("property or value is NULL")
   propexpr <- valexpr <- character()
   for(i in 1:length(property)) {
     propexpr <- c(propexpr, expr.property(property[i]))
-    thisvalue <- format(round(value[i], digits), nsmall=digits)
-    thisunits <- expr.units(property[i])
-    thisvalexpr <- substitute(a~b, list(a=thisvalue, b=thisunits))
+    if(value[i]=="Psat") thisvalexpr <- quote(italic(P)[sat])
+    else {
+      thisvalue <- format(round(as.numeric(value[i]), digits), nsmall=digits)
+      thisunits <- expr.units(property[i])
+      thisvalexpr <- substitute(a~b, list(a=thisvalue, b=thisunits))
+    }
     valexpr <- c(valexpr, as.expression(thisvalexpr))
   } 
   # with ret.val=TRUE, return just the value with the units (e.g. 55 degC)
@@ -279,4 +284,55 @@ syslab <- function(system = c("K2O", "Al2O3", "SiO2", "H2O"), dash="\u2013") {
     if(i==1) lab <- expr else lab <- substitute(a*dash*b, list(a=lab, dash=dash, b=expr))
   }
   lab
+}
+
+### unexported function ###
+
+split.formula <- function(formula) {
+  ## like makeup(), but split apart the formula based on
+  ## numbers (subscripts); don't scan for elemental symbols 20171018
+  # if there are no numbers or charge, return the formula as-is
+  if(! (grepl("[0-9]", formula) | grepl("\\+[0-9]?$", formula) | grepl("-[0-9]?$", formula))) return(formula)
+  # first split off charge
+  # (assume that no subscripts are signed)
+  Z <- 0
+  hascharge <- grepl("\\+[0-9]?$", formula) | grepl("-[0-9]?$", formula)
+  if(hascharge) {
+    # for charge, we match + or - followed by zero or more numbers at the end of the string
+    if(grepl("\\+[0-9]?$", formula)) {
+      fsplit <- strsplit(formula, "+", fixed=TRUE)[[1]]
+      if(is.na(fsplit[2])) Z <- 1 else Z <- as.numeric(fsplit[2])
+    }
+    if(grepl("-[0-9]?$", formula)) {
+      fsplit <- strsplit(formula, "-")[[1]]
+      if(is.na(fsplit[2])) Z <- -1 else Z <- -as.numeric(fsplit[2])
+    }
+    formula <- fsplit[1]
+  }
+  # to get strings, replace all numbers with placeholder (#), then split on that symbol
+  # the outer gsub is to replace multiple #'s with one
+  numhash <- gsub("#+", "#", gsub("[0-9]", "#", formula))
+  strings <- strsplit(numhash, "#")[[1]]
+  # to get coefficients, replace all characters (non-numbers) with placeholder, then split
+  charhash <- gsub("#+", "#", gsub("[^0-9]", "#", formula))
+  coeffs <- strsplit(charhash, "#")[[1]]
+  # if the first coefficient is empty, remove it
+  if(coeffs[1]=="") coeffs <- tail(coeffs, -1) else {
+    # if the first string is empty, treat the first coefficient as a leading string (e.g. in 2-octanone)
+    if(strings[1]=="") {
+      strings[2] <- paste0(coeffs[1], strings[2])
+      coeffs <- tail(coeffs, -1)
+      strings <- tail(strings, -1)
+    }
+  }
+  # if we're left with no coefficients, just return the string
+  if(length(coeffs)==0 & Z==0) return(strings)
+  # if we're missing a coefficient, append one
+  if(length(coeffs) < length(strings)) coeffs <- c(coeffs, 1)
+  # use strings as names for the numeric coefficients
+  coeffs <- as.numeric(coeffs)
+  names(coeffs) <- strings
+  # include charge if it is not 0
+  if(Z!=0) coeffs <- c(coeffs, Z=Z)
+  return(coeffs)
 }

@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-59 (2017-10-17)
+CHANGES IN CHNOSZ 1.1.0-60 (2017-10-18)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -23,7 +23,7 @@ MAJOR CHANGES:
 
 - In equilibrate(), it is now possible to combine affinity calculations
   with variable activity of the balancing basis species (loga.balance).
-  For example, in the last plot of the DEW demo, the affinity transect
+  For example, in the last plot of the DEW demo, the calculation
   involves simultaneously varying temperature and logfO2 (given as
   arguments to affinity()) as well as total concentration of carbon
   (given by the loga.balance argument in equilibrate()).
@@ -99,7 +99,7 @@ DATABASE UPDATES:
 - Add SUPCRTBL.csv with mineral and aqueous species data compiled by
   Zimmer et al., 2016. Data were taken from original references or
   from spronsbl.dat (http://www.indiana.edu/~hydrogeo/supcrtbl.html).
-  [Optional Data]
+  The new demo/go-IU.R uses these data. [Optional Data]
 
 - Update HKF parameters of adenine based on experimental heat capacity
   and volume data (Lowe et al., 2017). Add demo/adenine.R comparing

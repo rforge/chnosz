@@ -118,9 +118,13 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
     sinfo <- numeric()
     newstate <- character()
     for(i in 1:length(species)) {
-      mysearch <- species[i]
-      if(can.be.numeric(mysearch)) mysearch <- thermo$obigt$name[as.numeric(mysearch)]
-      si <- info.character(mysearch, state[i])
+      # get the species index for a named species
+      if(!can.be.numeric(species[i])) si <- info.character(species[i], state[i])
+      else {
+        # check that a numeric argument is a rownumber of thermo$obigt
+        si <- as.numeric(species[i])
+        if(!si %in% 1:nrow(thermo$obigt)) stop(paste(species[i], "is not a row number of thermo$obigt"))
+      }
       # that could have the side-effect of adding a protein; re-read thermo
       thermo <- get("thermo", "CHNOSZ")
       if(is.na(si[1])) stop('no info found for ',species[i],' ',state[i])

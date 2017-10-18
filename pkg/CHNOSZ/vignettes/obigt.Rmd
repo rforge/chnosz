@@ -16,10 +16,6 @@ nocite: |
 csl: elementa.csl
 ---
 
-<!-- The bare-bones version (small, for submission to CRAN) uses html_vignette. -->
-<!-- The full version (on chnosz.net) uses html_document; also uncomment the theme and css above,
-       the note under "Sources of data", and the "All at once" section below. -->
-
 ```{r library_CHNOSZ, include=FALSE}
 library(CHNOSZ)
 ```
@@ -129,7 +125,6 @@ Abbreviations used below are: Cp (heat capacity), GHS (standard Gibbs energy, en
 
 # Sources of data {.tabset .tabset-fade}
 
-<!-- uncomment for full version -->
 Use the tabs below to select a section for viewing.
 Select "All at once" to show all sections.
 
@@ -157,10 +152,6 @@ used <- character()
 ```
 ```{r reflist, results="asis", echo=FALSE}
 used <- c(used, filerefs(csvfile))
-```
-```{r noreflist, results="asis", echo=FALSE}
-# run filerefs for optional data source (don't add to used list)
-nothing <- filerefs(csvfile)
 ```
 
 ### `r setfile("inorganic_aq.csv")`
@@ -231,18 +222,24 @@ cat("These files contain optional data updates that replace and/or may be incons
 cat("The [Deep Earth Water](http://www.dewcommunity.org/) (DEW) model extends the applicability of the revised HKF equations of state to 60 kbar. Accuracy of the thermodynamic calculations at these conditions is improved by revised correlations for the <i>a</i><sub>1</sub> HKF parameter, as described by [Sverjensky et al., 2014](https://doi.org/10.1016/j.gca.2013.12.019). The data here were taken from the May 2017 version of the DEW spreadsheet ([Dew Model, 2017](http://www.dewcommunity.org/resources.html)). The following species are present in the spreadsheet, but are not listed in `DEW_aq.csv` because the parameters are unchanged from the default database in CHNOSZ: B(OH)<sub>3</sub>, Br<sup>-</sup>, Ca<sup>+2</sup>, Cl<sup>-</sup>, Cs<sup>+</sup>, F<sup>-</sup>, H<sup>+</sup>, H<sub>2</sub>, He, I<sup>-</sup>, K<sup>+</sup>, Kr, Li<sup>+</sup>, Mg<sup>+2</sup>, Na<sup>+</sup>, Ne, O<sub>2</sub>, Rb<sup>+</sup>, Rn.<hr>")
 ```
 
-```{r noreflist, results="asis", echo=FALSE}
+```{r optused, include=FALSE}
+# initialize the list of used optional data
+optused <- character()
+```
+```{r optreflist, results="asis", echo=FALSE}
+# run filerefs for optional data sources
+optused <- c(optused, filerefs(csvfile))
 ```
 
 ### `r setfile("SUPCRTBL.csv")`
 ```{r SUPCRTBL, results="asis", echo=FALSE}
 cat("<a href=http://www.indiana.edu/~hydrogeo/supcrtbl.html>SUPCRTBL</a> is a modification and data update for the SUPCRT92 package ([Zimmer et al., 2016](https://doi.org/10.1016/j.cageo.2016.02.013)). Data for SiO<sub>2(*aq*)</sub> were updated to reflect the higher observed solubility of quartz compared to the SUPCRT92 dataset, and other aqueous species and minerals relevant to environmental geochemistry were added. The data provided in CHNOSZ were taken from the original references cited below or, where indicated, from `spronsbl.dat` ([downloaded here](http://www.indiana.edu/~hydrogeo/SUPCRTBL_linux.zip); file dated 2016-03-01).\n\n")
-cat("NOTE 1: The SUPCRTBL modifications apply the [Holland and Powell (2011)](https://doi.org/10.1111/j.1525-1314.2010.00923.x) equations and dataset for minerals, which are not available in CHNOSZ. As an alternative to the default dataset of [Helgeson et al. (1978)](http://www.worldcat.org/oclc/13594862), CHNOSZ offers the dataset of [Berman (1988)](https://doi.org/10.1093/petrology/29.2.445) (see the **Solids** / **Berman** section of this vignette).\n")
+cat("NOTE 1: The SUPCRTBL modifications apply the [Holland and Powell (2011)](https://doi.org/10.1111/j.1525-1314.2010.00923.x) equations and dataset for minerals, which are not available in CHNOSZ. Instead, as an alternative to the default dataset of [Helgeson et al. (1978)](http://www.worldcat.org/oclc/13594862), CHNOSZ offers the dataset of [Berman (1988)](https://doi.org/10.1093/petrology/29.2.445) (see the **Solids** / **Berman** section of this vignette).\n")
 cat("NOTE 2: The minerals listed below are represented in the compilation of Zimmer et al. (2016) by constant volume and, where available, a 4-term heat capacity equation that, unlike the complete Holland and Powell formulation, **is** compatible with CHNOSZ.\n")
 cat("NOTE 3: Although Zimmer et al. (2016) remark that properties of HSiO<sub>3</sub><sup>-</sup> were recalculated, the values in `spronsbl.dat` are identical to those in [Sverjensky et al. (1997)](https://doi.org/10.1016/S0016-7037(97)00009-4). Those data are not included here (they are part of the default database of CHNOSZ).<hr>")
 ```
 
-```{r noreflist, results="asis", echo=FALSE}
+```{r optreflist, results="asis", echo=FALSE}
 ```
 
 ### `r setfile("CHNOSZ_aq.csv")`
@@ -250,10 +247,8 @@ cat("NOTE 3: Although Zimmer et al. (2016) remark that properties of HSiO<sub>3<
 cat("The primary aqueous silica species in CHNSOZ is SiO<sub>2</sub> ([Shock et al., 1989](https://doi.org/10.1016/0016-7037(89)90341-4)). The pseudospecies H<sub>4</sub>SiO<sub>4</sub> is used to make activity diagrams with *a*<sub>H<sub>4</sub>SiO<sub>4</sub></sub> as a variable. The GHS and HKF parameters for this pseudospecies were calculated using CHNOSZ; see the vignette [*Regressing thermodynamic data*](eos-regress.html) for more information.<hr>")
 ```
 
-```{r noreflist, results="asis", echo=FALSE}
+```{r optreflist, results="asis", echo=FALSE}
 ```
-
-<!-- uncomment for full version -->
 
 ## All at once
 
@@ -329,22 +324,29 @@ used2 <- c(used2, filerefs(csvfile))
 ```{r DEW_aq, results="asis", echo=FALSE}
 ```
 
-```{r noreflist, results="asis", echo=FALSE}
+```{r reflist2, results="asis", echo=FALSE}
+```
+
+#### `r setfile("SUPCRTBL.csv")`
+```{r SUPCRTBL, results="asis", echo=FALSE}
+```
+
+```{r reflist2, results="asis", echo=FALSE}
 ```
 
 #### `r setfile("CHNOSZ_aq.csv")`
 ```{r CHNOSZ_aq, results="asis", echo=FALSE}
 ```
 
-```{r noreflist, results="asis", echo=FALSE}
-```
-
-```{r check_used_used2, results="asis", echo=FALSE}
-if(length(used) != length(used2)) cat(paste0("**WARNING: Tabbed list has ", length(used), " species but 'All at once list' has ", length(used2),".**\n\n"))
+```{r reflist2, results="asis", echo=FALSE}
 ```
 
 # Total count of species
 
-`r length(used)` of `r nrow(thermo$obigt)` entries in `thermo$obigt` are documented here.
+`r length(used)` of `r nrow(thermo$obigt)` entries in `thermo$obigt` and `r length(optused)` optional data entries are documented here.
+
+```{r check_used_used2, results="asis", echo=FALSE}
+if(length(used) + length(optused) != length(used2)) cat(paste0("**WARNING: Tabbed list has ", length(used) + length(optused), " species but 'All at once list' has ", length(used2),".**\n\n"))
+```
 
 # References

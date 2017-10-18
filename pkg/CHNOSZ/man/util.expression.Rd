@@ -14,13 +14,13 @@
 \description{Generate expressions suitable for axis labels and plot legends describing chemical species, properties and reactions.}
 
 \usage{
-  expr.species(species, state = "", log = "", value=NULL)
+  expr.species(species, state = "", log = "", value=NULL, use.makeup=FALSE)
   expr.property(property)
   expr.units(property, prefix = "", per = "mol")
   axis.label(label, units = NULL, basis = get("thermo")$basis, prefix = "")
   describe.basis(basis = get("thermo")$basis, ibasis = 1:nrow(basis),
     digits = 1, oneline = FALSE)
-  describe.property(property, value, digits = 1, oneline = FALSE,
+  describe.property(property, value, digits = 0, oneline = FALSE,
     ret.val = FALSE)
   describe.reaction(reaction, iname = numeric(), states = NULL)
   syslab(system = c("K2O", "Al2O3", "SiO2", "H2O"), dash="\u2013")
@@ -32,6 +32,7 @@
   \item{state}{character, designation of physical state}
   \item{log}{character, designation of physical state (for logarithm of activity or fugacity)}
   \item{value}{numeric, logarithm of activity or fugacity of species, or value of other property}
+  \item{use.makeup}{logical, use \code{\link{makeup}} to count the elements?}
   \item{property}{character, description of chemical property}
   \item{prefix}{character, prefix for units}
   \item{per}{character, denominator in units}
@@ -52,7 +53,12 @@
 
 \details{
 
-  The \code{expr.*} functions create \code{\link{expression}}s using the \code{\link{plotmath}} syntax to describe the names and states and logarithms of activity or fugacity of chemical species, conditions including temperature and pressure and chemical properties such as Gibbs energy and volume. \code{expr.species} takes as input the formula of a single chemical \code{species} and constructs an expression including subscripted coefficients, and a suffixed designation of physical \code{state} (italicized, in parentheses) if provided. If \code{log} designates a physical state (as in \code{\link{thermo}$obigt$state}), the expression includes a \samp{log} prefix, followed by \samp{f} for fugacity of gaseous species, or \samp{a} for activity of species in all other states.
+The \code{expr.*} functions create \code{\link{expression}}s using the \code{\link{plotmath}} syntax to describe the names and states and logarithms of activity or fugacity of chemical species, conditions including temperature and pressure and chemical properties such as Gibbs energy and volume.
+
+\code{expr.species} takes as input the formula of a single chemical \code{species} and constructs an expression including subscripted coefficients, and a suffixed designation of physical \code{state} (italicized, in parentheses) if provided.
+If \code{log} designates a physical state (as in \code{\link{thermo}$obigt$state}), the expression includes a \samp{log} prefix, followed by \samp{f} for fugacity of gaseous species, or \samp{a} for activity of species in all other states.
+Set \code{use.makeup} to TRUE to use \code{\link{makeup}} to parse the chemical formula.
+This can have the undesirable effect of reordering and grouping all the elements, and has been replaced with a different splitting algorithm so that coefficients and charges are sub/superscripted without affecting the intervening text.
 
 \code{expr.property} accepts a description in \code{property} that indicates the chemical property of interest.
 Uppercase letters are italicized, and lowercase letters are italicized and subscripted.

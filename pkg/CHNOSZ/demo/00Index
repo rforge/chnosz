@@ -20,5 +20,6 @@ Shh             Affinities of transcription factors relative to Sonic hedgehog
 activity_ratios Mineral stability plots with activity ratios on the axes
 adenine         HKF parameters regressed from heat capacity and volume of aqueous adenine
 DEW             Deep Earth Water (DEW) model for high pressures
-lambda          Effects of lambda transtion on thermodynamic properties of quartz
-TCA             Standard Gibbs energies of steps of the tricarboxylic acid cycle
+lambda          Thermodynamic properties of lambda transition in quartz
+TCA             Standard Gibbs energies of steps of the citric acid cycle
+go-IU           Diagrams using thermodynamic data in the SUPCRTBL compilation

@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-60 (2017-10-18)
+CHANGES IN CHNOSZ 1.1.0-61 (2017-10-20)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -105,10 +105,6 @@ DATABASE UPDATES:
   and volume data (Lowe et al., 2017). Add demo/adenine.R comparing
   the updates with the previous data (LaRowe and Helgeson, 2006).
 
-- Data file CHNOSZ_aq.csv is no longer added to the database by default.
-  It is now intended to hold optional data. Currently it contains
-  pseudo-H4SiO4 and adenine-old.
-
 - Remove H2O(gas) from the database (taken from SUPCRT92), as it gives
   inconsistent results for metastable steam (Zavarin et al., 2016,
   LLNL-TR-701407, doi: 10.2172/1325873).
@@ -164,6 +160,9 @@ CLEANUP:
   rmarkdown with files in rmd/h/bootstrap-3.3.5/fonts/ replaced with
   empty files (291 KB), and 2) changing the theme from "cosmo" to
   "default" (151 KB).
+
+- Remove extdata/OBIGT/CHNOSZ_aq.csv and move the entry for
+  pseudo-H4SiO4 to inorganic_aq.csv.
 
 CHANGES IN CHNOSZ 1.1.0 (2017-05-04)
 ------------------------------------

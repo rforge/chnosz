@@ -532,7 +532,8 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
       out[[i]] <- cbind(out[[i]],data.frame(logQ=logQ,A=A))
     }
     # 20120114 only prepend T, P, rho columns if we have more than one T
-    if(length(T) > 1) {
+    # 20171020 or if the 'property' argument is missing (it's nice to see everything using e.g. subcrt("H2O", T=150))
+    if(length(T) > 1 | missing(property)) {
       # 20090329 added checks for converting T, P units
       if(convert) T.out <- outvert(T,"K") else T.out <- T
       if(convert) P.out <- outvert(P,"bar") else P.out <- P

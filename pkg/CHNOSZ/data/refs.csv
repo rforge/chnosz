@@ -145,7 +145,7 @@ ZZL+16.3,"K. Zimmer et al.",2016,"Comp. Geosci. 90, 97-111","dawsonite GHS",http
 CHNOSZ.1,"J. M. Dick",2017,"CHNOSZ package documentation","GHS (T<sub>r</sub>) of the phase that is stable at 298.15 K was combined with H<sub>tr</sub> and the Cp coefficients to calculate the metastable GHS (T<sub>r</sub>) of the phases that are stable at higher temperatures.",http://chnosz.net
 CHNOSZ.2,"J. M. Dick",2017,"CHNOSZ package documentation","alanate and glycinate: GHS as used by @DLH06",http://chnosz.net
 CHNOSZ.3,"J. M. Dick",2017,"CHNOSZ package documentation","metal-amino acid complexes: GHS were recalculated by adding the differences between values from @AH97b and @DLH06 for alanate or glycinate to the properties of the complexes reported by @SK95.",http://chnosz.net
-CHNOSZ.4,"J. M. Dick",2017,"CHNOSZ package documentation",pseudo-H<sub>4</sub>SiO<sub>4</sub>,http://chnosz.net
+CHNOSZ.4,"J. M. Dick",2017,"CHNOSZ package documentation","pseudo-H<sub>4</sub>SiO<sub>4</sub>; GHS and HKF parameters calculated as shown in the vignette, [*Regressing thermodynamic data*](eos-regress.html)",http://chnosz.net
 CHNOSZ.5,"J. M. Dick",2017,"CHNOSZ package documentation","AuCl4- renamed to AuCl4-3",http://chnosz.net
 CHNOSZ.6,"J. M. Dick",2017,"CHNOSZ package documentation","dipeptides not included in slop files after slop98.dat",http://chnosz.net
 CHNOSZ.7,"J. M. Dick",2017,"CHNOSZ package documentation","charge of NpO2(Oxal), La(Succ)+, NH4(Succ)-, and NpO2(Succ) as listed by @PSK99",http://chnosz.net

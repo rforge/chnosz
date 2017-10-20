@@ -38,6 +38,7 @@ The apparent molal properties that can be calculated include \samp{G}, \samp{H},
 
 If \code{method} is \samp{Helgeson}, the \dQuote{B-dot} equation is used.
 This equation seems to have been originally proposed by Huckel, 1925; parameters were derived for use at high temperature and pressure by Helgeson, 1969; Helgeson et al., 1981; Manning, 2013.
+The distance of closest approach (the \dQuote{ion size parameter}) is set to 3.72 Angstrom, which is appropriate for NaCl-dominated solutions (Helgeson et al., 1981 Table 2).
 In addition to \code{IS} and \code{T}, this method depends on values of \code{P}, \code{A_DH}, and \code{B_DH} given in the arguments.
 The calculation of \dQuote{B-dot}, also used in the equations, is made within \code{nonideal} by calling the \code{Bdot} function.
 For some uses, it is desirable to set the \dQuote{B-dot} parameter to zero; this can be done by setting the method to \code{Helgeson0}.

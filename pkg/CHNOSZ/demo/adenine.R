@@ -56,10 +56,10 @@ plot(AdH$T, AdH$Cp, type = "p", xlim = range(TK), ylim = c(150, 350),
 )
 # error bars (arrows trick from https://stackoverflow.com/questions/13032777/scatter-plot-with-error-bars)
 arrows(AdH$T, AdH$Cp - AdH$Cp_SD, AdH$T, AdH$Cp + AdH$Cp_SD, length = 0.05, angle = 90, code = 3)
-# get LH06 predictions using HKF model
-# this version of adenine parameters has been superseded by LCT17
-# but are still available as optional data
-add.obigt("CHNOSZ", "adenine-old")
+# get LH06 predictions using HKF model;
+# this version of adenine parameters has been superseded by LCT17,
+# so we add them by hand
+mod.obigt("adenine-old", formula="C5H5N5", a1=21.5046, a2=8.501, a3=-2.6632, a4=-5.3561, c1=87.88, c2=-15.87, omega=0.065)
 LH06 <- subcrt("adenine-old", T = TK)$out$adenine
 lines(TK, LH06$Cp, lty = 3)
 # density model (parameters from LCT17 Table 11)

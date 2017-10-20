@@ -79,9 +79,8 @@ info.character <- function(species, state=NULL, check.protein=TRUE) {
   # a match to thermo$obigt$state is also required if 'state' is not NULL
   # (first occurence of a match to species is returned otherwise)
   thermo <- get("thermo")
-  # all matches for the species
-  matches.species <- thermo$obigt$name==species | 
-    thermo$obigt$abbrv==species | thermo$obigt$formula==species
+  # find matches for species name, abbreviation or formula
+  matches.species <- thermo$obigt$name==species | thermo$obigt$abbrv==species | thermo$obigt$formula==species
   # since thermo$obigt$abbrv contains NAs, convert NA results to FALSE
   matches.species[is.na(matches.species)] <- FALSE
   # turn it in to no match if it's a protein in the wrong state
@@ -126,11 +125,14 @@ info.character <- function(species, state=NULL, check.protein=TRUE) {
     matches.species <- matches.state
   }
   # all of the species that match
-  ispecies <- which(matches.species)
-  # we return only the first species that matches
-  ispecies.out <- ispecies[1]
-  # let user know if there is more than one state for this species
-  if(length(ispecies) > length(ispecies.out)) {
+  ispecies.out <- ispecies <- which(matches.species)
+  # processing for more than one match
+  if(length(ispecies) > 1) {
+    # if a single name matches, use that one (useful for distinguishing pseudo-H4SiO4 and H4SiO4) 20171020
+    matches.name <- matches.species & thermo$obigt$name==species
+    if(sum(matches.name)==1) ispecies.out <- which(matches.name)
+    else ispecies.out <- ispecies[1]  # otherwise, return only the first species that matches
+    # let user know if there is more than one state for this species
     mystate <- thermo$obigt$state[ispecies.out]
     ispecies.other <- ispecies[!ispecies %in% ispecies.out]
     otherstates <- thermo$obigt$state[ispecies.other]

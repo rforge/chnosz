@@ -40,12 +40,18 @@ lines(T, -r3$out$logK, lty=2, col="red")
 lines(T, -r4$out$logK, col="red")
 ## add labels, legend, and title
 text(182.5, -3.17, "SUPCRT92\n(CHNOSZ default)", srt=48, cex=0.7, font=2)
-text(147, -3.1, "SUPCRTBL", srt=45.5, cex=0.7, font=2, col="red")
+text(154, -3.04, "circa SUPCRTBL", srt=45, cex=0.7, font=2, col="red")
 legend("topleft", lty=c(1, 2, 2, 1), col=c("black", "black", "red", "red"), bty="n", cex=0.9,
-       legend=c("Kln,Bhm:HDNB78; SiO2:SHS89", "Kln:Ber88", "+ Bhm:HRA91", "+ SiO2:AS04"))
+       legend=c("Kln,Bhm:HDNB78; SiO2(aq):SHS89", "Kln:Ber88 (SUPCRTBL uses HP11)", "+ Bhm:HRA91", "+ SiO2(aq):AS04"))
 legend("bottomright", pch=1, legend="Hemley et al., 1980", bty="n", cex=0.9)
 mtitle(c("Kaolinite - Boehmite", "After Zhu and Lu, 2009 Fig. A1"), cex=0.95)
-# doi:10.1016/j.gca.2009.03.015
+# Zhu and Lu, 2009: doi:10.1016/j.gca.2009.03.015
+# Helgeson et al., 1978 (HDNB78): http://www.worldcat.org/oclc/13594862
+# Shock et al., 1989 (SHS89): doi:10.1016/0016-7037(89)90341-4
+# Berman, 1988 (Ber88): doi:10.1093/petrology/29.2.445
+# Holland and Powell, 2011 (HP11): 10.1111/j.1525-1314.2010.00923.x
+# Hemingway et al., 1991 (HRA91): http://pubs.er.usgs.gov/publication/70016664
+# Apps and Spycher, 2004 (AS04): Bechtel SAIC Company, LLC ANL-NBS-HS-000043 REV 00 (DOC.20041118.0004)
 
 ###########
 ### plot 2: dawsonite solubility
@@ -103,31 +109,31 @@ bases <- c("H2S", "HS-", "HSO4-", "SO4-2")
 res <- 300
 # we "blend" the transitions with pH, unlike LZ11's diagram where
 # it appears the S-basis species are switched in an on/off fashion
-m <- mosaic(bases, pH=c(2, 14, res), Eh=c(-0.6, 0.8, res), blend=TRUE)
+m <- mosaic(bases, pH=c(0, 14, res), Eh=c(-0.8, 0.8, res), blend=TRUE)
 # adjust colors and names
 fill <- rev(heat.colors(nrow(species())))
 fill[11:15] <- "darkgrey"
 m$A.species$species$name <- gsub(",alpha", "", m$A.species$species$name)
 diagram(m$A.species, fill=fill)
 dprop <- describe.property(c("T", "P"), c(25, 1))
-legend("topright", legend=dprop, bty="n")
+legend("bottomleft", legend=dprop, bty="n")
 t1 <- quote("As-O-H-S, "~list(sum(S)==10^-3*M, sum(As)==10^-5*M))
 t2 <- "After Lu and Zhu, 2011 Fig. 2b"
-mtitle(as.expression(c(t1, t2)), cex=0.95)
 # doi:10.1007/s12665-010-0652-x
+mtitle(as.expression(c(t1, t2)), cex=0.95)
 
 ###########
 ### plot 4: aqueous Al species
 ###########
 add.obigt("SUPCRTBL")
 basis(c("Al+3", "F-", "H+", "O2", "H2O"))
+AlOH <- c("Al(OH)4-", "Al(OH)3", "Al(OH)2+", "AlOH+2")
 Al <- "Al+3"
-AlOH <- c("Al(OH)4-", "AlOH+2", "Al(OH)2+", "Al(OH)3")
 AlF <- c("AlF+2", "AlF2+", "AlF3", "AlF4-")
 AlOHF <- c("Al(OH)2F2-", "Al(OH)2F", "AlOHF2")
-species(c(Al, AlOH, AlF, AlOHF), "aq")
+species(c(AlOH, Al, AlF, AlOHF), "aq")
 a <- affinity(pH=c(0, 10), `F-`=c(-1, -9), T=200)
-diagram(a, fill=cm.colors(nrow(species())))
+diagram(a, fill=rev(cm.colors(nrow(species()))))
 dprop <- describe.property(c("T", "P"), c(200, "Psat"))
 legend("topright", legend=dprop, bty="n")
 mtitle(c("Aqueous aluminum species",

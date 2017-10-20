@@ -1827,9 +1827,27 @@ ref <- thermo.refs(iFo)
 browseURL(ref$URL)  ## opens a link to worldcat.org
 ```
 
+## Optional data
+
+Thermodynamic properties of minerals in the default database are mostly taken from @HDNB78.
+These are identified by the state `cr`, and `cr2`, `cr3`, etc. for higher-temperature polymorphs.
+Optionally, thermodynamic properties of minerals can be calculated using the equations and dataset of @Ber88; these minerals are identified in the database by having the state `cr_Berman`.
+
+Two other optional datasets can be activated by using <span style="color:red">`add.obigt()`</span>:
+
+<span style="color:red">`add.obigt("SUPCRTBL")`</span> -- This loads updated thermodynamic parameters for aqueous SiO<sub>2</sub>, aluminum and arsenic species, and minerals, as compiled in the [SUPCRTBL package](http://www.indiana.edu/~hydrogeo/supcrtbl.html) [@ZZL_16].
+SUPCRTBL also includes modifications to SUPCRT92 for calculating thermodynamic properties of minerals using the @HP11 dataset, but that is not available in CHNOSZ.
+Instead, the Berman mineral data can be used with similar results; see [<span style="color:blue">`demo(go-IU)`</span>](../demo/goIU.R).
+
+<span style="color:red">`add.obigt("DEW")`</span> -- These are aqueous species, with modified parameters, that are intended for use with the [Deep Earth Water](http://www.dewcommunity.org/) (DEW) model [@SHA14].
+You should also run <span style="color:red">`water("DEW")`</span> to activate the equations in the model; then, they will be used by <span style="color:green">`subcrt()`</span> and <span style="color:green">`affinity()`</span>.
+Examples are in [<span style="color:blue">`demo(DEW)`</span>](../demo/DEW.R).
+
+Detailed lists of sources for these Optional Data are in the vignette [<span style="color:blue">*Thermodynamic data in CHNOSZ*</span>](obigt.html) (look under **Solids** / **Berman**, **Optional Data** / **SUPCRTBL** and **Optional Data** / **DEW**).
+
 ## Adding data
 
-Use <span style="color:red">`add.obigt()`</span> to add data from a user-specified file to the database in the current session.
+You can also use <span style="color:red">`add.obigt()`</span> to add data from a user-specified file to the database in the current session.
 The file must be a CSV (comma separated value) file with column headers that match those in the main database.
 To show the required format, take a look at `BZA10.csv`, a supplemental data file provided in CHNOSZ.
 Missing values are indicated by `NA`:

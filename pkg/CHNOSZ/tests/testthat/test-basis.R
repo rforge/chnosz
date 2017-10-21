@@ -31,10 +31,14 @@ test_that("invalid basis modification requests cause an error", {
   expect_equal(basis(), b)
 })
 
-test_that("changing state maintains species name", {
+test_that("modifying states of basis species is possible", {
   b1 <- basis(c("Al2O3", "quartz", "oxygen"))
   b2 <- basis("SiO2", "cr2")
   # we went from quartz cr to cr2, which is the next row in the database
   expect_equal(sum(b2$ispecies - b1$ispecies), 1)
   expect_error(basis("SiO2", "cr3"), "state or buffer 'cr3' not found for quartz")
+  # can we go from CO2(aq) to CO2(gas) back to CO2(aq)?
+  basis("CHNOS+")  # first basis species is CO2(aq)
+  expect_equal(basis("CO2", "gas")$state[1], "gas")
+  expect_equal(basis("CO2", "aq")$state[1], "aq")
 })

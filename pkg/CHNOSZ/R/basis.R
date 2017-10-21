@@ -161,10 +161,19 @@ mod.basis <- function(species, state=NULL, logact=NULL) {
         }
         thermo$basis$logact[ib] <- state[i]
       } else {
-        # look for a species with this name in the requested state
-        ispecies <- suppressMessages(info(thermo$obigt$name[thermo$basis$ispecies[ib]], state[i], check.it=FALSE))
-        if(is.na(ispecies) | is.list(ispecies)) 
-          stop(paste("state or buffer '", state[i], "' not found for ", thermo$obigt$name[thermo$basis$ispecies[ib]], "\n", sep=""))
+        # first, look for a species with the same _name_ in the requested state
+        myname <- thermo$obigt$name[thermo$basis$ispecies[ib]]
+        ispecies <- suppressMessages(info(myname, state[i], check.it=FALSE))
+        if(is.na(ispecies) | is.list(ispecies)) {
+          # if that failed, look for a species with the same _formula_ in the requested state
+          myformula <- thermo$obigt$formula[thermo$basis$ispecies[ib]]
+          ispecies <- suppressMessages(info(myformula, state[i], check.it=FALSE))
+          if(is.na(ispecies) | is.list(ispecies)) {
+            # if that failed, we're out of luck
+            if(myname==myformula) nametxt <- myname else nametxt <- paste(myname, "or", myformula)
+            stop(paste0("state or buffer '", state[i], "' not found for ", nametxt, "\n"))
+          }
+        }
         thermo$basis$ispecies[ib] <- ispecies
         thermo$basis$state[ib] <- state[i]
       }

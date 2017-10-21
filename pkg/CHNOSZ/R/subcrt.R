@@ -8,6 +8,7 @@
 #source("info.R")
 #source("util.units.R")
 #source("util.data.R")
+#source("species.R")
 
 subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "H", "S", "V", "Cp"),
   T = seq(273.15, 623.15, 25), P = "Psat", grid = NULL, convert = TRUE, exceed.Ttr = FALSE,
@@ -533,13 +534,15 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
     }
     # 20120114 only prepend T, P, rho columns if we have more than one T
     # 20171020 or if the 'property' argument is missing (it's nice to see everything using e.g. subcrt("H2O", T=150))
-    if(length(T) > 1 | missing(property)) {
+    # 20171021 or if the 'property' argument is not missing, but is identical to the default (happens when auto-balancing reactions)
+    if(length(T) > 1 | missing(property) | identical(property, c("logK", "G", "H", "S", "V", "Cp"))) {
       # 20090329 added checks for converting T, P units
       if(convert) T.out <- outvert(T,"K") else T.out <- T
       if(convert) P.out <- outvert(P,"bar") else P.out <- P
       # try to stuff in a column of rho if we have aqueous species
       # watch out! supcrt-ish densities are in g/cc not kg/m3
-      if('rho' %in% calcprop | (missing(property) & any(c(isaq,isH2O))) & (names(out)[i])!='polymorph') 
+      if('rho' %in% calcprop | ( (missing(property) | identical(property, c("logK", "G", "H", "S", "V", "Cp"))) &
+                                any(c(isaq,isH2O))) & (names(out)[i])!='polymorph') 
         out[[i]] <- cbind(data.frame(T=T.out,P=P.out,rho=H2O.PT$rho/1000),out[[i]])
       else
         out[[i]] <- cbind(data.frame(T=T.out,P=P.out,out[[i]]))

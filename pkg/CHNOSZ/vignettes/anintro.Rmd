@@ -1946,7 +1946,7 @@ See <span style="color:blue">`?water`</span> for more information, as well as th
 
 As you get started writing your own code and functions that use CHNOSZ, it is not uncommon to encounter problems.
 For example, mixing data types can cause problems (the important difference between factor and character was mentioned [above](#adding-data)).
-There are many tricks to learn; becoming familiar with functions like R's `lapply()`, `rbind()`, and `do.call()` will make your programming life easier.
+There are many tricks to learn; becoming familiar with functions like R's `lapply()`, `rbind()`, and `do.call()` will make your programming life more productive and enjoyable.
 
 Some functions in CHNOSZ perform "sanity checks" on the arguments and will report errors if an inconsistency is detected.
 For example, unequal lengths of variables in the transect mode of <span style="color:green">`affinity()`</span> (when the variables have more than 3 values) cause an error:

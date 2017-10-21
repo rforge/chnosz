@@ -415,7 +415,7 @@ Let's compare CHNOSZ's `pseudo-H4SiO4` (with the same properties as the `new-H4S
 
 The large differences for `H4SiO4` at low temperature agree with the comparison to Shock et al. (1989) shown in Figure 3 of Stefánsson (2001).
 Therefore, Stefánsson's `r h4sio4` should not be used with the _default_ database in CHNOSZ for making mineral activity diagrams.
-Instead, the pseudospecies with properties calculated here, `pseudo-H4SiO4`, is preferable for use with the _default_ database in CHNOSZ---see <span style="color:blue">`?transfer`</span> and <span style="color:blue">`demo(activity_ratios)`</span>.
+Instead, the pseudospecies with properties calculated here, `pseudo-H4SiO4`, is preferable for use with the _default_ database in CHNOSZ---see <span style="color:blue">`?transfer`</span> and [<span style="color:blue">`demo(activity_ratios)`</span>](../demo).
 On the other hand, Stefánsson's `r h4sio4` is compatible with `r sio2` in the _optional_ SUPCRTBL data file [@ZZL_16].
 
 # Other possibilities

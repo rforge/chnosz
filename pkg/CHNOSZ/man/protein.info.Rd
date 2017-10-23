@@ -188,4 +188,4 @@ for(cluster in c("A", "B", "C", "D")) {
   Dick, J. M. (2014) Average oxidation state of carbon in proteins. \emph{J. R. Soc. Interface} \bold{11}, 20131095. \url{https://doi.org/10.1098/rsif.2013.1095}
 }
 
-\concept{Protein thermodynamic modeling}
+\concept{Protein properties}

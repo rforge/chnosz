@@ -90,4 +90,4 @@ stopifnot(isTRUE(all.equal(loga[2]-loga[1],1)))
 stopifnot(isTRUE(all.equal(sum(10^loga * length),1)))
 }
 
-\keyword{utilities}
+\concept{Thermodynamic calculations}

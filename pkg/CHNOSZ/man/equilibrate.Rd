@@ -124,4 +124,4 @@ stopifnot(all.equal(pKa.equil, -logK, tolerance=1e-2))
   Dick, J. M. (2008) Calculation of the relative metastabilities of proteins using the CHNOSZ software package. \emph{Geochem. Trans.} \bold{9}:10. \url{https://doi.org/10.1186/1467-4866-9-10}
 }
 
-\concept{Primary thermodynamic modeling}
+\concept{Main workflow}

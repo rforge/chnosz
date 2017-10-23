@@ -1,5 +1,6 @@
 \encoding{UTF-8}
 \name{eos}
+\alias{eos}
 \alias{hkf}
 \alias{cgl}
 \title{Equations of State}
@@ -101,4 +102,4 @@ print(C8H18par)
 
 }
 
-\concept{Secondary thermodynamic modeling}
+\concept{Thermodynamic calculations}

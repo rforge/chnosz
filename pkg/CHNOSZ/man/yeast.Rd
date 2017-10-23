@@ -1,5 +1,6 @@
 \encoding{UTF-8}
 \name{yeast}
+\alias{yeast}
 \alias{yeast.aa}
 \alias{yeastgfp}
 \title{Composition, Localization, and Abundances of Proteins in Yeast}
@@ -105,4 +106,4 @@ Boer, V. M., de Winde, J. H., Pronk, J. T. and Piper, M. D. W. (2003) The genome
 Tai, S. L., Boer, V. M., Daran-Lapujade, P., Walsh, M. C., de Winde, J. H., Daran, J.-M. and Pronk, J. T. (2005) Two-dimensional transcriptome analysis in chemostat cultures: Combinatorial effects of oxygen availability and macronutrient limitation in \emph{Saccharomyces cerevisiae}. \emph{J. Biol. Chem.} \bold{280}, 437--447. \url{https://doi.org/10.1074/jbc.M410573200}
 }
 
-\concept{Protein thermodynamic modeling}
+\concept{Protein properties}

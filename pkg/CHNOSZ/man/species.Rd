@@ -70,4 +70,4 @@ basis(c("CO2", "H2O", "O2"))
 species()  # NULL
 }
 
-\concept{Primary thermodynamic modeling}
+\concept{Main workflow}

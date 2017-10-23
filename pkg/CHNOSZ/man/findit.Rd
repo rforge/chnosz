@@ -76,4 +76,4 @@ If the limits of any of the parameters extend beyond those in \code{lims}, they 
 
 \seealso{ \code{demo("findit")} and \code{test-findit.R} for examples. }
 
-\concept{Secondary thermodynamic modeling}
+\concept{Extended workflow}

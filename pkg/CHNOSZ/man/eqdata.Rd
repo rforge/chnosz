@@ -53,4 +53,4 @@
 eqdata("rainbow2.6o",c("h+","sio2,aq","h2,aq"),"log act") }
 }
 
-\concept{Extra thermodynamic modeling}
+\concept{Other tools}

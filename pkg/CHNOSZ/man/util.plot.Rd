@@ -93,4 +93,4 @@ This function is intended to generate colors for distinguishing average oxidatio
 
 }
 
-\keyword{utilities}
+\concept{Utility functions}

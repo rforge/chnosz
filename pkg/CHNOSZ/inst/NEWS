@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-61 (2017-10-20)
+CHANGES IN CHNOSZ 1.1.0-64 (2017-10-23)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -163,6 +163,10 @@ CLEANUP:
 
 - Remove extdata/OBIGT/CHNOSZ_aq.csv and move the entry for
   pseudo-H4SiO4 to inorganic_aq.csv.
+
+- Reorganize concept index entries in Rd files: Main workflow, Extended
+  workflow, Thermodynamic data, Thermodynamic calculations, Water
+  properties, Protein properties, Other tools, Utility functions.
 
 CHANGES IN CHNOSZ 1.1.0 (2017-05-04)
 ------------------------------------
@@ -508,7 +512,8 @@ NEW FEATURES:
   species. See also new 'mosaic.R' demo.
 
 - Add thermo$opt$varP option for subcrt() to calculate Gibbs energies
-  of gases using a variable-pressure standard state.
+  of gases using a variable-pressure standard state. Thanks to Kirt
+  Robinson for the submitting the problem that led to this change.
 
 - Add 'solubility.R' demo, and add calcite solubility plot to
   anintro.Rnw.

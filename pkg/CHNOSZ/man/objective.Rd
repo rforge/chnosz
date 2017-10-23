@@ -137,4 +137,4 @@ title(main=paste("transformation between metastable equilibrium\n",
 
 }
 
-\concept{Secondary thermodynamic modeling}
+\concept{Extended workflow}

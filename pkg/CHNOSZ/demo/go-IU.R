@@ -117,7 +117,7 @@ m$A.species$species$name <- gsub(",alpha", "", m$A.species$species$name)
 diagram(m$A.species, fill=fill)
 dprop <- describe.property(c("T", "P"), c(25, 1))
 legend("bottomleft", legend=dprop, bty="n")
-t1 <- quote("As-O-H-S, "~list(sum(S)==10^-3*M, sum(As)==10^-5*M))
+t1 <- quote("As-O-H-S, "~list(Sigma*S==10^-3~M, Sigma*As==10^-5~M))
 t2 <- "After Lu and Zhu, 2011 Fig. 2b"
 # doi:10.1007/s12665-010-0652-x
 mtitle(as.expression(c(t1, t2)), cex=0.95)
@@ -132,7 +132,8 @@ Al <- "Al+3"
 AlF <- c("AlF+2", "AlF2+", "AlF3", "AlF4-")
 AlOHF <- c("Al(OH)2F2-", "Al(OH)2F", "AlOHF2")
 species(c(AlOH, Al, AlF, AlOHF), "aq")
-a <- affinity(pH=c(0, 10), `F-`=c(-1, -9), T=200)
+res <- 300
+a <- affinity(pH=c(0.5, 6.5, res), `F-`=c(-2, -9, res), T=200)
 diagram(a, fill=rev(cm.colors(nrow(species()))))
 dprop <- describe.property(c("T", "P"), c(200, "Psat"))
 legend("topright", legend=dprop, bty="n")

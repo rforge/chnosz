@@ -280,12 +280,38 @@ H2O <- expr.species("H2O")
 Na <- expr.species("Na+")
 degC <- expr.units("T")
 title(main=substitute(H2O~and~Na~to~-20~degC, list(H2O=H2O, Na=Na, degC=degC)))
+
+## Calculations using a variable-pressure standard state
+thermo$opt$varP <<- TRUE
+# Calculate the boiling point of n-octane at 2 and 20 bar
+# We need exceed.Ttr=TRUE because the liquid is metastable
+# at high temperatures (also, the gas is metastable at low
+# temperatures, but that doesn't produce NA in the output)
+sout2 <- subcrt(rep("n-octane", 2), c("liq", "gas"),
+  c(-1, 1), T=seq(-50, 300, 0.1), P=2, exceed.Ttr=TRUE)$out
+sout20 <- subcrt(rep("n-octane", 2), c("liq", "gas"),
+  c(-1, 1), T=seq(-50, 300, 0.1), P=20, exceed.Ttr=TRUE)$out
+# find T with the Gibbs energy of reaction that is closest to zero
+Tvap2 <- sout2$T[which.min(abs(sout2$G))]
+Tvap20 <- sout20$T[which.min(abs(sout20$G))]
+# the boiling point increases with pressure
+stopifnot(Tvap20 > Tvap2)
+# more precisely, the calculated boiling points should be near the
+# empirical values (digitized from Fig. 1 of Helgeson et al., 1998)
+Tvap_2bar <- 156
+Tvap_20bar <- 276
+stopifnot(abs(Tvap2 - Tvap_2bar) < 6)
+stopifnot(abs(Tvap20 - Tvap_20bar) < 25)
+# those comparisons would fail if varP were FALSE (the default)
+thermo$opt$varP <<- FALSE
 }
 
 \references{
   Anderson, G. M. and Crerar, D. A. (1993) \emph{Thermodynamics in Geochemistry: The Equilibrium Model}, Oxford University Press. \url{http://www.worldcat.org/oclc/803272549}
 
   Johnson, J. W., Oelkers, E. H. and Helgeson, H. C. (1992) SUPCRT92: A software package for calculating the standard molal thermodynamic properties of minerals, gases, aqueous species, and reactions from 1 to 5000 bar and 0 to 1000\degC. \emph{Comp. Geosci.} \bold{18}, 899--947. \url{https://doi.org/10.1016/0098-3004(92)90029-Q}
+
+  Helgeson, H. C., Owens, C. E., Knox, A. M. and Richard, L. (1998) Calculation of the standard molal thermodynamic properties of crystalline, liquid, and gas organic molecules at high temperatures and pressures. \emph{Geochim. Cosmochim. Acta} \bold{62}, 985--1081. \url{https://doi.org/10.1016/S0016-7037(97)00219-6}
 
   LaRowe, D. E. and Helgeson, H. C. (2007) Quantifying the energetics of metabolic reactions in diverse biogeochemical systems: electron flow and ATP synthesis. \emph{Geobiology} \bold{5}, 153--168. \url{https://doi.org/10.1111/j.1472-4669.2007.00099.x}
 
@@ -294,4 +320,4 @@ title(main=substitute(H2O~and~Na~to~-20~degC, list(H2O=H2O, Na=Na, degC=degC)))
   Shock, E. L., Oelkers, E. H., Johnson, J. W., Sverjensky, D. A. and Helgeson, H. C. (1992) Calculation of the thermodynamic properties of aqueous species at high pressures and temperatures: Effective electrostatic radii, dissociation constants and standard partial molal properties to 1000 \degC and 5 kbar. \emph{J. Chem. Soc. Faraday Trans.} \bold{88}, 803--826. \url{https://doi.org/10.1039/FT9928800803}
 }
 
-\concept{Primary thermodynamic modeling}
+\concept{Main workflow}

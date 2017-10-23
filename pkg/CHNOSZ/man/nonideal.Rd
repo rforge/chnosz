@@ -175,4 +175,4 @@ Manning, C. E. (2013) Thermodynamic modeling of fluid-rock interaction at mid-cr
 Manning, C. E., Shock, E. L. and Sverjensky, D. A. (2013) The chemistry of carbon in aqueous fluids at crustal and upper-mantle conditions: Experimental and theoretical constraints. \emph{Rev. Mineral. Geochem.} \bold{75}, 109--148. \url{https://doi.org/10.2138/rmg.2013.75.5}
 }
 
-\concept{Secondary thermodynamic modeling}
+\concept{Thermodynamic calculations}

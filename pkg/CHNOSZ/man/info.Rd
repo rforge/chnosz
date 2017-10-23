@@ -79,4 +79,4 @@ info("acetate ")
 info(" H2O")
 }
 
-\concept{Primary thermodynamic modeling}
+\concept{Main workflow}

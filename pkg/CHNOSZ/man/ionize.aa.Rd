@@ -94,4 +94,4 @@ title("Heat capacity of unfolded LYSC_CHICK")
   Privalov, P. L. and Makhatadze, G. I. (1990) Heat capacity of proteins. II. Partial molar heat capacity of the unfolded polypeptide chain of proteins: Protein unfolding effects. \emph{J. Mol. Biol.} \bold{213}, 385--391. \url{https://doi.org/10.1016/S0022-2836(05)80198-6}
 }
 
-\concept{Protein thermodynamic modeling}
+\concept{Protein properties}

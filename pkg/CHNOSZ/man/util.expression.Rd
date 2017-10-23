@@ -156,4 +156,4 @@ text(3, 4.5, describe.reaction(reaction, states="all"))
 text(3, 4.75, describe.reaction(reaction, iname=1:4))
 }
 
-\keyword{utilities}
+\concept{Utility functions}

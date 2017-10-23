@@ -66,4 +66,4 @@ as.chemical.formula(protein.formula(aa))
 \code{\link{protein}} for examples of affinity calculations and diagrams.
 }
 
-\concept{Protein thermodynamic modeling}
+\concept{Protein properties}

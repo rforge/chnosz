@@ -176,4 +176,4 @@ sum(w$X)  # <20
 White, W. B., Johnson, S. M. and Dantzig, G. B. (1958) Chemical equilibrium in complex mixtures. \emph{J. Chem. Phys.} \bold{28}, 751--755. \url{https://doi.org/10.1063/1.1744264}
 }
 
-\concept{Extra thermodynamic modeling}
+\concept{Extended workflow}

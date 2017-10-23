@@ -264,4 +264,4 @@ stopifnot(species()$name[d$predominant[99, 101]]=="sillimanite")
   Majzlan, J., Navrotsky, A., McClesky, R. B. and Alpers, C. N. (2006) Thermodynamic properties and crystal structure refinement of ferricopiapite, coquimbite, rhomboclase, and Fe2(SO4)3(H2O)5. \emph{Eur. J. Mineral.} \bold{18}, 175--186. \url{https://doi.org/10.1127/0935-1221/2006/0018-0175}
 }
 
-\concept{Primary thermodynamic modeling}
+\concept{Main workflow}

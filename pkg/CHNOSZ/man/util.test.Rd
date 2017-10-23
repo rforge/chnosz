@@ -28,4 +28,4 @@ Functions modelled after the \code{expect_} functions in \CRANpkg{testthat}.
 The function uses \code{\link[testthat]{expect}} to generate an expectation in the \CRANpkg{testthat} framework.
 }
 
-\keyword{utilities}
+\concept{Utility functions}

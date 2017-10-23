@@ -60,4 +60,4 @@ anim.carboxylase(T=100)
 Dick, J. M. and Shock, E. L. (2011) Calculation of the relative chemical stabilities of proteins as a function of temperature and redox chemistry in a hot spring. \emph{PLoS ONE} \bold{6}, e22782. \url{https://doi.org/10.1371/journal.pone.0022782}
 }
 
-\concept{Extra thermodynamic modeling}
+\concept{Extended workflow}

@@ -46,4 +46,4 @@ P <- as.numeric(IAPWS95("P", T=500, rho=838.0235))
 Wagner, W. and Pruss, A. (2002) The IAPWS formulation 1995 for the thermodynamic properties of ordinary water substance for general and scientific use. \emph{J. Phys. Chem. Ref. Data} \bold{31}, 387--535. \url{https://doi.org/10.1063/1.1461829}
 }
 
-\concept{Secondary thermodynamic modeling}
+\concept{Water properties}

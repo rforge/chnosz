@@ -84,4 +84,4 @@ stopifnot(all(mf==0))
 
 \seealso{ \code{\link{mass}}, \code{\link{entropy}}, \code{\link{basis}}, \code{\link{i2A}} }
 
-\concept{Secondary thermodynamic modeling}
+\concept{Thermodynamic calculations}

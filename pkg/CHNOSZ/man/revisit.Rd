@@ -151,4 +151,4 @@ mtitle(c(t1, as.expression(t2)))
 par(opar)
 }
 
-\concept{Secondary thermodynamic modeling}
+\concept{Extended workflow}

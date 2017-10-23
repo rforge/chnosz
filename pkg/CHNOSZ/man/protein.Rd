@@ -76,4 +76,4 @@ d <- diagram(e, col=col, lwd=3)
 title(main="Bovine proteins, GSH/GSSG redox buffer")
 }
 
-\concept{Protein thermodynamic modeling}
+\concept{Protein properties}

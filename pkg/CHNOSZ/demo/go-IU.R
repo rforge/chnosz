@@ -38,11 +38,15 @@ lines(T, -r1$out$logK)
 lines(T, -r2$out$logK, lty=2)
 lines(T, -r3$out$logK, lty=2, col="red")
 lines(T, -r4$out$logK, col="red")
+## add points calculated using the SUPCRTBL package
+points(seq(125, 350, 25), -c(3.489, 3.217, 2.967, 2.734, 2.517, 2.314, 2.124, 1.946, 1.781, 1.628), pch=4, col="red")
 ## add labels, legend, and title
 text(182.5, -3.17, "SUPCRT92\n(CHNOSZ default)", srt=48, cex=0.7, font=2)
 text(154, -3.04, "circa SUPCRTBL", srt=45, cex=0.7, font=2, col="red")
-legend("topleft", lty=c(1, 2, 2, 1), col=c("black", "black", "red", "red"), bty="n", cex=0.9,
-       legend=c("Kln,Bhm:HDNB78; SiO2(aq):SHS89", "Kln:Ber88 (SUPCRTBL uses HP11)", "+ Bhm:HRA91", "+ SiO2(aq):AS04"))
+legend("topleft", lty=c(1, 2, 2, 1, 0), pch=c(NA, NA, NA, NA, 4),
+       col=c("black", "black", "red", "red", "red"), bty="n", cex=0.9,
+       legend=c("Kln,Bhm:HDNB78; SiO2(aq):SHS89", "Kln:Ber88 (SUPCRTBL uses HP11)",
+                "+ Bhm:HRA91", "+ SiO2(aq):AS04", "SUPCRTBL"))
 legend("bottomright", pch=1, legend="Hemley et al., 1980", bty="n", cex=0.9)
 mtitle(c("Kaolinite - Boehmite", "After Zhu and Lu, 2009 Fig. A1"), cex=0.95)
 # Zhu and Lu, 2009: doi:10.1016/j.gca.2009.03.015
@@ -75,11 +79,13 @@ Daw2 <- subcrt(species, coeffs, T=T)
 ## plot the calculated logKs
 lines(T, Daw1$out$logK, col="red")
 lines(T, Daw2$out$logK, col="red", lty=2)
+## add points calculated using the SUPCRTBL package
+points(seq(25, 250, 25), c(-17.829, -16.523, -15.402, -14.425, -13.568, -12.815, -12.154, -11.581, -11.094, -10.699), pch=4, col="red")
 ## add labels, legend, and title
 text(182.5, -3.17, "SUPCRT92\n(CHNOSZ default)", srt=43, cex=0.7, font=2)
 text(145, -3.1, "SUPCRTBL", srt=41.5, cex=0.7, font=2, col="red")
-legend("topleft", lty=1:2, col="red", bty="n", cex=0.9,
-       legend=c("Daw Cp != 0", "Daw Cp = 0"))
+legend("topleft", lty=c(1, 2, 0), pch=c(NA, NA, 4), col="red", bty="n", cex=0.9,
+       legend=c("Daw Cp != 0", "Daw Cp = 0", "SUPCRTBL"))
 legend("bottomright", pch=1, legend="Ben\u00e9z\u00e9th et al., 2007", bty="n", cex=0.9)
 mtitle(c("Dawsonite - aqueous species", "After Zimmer et al., 2016 Fig. 2"), cex=0.95)
 # doi:10.1016/j.cageo.2016.02.013

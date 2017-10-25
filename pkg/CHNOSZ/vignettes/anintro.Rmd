@@ -796,8 +796,8 @@ Before presenting some examples, it is helpful to know about the limitations of 
 CHNOSZ does not take account of all possible reactions in the speciation of a system.
 Instead, it assumes that the total activity of species in the system is set by the activity of *one* basis species.
 ```{marginfigure}
-If activity coefficients are assumed to be zero, activities are equal to concentration and we can refer to "total activity".
-<span style="color:green">`nonideal()`</span> ([see below](#activity-coefficients)) is an experimental feature to deal with activity coefficients.
+When activity coefficients are assumed to be zero, activities are equal to concentration and we can refer to "total activity".
+If the ionic strength is specified, <span style="color:green">`nonideal()`</span> ([see below](#activity-coefficients)) can be used to calculate activity coefficients.
 ```
 This balanced, or conserved, basis species must be present (with a positive or negative coefficient) in the formation reactions of all species considered.
 
@@ -980,6 +980,179 @@ It does seem odd to balance on a fugacious component like `r o2` or `r h2o`.
 Unlike different choices of basis species, which are thermodynamically equivalent ([see above](#mosaicfun)), the choice of balance reflects extra-thermodynamic factors.
 For instance, the widespread rule of thumb for balancing mineral reactions on a chemical component is unrealistic for processes where volume is conserved [@MD98].
 While choosing an inappropriate balance leads to infeasible models, consideration of the different possibilities might give insight into the conditions affecting the dynamics of some systems.
+
+# Activity coefficients
+
+<span style="color:green">`nonideal()`</span> uses the extended Debye--Hückel equation as formulated by @HKF81 for NaCl-dominated solutions, or optionally using parameters described in Chapter 3 of @Alb03, to calculate activity coefficients of charged species.
+The activity coefficients are calculated as a function of ionic strength (*I*), temperature, and charge of each species, without any other species-specific parameters.
+Using the default `Helgeson` method, the extended term parameter ("B-dot") is derived from data of @Hel69 and Helgeson et al. (1981), and extrapolations of @MSS13.
+
+## Transformation of variables
+
+Following the main workflow of CHNOSZ, <span style="color:green">`nonideal()`</span> normally does not need to be used directly.
+Intead, invoke the calculations by setting the `IS` argument in <span style="color:green">`subcrt()`</span> or <span style="color:green">`affinity()`</span>.
+There are a few things to remember when using activity coefficients:
+
+* H<sup>+</sup> is assumed to behave ideally, so its activity coefficient is 1 for any ionic strength. You can calculate activity coefficients of H<sup>+</sup> by setting `thermo$opt$ideal.H <<- FALSE`.
+
+* Using <span style="color:green">`subcrt()`</span> with `IS` not equal to zero, calculated values of `G` are the **apparent** standard Gibbs energy at specified ionic strength.
+
+* Using <span style="color:green">`subcrt()`</span> with `IS` not equal to zero, values in the `logact` argument stand for **log molality** of charged aqueous species in affinity calculations.
+
+* Using <span style="color:green">`affinity()`</span> with `IS` not equal to zero, the following values stand for **log molality** of charged aqueous species:
+    + values of `logact` set by <span style="color:green">`basis()`</span>;
+    + values of `logact` set by <span style="color:green">`species()`</span>;
+    + value of `loga.equil` returned by <span style="color:green">`equilibrate()`</span>
+
+In other words, the activation of activity coefficients transforms variables from activity to molality in the main workflow.
+A simple but detailed example demonstrating each of the above tranformations is in `tests/testthat/test-logmolality.R`.
+
+Because it is not possible to dynamically change the names of arguments in the functions, the user should be aware of the effects mentioned above.
+As another consequence, activities of basis species or equilibrium activities of species shown on diagrams should be relabeled as molalities when `IS` is used in the calculation of <span style="color:green">`affinity()`</span>.
+
+## Biochemical example
+
+For the following calculations, we change the nonideality method to `Alberty`; this is a simpler formulation with parameters that are suitable for biochemical species at relatively low temperatures:
+```{r Alberty}
+oldnon <- nonideal("Alberty")
+```
+
+Let's take a look at calculated activity coefficients at two temperatures and their effect on the standard Gibbs energies of formation (Δ*G*°<sub>*f*</sub>) of species with different charge:
+```{r subcrt_IS}
+subcrt(c("MgATP-2", "MgHATP-", "MgH2ATP"),
+       T = c(25, 100), IS = c(0, 0.25), property = "G")$out
+```
+
+The logarithms of the activity coefficients (`loggam`) are more negative for the higher-charged species, as well as at higher temperature, and have a stabilizing effect.
+That is, the apparent Gibbs energies at *I* > 0 are less than the standard Gibbs energies at *I* = 0.
+
+We can use these calculations to make some speciation plots, similar to Figures 1.2--1.5 in Alberty (2003).
+These figures show the distribution of differently charged species of adenosine triphosphate (ATP) as a function of pH, and the average number of H<sup>+</sup> and Mg<sup>+2</sup> bound to ATP in solution as a function of pH or pMg (-log*a*<sub>Mg<sup>+2</sup></sub>).
+
+Use <span style="color:green">`info()`</span> to see what ATP species are available.
+The sources of high-temperature thermodynamic data for these species are two papers by LaRowe and Helgeson [-@LH06a; -@LH06b].
+```{r info_ATP, results="hide"}
+info(" ATP")
+```
+
+The plots for this system in Alberty's book were made for *I* = 0.25 M and *T* = 25 °C.
+As a demonstration of CHNOSZ's capabilities, we can assign a temperature of 100 °C.
+```{r T_100}
+T <- 100
+```
+
+Use the following commands to set the basis species, add the variously protonated ATP species, calculate the affinities of the formation reactions, equilibrate the system, and make a degree of formation (α) or mole fraction diagram.
+This is similar to Figure 1.3 of Alberty (2003), but is calculated for *I* = 0 M and *T* = 100 °C:
+```{marginfigure}
+To make the code more readable, commands for plotting titles and legends are not shown.
+All of the commands are available in the source of this document.
+```
+
+```{r ATP, eval=FALSE, echo=2:6}
+par(mfrow = c(1, 4), mar = c(3.1, 3.6, 2.1, 1.6), mgp = c(1.8, 0.5, 0))
+basis("MgCHNOPS+")
+species(c("ATP-4", "HATP-3", "H2ATP-2", "H3ATP-", "H4ATP"))
+a <- affinity(pH = c(3, 9), T = T)
+e <- equilibrate(a)
+d <- diagram(e, alpha = TRUE, tplot = FALSE)
+title(main = describe.property("T", T))
+alphas <- do.call(rbind, d$plotvals)
+nH <- alphas * 0:4
+Hlab <- substitute(italic(N)[H^`+`])
+plot(a$vals[[1]], colSums(nH), type = "l", xlab = "pH", ylab=Hlab, lty=2, col=2)
+a <- affinity(pH = c(3, 9), IS = 0.25, T = T)
+e <- equilibrate(a)
+d <- diagram(e, alpha = TRUE, plot.it = FALSE)
+alphas <- do.call(rbind, d$plotvals)
+nH <- alphas * 0:4
+lines(a$vals[[1]], colSums(nH))
+legend("topright", legend = c("I = 0 M", "I = 0.25 M"), lty = 2:1, col = 2:1, cex = 0.8)
+ATP.H <- substitute("ATP and H"^`+`)
+title(main = ATP.H)
+species(c("MgATP-2", "MgHATP-", "MgH2ATP", "Mg2ATP"))
+Hplot <- function(pMg, IS = 0.25) {
+  basis("Mg+2", -pMg)
+  a <- affinity(pH = c(3, 9), IS = IS, T = T)
+  e <- equilibrate(a)
+  d <- diagram(e, alpha = TRUE, plot.it = FALSE)
+  alphas <- do.call(rbind, d$plotvals)
+  NH <- alphas * c(0:4, 0, 1, 2, 0)
+  lines(a$vals[[1]], colSums(NH), lty = 7 - pMg, col = 7 - pMg)
+}
+plot(c(3, 9), c(0, 2), type = "n", xlab = "pH", ylab = Hlab)
+lapply(2:6, Hplot)
+legend("topright", legend = paste("pMg = ", 2:6), lty = 5:1, col = 5:1, cex = 0.8)
+ATP.H.Mg <- substitute("ATP and H"^`+`~"and Mg"^`+2`)
+title(main = ATP.H.Mg)
+Mgplot <- function(pH, IS = 0.25) {
+  basis("pH", pH)
+  a <- affinity(`Mg+2` = c(-2, -7), IS = IS, T = T)
+  e <- equilibrate(a)
+  d <- diagram(e, alpha = TRUE, plot.it = FALSE)
+  alphas <- do.call(rbind, d$plotvals)
+  NMg <- alphas * species()$`Mg+`
+  lines(-a$vals[[1]], colSums(NMg), lty = 10 - pH, col = 10 - pH)
+}
+Mglab <- substitute(italic(N)[Mg^`+2`])
+plot(c(2, 7), c(0, 1.2), type = "n", xlab = "pMg", ylab = Mglab)
+lapply(3:9, Mgplot)
+legend("topright", legend = paste("pH = ", 3:9), lty = 7:1, col = 7:1, cex = 0.8)
+title(main = ATP.H.Mg)
+```
+
+Note that we have saved the numeric results of <span style="color:green">`diagram()`</span>, i.e. the degrees of formation of the species (α).
+With that, we can calculate and plot the average number of protons bound per ATP molecule.
+To do so, we use R's `rbind()` and `do.call()` to turn `alpha` into a matrix, then multiply by the number of protons bound to each species, and sum the columns to get the total (i.e. average proton number, *N*<sub>H<sup>+</sup></sub>):
+```{r ATP, eval=FALSE, echo=8:11}
+```
+
+Adding the `IS` argument to <span style="color:green">`affinity()`</span>, we can now plot *N*<sub>H<sup>+</sup></sub> at the given ionic strength.
+Here we set `plot.it = FALSE` in `diagram()` because we use the computed α to make our own plot.
+This is similar to Figure 1.3 of Alberty (2003), but at higher temperature:
+```{r ATP, eval=FALSE, echo=12:17}
+```
+
+Next, we add the Mg<sup>+2</sup>-complexed ATP species:
+```{r ATP, eval=FALSE, echo=21}
+```
+
+Here is a function to calculate and plot *N*<sub>H<sup>+</sup></sub> for a given pMg:
+```{r ATP, eval=FALSE, echo=22:30}
+```
+
+With that function in hand, we plot the lines corresponding to pMg = 2 to 6.
+This is similar to Figure 1.4 of Alberty (2003):
+```{r ATP, eval=FALSE, echo=31:32}
+```
+
+The next function calculates and plots the average number of Mg<sup>+2</sup> bound to ATP (*N*<sub>Mg<sup>+2</sup></sub>) for a given pH.
+Here we multiply `alpha` by the number of Mg<sup>+2</sup> in each species, and negate log*a*<sub>Mg<sup>+2</sup></sub> (the variable used in <span style="color:green">`affinity()`</span>) to get pMg:
+```{r ATP, eval=FALSE, echo=36:44}
+```
+
+Using that function, we plot the lines corresponding to pH = 3 to 9.
+This is similar to Figure 1.5 of Alberty (2003):
+```{r ATP, eval=FALSE, echo=45:47}
+```
+
+<p>
+```{r ATP, fig.fullwidth=TRUE, fig.width=10, fig.height=2.5, dpi=ifelse(dpi==50, 50, 100), out.width="100%", echo=FALSE, message=FALSE, results="hide", fig.cap="Binding of H<sup>+</sup> and Mg<sup>+2</sup> to ATP at 100 °C and *I* = 0 M (first plot) or *I* = 0.25 M (third and fourth plots).", cache=TRUE, pngquant=pngquant, timeit=timeit}
+```
+</p>
+
+We have calculated the distribution of ATP species and average binding number of H<sup>+</sup> and Mg<sup>+2</sup> for given pH, pMg, ionic strength, and temperature.
+Accounting for the distribution of chemical species lends itself to thermodynamic models for reactions between reactants that have multiple ionized and complexed states.
+In contrast, Alberty (2003) and others propose models for biochemical reactions where the ionized and complexed species are combined into a single representation.
+Those models invoke Legendre-transformed thermodynamic properties, such as transformed Gibbs energies that are tabulated for specified pH, pMg, and ionic strength.
+Although the conceptual pathways are different, the two approaches lead to equivalent results concerning the energetics of the overall reactions and the conditions for equilibrium [@SVI12].
+The example here shows how the required calculations can be performed at the species level using conventional standard Gibbs energies for species referenced to infinite dilution (zero ionic strength).
+The effects of ionic strength are modeled "on the fly" in CHNOSZ by setting the `IS` argument in <span style="color:green">`subcrt()`</span> or <span style="color:green">`affinity()`</span> to invoke the nonideality model on top of the standard Gibbs energies of species.
+
+Now that we're finished, we can reset the nonideality method to the default.
+(This really isn't needed here, because there aren't any nonideality calculations below):
+```{r oldnon}
+nonideal(oldnon)
+```
 
 # Proteins
 
@@ -1505,160 +1678,9 @@ The points indicate the *T* and log*a*<sub>H<sub>2</sub></sub> that optimize a t
 ```{r bison_transferase, eval=FALSE, echo=12:15}
 ```
 
-# Experimental features
+# Optimization of chemical activities
 
-Some experimental features in CHNOSZ implement provisional algorithms and/or have not been extensively tested.
-
-## Activity coefficients
-
-<span style="color:green">`nonideal()`</span> uses the extended Debye--Hückel equation, described in Chapter 3 of @Alb03, to calculate activity coefficients of charged species.
-The calculations can be invoked by setting the `IS` argument in <span style="color:green">`subcrt()`</span> or <span style="color:green">`affinity()`</span>.
-The activity coefficients are calculated as a function of ionic strength (*I*), temperature, and charge of each species, without any other species-specific parameters.
-Due to these assumptions, as well as the limited applicability of the implemented equations to very high *I* and/or *T*, <span style="color:green">`nonideal()`</span> is presented as an experimental feature.
-
-For the following examples, we change the nonideality method to `Alberty`:
-```{r Alberty}
-oldnon <- nonideal("Alberty")
-```
-
-Let's take a look at calculated activity coefficients at two temperatures and their effect on the standard Gibbs energies of formation (Δ*G*°<sub>*f*</sub>) of species with different charge:
-```{r subcrt_IS}
-subcrt(c("MgATP-2", "MgHATP-", "MgH2ATP"),
-       T = c(25, 100), IS = c(0, 0.25), property = "G")$out
-```
-
-The logarithms of the activity coefficients (`loggam`) are more negative for the higher-charged species, as well as at higher temperature, and have a stabilizing effect.
-That is, the apparent Gibbs energies at *I* > 0 are less than the standard Gibbs energies at *I* = 0.
-
-We can use these calculations to make some speciation plots, similar to Figures 1.2--1.5 in Alberty (2003).
-These figures show the distribution of differently charged species of adenosine triphosphate (ATP) as a function of pH, and the average number of H<sup>+</sup> and Mg<sup>+2</sup> bound to ATP in solution as a function of pH or pMg (-log*a*<sub>Mg<sup>+2</sup></sub>).
-
-Use <span style="color:green">`info()`</span> to see what ATP species are available.
-The sources of high-temperature thermodynamic data for these species are two papers by LaRowe and Helgeson [-@LH06a; -@LH06b].
-```{r info_ATP, results="hide"}
-info(" ATP")
-```
-
-The plots for this system in Alberty's book were made for *I* = 0.25 M and *T* = 25 °C.
-As a demonstration of CHNOSZ's capabilities, we can assign a temperature of 100 °C.
-```{r T_100}
-T <- 100
-```
-
-Use the following commands to set the basis species, add the variously protonated ATP species, calculate the affinities of the formation reactions, equilibrate the system, and make a degree of formation (α) or mole fraction diagram.
-This is similar to Figure 1.3 of Alberty (2003), but is calculated for *I* = 0 M and *T* = 100 °C:
-```{marginfigure}
-To make the code more readable, commands for plotting titles and legends are not shown.
-All of the commands are available in the source of this document.
-```
-
-```{r ATP, eval=FALSE, echo=2:6}
-par(mfrow = c(1, 4), mar = c(3.1, 3.6, 2.1, 1.6), mgp = c(1.8, 0.5, 0))
-basis("MgCHNOPS+")
-species(c("ATP-4", "HATP-3", "H2ATP-2", "H3ATP-", "H4ATP"))
-a <- affinity(pH = c(3, 9), T = T)
-e <- equilibrate(a)
-d <- diagram(e, alpha = TRUE, tplot = FALSE)
-title(main = describe.property("T", T))
-alphas <- do.call(rbind, d$plotvals)
-nH <- alphas * 0:4
-Hlab <- substitute(italic(N)[H^`+`])
-plot(a$vals[[1]], colSums(nH), type = "l", xlab = "pH", ylab=Hlab, lty=2, col=2)
-a <- affinity(pH = c(3, 9), IS = 0.25, T = T)
-e <- equilibrate(a)
-d <- diagram(e, alpha = TRUE, plot.it = FALSE)
-alphas <- do.call(rbind, d$plotvals)
-nH <- alphas * 0:4
-lines(a$vals[[1]], colSums(nH))
-legend("topright", legend = c("I = 0 M", "I = 0.25 M"), lty = 2:1, col = 2:1, cex = 0.8)
-ATP.H <- substitute("ATP and H"^`+`)
-title(main = ATP.H)
-species(c("MgATP-2", "MgHATP-", "MgH2ATP", "Mg2ATP"))
-Hplot <- function(pMg, IS = 0.25) {
-  basis("Mg+2", -pMg)
-  a <- affinity(pH = c(3, 9), IS = IS, T = T)
-  e <- equilibrate(a)
-  d <- diagram(e, alpha = TRUE, plot.it = FALSE)
-  alphas <- do.call(rbind, d$plotvals)
-  NH <- alphas * c(0:4, 0, 1, 2, 0)
-  lines(a$vals[[1]], colSums(NH), lty = 7 - pMg, col = 7 - pMg)
-}
-plot(c(3, 9), c(0, 2), type = "n", xlab = "pH", ylab = Hlab)
-lapply(2:6, Hplot)
-legend("topright", legend = paste("pMg = ", 2:6), lty = 5:1, col = 5:1, cex = 0.8)
-ATP.H.Mg <- substitute("ATP and H"^`+`~"and Mg"^`+2`)
-title(main = ATP.H.Mg)
-Mgplot <- function(pH, IS = 0.25) {
-  basis("pH", pH)
-  a <- affinity(`Mg+2` = c(-2, -7), IS = IS, T = T)
-  e <- equilibrate(a)
-  d <- diagram(e, alpha = TRUE, plot.it = FALSE)
-  alphas <- do.call(rbind, d$plotvals)
-  NMg <- alphas * species()$`Mg+`
-  lines(-a$vals[[1]], colSums(NMg), lty = 10 - pH, col = 10 - pH)
-}
-Mglab <- substitute(italic(N)[Mg^`+2`])
-plot(c(2, 7), c(0, 1.2), type = "n", xlab = "pMg", ylab = Mglab)
-lapply(3:9, Mgplot)
-legend("topright", legend = paste("pH = ", 3:9), lty = 7:1, col = 7:1, cex = 0.8)
-title(main = ATP.H.Mg)
-```
-
-Note that we have saved the numeric results of <span style="color:green">`diagram()`</span>, i.e. the degrees of formation of the species (α).
-With that, we can calculate and plot the average number of protons bound per ATP molecule.
-To do so, we use R's `rbind()` and `do.call()` to turn `alpha` into a matrix, then multiply by the number of protons bound to each species, and sum the columns to get the total (i.e. average proton number, *N*<sub>H<sup>+</sup></sub>):
-```{r ATP, eval=FALSE, echo=8:11}
-```
-
-Adding the `IS` argument to <span style="color:green">`affinity()`</span>, we can now plot *N*<sub>H<sup>+</sup></sub> at the given ionic strength.
-Here we set `plot.it = FALSE` in `diagram()` because we use the computed α to make our own plot.
-This is similar to Figure 1.3 of Alberty (2003), but at higher temperature:
-```{r ATP, eval=FALSE, echo=12:17}
-```
-
-Next, we add the Mg<sup>+2</sup>-complexed ATP species:
-```{r ATP, eval=FALSE, echo=21}
-```
-
-Here is a function to calculate and plot *N*<sub>H<sup>+</sup></sub> for a given pMg:
-```{r ATP, eval=FALSE, echo=22:30}
-```
-
-With that function in hand, we plot the lines corresponding to pMg = 2 to 6.
-This is similar to Figure 1.4 of Alberty (2003):
-```{r ATP, eval=FALSE, echo=31:32}
-```
-
-The next function calculates and plots the average number of Mg<sup>+2</sup> bound to ATP (*N*<sub>Mg<sup>+2</sup></sub>) for a given pH.
-Here we multiply `alpha` by the number of Mg<sup>+2</sup> in each species, and negate log*a*<sub>Mg<sup>+2</sup></sub> (the variable used in <span style="color:green">`affinity()`</span>) to get pMg:
-```{r ATP, eval=FALSE, echo=36:44}
-```
-
-Using that function, we plot the lines corresponding to pH = 3 to 9.
-This is similar to Figure 1.5 of Alberty (2003):
-```{r ATP, eval=FALSE, echo=45:47}
-```
-
-<p>
-```{r ATP, fig.fullwidth=TRUE, fig.width=10, fig.height=2.5, dpi=ifelse(dpi==50, 50, 100), out.width="100%", echo=FALSE, message=FALSE, results="hide", fig.cap="Binding of H<sup>+</sup> and Mg<sup>+2</sup> to ATP at 100 °C and *I* = 0 M (first plot) or *I* = 0.25 M (third and fourth plots).", cache=TRUE, pngquant=pngquant, timeit=timeit}
-```
-</p>
-
-We have calculated the distribution of ATP species and average binding number of H<sup>+</sup> and Mg<sup>+2</sup> for given pH, pMg, ionic strength, and temperature.
-Accounting for the distribution of chemical species lends itself to thermodynamic models for reactions between reactants that have multiple ionized and complexed states.
-In contrast, Alberty (2003) and others propose models for biochemical reactions where the ionized and complexed species are combined into a single representation.
-Those models invoke Legendre-transformed thermodynamic properties, such as transformed Gibbs energies that are tabulated for specified pH, pMg, and ionic strength.
-Although the conceptual pathways are different, the two approaches lead to equivalent results concerning the energetics of the overall reactions and the conditions for equilibrium [@SVI12].
-The example here shows how the required calculations can be performed at the species level using conventional standard Gibbs energies for species referenced to infinite dilution (zero ionic strength).
-The effects of ionic strength are modeled "on the fly" in CHNOSZ by setting the `IS` argument in <span style="color:green">`subcrt()`</span> or <span style="color:green">`affinity()`</span> to invoke the nonideality model on top of the standard Gibbs energies of species.
-
-Now that we're finished, we can reset the nonideality method to the default.
-(This really isn't needed here, because there aren't any nonideality calculations below):
-```{r oldnon}
-nonideal(oldnon)
-```
-
-## Optimization of chemical activities
+**NOTE: This is an experimental feature.**
 
 What are the conditions that minimize the standard deviation of calculated activities of species?
 What are the conditions that minimize the energetic difference between measured and calculated abundances?

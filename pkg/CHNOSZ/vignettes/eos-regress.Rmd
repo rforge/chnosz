@@ -78,7 +78,7 @@ This [vignette](index.html) demonstrates <span style="color:blue">`EOSregress()`
 The CHNOSZ thermodynamic database uses the revised Helgeson-Kirkham-Flowers equations of state (EOS) for aqueous species.
 Different terms in these equations give the "non-solvation" and "solvation" contributions to the standard molal heat capacity (`r Cp0`) and volume (`r V0`) as a function of temperature (*T*) and pressure (*P*).
 
-@HKF81 published the original description of the equations; for `r Cp0` the equation is
+The equations were originally described by @HKF81; for `r Cp0` the equation is
 
 > `r Cp0` = `r c1` + `r c2` / (*T* - Θ)<sup>2</sup> + ω*TX*
 

@@ -1,6 +1,6 @@
-Date: 2017-10-24
+Date: 2017-10-25
 Package: CHNOSZ
-Version: 1.1.0-65
+Version: 1.1.0-66
 Title: Thermodynamic Calculations for Geobiochemistry
 Author: Jeffrey Dick
 Maintainer: Jeffrey Dick <j3ffdick@gmail.com>
@@ -11,12 +11,11 @@ Description: An integrated set of tools for thermodynamic calculations in geoche
   compositional biology. Thermodynamic properties are taken from a database for minerals
   and inorganic and organic aqueous species including biomolecules, or from amino acid
   group additivity for proteins. High-temperature properties are calculated using the
-  revised Helgeson-Kirkham-Flowers equations of state for aqueous species. Functions are
+  revised Helgeson-Kirkham-Flowers equations of state for aqueous species, and activity
+  coefficients can be calculated for specified ionic strength. Functions are
   provided to define a system using basis species, automatically balance reactions,
-  calculate the chemical affinities of reactions for selected species, and plot the results
-  on potential diagrams or equilibrium activity diagrams. Experimental features are
-  available to calculate activity coefficients for aqueous species or for multidimensional
-  optimization of thermodynamic variables using an objective function.
+  calculate the chemical affinities of formation reactions for selected species, calculate
+  equilibrium activities, and plot the results on chemical activity diagrams.
 License: GPL (>= 2)
 BuildResaveData: no
 VignetteBuilder: knitr

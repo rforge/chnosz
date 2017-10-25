@@ -60,7 +60,7 @@ If there is any doubt about the accuracy or suitability of data for a particular
 
   \item Buffer calculations - compute activities of basis species that are determined by a buffer of one or more species (e.g., pyrite-pyrrhotite-magnetite; acetic acid-\CO2) (\code{\link{buffer}}).
 
-  \item Activity coefficients (\bold{experimental}) - calculate activity coefficients of aqueous species using the extended Debye-Hückel equation (\code{\link{nonideal}}).
+  \item Activity coefficients - calculate activity coefficients of aqueous species using the extended Debye-Hückel equation (\code{\link{nonideal}}).
 
   \item Activity statistics (\bold{experimental}) - calculate summary statistics for equilibrium activities of species (\code{\link{revisit}}).
 

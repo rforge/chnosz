@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-64 (2017-10-23)
+CHANGES IN CHNOSZ 1.1.0-66 (2017-10-25)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -142,6 +142,11 @@ OTHER CHANGES:
 
 - Add demo TCA.R for standard Gibbs energies of steps of the
   citric acid cycle (Canovas and Shock, 2016).
+
+- Add test-logmolality.R to demonstrate transformation of variables from
+  activity to molality in the main workflow; refer to this test and
+  describe these transformations in anintro.Rmd; remove "experimental"
+  labeling of activity coefficient calculations in CHNOSZ-package.Rd.
 
 CLEANUP:
 

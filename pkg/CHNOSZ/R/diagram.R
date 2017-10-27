@@ -71,10 +71,11 @@ diagram <- function(
       eout$values[[i]] / n.balance[i]
     })
     plotvar <- eout$property
-    # we change 'A' to 'A/2.303RT' so the axis label is made correctly
+    # we change 'A' to 'A/(2.303RT)' so the axis label is made correctly
+    # 20171027 use parentheses to avoid ambiguity about order of operations
     if(plotvar=="A") {
-      plotvar <- "A/2.303RT"
-      message("diagram: plotting A/2.303RT / n.balance (maximum affinity method for 2-D diagrams)")
+      plotvar <- "A/(2.303RT)"
+      message("diagram: plotting A/(2.303RT) / n.balance (maximum affinity method for 2-D diagrams)")
     } else message(paste("diagram: plotting", plotvar, " / n.balance"))
   }
 
@@ -145,7 +146,7 @@ diagram <- function(
 
   ## identify predominant species
   predominant <- NA
-  if(plotvar %in% c("loga.equil", "alpha", "A/2.303RT")) {
+  if(plotvar %in% c("loga.equil", "alpha", "A/(2.303RT)")) {
     pv <- plotvals
     # some additional steps for affinity values, but not for equilibrated activities
     if(eout.is.aout) {
@@ -274,6 +275,7 @@ diagram <- function(
         # 20120521: use legend.x=NA to label lines rather than make legend
         if(is.na(legend.x)) {
           maxvals <- do.call(pmax, pv)
+          dy <- rep(dy, length.out=length(plotvals))
           for(i in 1:length(plotvals)) {
             # y-values for this line
             myvals <- as.numeric(plotvals[[i]])
@@ -303,7 +305,7 @@ diagram <- function(
               }
             }
             # also include y-offset (dy) and y-adjustment (labels bottom-aligned with the line)
-            text(xvalues[imax], plotvals[[i]][imax] + dy, labels=names[i], adj=c(thisadj, 0))
+            text(xvalues[imax], plotvals[[i]][imax] + dy[i], labels=names[i], adj=c(thisadj, 0), cex=cex.names)
           }
         } else legend(x=legend.x, lty=lty, legend=names, col=col, cex=cex.names, lwd=lwd, ...)
       }

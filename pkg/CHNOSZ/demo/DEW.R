@@ -170,7 +170,7 @@ names <- c(inorganics, organics)
 names[c(4, 5, 7, 9)] <- ""
 col <- rep("black", length(names))
 col[c(1, 3, 6, 8, 10)] <- c("red", "darkgreen", "purple", "orange", "navyblue")
-diagram(e, alpha = "balance", ylab = "carbon fraction", names = names, col = col, ylim = c(0, 0.8), ylab="carbon fraction")
+diagram(e, alpha = "balance", ylab = "carbon fraction", names = names, col = col, ylim = c(0, 0.8))
 
 ## add legend and title
 ltxt1 <- "P = 50000 bar"

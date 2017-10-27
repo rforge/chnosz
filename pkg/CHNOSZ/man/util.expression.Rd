@@ -70,6 +70,7 @@ Other specific characters are parsed as follows (case-sensitive):
      \samp{p} \tab subscript italic P (for isobaric heat capacity) \cr
      \samp{0} \tab degree sign (for a standard-state property) \cr  
      \samp{l} \tab subscript lambda \cr  
+     \samp{'} \tab prime symbol \cr  
   }
 
 A \samp{0} gets interpreted as a degree sign only if it does not immediately follow a number (so that e.g. \samp{2.303} can be included in an expression).

@@ -16,8 +16,7 @@ test_that("non-zero ionic strength transforms variables from activity to molalit
   # we get that loggam(H+)=0 and loggam(HCO3-)=-0.189
   expect_equal(nonid[[2]]$loggam, loggam)
 
-  ## take-home lesson 0: with default settings,
-  ## the activity coefficient of H+ is always 1
+  ## take-home message -1: with default settings, the activity coefficient of H+ is always 1
 
   # how do activity coefficient affect the value of G?
   # let's step back and look at the *standard Gibbs energy* at IS = 0
@@ -28,7 +27,7 @@ test_that("non-zero ionic strength transforms variables from activity to molalit
   # by an amount determined by the activity coefficient
   expect_equal(out1[[2]]$G - out0[[2]]$G, -convert(loggam, "G"))
 
-  ## take-home lesson 1.5: setting IS in subcrt() gives apparent standard Gibbs energy
+  ## take-home message 0: setting IS in subcrt() gives apparent standard Gibbs energy
 
   # now, what is the equilibrium constant for the reaction CO2 + H2O = H+ + HCO3-?
   # (this is the standard state property at IS=0)
@@ -57,7 +56,7 @@ test_that("non-zero ionic strength transforms variables from activity to molalit
   A1subcrt <- subcrt(c("CO2", "H2O", "H+", "HCO3-"), c(-1, -1, 1, 1), T=25, logact=c(-3, 0, -7, -3), IS=1)$out$A
   expect_equal(A1subcrt, A1manual)
 
-  ## take-home lesson 1: using subcrt with IS not equal to zero, the "logact"
+  ## take-home message 1: using subcrt with IS not equal to zero, the "logact"
   ## argument is logmolal in affinity calculations for charged aqueous species
 
   # now, calculate the affinities using affinity()
@@ -76,7 +75,7 @@ test_that("non-zero ionic strength transforms variables from activity to molalit
   A1affinity <- -convert(a1$values[[2]], "G")
   expect_equal(A1affinity[[1]], A1subcrt)
 
-  ## take-home lesson 2: using affinity() with IS not equal to zero, the "logact"
+  ## take-home message 2: using affinity() with IS not equal to zero, the "logact"
   ## set by species() is logmolal in affinity calculations for charged aqueous species
 
   # now, swap HCO3- for CO2 in the basis
@@ -102,7 +101,7 @@ test_that("non-zero ionic strength transforms variables from activity to molalit
   expect_equal(ACO2_0manual, ACO2_0affinity[[1]])
   expect_equal(ACO2_1manual, ACO2_1affinity[[1]])
 
-  ## take-home lesson 3: using affinity() with IS not equal to zero, the "logact"
+  ## take-home message 3: using affinity() with IS not equal to zero, the "logact"
   ## set by basis() is logmolal in affinity calculations for charged aqueous species
 
   # now look at equilibrate()
@@ -119,6 +118,6 @@ test_that("non-zero ionic strength transforms variables from activity to molalit
   Aeq1 <- -convert(logK - logQeq1, "G") # zero!
   expect_equal(Aeq1[[1]], 0)
 
-  ## take-home lesson 4: using affinity() with IS not equal to zero, the "loga.equil"
+  ## take-home message 4: using affinity() with IS not equal to zero, the "loga.equil"
   ## returned by equilibrate() is logmolal for speciation calculations with charged aqueous species
 })

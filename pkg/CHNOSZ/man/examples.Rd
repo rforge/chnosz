@@ -7,26 +7,24 @@
   Run the examples contained in each of the documentation topics. }
 
 \arguments{
-  \item{do.png}{logical, generate PNG files for the plots?}
+  \item{save.png}{logical, generate PNG image files for the plots?}
   \item{which}{character, which example to run}
-  \item{to.file}{logical, generate image files for the plots?}
 }
 
 \usage{
-  examples(do.png = FALSE)
+  examples(save.png = FALSE)
   demos(which = c("sources", "protein.equil", "affinity", "NaCl",
     "density", "ORP", "revisit", "findit", "ionize", "buffer",
     "protbuff", "yeastgfp", "mosaic", "copper", "solubility",
     "wjd", "dehydration", "bugstab", "Shh", "activity_ratios",
     "adenine", "DEW", "lambda", "TCA"),
-    to.file=FALSE)
+    save.png=FALSE)
 }
 
 \details{
 
 \code{examples} runs all the examples in the documentation for the package. 
 \code{\link{example}} is called for each topic with \code{ask} set to \code{FALSE} (so all of the figures are shown without prompting the user).
-If \code{do.png} is TRUE, the plots in the examples are saved as \code{\link{png}} files having names beginning with the name of each of the help topics.
 
 \code{demos} is a function to run other examples that are provided as \code{\link{demo}s}.
 \code{\link{demo}} is called with settings to not echo the source code and to not ask before making each plot.
@@ -46,7 +44,7 @@ See the comments in the source code for more information about each demo.
     \code{ionize} \tab ionize.aa(): contour plots of net charge and ionization properties of LYSC_CHICK \cr
     \code{buffer} \tab  * Minerals and aqueous species as buffers of hydrogen fugacity (Schulte and Shock, 1995) \cr
     \code{protbuff} \tab Chemical activities buffered by thiol peroxidases or sigma factors \cr
-    \code{yeastgfp} \tab * Subcellular locations: log fO2 - log aH2O and log a - log fO2 diagrams (Dick, 2009) \cr
+    \code{yeastgfp} \tab * Subcellular locations: \logfO2 - \logaH2O and \loga - \logfO2 diagrams (Dick, 2009) \cr
     \code{mosaic} \tab * Eh-pH diagram with two sets of changing basis species (Garrels and Christ, 1965) \cr
     \code{copper} \tab * Another example of \code{\link{mosaic}}: complexation of Cu with glycine (Aksu and Doyle, 2001) \cr
     \code{solubility} \tab * Solubility of calcite (cf. Manning et al., 2013) or \CO2 (cf. Stumm and Morgan, 1996) \cr
@@ -61,6 +59,8 @@ See the comments in the source code for more information about each demo.
     \code{TCA} \tab * Standard Gibbs energies of the tricarboxylic (citric) acid cycle (Canovas and Shock, 2016) \cr
     \code{go-IU} \tab * Diagrams using thermodynamic data in the SUPCRTBL compilation (Zimmer et al., 2016) \cr
   }
+
+For either function, if \code{save.png} is TRUE, the plots are saved in \code{\link{png}} files whose names begin with the names of the help topics or demos.
 
 }
 

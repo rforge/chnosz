@@ -25,6 +25,7 @@
 \newcommand{\logfO2}{\ifelse{latex}{\eqn{\log f_{\mathrm{O_{2}}}}}{\ifelse{html}{\out{log<i>f</i><sub>O<sub>2</sub></sub>}}{logfO2}}}
 \newcommand{\logfH2}{\ifelse{latex}{\eqn{\log f_{\mathrm{H_{2}}}}}{\ifelse{html}{\out{log<i>f</i><sub>H<sub>2</sub></sub>}}{logfH2}}}
 \newcommand{\logaH2O}{\ifelse{latex}{\eqn{\log a_{\mathrm{H_{2}O}}}}{\ifelse{html}{\out{log<i>a</i><sub>H<sub>2</sub>O</sub>}}{logaH2O}}}
+\newcommand{\loga}{\ifelse{latex}{\eqn{\log a}}{\ifelse{html}{\out{log<i>a</i>}}{log a}}}
 \newcommand{\ZC}{\ifelse{latex}{\eqn{Z_\mathrm{C}}}{\ifelse{html}{\out{<I>Z</I><sub>C</sub>}}{ZC}}}
 % use \nH2O{&#772;} to call this macro (the html code can't be defined in the macro,
 % which interprets '#' followed by a number as a placeholder for an argument)

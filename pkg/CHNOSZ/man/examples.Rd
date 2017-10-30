@@ -16,8 +16,8 @@
   demos(which = c("sources", "protein.equil", "affinity", "NaCl",
     "density", "ORP", "revisit", "findit", "ionize", "buffer",
     "protbuff", "yeastgfp", "mosaic", "copper", "solubility",
-    "wjd", "dehydration", "bugstab", "Shh", "activity_ratios",
-    "adenine", "DEW", "lambda", "TCA"),
+    "wjd", "bugstab", "Shh", "activity_ratios", "adenine",
+    "DEW", "lambda", "TCA", "go-IU"),
     save.png=FALSE)
 }
 
@@ -58,10 +58,20 @@ See the comments in the source code for more information about each demo.
     \code{lambda} \tab * Effects of lambda transition on thermodynamic properties of quartz (Berman, 1988) \cr
     \code{TCA} \tab * Standard Gibbs energies of the tricarboxylic (citric) acid cycle (Canovas and Shock, 2016) \cr
     \code{go-IU} \tab * Diagrams using thermodynamic data in the SUPCRTBL compilation (Zimmer et al., 2016) \cr
+    \code{carboxylase} \tab * Rank abundance distribution for RuBisCO and acetyl-CoA carboxylase \cr
   }
 
 For either function, if \code{save.png} is TRUE, the plots are saved in \code{\link{png}} files whose names begin with the names of the help topics or demos.
 
+Two of the demos have external dependencies and are not automatically run by \code{demos}.
+\samp{dehydration} creates an interactive SVG file; this demo depends on the \pkg{RSVGTipsDevice}, which is not available for Windows
+\samp{carboxylase} creates an animated GIF; this demo requires that the ImageMagick \code{convert} commmand be available on the system (tested on Linux and Windows).
+
+\samp{carboxylase} animates diagrams showing rankings of calculated chemical activities along a combined \T and \logaH2 gradient, or makes a single plot on the default device (without conversion to animated GIF) if a single temperature (\code{T}) is specified in the code.
+To run this demo, an empty directory named \samp{png} must be present (as a subdirectory of the R working directory).
+The proteins in the calculation are 24 carboxylases from a variety of organisms.
+There are 12 ribulose phosphate carboxylase and 12 acetyl-coenzyme A carboxylase; 6 of each type are from nominally mesophilic organisms and 6 from nominally thermophilic organisms, shown as blue and red symbols on the diagrams.
+The activities of hydrogen at each temperature are calculated using \eqn{\log a_{\mathrm{H_{2}}_{\left(aq\right)}}=-11+3/\left(40\times T\left(^{\circ}C\right)\right)}{logaH2 = -11 + 3/40 * T(degC)}; this equation comes from a model of relative stabilities of proteins in a hot-spring environment (Dick and Shock, 2011).
 }
 
 \references{

@@ -31,7 +31,6 @@ export(
   "protein.obigt", "hkf", "cgl", "which.pmax",
   "equil.boltzmann", "equil.reaction", "find.tp",
   "ionize.aa", "MP90.cp", "aasum",
-  "anim.carboxylase",
   "qqr", "RMSD", "CVRMSD", "spearman", "DGmix", "DDGmix", "DGtr",
   "ratlab",
   "EOSregress", "EOScoeffs", "EOSplot", "EOSvar",
@@ -55,7 +54,7 @@ export(
   "EOSlab", "EOScalc",
   "basis.elements", "element.mu", "ibasis",
   "water.SUPCRT92", "eqdata", "plot_findit",
-  "nonideal", "anim.TCA", "uniprot.aa", "run.guess",
+  "nonideal", "uniprot.aa", "run.guess",
 # added 20170301 or later
   "GHS_Tr", "calculateDensity", "calculateGibbsOfWater",
   "calculateEpsilon", "calculateQ", "water.DEW", "berman",

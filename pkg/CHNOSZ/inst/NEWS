@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-66 (2017-10-25)
+CHANGES IN CHNOSZ 1.1.0-69 (2017-10-30)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -172,6 +172,9 @@ CLEANUP:
 - Reorganize concept index entries in Rd files: Main workflow, Extended
   workflow, Thermodynamic data, Thermodynamic calculations, Water
   properties, Protein properties, Other tools, Utility functions.
+
+- Remove anim.TCA() and anim.carboxylase(); move the latter code to
+  demo/carboxylase.R.
 
 CHANGES IN CHNOSZ 1.1.0 (2017-05-04)
 ------------------------------------

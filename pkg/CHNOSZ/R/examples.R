@@ -11,7 +11,7 @@ examples <- function(save.png=FALSE) {
     "util.water", "taxonomy", "info", "protein.info", "hkf", "water", "IAPWS95", "subcrt",
     "makeup", "basis", "swap.basis", "species", "affinity", "equil.boltzmann", 
     "diagram", "buffer", "nonideal", "add.protein", "protein", "ionize.aa", "yeast.aa",
-    "anim", "objective", "revisit", "EOSregress", "wjd")
+    "objective", "revisit", "EOSregress", "wjd")
   plot.it <- FALSE
   if(is.character(save.png))
     png(paste(save.png,"%d.png",sep=""),width=500,height=500,pointsize=12)
@@ -28,8 +28,8 @@ examples <- function(save.png=FALSE) {
 
 demos <- function(which=c("sources", "protein.equil", "affinity", "NaCl", "density", 
   "ORP", "revisit", "findit", "ionize", "buffer", "protbuff", "yeastgfp", "mosaic",
-  "copper", "solubility", "wjd", "dehydration", "bugstab", "Shh", "activity_ratios",
-  "adenine", "DEW", "lambda", "TCA"), save.png=FALSE) {
+  "copper", "solubility", "wjd", "bugstab", "Shh", "activity_ratios",
+  "adenine", "DEW", "lambda", "TCA", "go-IU"), save.png=FALSE) {
   # run one or more demos from CHNOSZ with ask=FALSE, and return the value of the last one
   for(i in 1:length(which)) {
     # say something so the user sees where we are

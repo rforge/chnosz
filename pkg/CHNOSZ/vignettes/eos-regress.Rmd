@@ -68,6 +68,13 @@ if (!nzchar(Sys.which("pngquant"))) {
   pngquant <- "--speed=1 --quality=0-50"
   dpi <- 72
 }
+
+## colorize messages 20171031
+## adapted from https://gist.github.com/yihui/2629886#file-knitr-color-msg-rnw
+color_block = function(color) {
+  function(x, options) sprintf('<pre style="color:%s">%s</pre>', color, x)
+}
+knit_hooks$set(warning = color_block('magenta'), error = color_block('red'), message = color_block('blue'))
 ```
 
 

@@ -92,6 +92,13 @@ knit_hooks$set(timeit = function(before) {
     }
 })
 timeit <- NULL
+
+## colorize messages 20171031
+## adapted from https://gist.github.com/yihui/2629886#file-knitr-color-msg-rnw
+color_block = function(color) {
+  function(x, options) sprintf('<pre style="color:%s">%s</pre>', color, x)
+}
+knit_hooks$set(warning = color_block('magenta'), error = color_block('red'), message = color_block('blue'))
 ```
 
 # Overview
@@ -125,6 +132,8 @@ Then load the `thermo` object, which contains the thermodynamic database and sys
 data(thermo)
 ```
 
+Note: In this document, syntax highlighting is applied to the *input* of the code chunks; *output* is in black text and *messages* are in blue text.
+
 ## Getting help
 
 After CHNOSZ is installed, type <span style="color:blue">`help.start()`</span> to browse the R help documents, then choose "Packages" followed by "CHNOSZ".
@@ -157,7 +166,7 @@ Major functions without side effects in CHNOSZ are:
 * <span style="color:green">`diagram()`</span>: plot the results.
 
 Some functions in CHNOSZ do have side effects: they modify the `thermo` data object in the current R session.
-In this document, the names of these functions are set in <span style="color:red">red text</span> (not in the code chunks).
+In this document, the names of these functions are set in <span style="color:red">red text</span> (but not in the code chunks).
 Major functions with side effects are:
 
 * <span style="color:red">`basis()`</span>: set the basis species and their chemical activities;
@@ -177,20 +186,21 @@ data(thermo)         ## clear system settings
 
 # The basics
 
-* Use <span style="color:green">`info()`</span> to search the thermodynamic database
+* Use <span style="color:green">`info()`</span> to search the thermodynamic database.
 
 ```{r info_adenine}
+info("aden ")
 info("adenine")
 iadenine <- info("adenine")
 info(iadenine)
 ```
 
-* Use <span style="color:green">`thermo.refs()`</span> to look up references
+* Use <span style="color:green">`thermo.refs()`</span> to look up references.
 ```{r refs_adenine}
 thermo.refs(iadenine)
 ```
 
-* Use <span style="color:green">`subcrt()`</span> to calculate standard molal thermodynamic properties
+* Use <span style="color:green">`subcrt()`</span> to calculate standard molal thermodynamic properties.
 
 ```{r bsad_adenine, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, results="hide", fig.cap="Nucleobase equal-activity diagram.", cache=TRUE, pngquant=pngquant, timeit=timeit}
 basis("CHNOSe")
@@ -203,19 +213,19 @@ diagram(a)
 subcrt("adenine", T = 100)
 ```
 
-```{r equil_adenine, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, results="hide", fig.cap="Nucleobase metastable equilibrium activities.", cache=TRUE, pngquant=pngquant, timeit=timeit}
+```{r equil_adenine, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, results="hide", fig.cap="Activities of nucleobases in metastable equilibrium.", cache=TRUE, pngquant=pngquant, timeit=timeit}
 basis("e-", 3.6)
 a <- affinity(H2O = c(-12, 0), T = 100)
 e <- equilibrate(a)
-diagram(e, ylim=c(-8, 0))
+diagram(e, ylim = c(-8, 0))
 ```
 
-* Use <span style="color:red">`basis()`</span> &ndash; <span style="color:red">`species()`</span> &ndash; <span style="color:green">`affinity()`</span> &ndash; <span style="color:green">`diagram()`</span> (BSAD) to construct activity diagrams
+* Use <span style="color:red">`basis()`</span> &ndash; <span style="color:red">`species()`</span> &ndash; <span style="color:green">`affinity()`</span> &ndash; <span style="color:green">`diagram()`</span> (BSAD) to construct equal-activity (equipotential) diagrams.
 
 ```{r bsad_adenine, eval=FALSE}
 ```
 
-* Use <span style="color:green">`equilibrate()`</span> to calculate equilibrium activities
+* Use <span style="color:green">`equilibrate()`</span> to calculate equilibrium activities.
 
 ```{r equil_adenine, eval=FALSE}
 ```
@@ -243,9 +253,17 @@ A second argument can be used to specify a different physical state:
 info("methane", "gas")
 ```
 
-Knowing that aqueous methane is species number 910 in the database, you can again use <span style="color:green">`info()`</span> to retrieve the set of standard molal thermodynamic properties and equations of state parameters:
-```{r info_910, message=FALSE}
-info(910)
+```{r info_methane_test, echo=FALSE, results="hide"}
+# this prevents the vignette from compiling in case
+# database updates cause the species index of methane to change
+stopifnot(info("methane")==859)
+# it is up to the editor of this vignette to ensure that number
+# is used in the hard-coded examples below!
+```
+
+Knowing that aqueous methane is species number 859 in the database, you can again use <span style="color:green">`info()`</span> to retrieve the set of standard molal thermodynamic properties and equations of state parameters:
+```{r info_859, message=FALSE}
+info(859)
 ```
 
 This number can be used as an argument (`ispecies`) for other functions in CHNOSZ to uniquely identify any species; some commonly used functions also accept the species names.
@@ -279,21 +297,21 @@ The messages may be useful for browsing the database, but owing to their ambiguo
 ## Counting elements, chemical formulas, <span style="color:green">`ZC()`</span>
 
 Continuing with the example of methane, let's look at its chemical formula:
-```{r info_910_formula, message=FALSE}
-info(910)$formula
+```{r info_859_formula, message=FALSE}
+info(859)$formula
 ```
 
 We can use <span style="color:green">`makeup()`</span> to count the elements in the formula, followed by <span style="color:green">`as.chemical.formula()`</span> to rewrite the formula on one line:
-```{r makeup_910}
-makeup(910)
-as.chemical.formula(makeup(910))
+```{r makeup_859}
+makeup(859)
+as.chemical.formula(makeup(859))
 ```
 
 For organic species, a calculation of the average oxidation state of carbon (`r zc`) is possible given the species index, chemical formula, or elemental count:
-```{r ZC_910, message=FALSE}
-ZC(910)
-ZC(info(910)$formula)
-ZC(makeup(910))
+```{r ZC_859, message=FALSE}
+ZC(859)
+ZC(info(859)$formula)
+ZC(makeup(859))
 ```
 
 # Calculating thermodynamic properties
@@ -2096,7 +2114,7 @@ See <span style="color:blue">`?wjd`</span> as well as the vignette, [<span style
 
 <span style="color:green">`RH2obigt()`</span> implements a group additivity calculation of standard molal thermodynamic properties and equations of state parameters of crystalline and liquid organic molecules from @RH98.
 
-<span style="color:green">`eqdata()`</span> reads data, including concentrations of aqueous species, numbers of moles of solid phases, and mineral saturation states (affinities), from an EQ6 output file [[@Wol92]](http://www.wipp.energy.gov/library/cra/2009_cra/references/Others/Wolery_1992_EQ36_A_Software_Package_for_Geochemical_Modeling_of_Aqueous_Systems_ERMS241375.pdf).
+<span style="color:green">`eqdata()`</span> reads data, including concentrations of aqueous species, numbers of moles of solid phases, and mineral saturation states (affinities), from an EQ6 output file [@Wol92].
 
 ## NCBI taxonomy files
 
@@ -2122,6 +2140,10 @@ Thank you for reading, and have fun!
 > "As any practitioner knows, the effort of research is so tedious and time consuming that when the work stops being fun, there's no sense in continuing. The best scientists live a life of keen amusement."
 >
 > `r tufte::quote_footer('--- Stephen Jay Gould')`
+
+> "The real fun of life is this perpetual testing to realize how far out you can go with any potentialities."
+>
+> `r tufte::quote_footer('--- Richard P. Feynman')`
 
 
 # Document history

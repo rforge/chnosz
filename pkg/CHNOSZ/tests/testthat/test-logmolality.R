@@ -120,4 +120,12 @@ test_that("non-zero ionic strength transforms variables from activity to molalit
 
   ## take-home message 4: using affinity() with IS not equal to zero, the "loga.equil"
   ## returned by equilibrate() is logmolal for speciation calculations with charged aqueous species
+
+  # finally, what is loga.balance?
+  a.balance <- 10^e1$loga.balance
+  m.total <- sum(10^unlist(e1$loga.equil))
+  expect_equal(a.balance, m.total)
+
+  ## take-home message 5: using affinity() with IS not equal to zero, the "loga.balance"
+  ## used by equilibrate() is the logarithm of total molality of the balancing basis species
 })

@@ -132,7 +132,8 @@ Then load the `thermo` object, which contains the thermodynamic database and sys
 data(thermo)
 ```
 
-Note: In this document, syntax highlighting is applied to the *input* of the code chunks; *output* is in black text and *messages* are in blue text.
+Note: Throughout this document, syntax highlighting is applied to the *input* of the code chunks.
+Double hash marks (`##`) precede the *output*, where black text denotes *results* and blue text is used for *messages*.
 
 ## Getting help
 
@@ -588,7 +589,7 @@ Aqueous species are assigned default activities of 10<sup>-3</sup> (`logact` is 
 Now, we can use <span style="color:green">`affinity()`</span> to calculate the affinities of the formation reactions of each of the species.
 R's `unlist()` is used here to turn the list of values of affinity into a numeric object that can be printed in a couple of lines (note that the names correspond to `ispecies` above):
 ```{marginfigure}
-The values returned by <span style="color:green">`affinity()`</span> are dimensionless, i.e. *A*/2.303*RT*.
+The values returned by <span style="color:green">`affinity()`</span> are dimensionless, i.e. *A*/(2.303*RT*).
 ```
 ```{r affinity}
 unlist(affinity()$values)
@@ -707,7 +708,7 @@ However, the choice of other basis species can also affect the diagram.
 For instance, we can use H<sub>2</sub> or `r o2` in place of *e*<sup>-</sup>.
 To do that, let's write a function to swap those basis species and make a diagram.
 We use R's `do.call()` to construct the argument list for <span style="color:green">`mosaic()`</span>; this way, the name of the `newvar` argument to our function indicates the chosen variable.
-```{r mosaicfun, fig.fullwidth=TRUE, fig.width=9, fig.height=3, small.mar=TRUE, dpi=dpi, out.width="85%", message=FALSE, results="hide", cache=TRUE, fig.cap="Different projections (defined by the basis species) of the same thermodynamic system.", pngquant=pngquant, timeit=timeit}
+```{r mosaicfun, fig.fullwidth=TRUE, fig.width=9, fig.height=3, small.mar=TRUE, dpi=dpi, out.width="85%", message=FALSE, results="hide", cache=TRUE, fig.cap="The same chemical system projected into different sets of basis species.", pngquant=pngquant, timeit=timeit}
 mosaicfun <- function(newvar, T = 200) {
   swap.basis("e-", names(newvar))
   if (names(newvar) == "O2") basis("O2", "gas")
@@ -721,7 +722,7 @@ mosaicfun <- function(newvar, T = 200) {
 }
 par(mfrow = c(1, 3))
 mosaicfun(list(Eh = c(-1, 1, res)))
-mosaicfun(list(H2 = c(-15, 5, res)))
+mosaicfun(list(H2 = c(-25, 10, res)))
 mosaicfun(list(O2 = c(-70, 0, res)))
 ```
 
@@ -762,7 +763,7 @@ The target of the conversion is `G`, or free energy, from `logK`.
 That conversion requires temperature in Kelvin, which is obtained by conversion from °C.
 We finish with a negation (affinity is negative Gibbs energy) and scaling from cal to kcal.
 ```
-Using R's `lapply()` to run <span style="color:green">`convert()`</span> for each species, we convert the affinity from dimensionless values (*A*/2.303*RT*) to cal/mol, then kcal/mol.
+Using R's `lapply()` to run <span style="color:green">`convert()`</span> for each species, we convert the affinity from dimensionless values (*A*/(2.303*RT*)) to cal/mol, then kcal/mol.
 ```{r rainbow_affinity, message=FALSE}
 a <- affinity(T = rb$T, CO2 = rb$CO2, H2 = rb$H2,
               `NH4+` = rb$`NH4+`, H2S = rb$H2S, pH = rb$pH)
@@ -1060,15 +1061,18 @@ There are a few things to remember when using activity coefficients:
 
 * Using <span style="color:green">`subcrt()`</span> with `IS` not equal to zero, calculated values of `G` are the **apparent** standard Gibbs energy at specified ionic strength.
 
-* Using <span style="color:green">`subcrt()`</span> with `IS` not equal to zero, values in the `logact` argument stand for **log molality** of charged aqueous species in affinity calculations.
+* Using <span style="color:green">`subcrt()`</span> with `IS` not equal to zero, values in the `logact` argument stand for **log molality** of aqueous species in affinity calculations.
 
-* Using <span style="color:green">`affinity()`</span> with `IS` not equal to zero, the following values stand for **log molality** of charged aqueous species:
+* Using <span style="color:green">`affinity()`</span> with `IS` not equal to zero, the following values stand for **log molality** of aqueous species:
     + values of `logact` set by <span style="color:green">`basis()`</span>;
-    + values of `logact` set by <span style="color:green">`species()`</span>;
-    + value of `loga.equil` returned by <span style="color:green">`equilibrate()`</span>
+    + values of `logact` set by <span style="color:green">`species()`</span>.
 
-In other words, the activation of activity coefficients transforms variables from activity to molality in the main workflow.
-A simple but detailed example demonstrating each of the above tranformations is in `tests/testthat/test-logmolality.R`.
+* Using <span style="color:green">`equilibrate()`</span> on the output of affinity calculated with `IS` not equal to zero, the following values stand for **log molality** of aqueous species:
+    + the value of `loga.balance` used by <span style="color:green">`equilibrate()`</span> (i.e., logarithm of total molality of the balancing basis species);
+    + values of `loga.equil` returned by <span style="color:green">`equilibrate()`</span>.
+
+In other words, the activation of activity coefficients effects a transformation from activity to molality in the main workflow.
+A simple but comprehensive series of calculations demonstrating these tranformations is in `tests/testthat/test-logmolality.R`.
 
 Because it is not possible to dynamically change the names of arguments in the functions, the user should be aware of the effects mentioned above.
 As another consequence, activities of basis species or equilibrium activities of species shown on diagrams should be relabeled as molalities when `IS` is used in the calculation of <span style="color:green">`affinity()`</span>.
@@ -1572,7 +1576,7 @@ col <- c("#f9a330", "#63c54e", "#f24e33", "#d4e94e", "#0f0f0f")
 twc[[3]][ihigh] <- col
 names <- rep("", length(pname))
 names[ihigh] <- c("Olig2", "Irx3", "Nkx6.2", "Dbx1", "Shh")
-ylab <- substitute(italic(A) / 2.303 * italic(RT) * " relative to Shh")
+ylab <- substitute(italic(A) / (2.303 * italic(RT)) * " relative to Shh")
 diagram(a, balance = 1, ylim = c(-0.5, 5), xlim = c(0.5, -5.5),
   lty = twc[[1]], lwd=twc[[2]], col = twc[[3]], ylab = ylab,
   names = names, adj = 0, dy = 0.1, format.names = FALSE)

@@ -64,7 +64,7 @@ See the comments in the source code for more information about each demo.
 For either function, if \code{save.png} is TRUE, the plots are saved in \code{\link{png}} files whose names begin with the names of the help topics or demos.
 
 Two of the demos have external dependencies and are not automatically run by \code{demos}.
-\samp{dehydration} creates an interactive SVG file; this demo depends on the \pkg{RSVGTipsDevice}, which is not available for Windows
+\samp{dehydration} creates an interactive SVG file; this demo depends on \CRANpkg{RSVGTipsDevice}, which is not available for Windows.
 \samp{carboxylase} creates an animated GIF; this demo requires that the ImageMagick \code{convert} commmand be available on the system (tested on Linux and Windows).
 
 \samp{carboxylase} animates diagrams showing rankings of calculated chemical activities along a combined \T and \logaH2 gradient, or makes a single plot on the default device (without conversion to animated GIF) if a single temperature (\code{T}) is specified in the code.

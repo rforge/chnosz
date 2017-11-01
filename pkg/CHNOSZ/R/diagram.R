@@ -284,13 +284,15 @@ diagram <- function(
         if(is.na(legend.x)) {
           maxvals <- do.call(pmax, pv)
           dy <- rep(dy, length.out=length(plotvals))
+          # don't assign to adj becuase that messes up the missing test below
+          alladj <- rep(adj, length.out=length(plotvals))
           for(i in 1:length(plotvals)) {
             # y-values for this line
             myvals <- as.numeric(plotvals[[i]])
             # don't take values that lie close to or above the top of plot
             myvals[myvals > ylim[1] + 0.95*diff(ylim)] <- ylim[1]
             # the starting x-adjustment
-            thisadj <- adj
+            thisadj <- alladj[i]
             # if this line has any of the overall maximum values, use only those values
             # (useful for labeling straight-line affinity comparisons 20170221)
             is.max <- myvals==maxvals

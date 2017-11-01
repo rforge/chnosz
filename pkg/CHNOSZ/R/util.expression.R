@@ -314,6 +314,12 @@ split.formula <- function(formula) {
     }
     if(grepl("-[0-9]?$", formula)) {
       fsplit <- strsplit(formula, "-")[[1]]
+      # for formula=="H-citrate-2", unsplit H-citrate
+      if(length(fsplit) > 2) {
+        f2 <- tail(fsplit, 1)
+        f1 <- paste(head(fsplit, -1), collapse="-")
+        fsplit <- c(f1, f2)
+      }
       if(is.na(fsplit[2])) Z <- -1 else Z <- -as.numeric(fsplit[2])
     }
     formula <- fsplit[1]

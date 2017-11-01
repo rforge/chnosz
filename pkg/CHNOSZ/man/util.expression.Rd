@@ -14,10 +14,12 @@
 \description{Generate expressions suitable for axis labels and plot legends describing chemical species, properties and reactions.}
 
 \usage{
-  expr.species(species, state = "", log = "", value=NULL, use.makeup=FALSE)
-  expr.property(property)
+  expr.species(species, state = "", log = "", value=NULL, use.makeup=FALSE,
+    use.molality = FALSE)
+  expr.property(property, use.molality = FALSE)
   expr.units(property, prefix = "", per = "mol")
-  axis.label(label, units = NULL, basis = get("thermo")$basis, prefix = "")
+  axis.label(label, units = NULL, basis = get("thermo")$basis, prefix = "",
+    use.molality = FALSE)
   describe.basis(basis = get("thermo")$basis, ibasis = 1:nrow(basis),
     digits = 1, oneline = FALSE)
   describe.property(property, value, digits = 0, oneline = FALSE,
@@ -33,6 +35,7 @@
   \item{log}{character, designation of physical state (for logarithm of activity or fugacity)}
   \item{value}{numeric, logarithm of activity or fugacity of species, or value of other property}
   \item{use.makeup}{logical, use \code{\link{makeup}} to count the elements?}
+  \item{use.molality}{logical, use molality (m) instead of activity (a) for aqueous species?}
   \item{property}{character, description of chemical property}
   \item{prefix}{character, prefix for units}
   \item{per}{character, denominator in units}
@@ -92,7 +95,11 @@ Special cases for the \code{property} argument (\samp{logK}, \samp{Eh}, \samp{pH
 
 If none of those characters appears in the property, the expression is an empty character (no units). If a \code{prefix} is given, it is added to the expression. The denominator of the units (default \samp{mol}) is taken from the \code{per} argument; it is applied to all units except for \samp{P}, \samp{T}, \samp{Eh}, and \samp{IS}.
 
-  \code{axis.label} accepts a generic description of a \code{label}. If this matches the chemical formula of one of the basis species in the \code{basis} argument, the expression for the label is generated using \code{expr.species} with \code{log} set to the physical state of the basis species. Otherwise, the expression is built by combining the output of \code{expr.property} with \code{expr.units} (or the value in \code{units}, if it is supplied), placing a comma between the two. This function is used extensively in \code{\link{diagram}} and also appears in many of the examples.
+\code{axis.label} accepts a generic description of a \code{label}.
+If this matches the chemical formula of one of the basis species in the \code{basis} argument, the expression for the label is generated using \code{expr.species} with \code{log} set to the physical state of the basis species.
+Otherwise, the expression is built by combining the output of \code{expr.property} with \code{expr.units} (or the value in \code{units}, if it is supplied), placing a comma between the two. 
+This function is used extensively in \code{\link{diagram}} and also appears in many of the examples.
+Note that \code{\link{diagram}} sets \code{use.molality} to TRUE if \code{IS} was supplied as an argument to \code{\link{affinity}}.
 
   \code{describe.basis} makes an expression summarizing the basis species definition (logarithms of activity or fugacity of the basis species) provided in \code{basis}; only the basis species identified by \code{ibasis} are included. 
 

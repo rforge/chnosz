@@ -2,7 +2,7 @@
 # write descriptions of chemical species, properties, reactions, conditions
 # modified from describe(), axis.label()  20120121 jmd
 
-expr.species <- function(species, state="", log="", value=NULL, use.makeup=FALSE) {
+expr.species <- function(species, state="", log="", value=NULL, use.makeup=FALSE, use.molality=FALSE) {
   # make plotting expressions for chemical formulas
   # that include subscripts, superscripts (if charged)
   # and optionally designations of states +/- loga or logf prefix
@@ -54,8 +54,12 @@ expr.species <- function(species, state="", log="", value=NULL, use.makeup=FALSE
     else expr <- substitute(a[group('(',italic(b),')')],list(a=expr, b=state))
   }
   # write logarithm of activity or fugacity
+  # (or molality 20171101)
   if(log != "") {
-    if(log %in% c("aq", "cr", "liq", "cr2", "cr3", "cr4")) acity <- "a"
+    if(log == "aq") {
+      if(use.molality) acity <- "m"
+      else acity <- "a"
+    } else if(log %in% c("cr", "liq", "cr2", "cr3", "cr4")) acity <- "a"
     else if(log %in% c("g", "gas")) acity <- "f"
     else stop(paste("'", log, "' is not a recognized state", sep=""))
     logacity <- substitute(log~italic(a), list(a=acity))
@@ -68,7 +72,7 @@ expr.species <- function(species, state="", log="", value=NULL, use.makeup=FALSE
   return(expr)
 }
 
-expr.property <- function(property) {
+expr.property <- function(property, use.molality=FALSE) {
   # a way to make expressions for various properties
   # e.g. expr.property('DG0r') for standard molal Gibbs 
   # energy change of reaction
@@ -77,7 +81,10 @@ expr.property <- function(property) {
   # some special cases
   if(property=="logK") return(quote(log~italic(K)))
   # grepl here b/c diagram() uses "loga.equil" and "loga.basis"
-  if(grepl("loga", property)) return(quote(log~italic(a)))
+  if(grepl("loga", property)) {
+    if(use.molality) return(quote(log~italic(m)))
+    else return(quote(log~italic(a)))
+  }
   if(property=="alpha") return(quote(alpha))
   if(property=="Eh") return("Eh")
   if(property=="pH") return("pH")
@@ -149,7 +156,7 @@ expr.units <- function(property, prefix="", per="mol") {
   return(expr)
 }
 
-axis.label <- function(label, units=NULL, basis=get("thermo")$basis, prefix="") {
+axis.label <- function(label, units=NULL, basis=get("thermo")$basis, prefix="", use.molality=FALSE) {
   # make a formatted axis label from a generic description
   # it can be a chemical property, condition, or chemical activity in the system
   # if the label matches one of the basis species
@@ -161,11 +168,11 @@ axis.label <- function(label, units=NULL, basis=get("thermo")$basis, prefix="") 
     # 20090215: the state this basis species is in
     state <- basis$state[match(label, rownames(basis))]
     # get the formatted label
-    desc <- expr.species(label, log=state)
+    desc <- expr.species(label, log=state, use.molality=use.molality)
   } else {
     # the label is for a chemical property or condition
     # make the label by putting a comma between the property and the units
-    property <- expr.property(label)
+    property <- expr.property(label, use.molality=use.molality)
     if(is.null(units)) units <- expr.units(label, prefix=prefix)
     # no comma needed if there are no units
     if(units=="") desc <- substitute(a, list(a=property))

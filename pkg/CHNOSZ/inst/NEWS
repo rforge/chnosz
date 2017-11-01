@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-70 (2017-10-30)
+CHANGES IN CHNOSZ 1.1.0-73 (2017-11-01)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -116,8 +116,33 @@ DATABASE UPDATES:
 
 OTHER CHANGES:
 
+- Add test-logmolality.R to demonstrate transformation of variables from
+  activity to molality in the main workflow; refer to this test and
+  describe these transformations in anintro.Rmd; remove "experimental"
+  labeling of activity coefficient calculations in CHNOSZ-package.Rd.
+
+- Add 'use.molality' argument to axis.label() and supporting functions.
+  So that the labels on diagrams are changed from activity (a) to
+  molality (m), this argument is set to TRUE by diagram() when IS is
+  supplied as an argument to affinity().
+
+- Add demo TCA.R for standard Gibbs energies of steps of the
+  citric acid cycle (Canovas and Shock, 2016).
+
+- Components of subcrt() output indicating the stable polymorph of
+  minerals with phase transitions are now named 'polymorph', not
+  'state'.
+
+- Add maxdiff() and expect_maxdiff() for calculating and testing the
+  maximum absolute pairwise difference between two objects.
+  expect_maxdiff() is used in tests/testthat/*.R as a more
+  straightforward alternative for checking differences than using
+  'tolerance' in expect_equal().
+
 - Add 'tol' argument to equil.reaction() (convergence tolerance for
   uniroot()).
+
+REFACTORING AND CLEANUP:
 
 - In hkf() and cgl(), combine 'ghs' and 'eos' arguments into single
   argument named 'parameters'.
@@ -132,23 +157,6 @@ OTHER CHANGES:
   order to avoid duplicating the calculations in subcrt().
 
 - In water.* functions, rename the "diel" variable to "epsilon".
-
-- Components of subcrt() output indicating the stable polymorph of
-  minerals with phase transitions are now named 'polymorph', not
-  'state'.
-
-- Add maxdiff() and expect_maxdiff() for calculating and testing the
-  maximum absolute pairwise difference between two objects.
-
-- Add demo TCA.R for standard Gibbs energies of steps of the
-  citric acid cycle (Canovas and Shock, 2016).
-
-- Add test-logmolality.R to demonstrate transformation of variables from
-  activity to molality in the main workflow; refer to this test and
-  describe these transformations in anintro.Rmd; remove "experimental"
-  labeling of activity coefficient calculations in CHNOSZ-package.Rd.
-
-CLEANUP:
 
 - To save space, taxid_names.csv has been trimmed to hold only those
   taxids listed in extdata/bison/gi.taxid.txt.

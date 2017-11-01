@@ -5,6 +5,11 @@
 #   gather plotvals independently of plot parameters (including nd),
 #   single return statement
 
+## if this file is interactively sourced, the following are also needed to provide unexported functions:
+#source("equilibrate.R")
+#source("util.plot.R")
+#source("util.character.R")
+
 diagram <- function(
   # primary input
   eout, 
@@ -83,6 +88,9 @@ diagram <- function(
   # length(eout$vars) - the number of variables = the maximum number of dimensions
   # length(dim(eout$values[[1]])) - nd=1 if it was a transect along multiple variables
   nd <- min(length(eout$vars), length(dim(eout$values[[1]])))
+
+  ## use molality instead of activity if the affinity calculation include ionic strength 20171101
+  use.molality <- "IS" %in% names(eout)
 
   ## when can normalize and as.residue be used
   if(normalize | as.residue) {
@@ -246,7 +254,7 @@ diagram <- function(
 
       ### 0-D diagram - bar graph of properties of species or reactions
       # plot setup
-      if(missing(ylab)) ylab <- axis.label(plotvar, units="")
+      if(missing(ylab)) ylab <- axis.label(plotvar, units="", use.molality=use.molality)
       barplot(unlist(plotvals), names.arg=names, ylab=ylab, cex.names=cex.names, col=col, ...)
       if(!is.null(main)) title(main=main)
 
@@ -256,9 +264,9 @@ diagram <- function(
       xvalues <- eout$vals[[1]]
       # initialize the plot
       if(!add) {
-        if(missing(xlab)) xlab <- axis.label(eout$vars[1], basis=eout$basis)
+        if(missing(xlab)) xlab <- axis.label(eout$vars[1], basis=eout$basis, use.molality=use.molality)
         if(missing(xlim)) xlim <- range(xvalues)  # TODO: this is backward if the vals are not increasing
-        if(missing(ylab)) ylab <- axis.label(plotvar, units="")
+        if(missing(ylab)) ylab <- axis.label(plotvar, units="", use.molality=use.molality)
         # to get range for y-axis, use only those points that are in the xrange
         if(is.null(ylim)) {
           isx <- xvalues >= min(xlim) & xvalues <= max(xlim)
@@ -499,8 +507,8 @@ diagram <- function(
       ylim <- c(ys[1], tail(ys, 1))
       # initialize the plot
       if(!add) {
-        if(is.null(xlab)) xlab <- axis.label(eout$vars[1], basis=eout$basis)
-        if(is.null(ylab)) ylab <- axis.label(eout$vars[2], basis=eout$basis)
+        if(is.null(xlab)) xlab <- axis.label(eout$vars[1], basis=eout$basis, use.molality=use.molality)
+        if(is.null(ylab)) ylab <- axis.label(eout$vars[2], basis=eout$basis, use.molality=use.molality)
         if(tplot) thermo.plot.new(xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab,
           cex=cex, cex.axis=cex.axis, mar=mar, yline=yline, side=side, ...)
         else plot(0, 0, type="n", xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab, ...)

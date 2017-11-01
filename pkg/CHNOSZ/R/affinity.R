@@ -247,9 +247,12 @@ affinity <- function(...,property=NULL,sout=NULL,exceed.Ttr=FALSE,
 
   # content of return value depends on buffer request
   if(return.buffer) return(c(tb, list(vars=vars, vals=vals)))
-  a <- list(sout=sout, property=property, basis=mybasis, species=myspecies, T=T, P=P, vars=vars, vals=vals, values=a)
+  # add IS value only if it given as an argument 20171101
+  # (even if its value is 0, the presence of IS will trigger diagram() to use "m" instead of "a" in axis labels)
+  iIS <- match("IS", names(args.orig))
+  if(!is.na(iIS)) a <- list(sout=sout, property=property, basis=mybasis, species=myspecies, T=T, P=P, IS=args$IS, vars=vars, vals=vals, values=a)
+  else a <- list(sout=sout, property=property, basis=mybasis, species=myspecies, T=T, P=P, vars=vars, vals=vals, values=a)
   if(buffer) a <- c(a, list(buffer=tb))
   return(a)
-
 }
 

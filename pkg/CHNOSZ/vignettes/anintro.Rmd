@@ -1047,7 +1047,7 @@ While choosing an inappropriate balance leads to infeasible models, consideratio
 
 # Activity coefficients
 
-<span style="color:green">`nonideal()`</span> uses the extended Debye--Hückel equation as formulated by @HKF81 for NaCl-dominated solutions, or optionally using parameters described in Chapter 3 of @Alb03, to calculate activity coefficients of charged species.
+For calculating activity coefficients of charged species, <span style="color:green">`nonideal()`</span> uses the extended Debye--Hückel equation as parameterized by @HKF81 for NaCl-dominated solutions to high pressure and temperature, or optionally using parameters described in Chapter 3 of @Alb03, which are applicable to relatively low-temperature biochemical reactions.
 The activity coefficients are calculated as a function of ionic strength (*I*), temperature, and charge of each species, without any other species-specific parameters.
 Using the default `Helgeson` method, the extended term parameter ("B-dot") is derived from data of @Hel69 and Helgeson et al. (1981), and extrapolations of @MSS13.
 
@@ -1074,8 +1074,8 @@ There are a few things to remember when using activity coefficients:
 In other words, the activation of activity coefficients effects a transformation from activity to molality in the main workflow.
 A simple but comprehensive series of calculations demonstrating these tranformations is in `tests/testthat/test-logmolality.R`.
 
-Because it is not possible to dynamically change the names of arguments in the functions, the user should be aware of the effects mentioned above.
-As another consequence, activities of basis species or equilibrium activities of species shown on diagrams should be relabeled as molalities when `IS` is used in the calculation of <span style="color:green">`affinity()`</span>.
+Because it is not possible to dynamically change the names of arguments in the functions, the user should be aware of the transformations mentioned above.
+However, the labels on diagrams *can* be automatically adjusted; accordingly, activities of aqueous species are relabeled as molalities by <span style="color:green">`diagram()`</span> when `IS` is used in the calculation of <span style="color:green">`affinity()`</span>.
 
 ## Biochemical example
 

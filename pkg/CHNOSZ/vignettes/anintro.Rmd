@@ -2023,13 +2023,15 @@ Without additional information, there is often no clear strategy for "fixing" th
 See the [Numerical Tools from GEOPIG](http://geopig.asu.edu/?q=tools) for SUPCRT updates (slop files), including corrections that have not yet been ported to CHNOSZ.
 ```
 
-## Water: SUPCRT92 or IAPWS-95
+## Water: SUPCRT92 or IAPWS-95 or DEW
 
 For calculations of the thermodynamic and dielectric properties of liquid and supercritical H<sub>2</sub>O, CHNOSZ uses a Fortran subroutine (`H2O92`) from SUPCRT92 (Johnson et al., 1992).
 Alternatively, the IAPWS-95 formulation for thermodynamic properties [@WP02] can be utilized.
 In part because of intrinsic thermodynamic differences between SUPCRT92 and IAPWS-95, as well as different equations used in CHNOSZ for calculating the dielectric constant when the IAPWS-95 option is active, this option could introduce inconsistencies with the data for aqueous species in the database and is not recommended for general use in CHNOSZ.
 However, the IAPWS-95 equations are useful for other applications, and may be extrapolated to a greater range of *T* and *P* than SUPCRT.
 See <span style="color:blue">`?water`</span> for more information, as well as the last example in <span style="color:blue">`?subcrt`</span>, where uncommenting the line for the `IAPWS95` option allows extrapolation to lower temperatures for supercooled water.
+
+More recently (late 2017), an implementation of the [Deep Earth Water](http://www.dewcommunity.org/) (DEW) model was added; see [optional data](#optional-data) for more information.
 
 # Messages and errors
 

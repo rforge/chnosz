@@ -150,7 +150,8 @@ CHNOSZ is made up of a set of functions and supporting datasets.
 The major components of the package are shown in the figure below, which is an updated version of the diagram in @Dic08.
 Rectangles and ellipses represent functions and datasets; bold text indicates primary functions.
 
-![Structure of CHNOSZ.](CHNOSZ.png)
+<!-- https://stackoverflow.com/questions/14675913/how-to-change-image-size-markdown -->
+![Structure of CHNOSZ.](CHNOSZ.png){ width=75% }
 
 Many functions in CHNOSZ have no side effects.
 That is, the function only returns a result; to use the result elsewhere, it can be assigned to a variable with `<-`.
@@ -177,12 +178,13 @@ Major functions with side effects are:
 The following pseudocode shows a common sequence of commands.
 In actual usage, the `...` are replaced by arguments that define the chemical species and variables:
 ```{r pseudocode, eval=FALSE}
+data(thermo)         ## initialize system settings
 basis(...)
 species(...)
 a <- affinity(...)
 e <- equilibrate(a)  ## optional
 diagram(e)           ## or diagram(a)
-data(thermo)         ## clear system settings
+data(thermo)         ## clear settings for next calculation
 ```
 
 # The basics
@@ -2031,7 +2033,7 @@ In part because of intrinsic thermodynamic differences between SUPCRT92 and IAPW
 However, the IAPWS-95 equations are useful for other applications, and may be extrapolated to a greater range of *T* and *P* than SUPCRT.
 See <span style="color:blue">`?water`</span> for more information, as well as the last example in <span style="color:blue">`?subcrt`</span>, where uncommenting the line for the `IAPWS95` option allows extrapolation to lower temperatures for supercooled water.
 
-More recently (late 2017), an implementation of the [Deep Earth Water](http://www.dewcommunity.org/) (DEW) model was added; see [optional data](#optional-data) for more information.
+More recently (late 2017), an implementation of the [Deep Earth Water](http://www.dewcommunity.org/) (DEW) model was added; see [Optional data](#optional-data) for more information.
 
 # Messages and errors
 

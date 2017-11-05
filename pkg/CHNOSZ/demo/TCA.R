@@ -50,20 +50,22 @@ atp <- quote(ATP^-4)
 fum <- quote(Fumarate^-2)
 h2 <- quote(H[2*(italic(aq))])
 mal <- quote(Malate^-2)
+# the reaction double arrow
+eq <- "\u21cc"
 sublist <- list(oxal=oxal, pyr=pyr, h2o=h2o, nox=nox, cit=cit, nred=nred,
                 co2=co2, hplus=hplus, aco=aco, iso=iso, ket=ket, adp=adp,
-                hpo4=hpo4, suc=suc, atp=atp, fum=fum, h2=h2, mal=mal)
+                hpo4=hpo4, suc=suc, atp=atp, fum=fum, h2=h2, mal=mal, eq=eq)
 # reaction titles
 rtitle <- list(
-  c(substitute("       "*oxal + pyr + h2o + nox == "", sublist), substitute(cit + nred + co2 + hplus, sublist)),
-  substitute(cit == aco + h2o, sublist),
-  substitute(aco + h2o == iso*"   ", sublist),
-  c(substitute(iso + nox == "", sublist), substitute(ket + nred + co2*"   ", sublist)),
-  c(substitute(ket + adp + hpo4 + nox == "", sublist), substitute(suc + atp + nred + co2, sublist)),
-  substitute(suc == fum + h2, sublist),
-  substitute(fum + h2o == mal, sublist),
-  c(substitute(mal + nox == "                 ", sublist), substitute(oxal + nred + hplus * "             ", sublist)),
-  c(substitute(pyr + 4*nox + adp + hpo4 + 2*h2o == "                  ", sublist),
+  c(substitute("        "*oxal + pyr + h2o + nox ~eq~ "", sublist), substitute(cit + nred + co2 + hplus, sublist)),
+  substitute(cit ~eq~ aco + h2o, sublist),
+  substitute(aco + h2o ~eq~ iso*"   ", sublist),
+  c(substitute(iso + nox ~eq~ "   ", sublist), substitute(ket + nred + co2*"   ", sublist)),
+  c(substitute(ket + adp + hpo4 + nox ~eq~ "", sublist), substitute("      "*suc + atp + nred + co2, sublist)),
+  c(substitute(suc ~eq~ "", sublist), substitute(fum + h2, sublist)),
+  substitute(fum + h2o ~eq~ mal, sublist),
+  c(substitute(mal + nox ~eq~ "                          ", sublist), substitute(oxal + nred + hplus * "             ", sublist)),
+  c(substitute(pyr + 4*nox + adp + hpo4 + 2*h2o ~eq~ "                    ", sublist),
     substitute(3*co2 + 4*nred + 2*hplus + atp + h2 * "           ", sublist))
 )
 # set up plot

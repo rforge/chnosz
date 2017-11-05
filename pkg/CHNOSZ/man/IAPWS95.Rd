@@ -39,7 +39,7 @@ The function does not check these limits and will attempt calculations for any r
 
 \examples{
 ## calculate pressure for given temperature, density
-P <- as.numeric(IAPWS95("P", T=500, rho=838.0235))
+IAPWS95("P", T=500, rho=838.0235)
 }
 
 \references{

@@ -20,9 +20,9 @@ vignette: >
   \usepackage[utf8]{inputenc}
 bibliography: vig.bib
 link-citations: yes
-# The custom CSL file gives a build error on R-Forge (20170212):
-#   pandoc-citeproc: error while parsing the XML string
 csl: elementa.csl
+# note: this may be needed for margin references in next version of tufte:
+#tufte_features: ["background", "margin_references"]
 ---
 
 ```{r options, include=FALSE}
@@ -116,7 +116,6 @@ A major feature of the package is the production of diagrams to visualize the ef
 After starting R, install CHNOSZ by selecting the "Install packages from CRAN" or similar menu item in the R GUI or by using the following command:
 ```{marginfigure}
 Or, install the package from a package file, which you can download from [CRAN](https://cran.r-project.org/package=CHNOSZ) or (for the development version) from [R-Forge](https://r-forge.r-project.org/projects/chnosz/).
-This vignette depends on some features that are available only in the development version of CHNOSZ.
 ```
 ```{r install_CHNOSZ, eval=FALSE}
 install.packages("CHNOSZ")
@@ -142,7 +141,11 @@ That shows an index of the *manual* (help pages) for each function; many of the 
 There are also links to the *demos* (longer examples) and *vignettes* (more in-depth documentation; this document is a vignette).
 
 Suggestions for accessing the documentation are indicated here with <span style="color:blue">blue text</span>.
-For example, read <span style="color:blue">`?"CHNOSZ-package"`</span> to get an overview of the package and a list of features.
+For example, read <span style="color:blue">``?`CHNOSZ-package` ``</span> to get an overview of the package and a list of features.
+```{marginfigure}
+"`?`" is a shortcut to R's `help()` function.
+The command here is equivalent to <span style="color:blue">`help("CHNOSZ-package")`</span>.
+```
 
 ## Organization of major functions
 
@@ -157,7 +160,8 @@ Many functions in CHNOSZ have no side effects.
 That is, the function only returns a result; to use the result elsewhere, it can be assigned to a variable with `<-`.
 In this document, the names of these functions are set in <span style="color:green">green text</span> (not applicable to the code chunks).
 ```{marginfigure}
-When they are mentioned, names of functions in the base and recommended packages of R are said to belong to R. Example: Use R's `plot()` to plot the data.
+When they are mentioned, names of functions in the base and recommended packages of R are said to belong to R.
+Example: Use R's `plot()` to plot the data.
 ```
 Major functions without side effects in CHNOSZ are:
 
@@ -2039,7 +2043,6 @@ More recently (late 2017), an implementation of the [Deep Earth Water](http://ww
 
 As you get started writing your own code and functions that use CHNOSZ, it is not uncommon to encounter problems.
 For example, mixing data types can cause problems (the important difference between factor and character was mentioned [above](#adding-data)).
-There are many tricks to learn; becoming familiar with functions like R's `lapply()`, `rbind()`, and `do.call()` will make your programming life more productive and enjoyable.
 
 Some functions in CHNOSZ perform "sanity checks" on the arguments and will report errors if an inconsistency is detected.
 For example, unequal lengths of variables in the transect mode of <span style="color:green">`affinity()`</span> (when the variables have more than 3 values) cause an error:

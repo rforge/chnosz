@@ -23,11 +23,11 @@ test_that("non-zero ionic strength transforms variables from activity to molalit
   out0 <- subcrt(c("H+", "HCO3-"), T=25)$out
   # and at IS = 1
   out1 <- subcrt(c("H+", "HCO3-"), T=25, IS=1)$out
-  # the apparent standard Gibbs energy is less than the standard Gibbs energy
+  # the adjusted standard Gibbs energy is less than the standard Gibbs energy
   # by an amount determined by the activity coefficient
   expect_equal(out1[[2]]$G - out0[[2]]$G, -convert(loggam, "G"))
 
-  ## take-home message 0: setting IS in subcrt() gives apparent standard Gibbs energy
+  ## take-home message 0: setting IS in subcrt() gives adjusted standard Gibbs energy
 
   # now, what is the equilibrium constant for the reaction CO2 + H2O = H+ + HCO3-?
   # (this is the standard state property at IS=0)

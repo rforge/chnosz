@@ -4,7 +4,7 @@
 \alias{Bdot}
 \title{Activity coefficients of aqueous species}
 \description{
-Calculate activity coefficients and apparent (non-ideal) molal properties of aqueous species.
+Calculate activity coefficients and adjusted (non-ideal) molal properties of aqueous species.
 }
 
 \usage{
@@ -27,14 +27,14 @@ Calculate activity coefficients and apparent (non-ideal) molal properties of aqu
 
 \details{
 \code{nonideal} takes a list of dataframes (in \code{speciesprops}) containing the standard molal properties of the identified \code{species}.
-The function calculates the *apparent* properties for given ionic strength (\code{IS}); they are equal to the *standard* values at IS=0.
+The function calculates the *adjusted* properties for given ionic strength (\code{IS}); they are equal to the *standard* values at IS=0.
 The function bypasses (leaves unchanged) properties of all species whose charge (determined by the number of Z in their \code{\link{makeup}}) is equal to zero.
 The proton (\Hplus) and electron (\eminus) are also bypassed by default; this makes sense if you are setting the pH, i.e. activity of \Hplus, to some value.
 To apply the calculations to H+ and/or e-, change \code{\link{thermo}$opt$ideal.H} or \code{ideal.e} to FALSE.
 The lengths of \code{IS} and \code{T} supplied in the arguments should be equal to the number of rows of each dataframe in \code{speciesprops}, or length one to use single values throughout.
 
-If \code{method} is \samp{Alberty}, the values of \code{IS} are combined with Alberty's (2003) equation 3.6-1 (extended Debye-Hückel equation) and its derivatives, to calculate apparent molal properties at the specified ionic strength(s) and temperature(s).
-The apparent molal properties that can be calculated include \samp{G}, \samp{H}, \samp{S} and \samp{Cp}; any columns in the dataframes of \code{speciesprops} with other names are left untouched.
+If \code{method} is \samp{Alberty}, the values of \code{IS} are combined with Alberty's (2003) equation 3.6-1 (extended Debye-Hückel equation) and its derivatives, to calculate adjusted molal properties at the specified ionic strength(s) and temperature(s).
+The adjusted molal properties that can be calculated include \samp{G}, \samp{H}, \samp{S} and \samp{Cp}; any columns in the dataframes of \code{speciesprops} with other names are left untouched.
 
 If \code{method} is \samp{Helgeson}, the \dQuote{B-dot} equation is used.
 This equation seems to have been originally proposed by Huckel, 1925; parameters were derived for use at high temperature and pressure by Helgeson, 1969; Helgeson et al., 1981; Manning, 2013.
@@ -42,7 +42,7 @@ The distance of closest approach (the \dQuote{ion size parameter}) is set to 3.7
 In addition to \code{IS} and \code{T}, this method depends on values of \code{P}, \code{A_DH}, and \code{B_DH} given in the arguments.
 The calculation of \dQuote{B-dot}, also used in the equations, is made within \code{nonideal} by calling the \code{Bdot} function.
 For some uses, it is desirable to set the \dQuote{B-dot} parameter to zero; this can be done by setting the method to \code{Helgeson0}.
-Currently, \samp{G} is the only apparent molal property that is calculated (but this can be used by \code{\link{subcrt}} to calculate apparent equilibrium constants).
+Currently, \samp{G} is the only adjusted molal property that is calculated (but this can be used by \code{\link{subcrt}} to calculate adjusted equilibrium constants).
 
 \code{Bdot} calculates the \dQuote{B-dot} deviation function (Helgeson, 1969) a.k.a. extended term parameter (written as b_gamma; Helgeson et al., 1981) for activity coefficients in NaCl solutions at high temperature and pressure.
 Data at Psat and 0.5 to 5 kb are taken from Helgeson (1969, Table 2 and Figure 3) and Helgeson et al. (1981, Table 27) and extrapolated values at 10 to 30 kb from Manning et al. (2013, Figure 11).
@@ -54,7 +54,7 @@ This is a crude method of kriging the data, but produces fairly smooth interpola
 }
 
 \value{
-One (\samp{G}) or more (\samp{H}, \samp{S}, \samp{Cp}; currently only with the Alberty method) standard thermodynamic properties (at IS=0) in \code{speciesprops} are replaced by the corresponding apparent thermodynamic properties (at higher IS).
+One (\samp{G}) or more (\samp{H}, \samp{S}, \samp{Cp}; currently only with the Alberty method) standard thermodynamic properties (at IS=0) in \code{speciesprops} are replaced by the corresponding adjusted thermodynamic properties (at higher IS).
 For all affected species, a column named \code{loggam} (common (base-10) logarithm of gamma, the activity coefficient) is appended to the output dataframe of species properties.
 }
 
@@ -91,8 +91,8 @@ legend("top", lty=1, col=col, bty="n",
   legend = as.expression(lapply(species, expr.species)))
 
 ## more often, the 'IS' argument of subcrt() is used to compute
-## apparent properties at given ionic strength
-# p. 16 Table 1.3: apparent pKa of acetic acid
+## adjusted properties at given ionic strength
+# p. 16 Table 1.3: adjusted pKa of acetic acid
 # set ideal.H to FALSE to calculate activity coefficients for the proton
 # (makes for better replication of the values in Alberty's book)
 thermo$opt$ideal.H <<- FALSE

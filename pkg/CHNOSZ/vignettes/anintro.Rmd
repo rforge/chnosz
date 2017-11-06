@@ -1061,7 +1061,7 @@ There are a few things to remember when using activity coefficients:
 
 * H<sup>+</sup> is assumed to behave ideally, so its activity coefficient is 1 for any ionic strength. You can calculate activity coefficients of H<sup>+</sup> by setting `thermo$opt$ideal.H <<- FALSE`.
 
-* Using <span style="color:green">`subcrt()`</span> with `IS` not equal to zero, calculated values of `G` are the **apparent** standard Gibbs energy at specified ionic strength.
+* Using <span style="color:green">`subcrt()`</span> with `IS` not equal to zero, calculated values of `G` are the **adjusted** Gibbs energy at specified ionic strength [denoted by &Delta;*G*°(*I*); @Alb96].
 
 * Using <span style="color:green">`subcrt()`</span> with `IS` not equal to zero, values in the `logact` argument stand for **log molality** of aqueous species in affinity calculations.
 
@@ -1093,7 +1093,7 @@ subcrt(c("MgATP-2", "MgHATP-", "MgH2ATP"),
 ```
 
 The logarithms of the activity coefficients (`loggam`) are more negative for the higher-charged species, as well as at higher temperature, and have a stabilizing effect.
-That is, the apparent Gibbs energies at *I* > 0 are less than the standard Gibbs energies at *I* = 0.
+That is, the adjusted Gibbs energies at *I* > 0 are less than the standard Gibbs energies at *I* = 0.
 
 We can use these calculations to make some speciation plots, similar to Figures 1.2--1.5 in Alberty (2003).
 These figures show the distribution of differently charged species of adenosine triphosphate (ATP) as a function of pH, and the average number of H<sup>+</sup> and Mg<sup>+2</sup> bound to ATP in solution as a function of pH or pMg (-log*a*<sub>Mg<sup>+2</sup></sub>).

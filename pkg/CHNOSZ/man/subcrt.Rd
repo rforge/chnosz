@@ -26,7 +26,7 @@
   \item{logact}{numeric, logarithms of activities of species in reaction}
   \item{convert}{logical, are input and output units of T and P those of the user (\code{TRUE}) (see \code{\link{T.units}}), or are they Kelvin and bar (\code{FALSE})?}
   \item{action.unbalanced}{character \samp{warn} or NULL, what action to take if unbalanced reaction is provided}
-  \item{IS}{numeric, ionic strength(s) at which to calculate apparent molal properties, mol kg\eqn{^{-1}}{^-1}}
+  \item{IS}{numeric, ionic strength(s) at which to calculate adjusted molal properties, mol kg\eqn{^{-1}}{^-1}}
 }
 
 \details{
@@ -76,10 +76,10 @@ Columns appended to the output are \code{logQ} for the log10 of the activity pro
 Note that \code{\link{affinity}} provides related functionality but is geared toward the properties of formation reactions of species from the basis species and can be performed in more dimensions.
 Calculations of chemical affinity in \code{subcrt} can be performed for any reaction of interest; however, they are currently limited to constant values of the logarithms of activities of species in the reactions, and hence of \code{logQ}, across the computational range.
 
-If \code{IS} is set to a single value other than zero, \code{\link{nonideal}} is used to calculate the apparent properties (\code{G}, \code{H}, \code{S} and \code{Cp}) of charged aqueous species at the given ionic strength.
+If \code{IS} is set to a single value other than zero, \code{\link{nonideal}} is used to calculate the adjusted properties (\code{G}, \code{H}, \code{S} and \code{Cp}) of charged aqueous species at the given ionic strength.
 To perform calculations at a single \code{P} and \code{T} and for multiple values of ionic strength, supply these values in \code{IS}.
 Calculations can also be performed on a \code{P}-\code{IS}, \code{T}-\code{IS} or \code{P,T}-\code{IS} grid.
-Values of \code{logK} of reactions calculated for \code{IS} not equal to zero are consistent with the apparent Gibbs energies of the charged aqueous species.
+Values of \code{logK} of reactions calculated for \code{IS} not equal to zero are consistent with the adjusted Gibbs energies of the charged aqueous species.
 
 \code{subcrt} is modeled after the functionality of the \acronym{SUPCRT92} package (Johnson et al., 1992).
 Certain features of \acronym{SUPCRT92} are not available here, for example, calculations as a function of density of \H2O instead of pressure, or calculations of temperatures of univariant curves (i.e. for which \code{logK} is zero).

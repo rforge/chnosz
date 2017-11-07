@@ -25,6 +25,7 @@ aa <- aa[grep("transferase", aa$protein), ]
 ip <- add.protein(aa)
 a <- affinity(pH=c(0, 14), O2=c(-64, -61), T=75, iprotein=ip)
 diagram(a)
+title(main="Sequences for transferase at Bison Pool")
 
 ## surface-layer proteins from Methanococcus and others
 ## as a function of oxygen fugacity, after Dick, 2008, Fig. 5b

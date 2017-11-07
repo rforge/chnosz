@@ -82,7 +82,7 @@ for(j in 1:3) {
   nonidealprops <- nonideal(species, speciesprops, IS = IS, T = convert(T[j], "K"))
   for(i in 1:4) lines(IS, 10^(nonidealprops[[i]]$loggam), lty=lty[j], col=col[i])
 }
-t1 <- "activity coefficient (gamma) of -1,-2,-3,-4 charged species"
+t1 <- "Activity coefficient (gamma) of -1,-2,-3,-4 charged species"
 t2 <- quote("at 0, 25, and 40 "*degree*"C, after Alberty, 2003")
 mtitle(as.expression(c(t1, t2)))
 legend("topright", lty=c(NA, 1:3), bty="n",

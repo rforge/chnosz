@@ -224,7 +224,7 @@ Bdot <- function(TC = 25, P = 1, showsplines = "") {
   }
   # show points and spline(T) curves
   if(showsplines == "T") {
-    thermo.plot.new(c(0, 1000), c(-.2, .7), xlab=axis.label("T"), ylab=expression(b[gamma]))
+    thermo.plot.new(c(0, 1000), c(-.2, .7), xlab=axis.label("T"), ylab=expression(italic(b)[gamma]))
     points(T0, B0, pch=0)
     points(T0.5, B0.5, pch=1)
     points(T1, B1, pch=1)
@@ -261,8 +261,9 @@ Bdot <- function(TC = 25, P = 1, showsplines = "") {
            legend=c("Helgeson, 1969", "Helgeson et al., 1981", "Manning et al., 2013", "spline control point", "high-P extrapolation"))
     legend("bottomright", col=c(NA, rev(col)), lty=1,
            legend=c("kbar", "60", "50", "40", "30", "20", "10", "5", "4", "3", "2", "1", "0.5", "Psat"))
+    title(main=expression("Deybe-H\u00FCckel "*italic(b)[gamma]*" ('B-dot') parameter"))
   } else if(showsplines=="P") {
-    thermo.plot.new(c(0, 5), c(-.2, .7), xlab="log P(bar)", ylab=expression(b[gamma]))
+    thermo.plot.new(c(0, 5), c(-.2, .7), xlab=expression(log~italic(P)*"(bar)"), ylab=expression(italic(b)[gamma]))
     # pressures that are used to make the isothermal splines (see below)
     P25 <- c(1, 500, 1000, 2000, 3000, 4000, 5000)
     P100 <- c(1, 500, 1000, 2000, 3000, 4000, 5000, 10000, 20000)
@@ -302,6 +303,7 @@ Bdot <- function(TC = 25, P = 1, showsplines = "") {
     P <- seq(10000, 60000, 50); lines(log10(P), Bdot(1000, P), col=col[11])
     legend("topleft", col=c(NA, col), lty=1, legend=c("degrees C", 25, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000))
     legend("bottomright", pch=1, legend="points from iso-P splines")
+    title(main=expression("Deybe-H\u00FCckel "*italic(b)[gamma]*" ('B-dot') parameter"))
   } else {
     # make T and P the same length
     ncond <- max(length(T), length(P))

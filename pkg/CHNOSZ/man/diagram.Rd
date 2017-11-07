@@ -172,7 +172,7 @@ basis("CHNOS")
 species(c("ethanol", "lactic acid", "deoxyribose", "ribose"))
 a <- affinity(T=c(0, 150))
 diagram(a, what="O2", legend.x="topleft", col=rev(rainbow(4)), lwd=2)
-title(main="equilibrium logfO2 for 1e-3 mol/kg of CO2 and ... ")
+title(main="Equilibrium logfO2 for 1e-3 mol/kg of CO2 and ... ")
 
 ### 1-D diagrams: logarithms of activities
 

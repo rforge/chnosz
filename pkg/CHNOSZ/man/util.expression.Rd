@@ -162,6 +162,7 @@ reaction <- subcrt("glucose", -1)$reaction
 text(3, 4.25, describe.reaction(reaction))
 text(3, 4.5, describe.reaction(reaction, states="all"))
 text(3, 4.75, describe.reaction(reaction, iname=1:4))
+title(main="Plot labels for chemical species and thermodynamic properties")
 }
 
 \concept{Utility functions}

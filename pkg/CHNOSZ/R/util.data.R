@@ -253,13 +253,15 @@ check.obigt <- function() {
   # 20110808 jmd replaces 'check=TRUE' argument of info()
   checkfun <- function(what) {
     # looking at thermo$obigt
-    if(what=="OBIGT") to <- get("thermo")$obigt
-    ntot <- nrow(to)
+    if(what=="OBIGT") tdata <- get("thermo")$obigt
+    else if(what=="DEW") tdata <- read.csv(system.file("extdata/OBIGT/DEW_aq.csv", package="CHNOSZ"), as.is=TRUE)
+    else if(what=="SUPCRTBL") tdata <- read.csv(system.file("extdata/OBIGT/SUPCRTBL.csv", package="CHNOSZ"), as.is=TRUE)
+    ntot <- nrow(tdata)
     # where to keep the results
     DCp <- DV <- DG <- rep(NA,ntot)
     # first get the aqueous species
-    isaq <- to$state=="aq"
-    eos.aq <- obigt2eos(to[isaq,],"aq")
+    isaq <- tdata$state=="aq"
+    eos.aq <- obigt2eos(tdata[isaq,],"aq")
     DCp.aq <- checkEOS(eos.aq,"aq","Cp",ret.diff=TRUE)
     DV.aq <- checkEOS(eos.aq,"aq","V",ret.diff=TRUE)
     cat(paste("check.obigt: GHS for",sum(isaq),"aq species in",what,"\n"))
@@ -270,7 +272,7 @@ check.obigt <- function() {
     DG[isaq] <- DG.aq
     # then other species, if they are present
     if(sum(!isaq) > 0) {
-      eos.cgl <- obigt2eos(to[!isaq,],"cgl")
+      eos.cgl <- obigt2eos(tdata[!isaq,],"cgl")
       DCp.cgl <- checkEOS(eos.cgl,"cgl","Cp",ret.diff=TRUE)
       cat(paste("check.obigt: GHS for",sum(!isaq),"c,g,l species in",what,"\n"))
       DG.cgl <- checkGHS(eos.cgl,ret.diff=TRUE)
@@ -278,11 +280,14 @@ check.obigt <- function() {
       DG[!isaq] <- DG.cgl
     }
     # put it all together
-    out <- data.frame(table=what,ispecies=1:ntot,name=to$name,state=to$state,DCp=DCp,DV=DV,DG=DG)
+    out <- data.frame(table=what,ispecies=1:ntot,name=tdata$name,state=tdata$state,DCp=DCp,DV=DV,DG=DG)
     return(out)
   }
-  # check OBIGT database in CHNOSZ
+  # check default database (OBIGT)
   out <- checkfun("OBIGT")
+  # check optional data
+  out <- rbind(out, checkfun("DEW"))
+  out <- rbind(out, checkfun("SUPCRTBL"))
   # set differences within a tolerance to NA
   out$DCp[abs(out$DCp) < 1] <- NA
   out$DV[abs(out$DV) < 1] <- NA

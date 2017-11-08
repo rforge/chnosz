@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-73 (2017-11-01)
+CHANGES IN CHNOSZ 1.1.0-80 (2017-11-08)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -113,6 +113,10 @@ DATABASE UPDATES:
   with minus one charge") to the equivalent but nicer-to-read "(Z-1)"
   (parsed as "minus one Z"; the parentheses cause "-1" to be interpreted
   as the coefficient on Z instead of the charge in the formula).
+
+- Add data for hedenbergite, andradite, ferro-actinolite, grunerite, and
+  ilvaite from Delgado Martin and Soler i Gil, 2010 (using the Berman
+  equations).
 
 OTHER CHANGES:
 

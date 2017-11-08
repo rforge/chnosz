@@ -8,10 +8,11 @@ Ber90 <- read.csv(paste0(dir, "/Ber90.csv"), as.is=TRUE)
 SHD91 <- read.csv(paste0(dir, "/SHD91.csv"), as.is=TRUE)
 ZS92 <- read.csv(paste0(dir, "/ZS92.csv"), as.is=TRUE)
 JUN92 <- read.csv(paste0(dir, "/JUN92.csv"), as.is=TRUE)
+DS10 <- read.csv(paste0(dir, "/DS10.csv"), as.is=TRUE)
 FDM14 <- read.csv(paste0(dir, "/FDM+14.csv"), as.is=TRUE)
 BDat17 <- read.csv(paste0(dir, "/BDat17.csv"), as.is=TRUE)
 # assemble the files and remove duplicates (keep the latest)
-dat <- rbind(BDat17, FDM14, JUN92, ZS92, SHD91, Ber90, Ber88)
+dat <- rbind(BDat17, FDM14, DS10, ZS92, SHD91, Ber90, Ber88)
 dat <- dat[!duplicated(dat$name), ]
 mineral <- unique(dat$name)
 prop_Berman <- NULL
@@ -52,15 +53,15 @@ test_that("Berman and Helgeson tabulated properties have large differences for f
 
   # which minerals differ in S by more than 4 cal/K/mol?
   idiffS <- which(abs(prop_Berman$S - prop_Helgeson$S) > 4)
-  expect_match(mineral[idiffS], "albite|annite|almandine|fluortremolite")
+  expect_match(mineral[idiffS], "albite|annite|almandine|fluortremolite|andradite|grunerite")
 
   # which minerals differ in Cp by more than 4 cal/K/mol?
   idiffCp <- which(abs(prop_Berman$Cp - prop_Helgeson$Cp) > 4)
-  expect_match(mineral[idiffCp], "glaucophane|antigorite|cristobalite,beta|K-feldspar|fluortremolite")
+  expect_match(mineral[idiffCp], "glaucophane|antigorite|cristobalite,beta|K-feldspar|fluortremolite|grunerite")
 
   # which minerals differ in V by more than 1 cm^3/mol?
   idiffV <- which(abs(prop_Berman$V - prop_Helgeson$V) > 1)
-  expect_match(mineral[idiffV], "glaucophane|anthophyllite|antigorite|chrysotile|merwinite")
+  expect_match(mineral[idiffV], "glaucophane|anthophyllite|antigorite|chrysotile|merwinite|grunerite")
 })
 
 test_that("high-T,P calculated properties are similar to precalculated ones", {

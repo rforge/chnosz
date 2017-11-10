@@ -1,12 +1,12 @@
-Date: 2017-11-09
+Date: 2017-11-10
 Package: CHNOSZ
-Version: 1.1.0-82
+Version: 1.1.0-83
 Title: Thermodynamic Calculations for Geobiochemistry
 Author: Jeffrey Dick
 Maintainer: Jeffrey Dick <j3ffdick@gmail.com>
 Depends: R (>= 3.1.0)
 Suggests: limSolve, testthat, knitr, rmarkdown, tufte, RSVGTipsDevice
-Imports: grDevices, graphics, stats, utils, colorspace
+Imports: grDevices, graphics, stats, utils
 Description: An integrated set of tools for thermodynamic calculations in geochemistry and
   compositional biology. Thermodynamic properties are taken from a database for minerals
   and inorganic and organic aqueous species including biomolecules, or from amino acid

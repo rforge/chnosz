@@ -75,7 +75,4 @@ importFrom("stats", "D", "as.formula", "cor", "lm", "loess.smooth",
   "uniroot", "median")
 importFrom("utils", "browseURL", "capture.output", "combn", "demo",
   "example", "head", "installed.packages", "read.csv", "tail",
-  "write.csv", "write.table")
-
-# Imports from other packages
-importFrom("colorspace", "diverge_hcl")
+  "write.csv", "write.table", "read.table")

@@ -26,11 +26,9 @@
 \code{examples} runs all the examples in the documentation for the package. 
 \code{\link{example}} is called for each topic with \code{ask} set to \code{FALSE} (so all of the figures are shown without prompting the user).
 
-\code{demos} is a function to run other examples that are provided as \code{\link{demo}s}.
-\code{\link{demo}} is called with settings to not echo the source code and to not ask before making each plot.
+\code{demos} runs all the \code{\link{demo}s} in the package.
 The demo(s) to run is/are specified by \code{which}; the default is to run them in the order of the list below.
-Demos that are displayed on the CHNOSZ website (\url{http://chnosz.net/demos}) are indicated with an asterisk.
-See the comments in the source code for more information about each demo.
+(Demos that are displayed on the CHNOSZ website (\url{http://chnosz.net/demos}) are indicated with an asterisk.)
 
   \tabular{ll}{
     \code{sources} \tab Cross-check the reference list with the thermodynamic database \cr
@@ -48,12 +46,12 @@ See the comments in the source code for more information about each demo.
     \code{mosaic} \tab * Eh-pH diagram with two sets of changing basis species (Garrels and Christ, 1965) \cr
     \code{copper} \tab * Another example of \code{\link{mosaic}}: complexation of Cu with glycine (Aksu and Doyle, 2001) \cr
     \code{solubility} \tab * Solubility of calcite (cf. Manning et al., 2013) or \CO2 (cf. Stumm and Morgan, 1996) \cr
-    \code{wjd} \tab * Gibbs energy minimization: prebiological atmospheres (Dayhoff et al., 1964) and cell periphery of yeast \cr
+    \code{wjd} \tab * \eqn{G}{G} minimization: prebiological atmospheres (Dayhoff et al., 1964) and cell periphery of yeast \cr
     \code{dehydration} \tab * \logK of dehydration reactions; SVG file contains tooltips and links \cr
     \code{bugstab} \tab * Formation potential of microbial proteins in colorectal cancer (Dick, 2016) \cr
     \code{Shh} \tab * Affinities of transcription factors relative to Sonic hedgehog (Dick, 2015) \cr
     \code{activity_ratios} \tab * Mineral stability plots with activity ratios on the axes \cr
-    \code{adenine} \tab * HKF parameters regressed from heat capacity and volume of aqueous adenine (Lowe et al., 2017) \cr
+    \code{adenine} \tab * HKF regression of heat capacity and volume of aqueous adenine (Lowe et al., 2017) \cr
     \code{DEW} \tab * Deep Earth Water (DEW) model for high pressures (Sverjensky et al., 2014a and 2014b) \cr
     \code{lambda} \tab * Effects of lambda transition on thermodynamic properties of quartz (Berman, 1988) \cr
     \code{TCA} \tab * Standard Gibbs energies of the tricarboxylic (citric) acid cycle (Canovas and Shock, 2016) \cr
@@ -81,7 +79,7 @@ Amend, J. P. and Shock, E. L. (1998) Energetics of amino acid synthesis in hydro
 
 Amend, J. P. and Shock, E. L. (2001) Energetics of overall metabolic reactions of thermophilic and hyperthermophilic Archaea and Bacteria. \emph{FEMS Microbiol. Rev.} \bold{25}, 175--243. \url{https://doi.org/10.1016/S0168-6445(00)00062-0}
 
-Berman, R. G. (1988) Internally-consistent thermodynamic data for minerals in the system Na{\s2}O–K{\s2}O–CaO–MgO–FeO–Fe{\s2}O{\s3}–Al{\s2}O{\s3}–SiO{\s2}–TiO{\s2}–H{\s2}O–CO{\s2}. \emph{J. Petrol.} \bold{29}, 445-522. \url{https://doi.org/10.1093/petrology/29.2.445}
+Berman, R. G. (1988) Internally-consistent thermodynamic data for minerals in the system Na{\s2}O-K{\s2}O-CaO-MgO-FeO-Fe{\s2}O{\s3}-Al{\s2}O{\s3}-SiO{\s2}-TiO{\s2}-H{\s2}O-CO{\s2}. \emph{J. Petrol.} \bold{29}, 445-522. \url{https://doi.org/10.1093/petrology/29.2.445}
 
 Canovas, P. A., III and Shock, E. L. (2016) Geobiochemistry of metabolism: Standard state thermodynamic properties of the citric acid cycle. \emph{Geochim. Cosmochim. Acta} \bold{195}, 293--322. \url{https://doi.org/10.1016/j.gca.2016.08.028}
 
@@ -120,10 +118,6 @@ Zimmer, K., Zhang, Y., Lu, P., Chen, Y., Zhang, G., Dalkilic, M. and Zhu, C. (20
 \dontshow{opar <- par(no.readonly=TRUE)}
 demos(c("ORP", "NaCl"))
 \dontshow{par(opar)}
-\dontrun{
-# use the following to run examples in all help topics
-examples()}
 }
-
 
 \concept{Other tools}

@@ -8,7 +8,8 @@ Calculate activity coefficients and adjusted (non-ideal) molal properties of aqu
 }
 
 \usage{
-  nonideal(species, speciesprops, IS, T, P, A_DH, B_DH, method=get("thermo")$opt$nonideal)
+  nonideal(species, speciesprops, IS, T, P, A_DH, B_DH,
+           method=get("thermo")$opt$nonideal)
   Bdot(TC, P, showsplines = "")
 }
 
@@ -74,11 +75,13 @@ T <- c(0, 25, 40)
 lty <- 1:3
 species <- c("H2PO4-", "HADP-2", "HATP-3", "ATP-4")
 col <- rainbow(4)
-thermo.plot.new(xlim = range(IS), ylim = c(0, 1), xlab = axis.label("IS"), ylab = "gamma")
+thermo.plot.new(xlim = range(IS), ylim = c(0, 1),
+  xlab = axis.label("IS"), ylab = "gamma")
 for(j in 1:3) {
   # use subcrt to generate speciesprops
   speciesprops <- subcrt(species, T = rep(T[j], length(IS)))$out
-  # use nonideal to calculate loggamma; this also adjusts G, H, S, Cp, but we don't use them here
+  # use nonideal to calculate loggamma; this also adjusts G, H, S, Cp,
+  # but we don't use them here
   nonidealprops <- nonideal(species, speciesprops, IS = IS, T = convert(T[j], "K"))
   for(i in 1:4) lines(IS, 10^(nonidealprops[[i]]$loggam), lty=lty[j], col=col[i])
 }

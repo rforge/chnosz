@@ -179,7 +179,10 @@ ZC.col <- function(z) {
   z <- z * 999/diff(range(z))
   z <- round(z - min(z)) + 1
   # diverging (blue - light grey - red) palette
-  dcol <- colorspace::diverge_hcl(1000, c = 100, l = c(50, 90), power = 1)
+  # dcol <- colorspace::diverge_hcl(1000, c = 100, l = c(50, 90), power = 1)
+  # use precomputed values
+  file <- system.file("extdata/cpetc/bluered.txt", package = "CHNOSZ")
+  dcol <- read.table(file, as.is=TRUE)[[1]]
   # reverse the palette so red is at lower ZC (more reduced)
   rev(dcol)[z]
 }

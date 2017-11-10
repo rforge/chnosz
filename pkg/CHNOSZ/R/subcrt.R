@@ -37,7 +37,6 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
   }
 
   do.reaction <- FALSE
-  #if(!missing(coeff) & coeff!=1) do.reaction <- TRUE
   if(!missing(coeff)) do.reaction <- TRUE
 
   # species and states are made the same length
@@ -66,6 +65,9 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
   if(is.numeric(P[1])) {
     if(convert) P <- envert(P,'bar')
   }
+
+  # warn for too high temperatures for Psat 20171110
+  if(identical(P, "Psat") & any(T > 647.067)) warning("attempting calculation at P = 'Psat' for some T > Tcritical; set P = 1 (or higher)")
 
   # gridding?
   do.grid <- FALSE
@@ -145,6 +147,15 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
   ton <- thermo$obigt$name
   tos <- thermo$obigt$state
 
+  # warn if we're running a reaction with both Berman and Helgeson minerals 20171110
+  if(do.reaction) {
+    ref1 <- thermo$obigt$ref1
+    ref2 <- thermo$obigt$ref2
+    hasHelgeson <- any(grepl("HDNB78", ref1[sinfo])) | any(grepl("HDNB78", ref2[sinfo]))
+    hasBerman <- any(tos[sinfo]=="cr_Berman")
+    if(hasHelgeson & hasBerman) warning("the reaction has minerals from both the Helgeson and Berman datasets; data may not be internally consistent")
+  }
+
   # stop if species not found
   noname <- is.na(sinfo)
   if(TRUE %in% noname)
@@ -174,9 +185,9 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
   }
 
   # where we keep info about the species involved
-  reaction <- data.frame( coeff=coeff.new,name=ton[inpho],
-    formula = thermo$obigt$formula[inpho],state=tos[inpho],
-    ispecies=inpho, stringsAsFactors=FALSE)
+  reaction <- data.frame(coeff = coeff.new, name = ton[inpho],
+    formula = thermo$obigt$formula[inpho], state = tos[inpho],
+    ispecies = inpho, stringsAsFactors = FALSE)
   # make the rownames readable ... but they have to be unique
   if(length(unique(inpho))==length(inpho)) rownames(reaction) <- as.character(inpho)
 
@@ -347,7 +358,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
           # we don't warn here about the transition
           warn.above <- FALSE
         }
-        if(all(is.na(Ttr))) next
+        if(any(is.na(Ttr))) next
         if(!all(Ttr==0) & any(T >= Ttr)) {
           status.Ttr <- "(extrapolating G)"
           if(!exceed.Ttr) {
@@ -425,9 +436,11 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
       for(j in 1:nrow(G)) {
         ps <- which.min(as.numeric(G[j,]))
         if(length(ps)==0) {
-          # minimum not found: NAs have crept in (like something wrong with Psat?)
-          # (or no non-NA value of G to begin with, e.g. aegerine)
-          ps <- 1
+          # minimum not found (we have NAs)
+          # - no non-NA value of G to begin with, e.g. aegerine) --> probably should use lowest-T phase
+          #ps <- 1
+          # - above temperature limit for the highest-T phase (subcrt.Rd skarn example) --> use highest-T phase 20171110
+          ps <- ncol(G)
           if(exceed.Ttr) warning('subcrt: stable phase for ',reaction$name[iphases[ps]],' at T-P point ',j,
           ' undetermined (using ',reaction$state[iphases[ps]],')',call.=FALSE)
         } 

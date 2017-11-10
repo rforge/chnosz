@@ -98,8 +98,6 @@ Comparison of the output of \code{subcrt} with that of \acronym{SUPCRT92} indica
 Changes were made in CHNOSZ 0.9-9 to improve the calculation of the \eqn{g}{g}- and \eqn{f}{f}-functions (Shock et al., 1992) for the partial derivatives of the omega parameter which are used by the \code{\link{hkf}} function, so thermodynamic properties of charged aqueous species over the temperature range 0 to 1000 \degC are now mostly consistent with \acronym{SUPCRT92}.
 Note, however, that while \acronym{SUPCRT92} limits calculations at Psat to 350 \degC (\dQuote{beyond range of applicability of aqueous species equations}), there is no corresponding limit in place in \code{subcrt} (or \code{\link{hkf}}), so that inapplicable calculations will be performed up to the critical temperature (373.917 \degC) without any warning.
 It is probably for this reason that there is a noticeable jump in the value of \logK at Psat shown in the one of the examples (\code{demo("NaCl")}).
-
-A known bug is misidentification of the stable polymorph of some minerals at high temperature; an example of this bug is shown in the \code{\link{stopifnot}} at the end of the skarn example below.
 }
 
 \value{
@@ -167,10 +165,13 @@ subcrt(c("pyrrhotite"), state="cr2")
 subcrt(c("pyrite", "pyrrhotite", "H2O", "H2S", "O2"), c(-1, 1, -1, 1, 0.5))
 
 ## these produce messages about problems with the calculation
-# Psat is not defined above the critical point
-subcrt("alanine", T=seq(0, 5000, by=1000))
 # above the T, P limits for the H2O equations of state
 subcrt("alanine", T=c(2250, 2251), P=c(30000, 30001), grid="T")
+# Psat is not defined above the critical point
+\dontrun{
+## (also gives a warning)
+subcrt("alanine", T=seq(0, 5000, by=1000))
+}
 
 ## minerals with phase transitions
 # compare calculated values of heat capacity of iron with
@@ -206,9 +207,9 @@ s <- subcrt(c("andradite", "carbon dioxide", "H2S", "Cu+", "quartz",
   P=P, T=T, grid="P")
 # The results are not identical to SUPCRT92, as CHNOSZ has updated
 # parameters for species e.g. Cu+ from Shock et al., 1997.
-# FIXME: the last 1 should be a 3
+# Check the calculated phase transitions for chalcopyrite
 stopifnot(all.equal(s$polymorphs$chalcopyrite[1:11], 
-  c(1, 1, 1, 1, 1, 1, 2, 3, 3, 3, 1)))
+  c(1, 1, 1, 1, 1, 1, 2, 3, 3, 3, 3)))
 
 ## Standard Gibbs energy of reactions with HCN and 
 ## formaldehyde, after Schulte and Shock, 1995 Fig. 1

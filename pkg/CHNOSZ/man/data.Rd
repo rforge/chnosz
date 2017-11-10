@@ -10,20 +10,22 @@
 \alias{buffers}
 \title{Thermodynamic Database and System Settings}
 \description{
-Run \code{data(thermo)} to initialize all of the data used in CHNOSZ.
+Run \code{data(thermo)} to initialize or reset all of the data used in CHNOSZ.
 This includes the computational settings, thermodynamic database, and system settings (chemical species).
 
 The system settings are changed using \code{\link{basis}} and \code{\link{species}}.
-To restore the default system settings (no species loaded), use \code{basis("")}.
+To restore the default system settings (no species loaded), run \code{basis("")}.
 
 The thermodynamic database is changed using \code{\link{add.obigt}} and \code{\link{mod.obigt}}.
-To restore the default database, use \code{data(OBIGT)}.
+To restore the default database, run \code{data(OBIGT)}.
 
-The computational settings are changed using \code{\link{water}}, \code{\link{P.units}}, \code{\link{T.units}}, \code{\link{E.units}} or by direct manipulation of \code{thermo$opt}, as well as some other commands (e.g. \code{\link{mod.buffer}}).
-To restore the default computational settings, thermodynamic database, and system settings, use \code{data(thermo)}.
+The computational settings are changed using \code{\link{water}}, \code{\link{P.units}}, \code{\link{T.units}}, \code{\link{E.units}}, and some other commands (e.g. \code{\link{mod.buffer}}).
 
-In an interactive session, use \code{data(thermo)} to restore the thermodynamic database and computational and system settings to their initial state.
-Or, use \code{basis("")} to clear the system settings (basis and species), or \code{data(OBIGT)} to restore the default database.
+Some settings can only be changed by direct manipulation of \code{thermo$opt}.
+In an interactive session, this should be done using the super-assignment operator (e.g. \code{thermo$opt$Berman <<- TRUE}) so that the \code{thermo} object is not copied to the global environment.
+(Doing so would cause problems, as many functions are designed to access the \code{thermo} object in the \code{CHNOSZ} environment.)
+
+To restore the default computational settings, thermodynamic database, and system settings, run \code{data(thermo)}.
 
 The data files provided with CHNOSZ are in the \code{data} and \code{extdata/OBIGT} directories of the package.
 The \code{*.csv} files in these directories are used to build the \code{thermo} data object in an environment named \code{CHNOSZ}.
@@ -36,8 +38,6 @@ The structure of the \code{thermo} object is described below.
 }
 
 \format{
-
-  The items in the \code{thermo} object are documented below.
 
   \itemize{
      
@@ -57,7 +57,9 @@ The structure of the \code{thermo} object is described below.
       \code{IAPWS.sat} \tab character \tab State of water for saturation properties [\samp{liquid}] (see \code{\link{util.water}})\cr
       \code{paramin} \tab integer \tab Minimum number of calculations to launch parallel processes [1000] (see \code{\link{palply}}) \cr
       \code{ideal.H} \tab logical \tab Should \code{\link{nonideal}} ignore the proton? [\code{TRUE}] \cr
-      \code{ideal.e} \tab logical \tab Should \code{\link{nonideal}} ignore the electron? [\code{TRUE}]
+      \code{ideal.e} \tab logical \tab Should \code{\link{nonideal}} ignore the electron? [\code{TRUE}] \cr
+      \code{nonideal} \tab character \tab Method for \code{\link{nonideal}} [\code{Helgeson}] \cr
+      \code{Berman} \tab logical \tab Should \code{\link{info}} preferentially return Berman minerals? [\code{FALSE}]
 }
 
     \item \code{thermo$element}
@@ -217,7 +219,7 @@ Columns 13-20 for crystalline, gas and liquid species (\eqn{Cp=a+bT+cT^{-2}+dT^{
 } % end of format
 
 \seealso{
-Other data files, supporting the examples and vignettes, are documented separately at \code{\link{extdata}}. 
+Other data files, including those supporting the examples and vignettes, are documented separately at \code{\link{extdata}}. 
 }
 
 \examples{

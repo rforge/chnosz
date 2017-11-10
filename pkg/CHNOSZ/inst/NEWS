@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.0-80 (2017-11-08)
+CHANGES IN CHNOSZ 1.1.0-84 (2017-11-10)
 ---------------------------------------
 
 MAJOR CHANGES:
@@ -145,6 +145,9 @@ OTHER CHANGES:
 
 - Add 'tol' argument to equil.reaction() (convergence tolerance for
   uniroot()).
+
+- Add thermo$opt$Berman to signal info(), subcrt(), etc. to prefer
+  minerals in Berman dataset over Helgeson dataset (default: FALSE).
 
 REFACTORING AND CLEANUP:
 

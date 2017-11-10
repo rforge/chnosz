@@ -156,6 +156,10 @@ test_that("duplicated species yield correct phase transitions", {
   #expect_equal(as.numeric(a$values[[1]]), c(0, 0))
 })
 
+test_that("warning is produced for reaction with Helgeson and Berman minerals", {
+  expect_warning(subcrt(c("quartz", "quartz"), c(-1, 1), c("cr", "cr_Berman")), "data may not be internally consistent")
+})
+
 # references
 
 # Amend, J. P. and Shock, E. L. (2001) 

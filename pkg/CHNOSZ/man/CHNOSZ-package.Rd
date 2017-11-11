@@ -10,11 +10,9 @@ It can be used to calculate the standard molal thermodynamic properties and chem
 
 \section{Warm Tips}{
   \itemize{
-    \item Be sure to check out the vignette titled \emph{An Introduction to CHNOSZ}. Run \code{\link{help.start}()}, select \sQuote{Packages} then \sQuote{CHNOSZ} followed by \sQuote{User guides, package vignettes and other documentation}.
-    \item Running the examples from the help pages is a good way to become more familiar with the usage of the functions. After running \code{help.start()}, select \sQuote{Packages} then \sQuote{CHNOSZ} and then select a function of interest. Individual examples can be run by pasting the example block into the \R window.
+    \item To view the manual, run \code{help.start()} then select \sQuote{Packages} and \sQuote{CHNOSZ}. Examples in the function help pages can be run by pasting the code block into the \R console.
+    \item Be sure to check out the vignette titled \emph{An Introduction to CHNOSZ}, which is available by following the link in \code{help.start} to \sQuote{User guides, package vignettes and other documentation}.
     \item Run the command \code{\link{examples}()} to run all of the examples provided in CHNOSZ. This should take about a minute.
-    \item Also try out \code{\link{demos}()} to run the demos (longer examples that are not part of the main help pages).
-    \item To learn how to update the thermodynamic database, look at \code{\link{add.obigt}}.
   }
 }
 

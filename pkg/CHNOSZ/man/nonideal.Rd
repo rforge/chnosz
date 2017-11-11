@@ -46,7 +46,7 @@ For some uses, it is desirable to set the \dQuote{B-dot} parameter to zero; this
 Currently, \samp{G} is the only adjusted molal property that is calculated (but this can be used by \code{\link{subcrt}} to calculate adjusted equilibrium constants).
 
 \code{Bdot} calculates the \dQuote{B-dot} deviation function (Helgeson, 1969) a.k.a. extended term parameter (written as b_gamma; Helgeson et al., 1981) for activity coefficients in NaCl solutions at high temperature and pressure.
-Data at Psat and 0.5 to 5 kb are taken from Helgeson (1969, Table 2 and Figure 3) and Helgeson et al. (1981, Table 27) and extrapolated values at 10 to 30 kb from Manning et al. (2013, Figure 11).
+Data at \Psat and 0.5 to 5 kb are taken from Helgeson (1969, Table 2 and Figure 3) and Helgeson et al. (1981, Table 27) and extrapolated values at 10 to 30 kb from Manning et al. (2013, Figure 11).
 Furthermore, the 10 to 30 kb data were used to generate super-extrapolated values at 40, 50, and 60 kb, which may be encountered using the \code{\link{water.DEW}} calculations.
 If all \code{P} correspond to one of the isobaric conditions, the values of \code{Bdot} at \code{T} are calculated by spline fits to the isobaric data.
 Otherwise, particular (dependent on the \code{T}) isobaric spline fits are themselves used to construct isothermal splines for the given values of \code{T}; the isothermal splines are then used to generate the values of \code{Bdot} for the given \code{P}.

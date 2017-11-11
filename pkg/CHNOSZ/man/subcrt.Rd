@@ -87,17 +87,16 @@ The informative messages produced by \code{SUPCRT92} when temperature or pressur
 However, \code{NA}s may be produced in the output of \code{subcrt} if the requisite thermodynamic or electrostatic properties of water can not be calculated at given conditions.
 Specifically, \code{NA}s are produced for calculations at \samp{Psat} when the temperature exceeds the critical temperature of \H2O.
 
-For calculations below 273.16 K, the pressure should be set to 1, as Psat is not defined in these conditions.
+For calculations below 273.16 K, the pressure should be set to 1, as \Psat is not defined in these conditions.
 
 If \code{thermo$opt$varP} is \code{TRUE}, standard Gibbs energies of gases will be converted from a standard state at 1 bar (as used in SUPCRT) to a variable pressure standard state (see chapter 12 in Anderson and Crerar, 1993).
 This is useful for constructing e.g. boiling curves for organic compounds.
 }
 
 \section{Warning}{
-Comparison of the output of \code{subcrt} with that of \acronym{SUPCRT92} indicates the two give similar values of properties for neutral aqueous species up to 1000 \degC and 5000 bar.
-Changes were made in CHNOSZ 0.9-9 to improve the calculation of the \eqn{g}{g}- and \eqn{f}{f}-functions (Shock et al., 1992) for the partial derivatives of the omega parameter which are used by the \code{\link{hkf}} function, so thermodynamic properties of charged aqueous species over the temperature range 0 to 1000 \degC are now mostly consistent with \acronym{SUPCRT92}.
-Note, however, that while \acronym{SUPCRT92} limits calculations at Psat to 350 \degC (\dQuote{beyond range of applicability of aqueous species equations}), there is no corresponding limit in place in \code{subcrt} (or \code{\link{hkf}}), so that inapplicable calculations will be performed up to the critical temperature (373.917 \degC) without any warning.
-It is probably for this reason that there is a noticeable jump in the value of \logK at Psat shown in the one of the examples (\code{demo("NaCl")}).
+Although \acronym{SUPCRT92} prohibits calculations above 350 \degC at \Psat (\dQuote{beyond range of applicability of aqueous species equations}), there is no corresponding limit in place in \code{subcrt} (or \code{\link{hkf}}).
+Therefore, CHNOSZ can perform calculations up to the critical temperature (373.917 \degC) at \Psat, but these settings represent untested extrapolations.
+Unexpected results are evident in the discontinuity in the value of \logK at \Psat shown in \code{\link{demos}("NaCl")}.
 }
 
 \value{

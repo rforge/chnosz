@@ -70,6 +70,11 @@ To run this demo, an empty directory named \samp{png} must be present (as a subd
 The proteins in the calculation are 24 carboxylases from a variety of organisms.
 There are 12 ribulose phosphate carboxylase and 12 acetyl-coenzyme A carboxylase; 6 of each type are from nominally mesophilic organisms and 6 from nominally thermophilic organisms, shown as blue and red symbols on the diagrams.
 The activities of hydrogen at each temperature are calculated using \eqn{\log a_{\mathrm{H_{2}}_{\left(aq\right)}}=-11+3/\left(40\times T\left(^{\circ}C\right)\right)}{logaH2 = -11 + 3/40 * T(degC)}; this equation comes from a model of relative stabilities of proteins in a hot-spring environment (Dick and Shock, 2011).
+
+In the \samp{NaCl} demo, the \logK lines calculated at \Psat and P=500 bar show discontinuities at 355 \degC.
+Although not realistic, this behavior is consistent with the output of \acronym{SUPCRT92} (Johnson et al., 1992) at 500 bar.
+This is probably due to a transition between different regimes for the properties of water as coded in SUPCRT's \code{H2O92D.F}, which is used by CHNOSZ.
+(Note that SUPCRT does not output thermodynamic properties above 350 \degC at \Psat; see Warning in \code{\link{subcrt}}.)
 }
 
 \references{
@@ -94,6 +99,8 @@ Dick, J. M. (2015) Chemical integration of proteins in signaling and development
 Dick, J. M. (2016) Proteomic indicators of oxidation and hydration state in colorectal cancer. \emph{PeerJ} \bold{4}:e2238. \url{https://doi.org/10.7717/peerj.2238}
 
 Garrels, R. M. and Christ, C. L. (1965) \emph{Solutions, Minerals, and Equilibria}, Harper & Row, New York, 450 p. \url{http://www.worldcat.org/oclc/517586}
+
+Johnson, J. W., Oelkers, E. H. and Helgeson, H. C. (1992) SUPCRT92: A software package for calculating the standard molal thermodynamic properties of minerals, gases, aqueous species, and reactions from 1 to 5000 bar and 0 to 1000\degC. \emph{Comp. Geosci.} \bold{18}, 899--947. \url{https://doi.org/10.1016/0098-3004(92)90029-Q}
 
 Lowe, A. R., Cox, J. S. and Tremaine, P. R. (2017) Thermodynamics of aqueous adenine: Standard partial molar volumes and heat capacities of adenine, adeninium chloride, and sodium adeninate from \emph{T} = 278.15 K to 393.15 K. \emph{J. Chem. Thermodyn.} \bold{112}, 129--145. \url{https://doi.org/10.1016/j.jct.2017.04.005}
   

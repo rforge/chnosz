@@ -30,7 +30,7 @@ Auxiliary equations to the IAPWS-95 formulation (Wagner and Pruß, 2002) are pro
 The \code{property} for this function can be one of \samp{P.sigma} (saturation vapor pressure in MPa), \samp{dP.sigma.dT} (derivative of saturation vapor pressure with respect to temperature), or \samp{rho.liquid} or \samp{rho.vapor} (density of liquid or vapor in kg m\eqn{^{-3}}{^-3}).
 
 \code{rho.IAPWS95} implements a root-finding technique (using \code{\link{uniroot}}) to determine the values of density for the stable phase of \H2O at the given temperature and pressure.
-The \code{state} option is used internally in order to determine the stable phase at conditions close to saturation (0.9999*Psat <= P <= 1.00005*Psat, where Psat is the saturation pressure calculated by \code{\link{WP02.auxiliary}}).
+The \code{state} option is used internally in order to determine the stable phase at conditions close to saturation (0.9999*\Psat <= P <= 1.00005*\Psat, where \Psat is the saturation pressure calculated by \code{\link{WP02.auxiliary}}).
 Alternatively, the user can specify a \code{state} of \samp{liquid} or \samp{vapor} to force the calculation of density for the corresponding phase, even if it is metastable (e.g. superheated water, supercooled steam; this option has no effect in the supercritical region).
 The \code{state} is set in calls by \code{\link{water.IAPWS95}} to the value in \code{thermo$opt$IAPWS.sat} (default \samp{liquid}) so that higher-level functions (\code{\link{water}}, \code{\link{subcrt}}) take properties for that state along the saturation curve.
 Diagnostic messages are printed if \code{trace} is positive (it is also included in the call to \code{uniroot}).

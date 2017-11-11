@@ -36,3 +36,4 @@
 \newcommand{\degC}{\ifelse{latex}{\eqn{^{\circ}}C}{\ifelse{html}{\out{&deg;}C}{°C}}}
 \newcommand{\le}{\ifelse{latex}{\eqn{\le}}{\ifelse{html}{\out{&le;}}{≤}}}
 \newcommand{\ge}{\ifelse{latex}{\eqn{\ge}}{\ifelse{html}{\out{&ge;}}{≥}}}
+\newcommand{\Psat}{\ifelse{latex}{\eqn{P_{\mathrm{SAT}}}}{\ifelse{html}{\out{<i>P</i><sub>SAT</sub>}}{Psat}}}

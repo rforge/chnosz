@@ -1,6 +1,6 @@
 Date: 2017-11-11
 Package: CHNOSZ
-Version: 1.1.0-87
+Version: 1.1.1
 Title: Thermodynamic Calculations for Geobiochemistry
 Authors@R: c(
     person("Jeffrey", "Dick", , "j3ffdick@gmail.com", role = c("aut", "cre"),
@@ -8,6 +8,8 @@ Authors@R: c(
     person("R Core Team", role = "ctb",
       comment = "code derived from R's pmax()")
     )
+Author: Jeffrey Dick [aut, cre] (0000-0002-0687-5890),
+  R Core Team [ctb] (code derived from R's pmax())
 Maintainer: Jeffrey Dick <j3ffdick@gmail.com>
 Depends: R (>= 3.1.0)
 Suggests: limSolve, testthat, knitr, rmarkdown, tufte, RSVGTipsDevice

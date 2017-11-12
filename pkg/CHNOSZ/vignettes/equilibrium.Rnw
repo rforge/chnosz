@@ -19,7 +19,6 @@
  {hyperref}
 \hypersetup{
  citecolor=magenta, urlcolor=blue}
-\usepackage{breakurl}
 
 \makeatletter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
@@ -327,7 +326,7 @@ label.figure("A", col="blue", yfrac=0.9, xfrac=0.1)
 # figure B
 st <- system.time(dB <- aaB())
 showtime(st)
-title(main=paste("loga(total species) =", round(dB$loga.balance, 2)), cex.main=1)
+title(main=paste("loga(total species) =", round(dB$loga.balance[1], 2)), cex.main=1)
 label.figure("B", col="blue", yfrac=0.9, xfrac=0.1)
 
 ## row 2 (balance = nCO2)
@@ -343,7 +342,7 @@ label.figure("C", col="blue", yfrac=0.9, xfrac=0.1)
 # figure D
 st <- system.time(dD <- aaD())
 showtime(st)
-title(main=paste("loga(total CO2) =", round(dD$loga.balance, 2)), cex.main=1)
+title(main=paste("loga(total CO2) =", round(dD$loga.balance[1], 2)), cex.main=1)
 label.figure("D", col="blue", yfrac=0.9, xfrac=0.1)
 
 ## right (speciation at different total activity of CO2)
@@ -354,12 +353,12 @@ par(xpd=FALSE)
 # figure E
 st <- system.time(dE <- aaE())
 showtime(st)
-title(main=paste("loga(total CO2) =", round(dE$loga.balance, 2)), cex.main=1)
+title(main=paste("loga(total CO2) =", round(dE$loga.balance[1], 2)), cex.main=1)
 label.figure("E", col="blue", yfrac=0.9, xfrac=0.1)
 # figure F
 st <- system.time(dF <- aaF())
 showtime(st)
-title(main=paste("loga(total CO2) =", round(dF$loga.balance, 2)), cex.main=1)
+title(main=paste("loga(total CO2) =", round(dF$loga.balance[1], 2)), cex.main=1)
 label.figure("F", col="blue", yfrac=0.9, xfrac=0.1)
 
 @

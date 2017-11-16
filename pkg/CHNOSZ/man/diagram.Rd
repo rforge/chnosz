@@ -14,7 +14,7 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
     xrange=NULL, mar=NULL, yline=par("mgp")[1]+0.3, side=1:4,
     ylog=TRUE, xlim=NULL, ylim=NULL, xlab=NULL, ylab=NULL,
     cex=par("cex"), cex.names=1, cex.axis=par("cex"),
-    lty=NULL, lwd=par("lwd"), dotted=NULL,
+    lty=NULL, lwd=par("lwd"), dotted=NULL, spline.method = NULL,
     col=par("col"), col.names=par("col"), fill=NULL,
     fill.NA="slategray1", limit.water=TRUE,
     names=NULL, main=NULL, legend.x=NA, format.names=TRUE, adj=0.5, dy=0,
@@ -47,6 +47,7 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
   \item{lty}{numeric, line types to be used in plots}
   \item{lwd}{numeric, line width}
   \item{dotted}{numeric, how often to skip plotting points on predominance field boundaries (to gain the effect of dotted or dashed boundary lines)}
+  \item{spline.method}{character, method used in \code{\link{splinefun}}}
   \item{col}{character, color of activity lines (1D diagram) or predominance field boundaries (2D diagram), or colors of bars in a strip diagram (\code{strip})}
   \item{col.names}{character, colors for labels of species}
   \item{fill}{character, colors used to fill predominance fields}
@@ -101,6 +102,7 @@ Otherwise, a \code{\link{legend}} is placed at the location identified by \code{
 If \code{alpha} is TRUE, the fractional degrees of formation (ratios of activities to total activity) are plotted.
 Or, setting \code{alpha} to \samp{balance} allows the activities to be multiplied by the number of the balancing component; this is useful for making \dQuote{percent carbon} diagrams where the species differ in carbon number.
 The line type and line width can be controlled with \code{lty} and \code{lwd}, respectively.
+To connect the points with splines instead of lines, set \code{spline.method} to one of the methods in \code{\link{splinefun}}.
 }
 
 \section{2-D diagrams}{

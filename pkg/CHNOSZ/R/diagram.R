@@ -9,6 +9,7 @@
 #source("equilibrate.R")
 #source("util.plot.R")
 #source("util.character.R")
+#source("util.misc.R")
 
 diagram <- function(
   # primary input
@@ -23,7 +24,7 @@ diagram <- function(
   # sizes
   cex=par("cex"), cex.names=1, cex.axis=par("cex"),
   # line styles
-  lty=NULL, lwd=par("lwd"), dotted=NULL, 
+  lty=NULL, lwd=par("lwd"), dotted=NULL, spline.method=NULL,
   # colors
   col=par("col"), col.names=par("col"), fill=NULL,
   fill.NA="slategray1", limit.water=TRUE,
@@ -262,10 +263,10 @@ diagram <- function(
 
       ### 1-D diagram - lines for properties or chemical activities
       xvalues <- eout$vals[[1]]
+      if(missing(xlim)) xlim <- range(xvalues)  # TODO: this is backward if the vals are not increasing
       # initialize the plot
       if(!add) {
         if(missing(xlab)) xlab <- axis.label(eout$vars[1], basis=eout$basis, use.molality=use.molality)
-        if(missing(xlim)) xlim <- range(xvalues)  # TODO: this is backward if the vals are not increasing
         if(missing(ylab)) ylab <- axis.label(plotvar, units="", use.molality=use.molality)
         # to get range for y-axis, use only those points that are in the xrange
         if(is.null(ylim)) {
@@ -278,7 +279,17 @@ diagram <- function(
         else plot(0, 0, type="n", xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab, ...)
       }
       # draw the lines
-      for(i in 1:length(plotvals)) lines(xvalues, plotvals[[i]], col=col[i], lty=lty[i], lwd=lwd[i])
+      spline.n <- 256 # the number of values at which to calculate splines
+      if(is.null(spline.method) | length(xvalues) > spline.n) {
+        for(i in 1:length(plotvals)) lines(xvalues, plotvals[[i]], col=col[i], lty=lty[i], lwd=lwd[i])
+      } else {
+        # plot splines instead of lines connecting the points 20171116
+        spline.x <- seq(xlim[1], xlim[2], length.out=spline.n)
+        for(i in 1:length(plotvals)) {
+          spline.y <- splinefun(xvalues, plotvals[[i]], method=spline.method)(spline.x)
+          lines(spline.x, spline.y, col=col[i], lty=lty[i], lwd=lwd[i])
+        }
+      }
       if(!add & !is.null(legend.x)) {
         # 20120521: use legend.x=NA to label lines rather than make legend
         if(is.na(legend.x)) {

@@ -353,6 +353,23 @@ RH2obigt <- function(compound=NULL, state="cr", file=system.file("extdata/thermo
   return(out)
 }
 
+# dump all thermodynamic data in CHNOSZ 20171121
+dumpdata <- function(file=NULL) {
+  # default database (OBIGT)
+  Odata <- get("thermo")$obigt
+  Odata <- cbind(source="OBIGT", Odata)
+  # optional data
+  Ddata <- read.csv(system.file("extdata/OBIGT/DEW_aq.csv", package="CHNOSZ"), as.is=TRUE)
+  Ddata <- cbind(source="DEW", Ddata)
+  Sdata <- read.csv(system.file("extdata/OBIGT/SUPCRTBL.csv", package="CHNOSZ"), as.is=TRUE)
+  Sdata <- cbind(source="SUPCRTBL", Sdata)
+  # put it all together
+  out <- rbind(Odata, Ddata, Sdata)
+  # quote columns 2 (name) and 3 (abbrv) because they have commas for some entries
+  if(!is.null(file)) write.csv(out, file, row.names=FALSE, quote=c(2, 3))
+  else(return(out))
+}
+
 ### unexported functions ###
 
 # Take a data frame in the format of thermo$obigt of one or more rows,

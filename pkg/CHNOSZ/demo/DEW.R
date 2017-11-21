@@ -150,27 +150,32 @@ basis(c("Fe", "SiO2", "CO3-2", "H2O", "oxygen", "H+"))
 mod.buffer("QFM_Berman", c("quartz", "fayalite", "magnetite"), "cr_Berman", 0)
 ## calculate logfO2 in QFM buffer
 basis("O2", "QFM_Berman")
-T <- seq(600, 1000, 5); T100 <- seq(600, 1000, 100)
+T <- seq(600, 1000, 100)
 buf <- affinity(T=T, P=50000, return.buffer=TRUE)
 ## add species
 species(c(inorganics, organics))
 ## generate spline functions from IS, pH, and molC values at every 100 degC
-IS <- splinefun(T100, c(0.39, 0.57, 0.88, 1.45, 2.49))
-pH <- splinefun(T100, c(3.80, 3.99, 4.14, 4.25, 4.33))
-molC <- splinefun(T100, c(0.03, 0.2, 1, 4, 20))
+IS <- c(0.39, 0.57, 0.88, 1.45, 2.49)
+pH <- c(3.80, 3.99, 4.14, 4.25, 4.33)
+molC <- c(0.03, 0.2, 1, 4, 20)
 ## use Debye-Huckel equation with B-dot set to zero
 nonideal("Helgeson0")
 ## calculate affinities on the T-logfO2-pH-IS transect
-a <- affinity(T = T, O2 = buf$O2 - 2, IS = IS(T), pH = pH(T), P = 50000)
+a <- affinity(T = T, O2 = buf$O2 - 2, IS = IS, pH = pH, P = 50000)
 ## calculate metastable equilibrium activities using the total
 ## carbon molality as an approximation of total activity
-e <- equilibrate(a, loga.balance = log10(molC(T)))
+e <- equilibrate(a, loga.balance = log10(molC))
 ## make the diagram; don't plot names of low-abundance species
 names <- c(inorganics, organics)
 names[c(4, 5, 7, 9)] <- ""
 col <- rep("black", length(names))
 col[c(1, 3, 6, 8, 10)] <- c("red", "darkgreen", "purple", "orange", "navyblue")
-diagram(e, alpha = "balance", ylab = "carbon fraction", names = names, col = col, ylim = c(0, 0.8))
+if(packageVersion("CHNOSZ") > "1.1.3") {
+  diagram(e, alpha = "balance", names = names, col = col, ylim = c(0, 0.8), ylab="carbon fraction", spline.method="natural")
+} else {
+  diagram(e, alpha = "balance", names = names, col = col, ylim = c(0, 0.8), ylab="carbon fraction")
+}
+
 
 ## add legend and title
 ltxt1 <- "P = 50000 bar"
@@ -184,7 +189,7 @@ mtitle(c(t1, t2))
 ### additional checks
 
 ## check that we're within 0.1 of the QFM-2 values used by SSH14
-stopifnot(maxdiff((buf$O2-2)[!T%%100], c(-17.0, -14.5, -12.5, -10.8, -9.4)) < 0.1)
+stopifnot(maxdiff((buf$O2-2), c(-17.0, -14.5, -12.5, -10.8, -9.4)) < 0.1)
 
 # Here are the logKs of aqueous species dissociation reactions at 600 degC and 50000 bar,
 # values from EQ3NR output in Supporting Information of the paper (p. 103-109):

@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.3-2 (2017-11-21)
+CHANGES IN CHNOSZ 1.1.3-3 (2017-12-05)
 --------------------------------------
 
 - Lines in 1-D diagram()s can optionally be drawn as splines using the
@@ -7,6 +7,8 @@ CHANGES IN CHNOSZ 1.1.3-2 (2017-11-21)
 
 - Add dumpdata() for returning/writing all packaged data (including
   default database and optional data files).
+
+- Add 'srt' argument to diagram() (rotation of line labels).
 
 CHANGES IN CHNOSZ 1.1.3 (2017-11-13)
 ------------------------------------

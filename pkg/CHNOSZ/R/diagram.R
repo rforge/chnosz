@@ -12,14 +12,14 @@
 #source("util.misc.R")
 
 diagram <- function(
-  # primary input
+  # species affinities or activities
   eout, 
   # what to plot
   what="loga.equil", alpha=FALSE, normalize=FALSE, as.residue=FALSE, balance=NULL,
   groups=as.list(1:length(eout$values)), xrange=NULL,
-  # plot dimensions
+  # figure size and sides for axis tick marks
   mar=NULL, yline=par("mgp")[1]+0.3, side=1:4,
-  # axes
+  # axis limits and labels
   ylog=TRUE, xlim=NULL, ylim=NULL, xlab=NULL, ylab=NULL, 
   # sizes
   cex=par("cex"), cex.names=1, cex.axis=par("cex"),
@@ -28,8 +28,10 @@ diagram <- function(
   # colors
   col=par("col"), col.names=par("col"), fill=NULL,
   fill.NA="slategray1", limit.water=TRUE,
-  # labels
-  names=NULL, main=NULL, legend.x=NA, format.names=TRUE, adj=0.5, dy=0,
+  # field and line labels
+  names=NULL, format.names=TRUE, adj=0.5, dy=0, srt=0,
+  # title and legend
+  main=NULL, legend.x=NA,
   # plotting controls
   add=FALSE, plot.it=TRUE, tplot=TRUE, ...
 ) {
@@ -295,6 +297,7 @@ diagram <- function(
         if(is.na(legend.x)) {
           maxvals <- do.call(pmax, pv)
           dy <- rep(dy, length.out=length(plotvals))
+          srt <- rep(srt, length.out=length(plotvals))
           # don't assign to adj becuase that messes up the missing test below
           alladj <- rep(adj, length.out=length(plotvals))
           for(i in 1:length(plotvals)) {
@@ -326,7 +329,8 @@ diagram <- function(
               }
             }
             # also include y-offset (dy) and y-adjustment (labels bottom-aligned with the line)
-            text(xvalues[imax], plotvals[[i]][imax] + dy[i], labels=names[i], adj=c(thisadj, 0), cex=cex.names)
+            # .. and srt (string rotation) 20171127
+            text(xvalues[imax], plotvals[[i]][imax] + dy[i], labels=names[i], adj=c(thisadj, 0), cex=cex.names, srt=srt[i])
           }
         } else legend(x=legend.x, lty=lty, legend=names, col=col, cex=cex.names, lwd=lwd, ...)
       }

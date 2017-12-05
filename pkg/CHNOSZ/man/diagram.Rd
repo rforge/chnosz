@@ -9,15 +9,28 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
 }
 
 \usage{
-  diagram(eout, what = "loga.equil", alpha = FALSE, normalize = FALSE,
+  diagram(
+    # species affinities or activities
+    eout,
+    # what to plot
+    what = "loga.equil", alpha = FALSE, normalize = FALSE,
     as.residue = FALSE, balance=NULL, groups=as.list(1:length(eout$values)),
+    # figure size and sides for axis tick marks
     xrange=NULL, mar=NULL, yline=par("mgp")[1]+0.3, side=1:4,
+    # axis limits and labels
     ylog=TRUE, xlim=NULL, ylim=NULL, xlab=NULL, ylab=NULL,
+    # character sizes
     cex=par("cex"), cex.names=1, cex.axis=par("cex"),
+    # line styles
     lty=NULL, lwd=par("lwd"), dotted=NULL, spline.method = NULL,
+    # colors
     col=par("col"), col.names=par("col"), fill=NULL,
     fill.NA="slategray1", limit.water=TRUE,
-    names=NULL, main=NULL, legend.x=NA, format.names=TRUE, adj=0.5, dy=0,
+    # field and line labels
+    names=NULL, format.names=TRUE, adj=0.5, dy=0, srt=0,
+    # title and legend
+    main=NULL, legend.x=NA,
+    # plotting controls
     add=FALSE, plot.it=TRUE, tplot=TRUE, ...)
   strip(affinity, ispecies = NULL, col = NULL, ns = NULL, 
     xticks = NULL, ymin = -0.2, xpad = 1, cex.names = 0.7)
@@ -54,11 +67,12 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
   \item{fill.NA}{character, color for grid points with NA values}
   \item{limit.water}{logical, set NA values beyond water stability limits?}
   \item{names}{character, names of species for activity lines or predominance fields}
-  \item{main}{character, a main \code{\link{title}} for the plot; \code{NULL} means to plot no title}
-  \item{legend.x}{character, description of legend placement passed to \code{\link{legend}}}
   \item{format.names}{logical, apply formatting to chemical formulas?}
   \item{adj}{numeric, adjustment for line labels}
   \item{dy}{numeric, y offset for line labels}
+  \item{srt}{numeric, rotation for line labels}
+  \item{main}{character, a main \code{\link{title}} for the plot; \code{NULL} means to plot no title}
+  \item{legend.x}{character, description of legend placement passed to \code{\link{legend}}}
   \item{add}{logical, add to current plot?}
   \item{plot.it}{logical, make a plot?}
   \item{tplot}{logical, set up plot with \code{\link{thermo.plot.new}}?}

@@ -19,12 +19,13 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.t
   SHD91 <- read.csv(paste0(dir, "/SHD91.csv"), as.is=TRUE)
   ZS92 <- read.csv(paste0(dir, "/ZS92.csv"), as.is=TRUE)
   JUN92 <- read.csv(paste0(dir, "/JUN92.csv"), as.is=TRUE)
+  BA96 <- read.csv(paste0(dir, "/BA96.csv"), as.is=TRUE)
   DS10 <- read.csv(paste0(dir, "/DS10.csv"), as.is=TRUE)
   FDM14 <- read.csv(paste0(dir, "/FDM+14.csv"), as.is=TRUE)
   BDat17 <- read.csv(paste0(dir, "/BDat17.csv"), as.is=TRUE)
   # assemble the files in reverse chronological order
-  dat <- rbind(BDat17, FDM14, DS10, JUN92, ZS92, SHD91, Ber90, Ber88)
-  # remove duplicates (only the first, i.e. latest entry is kept)
+  dat <- rbind(BDat17, FDM14, DS10, BA96, JUN92, ZS92, SHD91, Ber90, Ber88)
+  # remove duplicates (only the first, i.e. most recent entry is kept)
   dat <- dat[!duplicated(dat$name), ]
   # remove the multipliers
   multexp <- c(0, 0, 0, 0,          # Ber88 Table 2
@@ -34,6 +35,8 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.t
                0, 0, 0, -3, -5, 2, 6, -4  # Table 5
                )
   dat[, 2:27] <- t(t(dat[, 2:27]) / 10^multexp)
+  # if name is missing, return the entire data frame (used in test-berman.R)
+  if(missing(name)) return(dat)
   # which row has data for this mineral?
   irow <- which(dat$name == name)
   # the function works fine with just the following assign() call,
@@ -49,8 +52,8 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.t
   if(check.G) {
     GfPrTr_calc <- HfPrTr - Tr * (SPrTr - SPrTr_elements)
     Gdiff <- GfPrTr_calc - GfPrTr
-    if(is.na(GfPrTr)) warning(paste0(name, ": GfPrTr(table) is NA"), call.=FALSE)
-    else if(abs(Gdiff) >= 1000) warning(paste0(name, ": GfPrTr(calc) - GfPrTr(table) is too big! == ",
+    #if(is.na(GfPrTr)) warning(paste0(name, ": GfPrTr(table) is NA"), call.=FALSE)
+    if(!is.na(GfPrTr)) if(abs(Gdiff) >= 1000) warning(paste0(name, ": GfPrTr(calc) - GfPrTr(table) is too big! == ",
                                           round(GfPrTr_calc - GfPrTr), " J/mol"), call.=FALSE)
     # (the tabulated GfPrTr is unused below)
   }

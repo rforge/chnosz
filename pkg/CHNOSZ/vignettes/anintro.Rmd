@@ -2149,10 +2149,6 @@ maintainer("CHNOSZ")
 
 Thank you for reading, and have fun!
 
-> "As any practitioner knows, the effort of research is so tedious and time consuming that when the work stops being fun, there's no sense in continuing. The best scientists live a life of keen amusement."
->
-> `r tufte::quote_footer('--- Stephen Jay Gould')`
-
 > "The real fun of life is this perpetual testing to realize how far out you can go with any potentialities."
 >
 > `r tufte::quote_footer('--- Richard P. Feynman')`

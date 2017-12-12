@@ -103,9 +103,9 @@ filerefs <- function(csvfile, dat=NULL, message=FALSE) {
 ```
 
 This [vignette](index.html), produced on `r Sys.Date()`, documents the sources of thermodynamic data in CHNOSZ version `r sessionInfo()$otherPkgs$CHNOSZ$Version`.
-Running `data(thermo)` creates the default database (`thermo$obigt`) in the R session.
+Running <span style='color:red'>`data(thermo)`</span> creates the default database (`thermo$obigt`) in the R session.
 
-The sections below correspond to CSV data files that are stored in the `extdata/OBIGT` package directory and read by `data(thermo)` (except for Optional Data).
+The sections below correspond to CSV data files that are stored in the `extdata/OBIGT` package directory and read by <span style='color:red'>`data(thermo)`</span> (except for Optional Data).
 In each section, the primary references (`ref1` in `thermo$obigt`) are listed in chronological order.
 Any secondary references (`ref2`) are listed with bullet points.
 Each reference is followed by the number of species, and a note (from `thermo$refs`).

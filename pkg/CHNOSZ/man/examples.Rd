@@ -23,7 +23,7 @@
 
 \details{
 
-\code{examples} runs all the examples in the documentation for the package. 
+\code{examples} runs all the examples in the help pages for the package. 
 \code{\link{example}} is called for each topic with \code{ask} set to \code{FALSE} (so all of the figures are shown without prompting the user).
 
 \code{demos} runs all the \code{\link{demo}s} in the package.

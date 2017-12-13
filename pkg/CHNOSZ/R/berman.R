@@ -19,12 +19,11 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.t
   SHD91 <- read.csv(paste0(dir, "/SHD91.csv"), as.is=TRUE)
   ZS92 <- read.csv(paste0(dir, "/ZS92.csv"), as.is=TRUE)
   JUN92 <- read.csv(paste0(dir, "/JUN92.csv"), as.is=TRUE)
-  BA96 <- read.csv(paste0(dir, "/BA96.csv"), as.is=TRUE)
   DS10 <- read.csv(paste0(dir, "/DS10.csv"), as.is=TRUE)
   FDM14 <- read.csv(paste0(dir, "/FDM+14.csv"), as.is=TRUE)
   BDat17 <- read.csv(paste0(dir, "/BDat17.csv"), as.is=TRUE)
   # assemble the files in reverse chronological order
-  dat <- rbind(BDat17, FDM14, DS10, BA96, JUN92, ZS92, SHD91, Ber90, Ber88)
+  dat <- rbind(BDat17, FDM14, DS10, JUN92, ZS92, SHD91, Ber90, Ber88)
   # remove duplicates (only the first, i.e. most recent entry is kept)
   dat <- dat[!duplicated(dat$name), ]
   # remove the multipliers

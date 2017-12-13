@@ -32,13 +32,12 @@ test_that("Berman and Helgeson tabulated properties have large differences for f
   # which minerals differ in DGf by more than 4 kcal/mol?
   idiffG <- which(abs(prop_Berman$G - prop_Helgeson$G) > 4000)
   expect_match(mineral[idiffG],
-               "paragonite|antigorite|Ca-Al-pyroxene|lawsonite|margarite|merwinite")
+               "paragonite|anthophyllite|antigorite|Ca-Al-pyroxene|lawsonite|margarite|merwinite")
 
   # which minerals differ in DHf by more than 4 kcal/mol?
   idiffH <- which(abs(prop_Berman$H - prop_Helgeson$H) > 4000)
-  # we get the above, plus phlogopite and clinozoisite:
   expect_match(mineral[idiffH],
-               "paragonite|antigorite|Ca-Al-pyroxene|lawsonite|margarite|merwinite|clinozoisite")
+               "paragonite|anthophyllite|antigorite|Ca-Al-pyroxene|lawsonite|margarite|merwinite|clinozoisite")
 
   # which minerals differ in S by more than 4 cal/K/mol?
   idiffS <- which(abs(prop_Berman$S - prop_Helgeson$S) > 4)
@@ -46,7 +45,7 @@ test_that("Berman and Helgeson tabulated properties have large differences for f
 
   # which minerals differ in Cp by more than 4 cal/K/mol?
   idiffCp <- which(abs(prop_Berman$Cp - prop_Helgeson$Cp) > 4)
-  expect_match(mineral[idiffCp], "glaucophane|antigorite|cristobalite,beta|K-feldspar|fluortremolite|grunerite|almandine")
+  expect_match(mineral[idiffCp], "glaucophane|antigorite|cristobalite,beta|K-feldspar|fluortremolite|grunerite")
 
   # which minerals differ in V by more than 1 cm^3/mol?
   idiffV <- which(abs(prop_Berman$V - prop_Helgeson$V) > 1)

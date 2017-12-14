@@ -466,11 +466,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
     } else {
       # multiple phases aren't involved ... things stay the same
       out.new[[i]] <- out[[iphases]]
-      # hmm.. this could mess up our coefficients 20091103
-      #reaction.new[i,] <- reaction[iphases,]
-      coeff.orig <- reaction$coeff
-      reaction.new[i,] <- reaction[iphases,]
-      reaction.new$coeff <- coeff.orig
+      reaction.new[i, ] <- reaction[iphases, ]
       rs <- as.character(reaction.new$state)
       rs[i] <- as.character(reaction$state[iphases])
       reaction.new$state <- rs

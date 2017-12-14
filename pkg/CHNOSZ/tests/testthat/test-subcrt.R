@@ -65,6 +65,8 @@ test_that("phase transitions of minerals give expected messages and results", {
   #expect_message(subcrt(iacanthite), "subcrt: some points below transition temperature for acanthite cr2 \\(using NA for G\\)")
   expect_message(subcrt(iacanthite), "subcrt: some points above temperature limit for acanthite cr2 \\(using NA for G\\)")
   expect_equal(subcrt("acanthite")$out$acanthite$polymorph, c(1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3))
+  # the reaction coefficients in the output should be unchanged 20171214
+  expect_equal(subcrt(c("bunsenite", "nickel", "oxygen"), c(-1, 1, 0.5))$reaction$coeff, c(-1, 1, 0.5)) 
 })
 
 test_that("calculations for K-feldspar are consistent with SUPCRT92", {
@@ -156,7 +158,7 @@ test_that("duplicated species yield correct phase transitions", {
   #expect_equal(as.numeric(a$values[[1]]), c(0, 0))
 })
 
-test_that("warning is produced for reaction with Helgeson and Berman minerals", {
+test_that("warning is produced for reaction combining Helgeson and Berman minerals", {
   expect_warning(subcrt(c("quartz", "quartz"), c(-1, 1), c("cr", "cr_Berman")), "data may not be internally consistent")
 })
 

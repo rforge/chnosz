@@ -80,8 +80,9 @@ nonideal <- function(species, speciesprops, IS, T, P, A_DH, B_DH, method=get("th
     # get the charge from the chemical formula
     # force a charge count even if it's zero
     mkp <- makeup(c("Z0", species[i]), sum=TRUE)
-    Z <- mkp[grep("Z", names(mkp))]
-    # don't do anything for neutral species
+    Z <- mkp[match("Z", names(mkp))]
+    # don't do anything for neutral species (Z absent from formula or equal to zero)
+    if(is.na(Z)) next
     if(Z==0) next
     # to keep unit activity coefficients of the proton and electron
     if(species[i] == iH & get("thermo")$opt$ideal.H) next

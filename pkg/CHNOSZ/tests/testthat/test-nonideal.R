@@ -50,10 +50,6 @@ test_that("A and B parameters are calculated correctly", {
   expect_maxdiff(DEW30$B_DH / 1e8, B30, 0.024)
 })
 
-#test_that("different methods give correct values of loggamma", {
-#
-#})
-
 test_that("affinity transect incorporates IS correctly", {
   basis("CHNOS+")
   species("acetate")
@@ -71,3 +67,11 @@ test_that("affinity transect incorporates IS correctly", {
   expect_equal(a$values[[1]][1], a25_0$values[[1]][1])
   expect_equal(a$values[[1]][4], a50_1$values[[1]][1])
 })
+
+# 20171221
+test_that("nonideality calculations work for Zn", {
+  # nonideal() had a bug where both Z and Zn were identified as the charge
+  # in the species formula, producing an error in this calculation
+  expect_type(subcrt(c("Zn+2", "Cl-", "ZnCl+"), c(-1, -1, 1), T=200, P=16, IS=0.05), "list")   
+})
+

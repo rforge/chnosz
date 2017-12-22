@@ -209,10 +209,10 @@ thermo.refs(iadenine)
 
 * Use <span style="color:green">`subcrt()`</span> to calculate standard molal thermodynamic properties.
 
-```{r bsad_adenine, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, results="hide", fig.cap="Nucleobase equal-activity diagram.", cache=TRUE, pngquant=pngquant, timeit=timeit}
+```{r bsad_adenine, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, results="hide", fig.cap="Nucleobase equal-activity diagram at <i>T</i> = 100 °C.", cache=TRUE, pngquant=pngquant, timeit=timeit}
 basis("CHNOSe")
 species(c("adenine", "cytosine", "guanine", "thymine", "uracil"))
-a <- affinity(H2O = c(-12, -0), Eh = c(-0.5, 0), T = 100)
+a <- affinity(H2O = c(-12, -0), Eh = c(-0.4, -0.2), T = 100)
 diagram(a)
 ```
 
@@ -220,11 +220,11 @@ diagram(a)
 subcrt("adenine", T = 100)
 ```
 
-```{r equil_adenine, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, results="hide", fig.cap="Activities of nucleobases in metastable equilibrium.", cache=TRUE, pngquant=pngquant, timeit=timeit}
+```{r equil_adenine, fig.margin=TRUE, fig.width=4, fig.height=4, small.mar=TRUE, dpi=dpi, out.width="100%", echo=FALSE, message=FALSE, results="hide", fig.cap="Activities of nucleobases in metastable equilibrium at <i>T</i> = 100 °C.", cache=TRUE, pngquant=pngquant, timeit=timeit}
 basis("e-", 3.6)
 a <- affinity(H2O = c(-12, 0), T = 100)
 e <- equilibrate(a)
-diagram(e, ylim = c(-8, 0))
+diagram(e, ylim = c(-5, -1))
 ```
 
 * Use <span style="color:red">`basis()`</span> &ndash; <span style="color:red">`species()`</span> &ndash; <span style="color:green">`affinity()`</span> &ndash; <span style="color:green">`diagram()`</span> (BSAD) to construct equal-activity (equipotential) diagrams.

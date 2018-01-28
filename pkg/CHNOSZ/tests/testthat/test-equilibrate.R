@@ -155,6 +155,40 @@ test_that("equilibrate() can be used with a vector of loga.balance values", {
   expect_equal(list2array(eO2$loga.equil)[21, ], e60.8)
 })
 
+test_that("normalizing formulas of only selected species works as expected", {
+  iC6 <- info("n-hexane", "liq")
+  iC12 <- info("n-dodecane", "liq")
+  `n-alkane` <- iC6:iC12
+  i2C6 <- info("2-methylpentane", "liq")
+  i2C9 <- info("2-methyloctane", "liq")
+  `2-isoalkane` <- i2C6:i2C9
+  basis("CHNOS")
+  basis("O2", -49.5)
+  species(`n-alkane`)
+  species(`2-isoalkane`)
+  # approximate conditions of Computer Experiment 27 (Helgeson et al., 2009, GCA)
+  a <- affinity(T=150, P=830, exceed.Ttr=TRUE)
+  # using full chemical formulas
+  efull <- equilibrate(a)
+  dloga_isoalkane_full <- diff(unlist(efull$loga.equil[c(8, 11)]))
+  # normalize all the formulas
+  enorm <- equilibrate(a, normalize=TRUE)
+  dloga_nalkane_norm <- diff(unlist(enorm$loga.equil[c(1, 7)]))
+  dloga_isoalkane_norm <- diff(unlist(enorm$loga.equil[c(8, 11)]))
+  # normalize only the n-alkane formulas
+  isalk <- grepl("n-", species()$name)
+  emix <- equilibrate(a, normalize=isalk)
+  # the activity ratios for the normalized formulas should be the same in both calculations
+  dloga_nalkane_mix <- diff(unlist(emix$loga.equil[c(1, 7)]))
+  expect_equal(dloga_nalkane_mix, dloga_nalkane_norm)
+  # the actvitity ratios for the not-normalized formulas should be similar in both calculations
+  # (not identical becuase they are affected by total activity, unlike normalized formulas)
+  dloga_isoalkane_mix <- diff(unlist(emix$loga.equil[c(8, 11)]))
+  expect_maxdiff(dloga_isoalkane_mix, dloga_isoalkane_full, 0.07)
+  # however, the difference between normalized and not-normalized formulas is much greater
+  expect_true(maxdiff(dloga_isoalkane_mix, dloga_isoalkane_norm) > maxdiff(dloga_isoalkane_mix, dloga_isoalkane_full))
+})
+
 # references
 
 # Seewald, J. S. (2001) 

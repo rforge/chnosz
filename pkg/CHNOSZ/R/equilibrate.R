@@ -54,12 +54,14 @@ equilibrate <- function(aout, balance=NULL, loga.balance=NULL,
   ## normalize -- normalize the molar formula by the balance coefficients
   m.balance <- n.balance
   isprotein <- grepl("_", as.character(aout$species$name))
-  if(normalize | as.residue) {
+  if(any(normalize) | as.residue) {
     if(any(n.balance < 0)) stop("one or more negative balancing coefficients prohibit using normalized molar formulas")
-    n.balance <- rep(1, nspecies)
+    n.balance[normalize|as.residue] <- 1
     if(as.residue) message(paste("equilibrate: using 'as.residue' for molar formulas"))
     else message(paste("equilibrate: using 'normalize' for molar formulas"))
-  } else m.balance <- rep(1, nspecies)
+    # set the formula divisor (m.balance) to 1 for species whose formulas are *not* normalized
+    m.balance[!(normalize|as.residue)] <- 1
+  } else m.balance[] <- 1
   ## Astar: the affinities/2.303RT of formation reactions with
   ## formed species in their standard-state activities
   Astar <- lapply(1:nspecies, function(i) { 
@@ -76,7 +78,7 @@ equilibrate <- function(aout, balance=NULL, loga.balance=NULL,
   if(method[1]=="boltzmann") loga.equil <- equil.boltzmann(Astar, n.balance, loga.balance)
   else if(method[1]=="reaction") loga.equil <- equil.reaction(Astar, n.balance, loga.balance, tol)
   ## if we normalized the formulas, get back to activities to species
-  if(normalize & !as.residue) {
+  if(any(normalize) & !as.residue) {
     loga.equil <- lapply(1:nspecies, function(i) {
       loga.equil[[i]] - log10(m.balance[i])
     })

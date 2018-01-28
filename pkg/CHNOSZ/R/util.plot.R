@@ -187,35 +187,16 @@ ZC.col <- function(z) {
   rev(dcol)[z]
 }
 
-### unexported functions ###
-
 # Function to add axes and axis labels to plots,
 #   with some default style settings (rotation of numeric labels)
-#   and conversions between oxidation-reduction scales (called by thermo.plot.new ()).
 # With the default arguments (no labels specified), it plots only the axis lines and tick marks
 #   (used by diagram() for overplotting the axis on diagrams filled with colors).
-thermo.axis <- function(lab=NULL,side=1:4,line=1.5,cex=par('cex'),lwd=par('lwd'),T=NULL,col=par('col')) {
-  # if T isn't NULL, looks like we want make a second
-  # oxidation scale corresponding to one already plotted.
-  # e.g.,  Eh-pe, Eh-logfO2, or logfO2-Eh
-  if(!is.null(T)) {
-    usr <- par('usr')
-    if(side %in% c(1,3)) lim <- usr[1:2] else lim <- usr[3:4]
-    if(length(grep('pe',lab)) > 0) {
-      lim <- convert(lim,'pe',T=T)
-    } else if(length(grep('O2',lab)) > 0) {
-      lim <- convert(lim,'logfO2',T=T)
-    } else if(length(grep('Eh',lab)) > 0) {
-      lim <- convert(lim,'E0',T=T)
-    }
-    if(side %in% c(1,3)) usr[1:2] <- lim else usr[3:4] <- lim
-    opar <- par(usr=usr)
-  }
+thermo.axis <- function(lab=NULL,side=1:4,line=1.5,cex=par('cex'),lwd=par('lwd'),col=par('col')) {
   if(!is.null(lwd)) {
     ## plot major tick marks and numeric labels
     for(thisside in side) {
       do.label <- TRUE
-      if(missing(side) | (missing(cex) & thisside %in% c(3,4) & is.null(T))) do.label <- FALSE
+      if(missing(side) | (missing(cex) & thisside %in% c(3,4))) do.label <- FALSE
       at <- axis(thisside,labels=do.label,tick=TRUE,lwd=lwd,col=col,col.axis=col) 
       ## plot minor tick marks
       # the distance between major tick marks
@@ -263,6 +244,4 @@ thermo.axis <- function(lab=NULL,side=1:4,line=1.5,cex=par('cex'),lwd=par('lwd')
     if(thisside %in% c(2,4)) las <- 0 else las <- 1
     if(!is.null(lab)) mtext(lab,side=thisside,line=line,cex=cex,las=las)
   }
-  # reset limits if we were plotting a second axis
-  if(!is.null(T)) par(opar)
 }

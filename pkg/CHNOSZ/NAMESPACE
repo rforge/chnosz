@@ -60,7 +60,7 @@ export(
   "calculateEpsilon", "calculateQ", "water.DEW", "berman",
   "maxdiff", "expect_maxdiff", "Bdot",
 # added 20171121 or later
-  "dumpdata"
+  "dumpdata", "thermo.axis"
 )
 
 # Load shared objects

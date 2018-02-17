@@ -82,7 +82,7 @@ water.SUPCRT92 <- function(property=NULL, T=298.15, P=1) {
       rho.out[i] <- NA
     } else {
       # now to the actual calculations
-      H2O <- .Fortran(F_h2o92, as.integer(specs), as.double(states),
+      H2O <- .Fortran(C_h2o92, as.integer(specs), as.double(states),
         as.double(rep(0, 46)), as.integer(0))
       # errors
       err.out[i] <- H2O[[4]]

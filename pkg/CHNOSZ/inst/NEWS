@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.3-12 (2018-02-18)
+CHANGES IN CHNOSZ 1.1.3-13 (2018-02-27)
 ---------------------------------------
 
 - Lines in 1-D diagram()s can optionally be drawn as splines using the
@@ -30,6 +30,9 @@ CHANGES IN CHNOSZ 1.1.3-12 (2018-02-18)
 
 - Add C implementation of counting occurrences of all letters in a
   string (src/count_letters.c) to speed up operation of count.aa().
+
+- read.fasta(): add support for file connections created using
+  archive::archive_read (https://github.com/jimhester/archive).
 
 CHANGES IN CHNOSZ 1.1.3 (2017-11-13)
 ------------------------------------

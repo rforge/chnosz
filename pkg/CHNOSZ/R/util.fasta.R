@@ -14,11 +14,23 @@ read.fasta <- function(file, iseq=NULL, ret="count", lines=NULL, ihead=NULL,
   #   fas: fasta entry
   # value of 'id' is used for 'protein' in output table,
   #   otherwise ID is parsed from FASTA header (can take a while)
+  
+  # check if the file is in an archive (https://github.com/jimhester/archive)
+  if("archive_read" %in% class(file)) {
+    is.archive <- TRUE
+    filebase <- gsub("]", "", basename(summary(file)$description))
+  } else {
+    is.archive <- FALSE
+    filebase <- basename(file)
+  }
   if(is.null(lines)) {
-    message("read.fasta: reading ", basename(file), " ... ", appendLF=FALSE)
-    #lines <- readLines(file)
+    message("read.fasta: reading ", filebase, " ... ", appendLF=FALSE)
     is.nix <- Sys.info()[[1]]=="Linux"
-    if(is.nix) {
+    if(is.archive) {
+      # we can't use scan here?
+      lines <- readLines(file)
+    } else if(is.nix) {
+      # retrieve contents using system command (seems slightly faster even than scan())
       # figure out whether to use 'cat', 'zcat' or 'xzcat'
       suffix <- substr(file,nchar(file)-2,nchar(file))
       if(suffix==".gz") mycat <- "zcat"
@@ -49,7 +61,7 @@ read.fasta <- function(file, iseq=NULL, ret="count", lines=NULL, ihead=NULL,
   sequences <- lapply(iseq, seqfun)
   # organism name is from file name
   # (basename minus extension)
-  bnf <- strsplit(basename(file),split=".",fixed=TRUE)[[1]][1]
+  bnf <- strsplit(filebase,split=".",fixed=TRUE)[[1]][1]
   organism <- bnf
   # protein/gene name is from header line for entry
   # (strip the ">" and go to the first space)
@@ -60,7 +72,7 @@ read.fasta <- function(file, iseq=NULL, ret="count", lines=NULL, ihead=NULL,
     # stop if the first character is not ">"
     # or the first two charaters are "> "
     if(substr(f1,1,1)!=">" | length(grep("^> ",f1)>0))
-      stop(paste("file",basename(file),"line",j,"doesn't begin with FASTA header '>'."))
+      stop(paste("file",filebase,"line",j,"doesn't begin with FASTA header '>'."))
     # discard the leading '>'
     f2 <- substr(f1, 2, nchar(f1))
     # keep everything before the first space

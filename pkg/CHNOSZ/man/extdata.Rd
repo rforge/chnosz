@@ -14,8 +14,9 @@
   \itemize{
     \item \code{Ber88.csv} lists thermodynamic data for minerals taken from Berman (1988).
     These consist of standard state thermodyamic properties (Table 2 in the paper), parameters for calculating heat capacity (Table 3a), coefficients for calculation of mineral expansivities and compressibilities (Table 4), parameters describing polymorph transitions (Table 3b), and parameters describing temperature dependent disordering (Table 5).
-    The values are entered as shown in the source Tables, preserving units (i.e. Joules) and multipliers.
-    \code{\link{berman}} removes these multipliers and, after calculation of thermodynamic properties at \P and \T, converts to units used by \code{\link{subcrt}}.
+    The values carry the units used in the source tables (i.e. Joules).
+    To maintain consistency with the database format used in other programs (e.g. TWQ and Theriak/Domino), no multipliers are applied to the parameters, except for v1-v4, which are multiplied by 10^5, 10^5, 10^5, and 10^8, respectively.
+    \code{\link{berman}} uses these data for calculation of thermodynamic properties at \P and \T, and converts to the units used by \code{\link{subcrt}}.
     Following conventions used in data files for other software packages, the names of sanidine and microcline were changed to K-feldspar,high and K-feldspar,low.
   }
 

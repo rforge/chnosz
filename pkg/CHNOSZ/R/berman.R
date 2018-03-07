@@ -28,10 +28,10 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.t
   dat <- dat[!duplicated(dat$name), ]
   # remove the multipliers
   multexp <- c(0, 0, 0, 0,          # Ber88 Table 2
-               0, -2, -5, -7,             # Table 3a
-               6, 12, 6, 10,              # Table 4
-               0, 0, 0, 2, 5, 0,          # Table 3b
-               0, 0, 0, -3, -5, 2, 6, -4  # Table 5
+               0, 0, 0, 0,             # Table 3a
+               5, 5, 5, 8,              # Table 4
+               0, 0, 0, 0, 0, 0,          # Table 3b
+               0, 0, 0, 0, 0, 0, 0, 0  # Table 5
                )
   dat[, 2:27] <- t(t(dat[, 2:27]) / 10^multexp)
   # if name is missing, return the entire data frame (used in test-berman.R)

@@ -12,8 +12,8 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
   diagram(
     # species affinities or activities
     eout,
-    # what to plot
-    what = "loga.equil", alpha = FALSE, normalize = FALSE,
+    # type plot
+    type = "auto", alpha = FALSE, normalize = FALSE,
     as.residue = FALSE, balance=NULL, groups=as.list(1:length(eout$values)),
     # figure size and sides for axis tick marks
     xrange=NULL, mar=NULL, yline=par("mgp")[1]+0.3, side=1:4,
@@ -22,7 +22,7 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
     # character sizes
     cex=par("cex"), cex.names=1, cex.axis=par("cex"),
     # line styles
-    lty=NULL, lwd=par("lwd"), dotted=NULL, spline.method = NULL,
+    lty=NULL, lwd=par("lwd"), dotted=NULL, spline.method = NULL, contour.method = "edge",
     # colors
     col=par("col"), col.names=par("col"), fill=NULL,
     fill.NA="slategray1", limit.water=TRUE,
@@ -39,7 +39,7 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
 
 \arguments{
   \item{eout}{list, object returned by \code{\link{equilibrate}} or \code{\link{affinity}}}
-  \item{what}{character, what property to calculate and plot}
+  \item{type}{character, type of plot, or name of basis species whose activity to plot}
   \item{alpha}{logical or character (\samp{balance}), for speciation diagrams, plot degree of formation instead of activities?}
   \item{normalize}{logical, divide chemical affinities by balance coefficients (rescale to whole formulas)?}
   \item{as.residue}{logical, divide chemical affinities by balance coefficients (no rescaling)?}
@@ -61,6 +61,7 @@ Plot equilibrium chemical activity (1-D speciation) or equal-activity (2-D predo
   \item{lwd}{numeric, line width}
   \item{dotted}{numeric, how often to skip plotting points on predominance field boundaries (to gain the effect of dotted or dashed boundary lines)}
   \item{spline.method}{character, method used in \code{\link{splinefun}}}
+  \item{contour.method}{character, labelling method used in \code{\link{contour}} (use NULL for no labels).}
   \item{col}{character, color of activity lines (1D diagram) or predominance field boundaries (2D diagram), or colors of bars in a strip diagram (\code{strip})}
   \item{col.names}{character, colors for labels of species}
   \item{fill}{character, colors used to fill predominance fields}
@@ -140,14 +141,16 @@ With \code{as.residue}, the activity boundaries are calculated as between the re
 
 \section{Affinity Diagrams}{
 The function behaves differently when the output from \code{affinity} is being used instead of the equilibrium activities from \code{equilibrate}.
-If \code{what} is missing, and the number of dimensions is 0 or 1, a property of a reaction, such as the equilibrium constant (\samp{logK}), is plotted.
+If \code{type} is \samp{auto}, and the number of dimensions is 0 or 1, the property computed by \code{\link{affinity}} for each species is plotted.
+This is usually the affinity of the formation reaction, but can be set to some other property, such as the equilibrium constant (\samp{logK}).
+If \code{type} is \samp{auto}, and the number of dimensions is 2, then equilibrium predominance (maximum affinity) fields are plotted.
+This algorithm is based on a comparison of the affinities of the formation reactions scaled by the balancing coefficients that are determined by the \code{balance} argument.
 
-If \code{what} is missing, and the number of dimensions is 2, then highest potential (equilibrium predominance) fields are plotted.
-This algorithm is based on comparing the relative magnitudes of the affinities of the formation reactions, also referred to as the maximum affinity method.
-In this case, the balancing coefficients are determined usingi the \code{balance} argument.
-
-If \code{what} is the name of a basis species, it indicates to plot the equilibrium activity of a selected basis species in all of the formation reactions.
-A contour plot is made in the case of 2-D diagrams of the equilibrium activity of a basis species (see the \CO2-acetic acid example in \code{\link{buffer}}, and only the first species of interest is used in the calculation; a warning is produced if there is more than one.
+If \code{type} is \samp{saturation}, the function plots the line for each species where the affinity of formation equals zero.
+If for a given species no saturation line is possible or the range of the diagram is beyond the saturation line, the function prints a message instead.
+If \code{type} is the name of a basis species, the equilibrium activity of the selected basis species in each of the formation reactions is plotted.
+In the case of 2-D diagrams, both of these options use \code{\link{contour}} to draw the lines (see the \CO2-acetic acid example in \code{\link{buffer}}.
+The \samp{saturation} diagram can handle multiple species, but if \code{type} is the name a basis species, then only the first species of interest is used in the calculation, and a warning is produced if there is more than one.
 }
 
 \section{Activity Coefficients}{
@@ -187,7 +190,7 @@ See the vignette \emph{Hot-spring proteins in CHNOSZ} for an example of the \cod
 basis("CHNOS")
 species(c("ethanol", "lactic acid", "deoxyribose", "ribose"))
 a <- affinity(T=c(0, 150))
-diagram(a, what="O2", legend.x="topleft", col=rev(rainbow(4)), lwd=2)
+diagram(a, type="O2", legend.x="topleft", col=rev(rainbow(4)), lwd=2)
 title(main="Equilibrium logfO2 for 1e-3 mol/kg of CO2 and ... ")
 
 ### 1-D diagrams: logarithms of activities

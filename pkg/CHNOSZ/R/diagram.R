@@ -14,8 +14,8 @@
 diagram <- function(
   # species affinities or activities
   eout, 
-  # what to plot
-  what="loga.equil", alpha=FALSE, normalize=FALSE, as.residue=FALSE, balance=NULL,
+  # type of plot
+  type="auto", alpha=FALSE, normalize=FALSE, as.residue=FALSE, balance=NULL,
   groups=as.list(1:length(eout$values)), xrange=NULL,
   # figure size and sides for axis tick marks
   mar=NULL, yline=par("mgp")[1]+0.3, side=1:4,
@@ -24,7 +24,7 @@ diagram <- function(
   # sizes
   cex=par("cex"), cex.names=1, cex.axis=par("cex"),
   # line styles
-  lty=NULL, lwd=par("lwd"), dotted=NULL, spline.method=NULL,
+  lty=NULL, lwd=par("lwd"), dotted=NULL, spline.method=NULL, contour.method="edge",
   # colors
   col=par("col"), col.names=par("col"), fill=NULL,
   fill.NA="slategray1", limit.water=TRUE,
@@ -41,25 +41,27 @@ diagram <- function(
   ## check that eout is valid input
   if(!"sout" %in% names(eout)) stop("'eout' does not look like output from equil() or affinity()")
 
-  ## 'what' can be:
-  #    loga.equil    - equilibrium activities of species of interest (eout)
-  #    basis species - equilibrium activity of a basis species (aout)
-  #    missing       - property from affinity() or predominances of species (aout)
+  ## 'type' can be:
+  #    'auto'                - property from affinity() (1D) or maximum affinity (affinity 2D) (aout) or loga.equil (eout)
+  #    'loga.equil'          - equilibrium activities of species of interest (eout)
+  #    name of basis species - equilibrium activity of a basis species (aout)
+  #    'saturation'          - affinity=0 line for each species (2D)
   eout.is.aout <- FALSE
   plot.loga.basis <- FALSE
-  if(missing(what)) {
+  if(type %in% c("auto", "saturation")) {
     if(!"loga.equil" %in% names(eout)) {
       eout.is.aout <- TRUE
       # get the balancing coefficients
-      n.balance <- balance(eout, balance)
+      if(type=="auto") n.balance <- balance(eout, balance)
+      else n.balance <- rep(1, length(eout$values))
     }
-  } else if(what %in% rownames(eout$basis)) {
+  } else if(type %in% rownames(eout$basis)) {
     # to calculate the loga of basis species at equilibrium
     if(!missing(groups)) stop("can't plot equilibrium activities of basis species for grouped species")
     if(isTRUE(alpha) | is.character(alpha)) stop("equilibrium activities of basis species not available with alpha=TRUE")
     plot.loga.basis <- TRUE
-  } else if(what=="loga.equil" & !"loga.equil" %in% names(eout)) stop("'eout' is not the output from equil()") 
-  else if(what!="loga.equil") stop(what, " is not a basis species or 'loga.equil'")
+  } else if(type=="loga.equil" & !"loga.equil" %in% names(eout)) stop("'eout' is not the output from equil()") 
+  else if(type!="loga.equil") stop(type, " is not a valid diagram type")
 
   ## consider a different number of species if we're grouping them together
   ngroups <- length(groups)
@@ -68,6 +70,11 @@ diagram <- function(
   # unless something happens below, we'll plot the loga.equil from equilibrate()
   plotvals <- eout$loga.equil
   plotvar <- "loga.equil"
+
+  ## number of dimensions (T, P or chemical potentials that are varied)
+  # length(eout$vars) - the number of variables = the maximum number of dimensions
+  # length(dim(eout$values[[1]])) - nd=1 if it was a transect along multiple variables
+  nd <- min(length(eout$vars), length(dim(eout$values[[1]])))
 
   ## deal with output from affinity()
   if(eout.is.aout) {
@@ -83,14 +90,11 @@ diagram <- function(
     # 20171027 use parentheses to avoid ambiguity about order of operations
     if(plotvar=="A") {
       plotvar <- "A/(2.303RT)"
-      message("diagram: plotting A/(2.303RT) / n.balance (maximum affinity method for 2-D diagrams)")
+      if(nd==2 & type=="auto") message("diagram: using maximum affinity method for 2-D diagram")
+      else if(nd==2 & type=="saturation") message("diagram: plotting saturation lines for 2-D diagram")
+      else message("diagram: plotting A/(2.303RT) / n.balance")
     } else message(paste("diagram: plotting", plotvar, " / n.balance"))
   }
-
-  ## number of dimensions (T, P or chemical potentials that are varied)
-  # length(eout$vars) - the number of variables = the maximum number of dimensions
-  # length(dim(eout$values[[1]])) - nd=1 if it was a transect along multiple variables
-  nd <- min(length(eout$vars), length(dim(eout$values[[1]])))
 
   ## use molality instead of activity if the affinity calculation include ionic strength 20171101
   use.molality <- "IS" %in% names(eout)
@@ -125,10 +129,10 @@ diagram <- function(
   ## calculate the equilibrium logarithm of activity of a basis species
   ## (such that affinities of formation reactions are zero)
   if(plot.loga.basis) {
-    ibasis <- match(what, rownames(eout$basis))
+    ibasis <- match(type, rownames(eout$basis))
     # the logarithm of activity used in the affinity calculation
     is.loga.basis <- can.be.numeric(eout$basis$logact[ibasis])
-    if(!is.loga.basis) stop(paste("the logarithm of activity for basis species", what, "is not numeric - was a buffer selected?"))
+    if(!is.loga.basis) stop(paste("the logarithm of activity for basis species", type, "is not numeric - was a buffer selected?"))
     loga.basis <- as.numeric(eout$basis$logact[ibasis])
     # the reaction coefficients for this basis species
     nu.basis <- eout$species[, ibasis]
@@ -137,7 +141,7 @@ diagram <- function(
       # eout$values is a strange name for affinity ... should be named something like eout$affinity ...
       loga.basis - eout$values[[x]]/nu.basis[x]
     })
-    plotvar <- what
+    plotvar <- type
   }
 
   ## alpha: plot fractional degree of formation
@@ -157,7 +161,7 @@ diagram <- function(
 
   ## identify predominant species
   predominant <- NA
-  if(plotvar %in% c("loga.equil", "alpha", "A/(2.303RT)")) {
+  if(plotvar %in% c("loga.equil", "alpha", "A/(2.303RT)") & type!="saturation") {
     pv <- plotvals
     # some additional steps for affinity values, but not for equilibrated activities
     if(eout.is.aout) {
@@ -196,9 +200,6 @@ diagram <- function(
       }
     }
   }
-
-  # a warning about that we can only show properties of the first species on a 2-D diagram
-  if(nd==2 & length(plotvals) > 1 & identical(predominant, NA)) warning("showing only first species in 2-D property diagram")
 
   ## where we'll put extra output for predominance diagrams (lx, ly, is)
   out2D <- list()
@@ -534,8 +535,31 @@ diagram <- function(
       }
       # colors and curves (predominance), or contours (properties)
       if(identical(predominant, NA)) {
-        zs <- plotvals[[1]]
-        contour(xs, ys, zs, add=TRUE, col=col, lty=lty, lwd=lwd, labcex=cex)
+        if(type=="saturation") {
+          # for saturation plot, contour affinity=0 for all species
+          for(i in 1:length(plotvals)) {
+            zs <- plotvals[[i]]
+            # skip plotting if this species has no possible saturation line, or a line outside the plot range
+            if(length(unique(as.numeric(zs)))==1) {
+              message("diagram: no saturation line possible for ", names[i])
+              next
+            }
+            if(all(zs < 0) | all(zs > 0)) {
+              message("diagram: beyond range for saturation line of ", names[i])
+              next
+            }
+            if(identical(contour.method, NULL) | identical(contour.method, NA) | identical(contour.method, ""))
+              contour(xs, ys, zs, add=TRUE, col=col, lty=lty, lwd=lwd, labcex=cex, levels=0, labels=names[i], drawlabels=FALSE)
+            else contour(xs, ys, zs, add=TRUE, col=col, lty=lty, lwd=lwd, labcex=cex, levels=0, labels=names[i], method=contour.method)
+          }
+        } else {
+          # otherwise, make contours of properties using first species only
+          if(length(plotvals) > 1) warning("showing only first species in 2-D property diagram")
+          print('hello')
+          print(length(plotvals))
+          zs <- plotvals[[1]]
+          contour(xs, ys, zs, add=TRUE, col=col, lty=lty, lwd=lwd, labcex=cex, method=contour.method)
+        }
         pn <- list(lx=NULL, ly=NULL, is=NULL)
       } else {
         # put predominance matrix in the right order for image() etc
@@ -550,6 +574,14 @@ diagram <- function(
       out2D <- list(lx=pn$lx, ly=pn$ly, is=pn$is)
     } # end if(nd==2)
   } # end if(plot.it)
+
+  # warn if we have a system with both Berman and Helgeson minerals 20180315
+  ref1 <- get("thermo")$obigt$ref1
+  ref2 <- get("thermo")$obigt$ref2
+  ispecies <- eout$species$ispecies
+  hasHelgeson <- any(grepl("HDNB78", ref1[ispecies])) | any(grepl("HDNB78", ref2[ispecies]))
+  hasBerman <- any(get("thermo")$obigt$state[ispecies]=="cr_Berman")
+  if(hasHelgeson & hasBerman) warning("the system has minerals from both the Helgeson and Berman datasets; data may not be internally consistent")
 
   out <- c(eout, list(plotvar=plotvar, plotvals=plotvals, names=names, predominant=predominant), out2D)
   return(invisible(out))

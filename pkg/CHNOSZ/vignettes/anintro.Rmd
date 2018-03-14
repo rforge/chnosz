@@ -807,7 +807,7 @@ In CHNOSZ there are two ways to perform buffer calculations:
 * the buffers are active in calculations of affinity of other species;
 * use <span style="color:red">`mod.buffer()`</span> to change or add buffers in `thermo$buffer`;
 * [<span style="color:blue">`demo(buffer)`</span>](../demo) uses it for mineral buffers (solid lines).
-2. Use the `what` argument of <span style="color:green">`diagram()`</span> to solve for the activity of the indicated basis species:
+2. Use the `type` argument of <span style="color:green">`diagram()`</span> to solve for the activity of the indicated basis species:
 * more convenient (the buffers come from the currently defined species of interest), but only a single basis species can be buffered, and it's not used in the calculation of affinity;
 * [<span style="color:blue">`demo(buffer)`</span>](../demo) uses it for aqueous organic species as buffers (dotted and dashed lines).
 

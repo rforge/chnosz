@@ -7,7 +7,7 @@ test_that("expected errors are produced for inconsistent arguments", {
   a <- affinity()
   expect_message(diagram(a, plot.it=FALSE), "balance: from moles of CO2 in formation reactions")
   e <- equilibrate(a)
-  expect_error(diagram(e, "Z"), "Z is not a basis species")
+  expect_error(diagram(e, "Z"), "Z is not a valid diagram type")
 })
 
 test_that("expected messages, errors and results arise using output from affinity()", {
@@ -81,9 +81,8 @@ test_that("diagram() handles 2D plots with different x and y resolution and warn
   basis("CHNOS")
   species(c("alanine", "glycine", "serine", "methionine"))
   a <- affinity(T=c(0, 200, 6), O2=c(-90, -60, 5))
-  # TODO: fix plot.line() function in diagram() so that the plot can be made
-  #expect_equal(diagram(a), diagram(a, plot.it=FALSE))
-  expect_warning(diagram(a, what="CO2", plot.it=FALSE), "showing only first species in 2-D property diagram")
+  # now the warning is invokes next to the actual plotting, so no warning is produced with plot.it=FALSE 20180315
+  #expect_warning(diagram(a, type="CO2", plot.it=FALSE), "showing only first species in 2-D property diagram")
 })
 
 test_that("NaN values from equilibrate() are preserved (as NA in predominance calculation)", {

@@ -22,8 +22,11 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.t
   DS10 <- read.csv(paste0(dir, "/DS10.csv"), as.is=TRUE)
   FDM14 <- read.csv(paste0(dir, "/FDM+14.csv"), as.is=TRUE)
   BDat17 <- read.csv(paste0(dir, "/BDat17.csv"), as.is=TRUE)
-  # assemble the files in reverse chronological order
-  dat <- rbind(BDat17, FDM14, DS10, JUN92, ZS92, SHD91, Ber90, Ber88)
+  if(file.exists("berman.csv")) {
+    BDat_user <- read.csv("berman.csv", as.is=TRUE)
+    # assemble the files in reverse chronological order
+    dat <- rbind(BDat_user, BDat17, FDM14, DS10, JUN92, ZS92, SHD91, Ber90, Ber88)
+  } else dat <- rbind(BDat17, FDM14, DS10, JUN92, ZS92, SHD91, Ber90, Ber88)
   # remove duplicates (only the first, i.e. most recent entry is kept)
   dat <- dat[!duplicated(dat$name), ]
   # remove the multipliers
@@ -38,6 +41,7 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.t
   if(missing(name)) return(dat)
   # which row has data for this mineral?
   irow <- which(dat$name == name)
+  if(length(irow)==0) stop("Data for ", name, " not available. Please add it to berman.csv")
   # the function works fine with just the following assign() call,
   # but an explicit dummy assignment here is used to avoid "Undefined global functions or variables" in R CMD check
   GfPrTr <- HfPrTr <- SPrTr <- Tlambda <- Tmax <- Tmin <- Tref <- VPrTr <-

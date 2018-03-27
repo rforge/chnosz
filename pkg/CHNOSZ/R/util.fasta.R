@@ -42,7 +42,7 @@ read.fasta <- function(file, iseq=NULL, ret="count", lines=NULL, ihead=NULL,
   nlines <- length(lines)
   message(nlines, " lines ... ", appendLF=FALSE)
   if(is.null(ihead)) ihead <- which(substr(lines,1,1)==">")
-  message(length(ihead), " sequence headers")
+  message(length(ihead), " sequences")
   linefun <- function(i1,i2) lines[i1:i2]
   # identify the lines that begin and end each sequence
   begin <- ihead + 1

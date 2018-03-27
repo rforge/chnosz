@@ -24,12 +24,11 @@ Calculate thermodynamic properties of minerals using the equations of Berman (19
 
 \details{
 This function calculates the thermodynamic properties of minerals at high \P and \T using equations given by Berman (1988).
-Becuase they use a different set of parameters than Helgeson et al., 1978 (see \code{\link{cgl}}), the standard state thermodynamic properties and parameters for the calculations are stored in files under \code{extdata/Berman}.
+The standard state thermodynamic properties and parameters for the calculations are stored in files under \code{extdata/Berman}, or can be read from a user-created file (if available) named \samp{berman.csv} in the working directory.
 If the function is called with missing \code{name}, the data frame of parameters for all available minerals is returned.
 
-When \code{name} is given, it refers to a mineral that should listed in \code{thermo$obigt} with the state \samp{cr_Berman}.
-\code{thermo$obigt} also holds the chemical formula, which is required for calculating the entropies of the elements in the mineral.
-These entropies are used to convert the apparent Gibbs energies from the Berman-Brown convention to the the Benson-Helgeson convention (cf. Anderson, 2005).
+When \code{name} is given, it refers to a mineral that should listed in \code{thermo$obigt} with the state \samp{cr_Berman} and the chemical formula, and optinally an abbreviation and references, but all other properties set to NA.
+The chemical formula is required for calculating the entropies of the elements in the mineral, which are are used to convert the apparent Gibbs energies from the Berman-Brown convention to the the Benson-Helgeson convention (cf. Anderson, 2005).
 
 If \code{check.G} is TRUE, the tabulated value of DGfTrPr is compared with one calculated from DHfPrTr - T*DSPrTr (DS is the difference between the summed entropies of the elements and the tabulated entropy for the mineral).
 A warning is produced if the absolute value of the difference between tabulated and calculated DGfTrPr is greater than 1000 J/mol.

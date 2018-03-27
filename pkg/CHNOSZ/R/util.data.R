@@ -256,6 +256,7 @@ check.obigt <- function() {
     if(what=="OBIGT") tdata <- get("thermo")$obigt
     else if(what=="DEW") tdata <- read.csv(system.file("extdata/OBIGT/DEW_aq.csv", package="CHNOSZ"), as.is=TRUE)
     else if(what=="SUPCRTBL") tdata <- read.csv(system.file("extdata/OBIGT/SUPCRTBL.csv", package="CHNOSZ"), as.is=TRUE)
+    else if(what=="SUPCRT92") tdata <- read.csv(system.file("extdata/OBIGT/SUPCRT92.csv", package="CHNOSZ"), as.is=TRUE)
     ntot <- nrow(tdata)
     # where to keep the results
     DCp <- DV <- DG <- rep(NA,ntot)
@@ -288,6 +289,7 @@ check.obigt <- function() {
   # check optional data
   out <- rbind(out, checkfun("DEW"))
   out <- rbind(out, checkfun("SUPCRTBL"))
+  out <- rbind(out, checkfun("SUPCRT92"))
   # set differences within a tolerance to NA
   out$DCp[abs(out$DCp) < 1] <- NA
   out$DV[abs(out$DV) < 1] <- NA
@@ -356,15 +358,17 @@ RH2obigt <- function(compound=NULL, state="cr", file=system.file("extdata/thermo
 # dump all thermodynamic data in CHNOSZ 20171121
 dumpdata <- function(file=NULL) {
   # default database (OBIGT)
-  Odata <- get("thermo")$obigt
-  Odata <- cbind(source="OBIGT", Odata)
+  dat <- get("thermo")$obigt
+  OBIGT <- cbind(source="OBIGT", dat)
   # optional data
-  Ddata <- read.csv(system.file("extdata/OBIGT/DEW_aq.csv", package="CHNOSZ"), as.is=TRUE)
-  Ddata <- cbind(source="DEW", Ddata)
-  Sdata <- read.csv(system.file("extdata/OBIGT/SUPCRTBL.csv", package="CHNOSZ"), as.is=TRUE)
-  Sdata <- cbind(source="SUPCRTBL", Sdata)
+  dat <- read.csv(system.file("extdata/OBIGT/DEW_aq.csv", package="CHNOSZ"), as.is=TRUE)
+  DEW <- cbind(source="DEW", dat)
+  dat <- read.csv(system.file("extdata/OBIGT/SUPCRTBL.csv", package="CHNOSZ"), as.is=TRUE)
+  SUPCRTBL <- cbind(source="SUPCRTBL", dat)
+  dat <- read.csv(system.file("extdata/OBIGT/SUPCRT92.csv", package="CHNOSZ"), as.is=TRUE)
+  SUPCRT92 <- cbind(source="SUPCRT92", dat)
   # put it all together
-  out <- rbind(Odata, Ddata, Sdata)
+  out <- rbind(OBIGT, DEW, SUPCRTBL, SUPCRT92)
   # quote columns 2 (name) and 3 (abbrv) because they have commas for some entries
   if(!is.null(file)) write.csv(out, file, row.names=FALSE, quote=c(2, 3))
   else(return(out))

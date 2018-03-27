@@ -26,9 +26,9 @@ PT10.0 <- data.frame(P=10000, T=seq(200, 825, 10))
 PT20.0 <- data.frame(P=20000, T=seq(200, 800, 10))
 PT <- rbind(PT0.5, PT1.0, PT2.0, PT5.0, PT10.0, PT20.0)
 # reaction 1: quartz = SiO2(aq) [equivalent to quartz + 3 H2O = Si(OH)4]
-SiO2_logK <- subcrt(c("quartz", "SiO2"), c("cr_Berman", "aq"), c(-1, 1), P=PT$P, T=PT$T)$out$logK
+SiO2_logK <- subcrt(c("quartz", "SiO2"), c("cr", "aq"), c(-1, 1), P=PT$P, T=PT$T)$out$logK
 # reaction 2: 2 quartz = Si2O4(aq) [equivalent to 2 quartz + 3 H2O = Si2O(OH)6]
-Si2O4_logK <- subcrt(c("quartz", "Si2O4"), c("cr_Berman", "aq"), c(-2, 1), P=PT$P, T=PT$T)$out$logK
+Si2O4_logK <- subcrt(c("quartz", "Si2O4"), c("cr", "aq"), c(-2, 1), P=PT$P, T=PT$T)$out$logK
 # plot the sum of molalities (== activities) for each pressure
 plot(c(200, 1000), c(-2.5, 0.5), type="n", xlab=axis.label("T"), ylab="log molality")
 for(P in unique(PT$P)) {
@@ -45,8 +45,7 @@ for(P in unique(PT$P)) {
 t1 <- quote("Solubility of"~alpha*"-quartz")
 t2 <- "after Sverjensky et al., 2014a"
 mtitle(as.expression(c(t1, t2)))
-# TODO: lines are a little low at highest P and P ...
-# does the Berman, 1988 quartz data increase high-PT solubilities?
+# TODO: lines are a little low at highest P and T ...
 
 ###########
 #### plot 2: correlations between non-solvation volume and HKF a1 parameter
@@ -146,10 +145,8 @@ organics <- c("formic acid", "formate", "acetic acid", "acetate", "propanoic aci
 add.obigt("DEW", c(inorganics, organics[-4]))
 ## set basis species
 basis(c("Fe", "SiO2", "CO3-2", "H2O", "oxygen", "H+"))
-## define a QFM buffer using Berman's equations for minerals
-mod.buffer("QFM_Berman", c("quartz", "fayalite", "magnetite"), "cr_Berman", 0)
 ## calculate logfO2 in QFM buffer
-basis("O2", "QFM_Berman")
+basis("O2", "QFM")
 T <- seq(600, 1000, 100)
 buf <- affinity(T=T, P=50000, return.buffer=TRUE)
 ## add species

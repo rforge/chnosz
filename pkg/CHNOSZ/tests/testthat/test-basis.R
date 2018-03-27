@@ -32,11 +32,11 @@ test_that("invalid basis modification requests cause an error", {
 })
 
 test_that("modifying states of basis species is possible", {
-  b1 <- basis(c("Al2O3", "quartz", "oxygen"))
-  b2 <- basis("SiO2", "cr2")
-  # we went from quartz cr to cr2, which is the next row in the database
+  b1 <- basis(c("copper", "chalcocite"))
+  b2 <- basis("Cu2S", "cr2")
+  # we went from chalcocite cr to cr2, which is the next row in the database
   expect_equal(sum(b2$ispecies - b1$ispecies), 1)
-  expect_error(basis("SiO2", "cr3"), "state or buffer 'cr3' not found for quartz")
+  expect_error(basis("Cu2S", "cr4"), "state or buffer 'cr4' not found for chalcocite")
   # can we go from CO2(aq) to CO2(gas) back to CO2(aq)?
   basis("CHNOS+")  # first basis species is CO2(aq)
   expect_equal(basis("CO2", "gas")$state[1], "gas")

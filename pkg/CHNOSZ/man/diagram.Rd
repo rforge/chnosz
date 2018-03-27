@@ -253,9 +253,7 @@ text(3, 21, describe.property(c("T", "P"), c(25, 1), oneline=TRUE))
 # - number of basis species must be the same as of elements
 # - avoid using H2O or other aqueous species because of
 #     T/P limits of the water() calculations;
-# - because it triggers calculations for phase transitions,
-#    (takes more time), don't use quartz unless it's needed
-basis(c("corundum", "chalcedony", "oxygen"))
+basis(c("corundum", "quartz", "oxygen"))
 species(c("kyanite", "sillimanite", "andalusite"))
 # database has transition temperatures of kyanite and andalusite
 # at 1 bar only, so we permit calculation at higher temperatures

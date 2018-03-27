@@ -575,14 +575,6 @@ diagram <- function(
     } # end if(nd==2)
   } # end if(plot.it)
 
-  # warn if we have a system with both Berman and Helgeson minerals 20180315
-  ref1 <- get("thermo")$obigt$ref1
-  ref2 <- get("thermo")$obigt$ref2
-  ispecies <- eout$species$ispecies
-  hasHelgeson <- any(grepl("HDNB78", ref1[ispecies])) | any(grepl("HDNB78", ref2[ispecies]))
-  hasBerman <- any(get("thermo")$obigt$state[ispecies]=="cr_Berman")
-  if(hasHelgeson & hasBerman) warning("the system has minerals from both the Helgeson and Berman datasets; data may not be internally consistent")
-
   out <- c(eout, list(plotvar=plotvar, plotvals=plotvals, names=names, predominant=predominant), out2D)
   return(invisible(out))
 }

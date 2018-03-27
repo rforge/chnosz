@@ -131,11 +131,7 @@ info.character <- function(species, state=NULL, check.protein=TRUE) {
     # if a single name matches, use that one (useful for distinguishing pseudo-H4SiO4 and H4SiO4) 20171020
     matches.name <- matches.species & thermo$obigt$name==species
     if(sum(matches.name)==1) ispecies.out <- which(matches.name)
-    else {
-      # prefer the Berman minerals?
-      if(thermo$opt$Berman & "cr_Berman" %in% thermo$obigt$state[ispecies]) ispecies.out <- ispecies[thermo$obigt$state[ispecies]=="cr_Berman"]
-      else ispecies.out <- ispecies[1]  # otherwise, return only the first species that matches
-    }
+    else ispecies.out <- ispecies[1]  # otherwise, return only the first species that matches
     # let user know if there is more than one state for this species
     mystate <- thermo$obigt$state[ispecies.out]
     ispecies.other <- ispecies[!ispecies %in% ispecies.out]

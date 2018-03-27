@@ -7,13 +7,13 @@ dPdTtr <- function(ispecies) {
   # (argument is index of the lower-T phase)
   thermo <- get("thermo")
   pars <- info(c(ispecies, ispecies+1), check.it=FALSE)
-  # the special handling for quartz and coesite interferece with this function,
-  # so we convert to uppercase names to prevent cgl() from calling quartz_coesite()
-  pars$name <- toupper(pars$name)
-  props <- cgl(c("G", "S", "V"), pars, P=0, T=thermo$obigt$z.T[ispecies])
   # if these aren't the same mineral all we can say is zero
   # actually, should be infinity ... the volume change is zero
   if(as.character(pars$name[1]) != as.character(pars$name[2])) return(Inf)
+  # the special handling for quartz and coesite interfere with this function,
+  # so we convert to uppercase names to prevent cgl() from calling quartz_coesite()
+  pars$name <- toupper(pars$name)
+  props <- cgl(c("G", "S", "V"), pars, P=0, T=thermo$obigt$z.T[ispecies])
   # we really hope the G's are the same ...
   #if(abs(props[[2]]$G - props[[1]]$G) > 0.1) warning('dP.dT: inconsistent values of G for different phases of ',ispecies,call.=FALSE)
   dP.dT <- convert( ( props[[2]]$S - props[[1]]$S ) / ( props[[2]]$V - props[[1]]$V ), 'cm3bar' )

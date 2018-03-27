@@ -6,6 +6,13 @@ par(mfrow = c(2, 2))
 res <- 200
 fill <- "terrain"
 
+data(thermo)
+## get data for gibbsite from the SUPCRT92 database, without loading minerals that
+## have been superseded by the Berman dataset (the default in CHNOSZ)
+add.obigt("SUPCRT92", "gibbsite")
+## or, get data for gibbsite and Al-bearing aqueous species from the SUPCRTBL database
+#add.obigt("SUPCRTBL")
+
 ## K2O-Al2O3-SiO2-H2O, 25 degree C, 1 bar
 ## Steinmann et al., 1994 (http://ccm.geoscienceworld.org/content/42/2/197)
 ## Garrels and Christ, p. 361 (http://www.worldcat.org/oclc/517586)
@@ -45,7 +52,7 @@ legend("topright", describe.property(c("T", "P"), c(300, 85.84)), bty = "n")
 ## CaO-Al2O3-MgO-SiO2-H2O at 300 degree C and 500 bar
 ## Bach and Klein, 2009 (https://doi.org/10.1016/j.lithos.2008.10.022)
 basis(c("Ca+2", "Al+3", "Mg+2", "SiO2", "H2O", "O2", "H+"))
-species(c("clinochlore,14a", "clinozoisite", "prehnite", "grossular"))
+species(c("clinochlore", "clinozoisite", "prehnite", "grossular"))
 a <- affinity(SiO2 = c(-5, 0, res), `Ca+2` = c(6, 11, res), T = 300, P = 500)
 diagram(a, ylab = ratlab("Ca+2"), balance = "Al+3", fill = fill, yline = 1.7)
 # (Hmmm... where is clinochlore? it doesn't appear on our diagram)

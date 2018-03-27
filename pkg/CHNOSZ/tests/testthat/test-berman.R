@@ -22,7 +22,9 @@ prop_Berman <- do.call(rbind, prop_Berman)
 icr <- suppressMessages(info(mineral, "cr"))
 # all of these except rutile (Robie et al., 1979) reference Helgeson et al., 1978
 # NOTE: with check.it = TRUE (the default), this calculates Cp from the tabulated Maier-Kelley parameters
+add.obigt("SUPCRT92")
 prop_Helgeson <- suppressMessages(info(icr))
+data(OBIGT)
 
 # now we can compare Berman and Helgeson G, H, S, Cp, V
 # minerals with missing properties are not matched here
@@ -60,19 +62,19 @@ test_that("high-T,P calculated properties are similar to precalculated ones", {
 
   # anadalusite: an uncomplicated mineral (no transitions)
   And_G <- c(-579368, -524987, -632421, -576834)
-  And <- subcrt("andalusite", "cr_Berman", T=T, P=P)$out[[1]]
+  And <- subcrt("andalusite", T=T, P=P)$out[[1]]
   expect_maxdiff(And$G, And_G, 7.5)
 
   # quartz: a mineral with polymorphic transitions
   aQz_G <- c(-202800, -179757, -223864, -200109)
-  aQz <- subcrt("quartz", "cr_Berman", T=T, P=P)$out[[1]]
+  aQz <- subcrt("quartz", T=T, P=P)$out[[1]]
   expect_maxdiff(aQz$G[-2], aQz_G[-2], 1.2)
   # here, the high-P, low-T point suffers
   expect_maxdiff(aQz$G[2], aQz_G[2], 1250)
 
   # K-feldspar: this one has disordering effects
   Kfs_G <- c(-888115, -776324, -988950, -874777)
-  Kfs <- subcrt("K-feldspar", "cr_Berman", T=T, P=P)$out[[1]]
+  Kfs <- subcrt("K-feldspar", T=T, P=P)$out[[1]]
   expect_maxdiff(Kfs$G[1:2], Kfs_G[1:2], 5)
   # we are less consistent with the reference values at high T
   expect_maxdiff(Kfs$G[3:4], Kfs_G[3:4], 350)

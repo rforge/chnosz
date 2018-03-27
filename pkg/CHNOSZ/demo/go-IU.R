@@ -21,18 +21,20 @@ T <- 125:350
 thermo.plot.new(xlim=range(T), ylim=c(-3.5, -1.5), xlab = axis.label("T"), ylab=axis.label("SiO2"))
 points(xT, xlogaSiO2)
 basis(delete=TRUE)
-## first calculation: CHNOSZ default (SiO2 from SHS89, kaolinite and boehmite from HDNB78)
+## first calculation: after SUPCRT92 (SiO2(aq) from SHS89)
+add.obigt("SUPCRT92") # gets kaolinite and boehmite from HDNB78
 r1 <- subcrt(c("boehmite", "H2O", "SiO2", "kaolinite"), c(-1, -0.5, -1, 0.5), T=T, P=1000, exceed.Ttr = TRUE) 
 # we need exceed.Ttr = TRUE because the T limit for boehmite is 500 K (Helgeson et al., 1978)
 ## second calculation: kaolinite from Berman, 1988
-Kln_Berman <- info("kaolinite", "cr_Berman")
-r2 <- subcrt(c("boehmite", "H2O", "SiO2", Kln_Berman), c(-1, -0.5, -1, 0.5), T=T, P=1000, exceed.Ttr = TRUE) 
+data(thermo)
+add.obigt("SUPCRT92", "boehmite") # gets only boehmite from HDNB78
+r2 <- subcrt(c("boehmite", "H2O", "SiO2", "kaolinite"), c(-1, -0.5, -1, 0.5), T=T, P=1000, exceed.Ttr = TRUE) 
 ## third calculation: boehmite from Hemingway et al., 1991
 add.obigt("SUPCRTBL", "boehmite")
-r3 <- subcrt(c("boehmite", "H2O", "SiO2", Kln_Berman), c(-1, -0.5, -1, 0.5), T=T, P=1000) 
+r3 <- subcrt(c("boehmite", "H2O", "SiO2", "kaolinite"), c(-1, -0.5, -1, 0.5), T=T, P=1000) 
 ## fourth calculation: SiO2 from Apps and Spycher, 2004
 add.obigt("SUPCRTBL", "SiO2")
-r4 <- subcrt(c("boehmite", "H2O", "SiO2", Kln_Berman), c(-1, -0.5, -1, 0.5), T=T, P=1000) 
+r4 <- subcrt(c("boehmite", "H2O", "SiO2", "kaolinite"), c(-1, -0.5, -1, 0.5), T=T, P=1000) 
 ## log activity of SiO2 is -ve logK
 lines(T, -r1$out$logK)
 lines(T, -r2$out$logK, lty=2)
@@ -41,7 +43,7 @@ lines(T, -r4$out$logK, col="red")
 ## add points calculated using the SUPCRTBL package
 points(seq(125, 350, 25), -c(3.489, 3.217, 2.967, 2.734, 2.517, 2.314, 2.124, 1.946, 1.781, 1.628), pch=4, col="red")
 ## add labels, legend, and title
-text(182.5, -3.17, "SUPCRT92\n(CHNOSZ default)", srt=48, cex=0.7, font=2)
+text(182.5, -3.17, "SUPCRT92", srt=48, cex=0.7, font=2)
 text(154, -3.04, "circa SUPCRTBL", srt=45, cex=0.7, font=2, col="red")
 legend("topleft", lty=c(1, 2, 2, 1, 0), pch=c(NA, NA, NA, NA, 4),
        col=c("black", "black", "red", "red", "red"), bty="n", cex=0.9,

@@ -27,7 +27,7 @@ This function calculates the thermodynamic properties of minerals at high \P and
 The standard state thermodynamic properties and parameters for the calculations are stored in files under \code{extdata/Berman}, or can be read from a user-created file (if available) named \samp{berman.csv} in the working directory.
 If the function is called with missing \code{name}, the data frame of parameters for all available minerals is returned.
 
-When \code{name} is given, it refers to a mineral that should listed in \code{thermo$obigt} with the state \samp{cr_Berman} and the chemical formula, and optinally an abbreviation and references, but all other properties set to NA.
+When \code{name} is given, it refers to a mineral that should listed in \code{thermo$obigt} with the state \samp{cr} and the chemical formula, and optinally an abbreviation and references, but all other properties set to NA.
 The chemical formula is required for calculating the entropies of the elements in the mineral, which are are used to convert the apparent Gibbs energies from the Berman-Brown convention to the the Benson-Helgeson convention (cf. Anderson, 2005).
 
 If \code{check.G} is TRUE, the tabulated value of DGfTrPr is compared with one calculated from DHfPrTr - T*DSPrTr (DS is the difference between the summed entropies of the elements and the tabulated entropy for the mineral).
@@ -40,7 +40,7 @@ Providing \code{thisinfo} means that the mineral name is not searched in \code{t
 \dontshow{data(thermo)}
 # other than the formula, the parameters aren't stored in
 # thermo$obigt, so this shows NAs
-info(info("quartz", "cr_Berman"))
+info(info("quartz", "cr"))
 # properties of alpha-quartz (aQz) at 298.15 K and 1 bar
 berman("quartz")
 # Gibbs energies of aQz and coesite at higher T and P
@@ -53,15 +53,9 @@ G_Cs <- berman("coesite", T=T, P=P)$G
 DGrxn <- G_Cs - G_aQz
 stopifnot(all(abs(DGrxn) < 100))
 
-# calculate the properties of a "reaction" between
-# the Helgeson and Berman versions of quartz
-T <- 1000
-P <- c(10000, 20000)
-subcrt(rep("quartz", 2), c("cr", "cr_Berman"), c(-1, 1), T=T, P=P)
-
 # make a P-T diagram for SiO2 minerals (Ber88 Fig. 4)
-basis(c("SiO2", "O2"), c("cr_Berman", "gas"))
-species(c("quartz", "quartz,beta", "coesite"), "cr_Berman")
+basis(c("SiO2", "O2"), c("cr", "gas"))
+species(c("quartz", "quartz,beta", "coesite"), "cr")
 a <- affinity(T=c(200, 1700, 200), P=c(0, 50000, 200))
 diagram(a)
 
@@ -69,6 +63,7 @@ diagram(a)
 ## Berman and Helgeson datasets, after Sverjensky et al., 1991
 res <- 200
 # using the Helgeson data
+add.obigt("SUPCRT92")
 # set up basis species
 basis(c("K+", "Al+3", "quartz", "H2O", "O2", "H+"))
 # use pH = 0 so that aK+ = aK+/aH+
@@ -81,16 +76,12 @@ a <- affinity(`K+`=c(0, 5, res), T=c(200, 650, res), P=1000)
 # note that we go just past the quartz transition,
 # but it has no effect on the diagram
 diagram(a, xlab=ratlab("K+"))
-# now using the Berman data
-basis("SiO2", "cr_Berman")
+# now using the Berman data: this resets the thermodynamic database
+# without affecting the basis and species settings
+data(OBIGT)
 # it might be good to check that we have Berman's quartz
 # and not coesite or some other SiO2 phase
 info(basis()$ispecies[3])
-# remove the Helgeson minerals
-species(delete=TRUE)
-# load the Berman minerals
-species(c("K-feldspar", "muscovite", "kaolinite",
-          "pyrophyllite", "andalusite"), "cr_Berman")
 a <- affinity(`K+`=c(0, 5, res), T=c(200, 650, res), P=1000)
 diagram(a, add=TRUE, names="", col="blue", lwd=2)
 legend("topleft", lty=c(1, 1, NA), lwd=c(1, 2, 0), col=c("black", "blue", ""),

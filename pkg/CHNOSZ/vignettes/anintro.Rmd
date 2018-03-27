@@ -1925,11 +1925,10 @@ browseURL(ref$URL)  ## opens a link to worldcat.org
 
 ## Optional data
 
-Thermodynamic properties of minerals in the default database are mostly taken from @HDNB78.
-These are identified by the state `cr`, and `cr2`, `cr3`, etc. for higher-temperature polymorphs.
-Optionally, thermodynamic properties of minerals can be calculated using the equations and dataset of @Ber88; these minerals are identified in the database by having the state `cr_Berman`.
+Thermodynamic properties of minerals in the default database are mostly taken from @Ber88 (including silicates, aluminosilicates, calcite, dolomite, hematite, and magnetite) and @HDNB78 (native elements, sulfides, halides, sulfates, and selected carbonates and oxides that do not duplicate any in the Berman dataset).
+Minerals are identified by the state `cr`, and (for the Helgeson dataset) `cr2`, `cr3`, etc. for higher-temperature polymorphs.
 
-Two other optional datasets can be activated by using <span style="color:red">`add.obigt()`</span>:
+Two optional datasets can be activated by using <span style="color:red">`add.obigt()`</span>:
 
 <span style="color:red">`add.obigt("SUPCRTBL")`</span> -- This loads updated thermodynamic parameters for aqueous SiO<sub>2</sub>, aluminum and arsenic species, and minerals, as compiled in the [SUPCRTBL package](http://www.indiana.edu/~hydrogeo/supcrtbl.html) [@ZZL_16].
 SUPCRTBL also includes modifications to SUPCRT92 for calculating thermodynamic properties of minerals using the @HP11 dataset, but that is not available in CHNOSZ.
@@ -1939,7 +1938,7 @@ Instead, the Berman mineral data can be used with similar results; see [<span st
 You should also run <span style="color:red">`water("DEW")`</span> to activate the equations in the model; then, they will be used by <span style="color:green">`subcrt()`</span> and <span style="color:green">`affinity()`</span>.
 Examples are in [<span style="color:blue">`demo(DEW)`</span>](../demo).
 
-Detailed lists of sources for these Optional Data are in the vignette [<span style="color:blue">*Thermodynamic data in CHNOSZ*</span>](obigt.html) (look under **Solids** / **Berman**, **Optional Data** / **SUPCRTBL** and **Optional Data** / **DEW**).
+Detailed lists of sources for these Optional Data are in the vignette [<span style="color:blue">*Thermodynamic data in CHNOSZ*</span>](obigt.html) (look under **Optional Data** / **SUPCRTBL** and **Optional Data** / **DEW**).
 
 ## Adding data
 

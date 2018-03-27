@@ -1,7 +1,26 @@
-CHANGES IN CHNOSZ 1.1.3-16 (2018-03-27)
+CHANGES IN CHNOSZ 1.1.3-17 (2018-03-27)
 ---------------------------------------
 
-BERMAN EQUATIONS AND DATA
+THERMODYNAMIC DATA
+
+- The Berman data (Berman, 1988 and later additions) have replaced the
+  SUPCRT92 data (based on Helgeson et al., 1978) for most minerals in
+  the default database (i.e. the one loaded by data(thermo)). Only
+  native elements, sulfides, halides, sulfates, and selected carbonates
+  and oxides from SUPCRT92 that do not duplicate any in the Berman
+  dataset are loaded by default.
+
+- The superseded SUPCRT92 minerals (primarily the silicates and
+  Al-bearing minerals, as well as calcite, dolomite, hematite, and
+  magnetite) are in the file extdata/OBIGT/SUPCRT92.csv, which can be
+  loaded with add.obigt("SUPCRT92"). This is used in some examples for
+  comparing the datasets (see ?berman and demo(go-IU.R)), but should not
+  be needed by most users.
+
+- In thermo$obigt, the minerals using the Berman equations are
+  identified as those having NA values for all thermodynamic properties
+  (columns 8-20). These minerals have the state of "cr" (not "cr_Berman"
+  as before).
 
 - berman() now reads data from a user-supplied file berman.csv if it is
   present in the working directory.

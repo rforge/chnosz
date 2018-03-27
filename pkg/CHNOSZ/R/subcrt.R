@@ -147,15 +147,6 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
   ton <- thermo$obigt$name
   tos <- thermo$obigt$state
 
-  # warn if we're running a reaction with both Berman and Helgeson minerals 20171110
-  if(do.reaction) {
-    ref1 <- thermo$obigt$ref1
-    ref2 <- thermo$obigt$ref2
-    hasHelgeson <- any(grepl("HDNB78", ref1[sinfo])) | any(grepl("HDNB78", ref2[sinfo]))
-    hasBerman <- any(tos[sinfo]=="cr_Berman")
-    if(hasHelgeson & hasBerman) warning("the reaction has minerals from both the Helgeson and Berman datasets; data may not be internally consistent")
-  }
-
   # stop if species not found
   noname <- is.na(sinfo)
   if(TRUE %in% noname)
@@ -310,7 +301,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
   }
 
   # crystalline, gas, liquid (except water) species
-  cglstates <- c("liq", "cr", "gas", "cr2", "cr3", "cr4", "cr5", "cr6", "cr7", "cr8", "cr9", "cr_Berman")
+  cglstates <- c("liq", "cr", "gas", "cr2", "cr3", "cr4", "cr5", "cr6", "cr7", "cr8", "cr9")
   iscgl <- reaction$state %in% cglstates & reaction$name != "water"
 
   if(TRUE %in% iscgl) {
@@ -330,8 +321,8 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
         # name and state
         myname <- reaction$name[i]
         mystate <- reaction$state[i]
-        # don't proceed if the state is cr_Berman
-        if(mystate=="cr_Berman") next
+#        # don't proceed if the state is cr_Berman
+#        if(mystate=="cr_Berman") next
         # if this phase is cr2 or higher, check if we're below the transition temperature
         if(!(reaction$state[i] %in% c('liq','cr','gas'))) {
           Ttr <- Ttr(inpho[i]-1,P=P,dPdT=dPdTtr(inpho[i]-1))

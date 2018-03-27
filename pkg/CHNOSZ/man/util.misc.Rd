@@ -42,14 +42,17 @@ If any of those species are proteins, the function gets their lengths using \cod
 }
 
 \examples{\dontshow{data(thermo)}
+### the first example is commented because after removing most of the
+### Helgeson et al. minerals, we don't have a suitable mineral in the
+### database to demonstrate this calculation (but ice might work)
 ## properties of phase transitions
-si <- info("enstatite")
-# (dP/dT) of transitions
-dPdTtr(si)  # first transition
-dPdTtr(si+1) # second transition
-# temperature of transitions (Ttr) as a function of P
-Ttr(si,P=c(1,10,100,1000))
-Ttr(si,P=c(1,10,100,1000))
+#si <- info("enstatite")
+## (dP/dT) of transitions
+#dPdTtr(si)  # first transition
+#dPdTtr(si+1) # second transition
+## temperature of transitions (Ttr) as a function of P
+#Ttr(si,P=c(1,10,100,1000))
+#Ttr(si,P=c(1,10,100,1000))
 
 # calculate the GHS at Tr for the high-temperature phases of iron
 # using transition enthalpies from the SUPCRT92 database (sprons92.dat)

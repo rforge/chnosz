@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.3-17 (2018-03-27)
+CHANGES IN CHNOSZ 1.1.3-18 (2018-03-28)
 ---------------------------------------
 
 THERMODYNAMIC DATA
@@ -22,6 +22,14 @@ THERMODYNAMIC DATA
   (columns 8-20). These minerals have the state of "cr" (not "cr_Berman"
   as before).
 
+- The heat capacity equation in berman() has been expanded to
+  Cp = k0 + k1T-1/2 + k2T-2 + k3T-3 + k4T-1 + k5T + k6T2 (as used in
+  winTWQ).
+
+- Multipliers on values in the Berman data files (extdata/Berman/*.csv)
+  have been removed, except for 10^5, 10^5, 10^5, and 10^8 on v1 to v4
+  (to be consistent with the winTWQ data format).
+
 - berman() now reads data from a user-supplied file berman.csv if it is
   present in the working directory.
 
@@ -29,9 +37,6 @@ THERMODYNAMIC DATA
   extdata/Berman/unused/BA96.csv.
 
 - Correct swapped v1 <-> v3 and v2 <-> v4 in extdata/Berman/DS10.csv.
-
-- Change files in extdata/Berman to be more like winTWQ format (no
-  value multipliers, except 10^5, 10^5, 10^5, and 10^8 on v1 to v4).
 
 OTHER CHANGES
 

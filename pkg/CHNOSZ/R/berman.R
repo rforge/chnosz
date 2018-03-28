@@ -29,14 +29,10 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.t
   } else dat <- rbind(BDat17, FDM14, DS10, JUN92, ZS92, SHD91, Ber90, Ber88)
   # remove duplicates (only the first, i.e. most recent entry is kept)
   dat <- dat[!duplicated(dat$name), ]
-  # remove the multipliers
-  multexp <- c(0, 0, 0, 0,          # Ber88 Table 2
-               0, 0, 0, 0,             # Table 3a
-               5, 5, 5, 8,              # Table 4
-               0, 0, 0, 0, 0, 0,          # Table 3b
-               0, 0, 0, 0, 0, 0, 0, 0  # Table 5
-               )
-  dat[, 2:27] <- t(t(dat[, 2:27]) / 10^multexp)
+  # remove the multipliers on volume parameters
+  vcols <- 13:16 # columns with v1, v2, v3, v4
+  multexp <- c(5, 5, 5, 8)
+  dat[, vcols] <- t(t(dat[, vcols]) / 10^multexp)
   # if name is missing, return the entire data frame (used in test-berman.R)
   if(missing(name)) return(dat)
   # which row has data for this mineral?
@@ -45,7 +41,8 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.t
   # the function works fine with just the following assign() call,
   # but an explicit dummy assignment here is used to avoid "Undefined global functions or variables" in R CMD check
   GfPrTr <- HfPrTr <- SPrTr <- Tlambda <- Tmax <- Tmin <- Tref <- VPrTr <-
-    d0 <- d1 <- d2 <- d3 <- d4 <- d5 <- dTdP <- k0 <- k1 <- k2 <- k3 <- l1 <- l2 <- v1 <- v2 <- v3 <- v4 <- NA
+    d0 <- d1 <- d2 <- d3 <- d4 <- d5 <- dTdP <- k0 <- k1 <- k2 <- k3 <-
+    k4 <- k5 <- k6 <- l1 <- l2 <- v1 <- v2 <- v3 <- v4 <- NA
   # assign values to the variables used below
   for(i in 1:ncol(dat)) assign(colnames(dat)[i], dat[irow, i])
   # get the entropy of the elements using the chemical formula in thermo$obigt
@@ -63,26 +60,31 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.t
 
   ### thermodynamic properties ###
   # calculate Cp and V (Berman, 1988 Eqs. 4 and 5)
-  Cp <- k0 + k1 * T^-0.5 + k2 * T^-2 + k3 * T^-3
+  # k4, k5, k6 terms from winTWQ documentation (doi:10.4095/223425)
+  Cp <- k0 + k1 * T^-0.5 + k2 * T^-2 + k3 * T^-3 + k4 * T^-1 + k5 * T + k6 * T^2
   P_Pr <- P - Pr
   T_Tr <- T - Tr
   V <- VPrTr * (1 + v1 * P_Pr + v2 * P_Pr^2 + v3 * T_Tr + v4 * T_Tr^2)
-  # calculate Ga (Ber88 Eq. 6) --> Berman-Brown convention (DG = DH - T*S)
-  Ga <- HfPrTr - T * SPrTr + k0 * ( (T - Tr) - T * (log(T) - log(Tr)) ) +
-    2 * k1 * ( (T^0.5 - Tr^0.5) + T*(T^-0.5 - Tr^-0.5) ) -
-    k2 * ( (T^-1 - Tr^-1) - T / 2 * (T^-2 - Tr^-2) ) -
-    k3 * ( (T^-2 - Tr^-2) / 2 - T / 3 * (T^-3 - Tr^-3) ) +
-    VPrTr * ( (v1 / 2 - v2) * (P^2 - Pr^2) + v2 / 3 * (P^3 - Pr^3) +
-      (1 - v1 + v2 + v3 * (T - Tr) + v4 * (T - Tr)^2) * (P - Pr) )
+  ## calculate Ga (Ber88 Eq. 6) (superseded 20180328 as it does not include k4, k5, k6)
+  #Ga <- HfPrTr - T * SPrTr + k0 * ( (T - Tr) - T * (log(T) - log(Tr)) ) +
+  #  2 * k1 * ( (T^0.5 - Tr^0.5) + T*(T^-0.5 - Tr^-0.5) ) -
+  #  k2 * ( (T^-1 - Tr^-1) - T / 2 * (T^-2 - Tr^-2) ) -
+  #  k3 * ( (T^-2 - Tr^-2) / 2 - T / 3 * (T^-3 - Tr^-3) ) +
+  #  VPrTr * ( (v1 / 2 - v2) * (P^2 - Pr^2) + v2 / 3 * (P^3 - Pr^3) +
+  #    (1 - v1 + v2 + v3 * (T - Tr) + v4 * (T - Tr)^2) * (P - Pr) )
   # calculate Ha (symbolically integrated using sympy - expressions not simplified)
-  intCp <- T*k0 - Tr*k0 + k2/Tr - k2/T + k3/(2*Tr^2) - k3/(2*T^2) + 2.0*k1*T^0.5 - 2.0*k1*Tr^0.5
+  intCp <- T*k0 - Tr*k0 + k2/Tr - k2/T + k3/(2*Tr^2) - k3/(2*T^2) + 2.0*k1*T^0.5 - 2.0*k1*Tr^0.5 + 
+    k4*log(T) - k4*log(Tr) + k5*T^2/2 - k5*Tr^2/2 - k6*Tr^3/3 + k6*T^3/3
   intVminusTdVdT <- -VPrTr + P*(VPrTr + VPrTr*v2 - VPrTr*v1 - Tr*VPrTr*v3 + VPrTr*v4*Tr^2 - VPrTr*v4*T^2) +
     P^2*(VPrTr*v1/2 - VPrTr*v2) + VPrTr*v1/2 - VPrTr*v2/3 + Tr*VPrTr*v3 + VPrTr*v4*T^2 - VPrTr*v4*Tr^2 + VPrTr*v2*P^3/3
   Ha <- HfPrTr + intCp + intVminusTdVdT
   # calculate S (also symbolically integrated)
-  intCpoverT <- k0*log(T) - k0*log(Tr) - k3/(3*T^3) + k3/(3*Tr^3) + k2/(2*Tr^2) - k2/(2*T^2) + 2.0*k1*Tr^-0.5 - 2.0*k1*T^-0.5
+  intCpoverT <- k0*log(T) - k0*log(Tr) - k3/(3*T^3) + k3/(3*Tr^3) + k2/(2*Tr^2) - k2/(2*T^2) + 2.0*k1*Tr^-0.5 - 2.0*k1*T^-0.5 +
+    k4/Tr - k4/T + T*k5 - Tr*k5 + k6*T**2/2 - k6*Tr**2/2
   intdVdT <- -VPrTr*(v3 + v4*(-2*Tr + 2*T)) + P*VPrTr*(v3 + v4*(-2*Tr + 2*T))
   S <- SPrTr + intCpoverT - intdVdT
+  # calculate Ga --> Berman-Brown convention (DG = DH - T*S, no S(element))
+  Ga <- Ha - T * S
 
   ### polymorphic transition properties ***
   if(!is.na(Tlambda) & !is.na(Tref) & any(T > Tref) & calc.transition) {

@@ -24,16 +24,54 @@ Calculate thermodynamic properties of minerals using the equations of Berman (19
 
 \details{
 This function calculates the thermodynamic properties of minerals at high \P and \T using equations given by Berman (1988).
-The standard state thermodynamic properties and parameters for the calculations are stored in files under \code{extdata/Berman}, or can be read from a user-created file (if available) named \samp{berman.csv} in the working directory.
-If the function is called with missing \code{name}, the data frame of parameters for all available minerals is returned.
+These minerals should be listed in \code{thermo$obigt} with the state \samp{cr} and chemical formula, and optionally an abbreviation and references, but all other properties set to NA.
 
-When \code{name} is given, it refers to a mineral that should listed in \code{thermo$obigt} with the state \samp{cr} and the chemical formula, and optinally an abbreviation and references, but all other properties set to NA.
-The chemical formula is required for calculating the entropies of the elements in the mineral, which are are used to convert the apparent Gibbs energies from the Berman-Brown convention to the the Benson-Helgeson convention (cf. Anderson, 2005).
+The standard state thermodynamic properties and parameters for the calculations are stored in data files under \code{extdata/Berman}, or can be read from a user-created file (if available) named \samp{berman.csv} in the working directory.
 
-If \code{check.G} is TRUE, the tabulated value of DGfTrPr is compared with one calculated from DHfPrTr - T*DSPrTr (DS is the difference between the summed entropies of the elements and the tabulated entropy for the mineral).
-A warning is produced if the absolute value of the difference between tabulated and calculated DGfTrPr is greater than 1000 J/mol.
+The equation used for heat capacity is \Cp = k0 + k1*\T\S{-0.5} + k2*\T\S{-2} + k3*\T\S{-3} + k4*\T\S{-1} + k5*\T + k6*\T\S{2}.
+This is an extended form Eq. 4 of Berman (1988) as used in the winTWQ program (Berman, 2007).
+The equation used for volume is \I{V}(\P, \T) / \I{V}(1 bar, 298.15 K) =  1 + v1 * (\T - 298.15) + v2 * (\T - 298.15)\S{2} + v3 * (\P - 1) + v4 * (\P - 1)\S{2}.
+The parameters correspond to Tables 2 (\code{GfPrTr}, \code{HfPrTr}, \code{SPrTr}, \code{VPrTr}), 3a (\code{k0} to \code{k3}), 4 (\code{v1} to \code{v4}), 3b (transition parameters: \code{Tlambda} to \code{dTH}), and 5 (disorder parameters: \code{Tmax}, \code{Tmin}, and \code{d1} to \code{d5}) of Berman (1988).
+Following the winTWQ data format, multipliers are applied to the volume parameters only (see below).
+Note that \code{VPrTr} is tabulated in J mol\S{-1}, which is equal to 10 cm\S{3} mol\S{-1}.
 
-Providing \code{thisinfo} means that the mineral name is not searched in \code{thermo$obigt}, potentially saving some running time.
+A value for \code{GfPrTr} is optional and is not used in the calculations (see below).
+Numeric values (possibly 0) should be assigned for all of \code{HfPrTr}, \code{SPrTr}, \code{VPrTr}, \code{k0} to \code{k6} and \code{v1} to \code{v4}.
+Missing (or NA) values are permitted for the transition and disorder parameters, for minerals where they are not used.
+The data files have the following 30 columns:
+
+    \tabular{lll}{
+      \code{name} \tab mineral name (must match an entry with a formula but NA properties in \code{thermo$obigt})\cr
+      \code{GfPrTr} \tab standard Gibbs energy at 298.15 K and 1 bar (J mol\S{-1}) (Benson-Helgeson convention)\cr
+      \code{HfPrTr} \tab standard enthalpy at 298.15 K and 1 bar (J mol\S{-1})\cr
+      \code{SPrTr} \tab standard entropy at 298.15 K and 1 bar (J mol\S{-1} K\S{-1})\cr
+      \code{VPrTr} \tab standard volume at 298.15 K and 1 bar (J mol\S{-1})\cr
+      \code{k0} ... \code{k6} \tab k0 (J mol\S{-1} K\S{-1}) to k6 \cr
+      \code{v1} \tab v1 * 10\S{5} \cr
+      \code{v2} \tab v2 * 10\S{5} \cr
+      \code{v3} \tab v3 * 10\S{5} \cr
+      \code{v4} \tab v4 * 10\S{8} \cr
+      \code{Tlambda} \tab \ifelse{latex}{\eqn{T_\lambda}}{\ifelse{html}{\out{<I>T</I><sub>&lambda;</sub>}}{T[lambda]}} (K) \cr
+      \code{Tref} \tab \ifelse{latex}{\eqn{T_{ref}}}{\ifelse{html}{\out{<I>T<sub>ref</sub></I>}}{T[ref]}} (K) \cr
+      \code{dTdP} \tab d\T / d\P (K bar\S{-1}) \cr
+      \code{l1} \tab l1 ((J/mol)\S{0.5} K\S{-1}) \cr
+      \code{l2} \tab l2 ((J/mol)\S{0.5} K\S{-2}) \cr
+      \code{DtH} \tab \Delta\ifelse{latex}{\eqn{_t}}{\ifelse{html}{\out{<I>T<sub>t</sub></I>}}{[t]}}\I{H} (J mol\S{-1}) \cr
+      \code{Tmax} \tab \ifelse{latex}{\eqn{T_D}}{\ifelse{html}{\out{<I>T<sub>D</sub></I>}}{T[D]}} (K) \cr
+      \code{Tmin} \tab \ifelse{latex}{\eqn{t}}{\ifelse{html}{\out{<I>t</I>}}{t}} (K) \cr
+      \code{d0} ... \code{d5} \tab d0 (J mol\S{-1} K\S{-1}) to d5 \cr
+    }
+
+The function outputs apparent Gibbs energies according to the Benson-Helgeson convention (\Delta\I{G} = \Delta\I{H} - \T\Delta\I{S}) using the entropies of the elements in the chemical formula of the mineral to calculate \Delta\I{S} (cf. Anderson, 2005).
+If \code{check.G} is TRUE, the tabulated value of \code{GfTrPr} (Benson-Helgeson) is compared with that calculated from \code{HfPrTr} - 298.15*\code{DSPrTr} (\code{DSPrTr} is the difference between the entropies of the elements in the formula and \code{SPrTr} in the table).
+A warning is produced if the absolute value of the difference between tabulated and calculated \code{GfTrPr} is greater than 1000 J/mol.
+
+Providing \code{thisinfo} avoids searching for the mineral in \code{thermo$obigt}, potentially saving some running time.
+If the function is called with missing \code{name}, the parameters for all available minerals are returned.
+}
+
+\value{
+A data frame with \code{T} (K), \code{P} (bar), \code{G}, \code{H}, \code{S}, and \code{Cp} expressed in the given \code{units} (\samp{cal} or \samp{J}), and \code{V} (cm\S{3} mol\S{-1}).
 }
 
 \examples{
@@ -94,6 +132,8 @@ title(main="Comparison of Helgeson and Berman datasets at 1000 bar")
 Anderson, G. M. (2005) \emph{Thermodynamics of Natural Systems}, 2nd ed., Cambridge University Press, 648 p. \url{http://www.worldcat.org/oclc/474880901}
 
 Berman, R. G. (1988) Internally-consistent thermodynamic data for minerals in the system Na{\s2}O-K{\s2}O-CaO-MgO-FeO-Fe{\s2}O{\s3}-Al{\s2}O{\s3}-SiO{\s2}-TiO{\s2}-H{\s2}O-CO{\s2}. \emph{J. Petrol.} \bold{29}, 445-522. \url{https://doi.org/10.1093/petrology/29.2.445}
+
+Berman, R. G. (2007) winTWQ (version 2.3): A software package for performing internally-consistent thermobarometric calculations. \emph{Open File} \bold{5462}, Geological Survey of Canada, 41 p. \url{https://doi.org/10.4095/223425}
 
 Helgeson, H. C., Delany, J. M., Nesbitt, H. W. and Bird, D. K. (1978) Summary and critique of the thermodynamic properties of rock-forming minerals. \emph{Am. J. Sci.} \bold{278-A}, 1--229. \url{http://www.worldcat.org/oclc/13594862}
 

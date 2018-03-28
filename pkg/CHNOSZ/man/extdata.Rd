@@ -17,6 +17,7 @@
     Following conventions used in other data files, the names of sanidine and microcline were changed to K-feldspar,high and K-feldspar,low.
     \item \code{*.csv} contain thermodynamic data from other sources.
     \item \code{sympy.R} is an R script used to symbolically integrate heat capacity and volume (to calculate enthalpy, entropy and Gibbs energy), using \CRANpkg{rSymPy}.
+    \item The \code{testing} directory contains data files based on Berman and Aranovich (1996). These are used to demonstrate the addition of data from a user-supplied file (see \code{\link{berman}}).
   }
 
   Files in \code{abundance} contain protein abundance and microbial occurrence data:
@@ -113,6 +114,8 @@
 Bazarkina, E. F., Zotov, A. V. and Akinfiev, N. N. (2010) Pressure-dependent stability of cadmium chloride complexes: Potentiometric measurements at 1–1000 bar and 25°C. \emph{Geol. Ore Deposits} \bold{52}, 167--178. \url{https://doi.org/10.1134/S1075701510020054}
 
 Berman, R. G. (1988) Internally-consistent thermodynamic data for minerals in the system Na{\s2}O-K{\s2}O-CaO-MgO-FeO-Fe{\s2}O{\s3}-Al{\s2}O{\s3}-SiO{\s2}-TiO{\s2}-H{\s2}O-CO{\s2}. \emph{J. Petrol.} \bold{29}, 445-522. \url{https://doi.org/10.1093/petrology/29.2.445}
+
+Berman, R. G. and Aranovich, L. Ya. (1996) Optimized standard state and solution properties of minerals. I. Model calibration for olivine, orthopyroxene, cordierite, garnet, and ilmenite in the system FeO-MgO-CaO-Al{\s2}O{\s3}-TiO{\s2}-SiO{\s2}. \emph{Contrib. Mineral. Petrol.} \bold{126}, 1-24. \url{https://doi.org/10.1007/s004100050233}
 
 Dayhoff, M. O. and Lippincott, E. R. and Eck, R. V. (1964) Thermodynamic Equilibria In Prebiological Atmospheres. \emph{Science} \bold{146}, 1461--1464. \url{https://doi.org/10.1126/science.146.3650.1461}
 

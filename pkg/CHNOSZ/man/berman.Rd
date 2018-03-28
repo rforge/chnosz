@@ -126,12 +126,34 @@ legend("topleft", lty=c(1, 1, NA), lwd=c(1, 2, 0), col=c("black", "blue", ""),
        legend=c("Helgeson et al., 1978 (unadjusted)",
        "Berman, 1988", "    (adjusted by Sverjensky et al., 1991)"), bty="n")
 title(main="Comparison of Helgeson and Berman datasets at 1000 bar")
+
+## Getting data from a user-supplied file
+## Ol-Opx exchange equilibrium, after Berman and Aranovich, 1996
+E.units("J")
+species <- c("fayalite", "enstatite", "ferrosilite", "forsterite")
+coeffs <- c(-1, -2, 2, 1)
+T <- seq(600, 1500, 50)
+Gex_Ber88 <- subcrt(species, coeffs, T=T, P=1)$out$G
+# add data from BA96
+datadir <- system.file("extdata/Berman/testing", package="CHNOSZ")
+add.obigt(file.path(datadir, "BA96_obigt.csv"))
+thermo$opt$Berman <<- file.path(datadir, "BA96.csv")
+Gex_BA96 <- subcrt(species, coeffs, T=seq(600, 1500, 50), P=1)$out$G
+# Ber88 is lower than BA96 at low T
+stopifnot((Gex_BA96 - Gex_Ber88)[1] > 0)
+# the curves cross at about 725 deg C (BA96 Fig. 8)
+# (actually, in our calculation they cross closer to 800 deg C)
+stopifnot(T[which.min(abs(Gex_BA96 - Gex_Ber88))] == 800)
+# reset the database (thermo$opt$E.units, thermo$obigt, and thermo$opt$Berman)
+data(thermo)
 }
 
 \references{
 Anderson, G. M. (2005) \emph{Thermodynamics of Natural Systems}, 2nd ed., Cambridge University Press, 648 p. \url{http://www.worldcat.org/oclc/474880901}
 
 Berman, R. G. (1988) Internally-consistent thermodynamic data for minerals in the system Na{\s2}O-K{\s2}O-CaO-MgO-FeO-Fe{\s2}O{\s3}-Al{\s2}O{\s3}-SiO{\s2}-TiO{\s2}-H{\s2}O-CO{\s2}. \emph{J. Petrol.} \bold{29}, 445-522. \url{https://doi.org/10.1093/petrology/29.2.445}
+
+Berman, R. G. and Aranovich, L. Ya. (1996) Optimized standard state and solution properties of minerals. I. Model calibration for olivine, orthopyroxene, cordierite, garnet, and ilmenite in the system FeO-MgO-CaO-Al{\s2}O{\s3}-TiO{\s2}-SiO{\s2}. \emph{Contrib. Mineral. Petrol.} \bold{126}, 1-24. \url{https://doi.org/10.1007/s004100050233}
 
 Berman, R. G. (2007) winTWQ (version 2.3): A software package for performing internally-consistent thermobarometric calculations. \emph{Open File} \bold{5462}, Geological Survey of Canada, 41 p. \url{https://doi.org/10.4095/223425}
 

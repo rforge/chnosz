@@ -22,7 +22,7 @@ To restore the default database, run \code{data(OBIGT)}.
 The computational settings are changed using \code{\link{water}}, \code{\link{P.units}}, \code{\link{T.units}}, \code{\link{E.units}}, and some other commands (e.g. \code{\link{mod.buffer}}).
 
 Some settings can only be changed by direct manipulation of \code{thermo$opt}.
-In an interactive session, this should be done using the super-assignment operator (e.g. \code{thermo$opt$Berman <<- TRUE}) so that the \code{thermo} object is not copied to the global environment.
+In an interactive session, this should be done using the super-assignment operator (e.g. \code{thermo$opt$ideal.H <<- FALSE}) so that the \code{thermo} object is not copied to the global environment.
 (Doing so would cause problems, as many functions are designed to access the \code{thermo} object in the \code{CHNOSZ} environment.)
 
 To restore the default computational settings, thermodynamic database, and system settings, run \code{data(thermo)}.
@@ -59,7 +59,7 @@ The structure of the \code{thermo} object is described below.
       \code{ideal.H} \tab logical \tab Should \code{\link{nonideal}} ignore the proton? [\code{TRUE}] \cr
       \code{ideal.e} \tab logical \tab Should \code{\link{nonideal}} ignore the electron? [\code{TRUE}] \cr
       \code{nonideal} \tab character \tab Method for \code{\link{nonideal}} [\code{Helgeson}] \cr
-      \code{Berman} \tab logical \tab Should \code{\link{info}} preferentially return Berman minerals? [\code{FALSE}]
+      \code{Berman} \tab character \tab User data file for mineral parameters in the Berman equations [\code{NA}]
 }
 
     \item \code{thermo$element}

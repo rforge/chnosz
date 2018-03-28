@@ -123,7 +123,7 @@ Abbreviations used below are: Cp (heat capacity), GHS (standard Gibbs energy, en
 
 * Updates included with [SUPCRTBL](http://www.indiana.edu/~hydrogeo/supcrtbl.html) are listed under **Optional Data** / **SUPCRTBL**.
 
-* Data from SUPCRT92 which have been superseded in CHNOSZ by the Berman data are listed under **Optional Data** / **SUPCRT92**.
+* Data from SUPCRT92 which have been superseded by the Berman data are listed under **Optional Data** / **SUPCRT92**.
 
 # Sources of data {.tabset .tabset-fade}
 

@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.3-18 (2018-03-28)
+CHANGES IN CHNOSZ 1.1.3-19 (2018-03-28)
 ---------------------------------------
 
 THERMODYNAMIC DATA
@@ -30,11 +30,12 @@ THERMODYNAMIC DATA
   have been removed, except for 10^5, 10^5, 10^5, and 10^8 on v1 to v4
   (to be consistent with the winTWQ data format).
 
-- berman() now reads data from a user-supplied file berman.csv if it is
-  present in the working directory.
+- berman() now reads data from a user-supplied file specified in
+  thermo$opt$Berman.
 
 - Add mineral data from Berman and Aranovich, 1996 to
-  extdata/Berman/unused/BA96.csv.
+  extdata/Berman/testing/BA96.csv and an example of using this file via
+  thermo$opt$Berman (see ?berman).
 
 - Correct swapped v1 <-> v3 and v2 <-> v4 in extdata/Berman/DS10.csv.
 

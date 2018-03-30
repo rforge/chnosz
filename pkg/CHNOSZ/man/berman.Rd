@@ -33,7 +33,7 @@ This is an extended form Eq. 4 of Berman (1988) as used in the winTWQ program (B
 The equation used for volume is \I{V}(\P, \T) / \I{V}(1 bar, 298.15 K) =  1 + v1 * (\T - 298.15) + v2 * (\T - 298.15)\S{2} + v3 * (\P - 1) + v4 * (\P - 1)\S{2}.
 The parameters correspond to Tables 2 (\code{GfPrTr}, \code{HfPrTr}, \code{SPrTr}, \code{VPrTr}), 3a (\code{k0} to \code{k3}), 4 (\code{v1} to \code{v4}), 3b (transition parameters: \code{Tlambda} to \code{dTH}), and 5 (disorder parameters: \code{Tmax}, \code{Tmin}, and \code{d1} to \code{d5}) of Berman (1988).
 Following the winTWQ data format, multipliers are applied to the volume parameters only (see below).
-Note that \code{VPrTr} is tabulated in J mol\S{-1}, which is equal to 10 cm\S{3} mol\S{-1}.
+Note that \code{VPrTr} is tabulated in J bar\S{-1} mol\S{-1}, which is equal to 10 cm\S{3} mol\S{-1}.
 
 A value for \code{GfPrTr} is optional and is not used in the calculations (see below).
 Numeric values (possibly 0) should be assigned for all of \code{HfPrTr}, \code{SPrTr}, \code{VPrTr}, \code{k0} to \code{k6} and \code{v1} to \code{v4}.

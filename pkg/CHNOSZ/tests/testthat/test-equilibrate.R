@@ -19,7 +19,7 @@ aprot <- suppressMessages(affinity())
 test_that("equilibrate() gives expected messages and errors for balance calculation", {
   # the following error is triggered by equil.react, not equil.boltzmann
   expect_error(equilibrate(aone), "at least two species needed")
-  expect_message(equilibrate(aacid), "balance: from moles of CO2")
+  expect_message(equilibrate(aacid), "balance: moles of CO2")
   expect_message(equilibrate(aacid), "n.balance is 2 1 1 2")
   expect_message(equilibrate(aacid), "loga.balance is -2.221848")
   expect_message(equilibrate(aacid, loga.balance=-3), "loga.balance is -3")

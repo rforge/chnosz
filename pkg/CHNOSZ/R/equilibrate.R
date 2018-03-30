@@ -295,7 +295,7 @@ balance <- function(aout, balance=NULL) {
       }
       # the name of the basis species (need this if we got ibalance which which.balance, above)
       balance <- colnames(aout$species)[ibalance[1]]
-      message(paste("balance: from moles of", balance, "in formation reactions"))
+      message(paste("balance: moles of", balance, "in formation reactions"))
       # the balance vector
       n.balance <- aout$species[, ibalance[1]]
       # we check if that all formation reactions contain this basis species

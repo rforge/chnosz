@@ -30,12 +30,14 @@ The standard state thermodynamic properties and parameters for the calculations 
 
 The equation used for heat capacity is \Cp = k0 + k1*\T\S{-0.5} + k2*\T\S{-2} + k3*\T\S{-3} + k4*\T\S{-1} + k5*\T + k6*\T\S{2}.
 This is an extended form Eq. 4 of Berman (1988) as used in the winTWQ program (Berman, 2007).
-The equation used for volume is \I{V}(\P, \T) / \I{V}(1 bar, 298.15 K) =  1 + v1 * (\T - 298.15) + v2 * (\T - 298.15)\S{2} + v3 * (\P - 1) + v4 * (\P - 1)\S{2}.
-The parameters correspond to Tables 2 (\code{GfPrTr}, \code{HfPrTr}, \code{SPrTr}, \code{VPrTr}), 3a (\code{k0} to \code{k3}), 4 (\code{v1} to \code{v4}), 3b (transition parameters: \code{Tlambda} to \code{dTH}), and 5 (disorder parameters: \code{Tmax}, \code{Tmin}, and \code{d1} to \code{d5}) of Berman (1988).
+The equation used for volume is \I{V}(\P, \T) / \I{V}(1 bar, 298.15 K) =  1 + v1 * (\T - 298.15) + v2 * (\T - 298.15)\S{2} + v3 * (\P - 1) + v4 * (\P - 1)\S{2}  (Berman, 1988, Eq. 5, with terms reordered to follow winTWQ format).
+The equations used for lambda transitions follow Eqs. 8-14 of Berman (1988).
+The equation used for the disorder contribution between Tmin and Tmax is \Cp[dis] = d0 + d1*\T\S{-0.5} + d2*\T\S{-2} + d3*\T + d4*\T\S{2} (Berman, 1988, Eq. 15).
+The parameters correspond to Tables 2 (\code{GfPrTr}, \code{HfPrTr}, \code{SPrTr}, \code{VPrTr}), 3a (\code{k0} to \code{k3}), 4 (\code{v1} to \code{v4}), 3b (transition parameters: \code{Tlambda} to \code{dTH}), and 5 (disorder parameters: \code{Tmax}, \code{Tmin}, \code{d1} to \code{d4} and \code{Vad}) of Berman (1988).
 Following the winTWQ data format, multipliers are applied to the volume parameters only (see below).
 Note that \code{VPrTr} is tabulated in J bar\S{-1} mol\S{-1}, which is equal to 10 cm\S{3} mol\S{-1}.
 
-A value for \code{GfPrTr} is optional and is not used in the calculations (see below).
+A value for \code{GfPrTr} is not required and is only used for optional checks (see below).
 Numeric values (possibly 0) should be assigned for all of \code{HfPrTr}, \code{SPrTr}, \code{VPrTr}, \code{k0} to \code{k6} and \code{v1} to \code{v4}.
 Missing (or NA) values are permitted for the transition and disorder parameters, for minerals where they are not used.
 The data files have the following 30 columns:
@@ -47,19 +49,20 @@ The data files have the following 30 columns:
       \code{SPrTr} \tab standard entropy at 298.15 K and 1 bar (J mol\S{-1} K\S{-1})\cr
       \code{VPrTr} \tab standard volume at 298.15 K and 1 bar (J mol\S{-1})\cr
       \code{k0} ... \code{k6} \tab k0 (J mol\S{-1} K\S{-1}) to k6 \cr
-      \code{v1} \tab v1 * 10\S{5} \cr
-      \code{v2} \tab v2 * 10\S{5} \cr
-      \code{v3} \tab v3 * 10\S{5} \cr
-      \code{v4} \tab v4 * 10\S{8} \cr
+      \code{v1} \tab v1 (K\S{-1}) * 10\S{5} \cr
+      \code{v2} \tab v2 (K\S{-2}) * 10\S{5} \cr
+      \code{v3} \tab v3 (bar\S{-1}) * 10\S{5} \cr
+      \code{v4} \tab v4 (bar\S{-2}) * 10\S{8} \cr
       \code{Tlambda} \tab \ifelse{latex}{\eqn{T_\lambda}}{\ifelse{html}{\out{<I>T</I><sub>&lambda;</sub>}}{T[lambda]}} (K) \cr
       \code{Tref} \tab \ifelse{latex}{\eqn{T_{ref}}}{\ifelse{html}{\out{<I>T<sub>ref</sub></I>}}{T[ref]}} (K) \cr
       \code{dTdP} \tab d\T / d\P (K bar\S{-1}) \cr
       \code{l1} \tab l1 ((J/mol)\S{0.5} K\S{-1}) \cr
       \code{l2} \tab l2 ((J/mol)\S{0.5} K\S{-2}) \cr
       \code{DtH} \tab \Delta\ifelse{latex}{\eqn{_t}}{\ifelse{html}{\out{<I>T<sub>t</sub></I>}}{[t]}}\I{H} (J mol\S{-1}) \cr
-      \code{Tmax} \tab \ifelse{latex}{\eqn{T_D}}{\ifelse{html}{\out{<I>T<sub>D</sub></I>}}{T[D]}} (K) \cr
-      \code{Tmin} \tab \ifelse{latex}{\eqn{t}}{\ifelse{html}{\out{<I>t</I>}}{t}} (K) \cr
-      \code{d0} ... \code{d5} \tab d0 (J mol\S{-1} K\S{-1}) to d5 \cr
+      \code{Tmax} \tab temperature at which phase is fully disordered (\ifelse{latex}{\eqn{T_D}}{\ifelse{html}{\out{<I>T<sub>D</sub></I>}}{T[D]}} in Berman, 1988) (K) \cr
+      \code{Tmin} \tab reference temperature for onset of disordering (\ifelse{latex}{\eqn{t}}{\ifelse{html}{\out{<I>t</I>}}{t}} in Berman, 1988) (K) \cr
+      \code{d0} ... \code{d4} \tab d0 (J mol\S{-1} K\S{-1}) to d4 \cr
+      \code{Vad} \tab constant that scales the disordering enthalpy to volume of disorder (\ifelse{latex}{\eqn{d_5}}{\ifelse{html}{\out{<I>d</I><sub>5</sub>}}{d5}} in Berman, 1988) \cr
     }
 
 The function outputs apparent Gibbs energies according to the Benson-Helgeson convention (\Delta\I{G} = \Delta\I{H} - \T\Delta\I{S}) using the entropies of the elements in the chemical formula of the mineral to calculate \Delta\I{S} (cf. Anderson, 2005).
@@ -137,7 +140,7 @@ Gex_Ber88 <- subcrt(species, coeffs, T=T, P=1)$out$G
 # add data from BA96
 datadir <- system.file("extdata/Berman/testing", package="CHNOSZ")
 add.obigt(file.path(datadir, "BA96_obigt.csv"))
-thermo$opt$Berman <<- file.path(datadir, "BA96.csv")
+thermo$opt$Berman <<- file.path(datadir, "BA96_berman.csv")
 Gex_BA96 <- subcrt(species, coeffs, T=seq(600, 1500, 50), P=1)$out$G
 # Ber88 is lower than BA96 at low T
 stopifnot((Gex_BA96 - Gex_Ber88)[1] > 0)

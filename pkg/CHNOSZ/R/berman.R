@@ -52,7 +52,7 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.t
   # the function works fine with just the following assign() call,
   # but an explicit dummy assignment here is used to avoid "Undefined global functions or variables" in R CMD check
   GfPrTr <- HfPrTr <- SPrTr <- Tlambda <- Tmax <- Tmin <- Tref <- VPrTr <-
-    d0 <- d1 <- d2 <- d3 <- d4 <- d5 <- dTdP <- k0 <- k1 <- k2 <- k3 <-
+    d0 <- d1 <- d2 <- d3 <- d4 <- Vad <- dTdP <- k0 <- k1 <- k2 <- k3 <-
     k4 <- k5 <- k6 <- l1 <- l2 <- v1 <- v2 <- v3 <- v4 <- NA
   # assign values to the variables used below
   for(i in 1:ncol(dat)) assign(colnames(dat)[i], dat[irow, i])
@@ -75,24 +75,24 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.t
   Cp <- k0 + k1 * T^-0.5 + k2 * T^-2 + k3 * T^-3 + k4 * T^-1 + k5 * T + k6 * T^2
   P_Pr <- P - Pr
   T_Tr <- T - Tr
-  V <- VPrTr * (1 + v1 * P_Pr + v2 * P_Pr^2 + v3 * T_Tr + v4 * T_Tr^2)
+  V <- VPrTr * (1 + v1 * T_Tr + v2 * T_Tr^2 + v3 * P_Pr + v4 * P_Pr^2)
   ## calculate Ga (Ber88 Eq. 6) (superseded 20180328 as it does not include k4, k5, k6)
   #Ga <- HfPrTr - T * SPrTr + k0 * ( (T - Tr) - T * (log(T) - log(Tr)) ) +
   #  2 * k1 * ( (T^0.5 - Tr^0.5) + T*(T^-0.5 - Tr^-0.5) ) -
   #  k2 * ( (T^-1 - Tr^-1) - T / 2 * (T^-2 - Tr^-2) ) -
   #  k3 * ( (T^-2 - Tr^-2) / 2 - T / 3 * (T^-3 - Tr^-3) ) +
-  #  VPrTr * ( (v1 / 2 - v2) * (P^2 - Pr^2) + v2 / 3 * (P^3 - Pr^3) +
-  #    (1 - v1 + v2 + v3 * (T - Tr) + v4 * (T - Tr)^2) * (P - Pr) )
+  #  VPrTr * ( (v3 / 2 - v4) * (P^2 - Pr^2) + v4 / 3 * (P^3 - Pr^3) +
+  #    (1 - v3 + v4 + v1 * (T - Tr) + v2 * (T - Tr)^2) * (P - Pr) )
   # calculate Ha (symbolically integrated using sympy - expressions not simplified)
   intCp <- T*k0 - Tr*k0 + k2/Tr - k2/T + k3/(2*Tr^2) - k3/(2*T^2) + 2.0*k1*T^0.5 - 2.0*k1*Tr^0.5 + 
     k4*log(T) - k4*log(Tr) + k5*T^2/2 - k5*Tr^2/2 - k6*Tr^3/3 + k6*T^3/3
-  intVminusTdVdT <- -VPrTr + P*(VPrTr + VPrTr*v2 - VPrTr*v1 - Tr*VPrTr*v3 + VPrTr*v4*Tr^2 - VPrTr*v4*T^2) +
-    P^2*(VPrTr*v1/2 - VPrTr*v2) + VPrTr*v1/2 - VPrTr*v2/3 + Tr*VPrTr*v3 + VPrTr*v4*T^2 - VPrTr*v4*Tr^2 + VPrTr*v2*P^3/3
+  intVminusTdVdT <- -VPrTr + P*(VPrTr + VPrTr*v4 - VPrTr*v3 - Tr*VPrTr*v1 + VPrTr*v2*Tr^2 - VPrTr*v2*T^2) +
+    P^2*(VPrTr*v3/2 - VPrTr*v4) + VPrTr*v3/2 - VPrTr*v4/3 + Tr*VPrTr*v1 + VPrTr*v2*T^2 - VPrTr*v2*Tr^2 + VPrTr*v4*P^3/3
   Ha <- HfPrTr + intCp + intVminusTdVdT
   # calculate S (also symbolically integrated)
   intCpoverT <- k0*log(T) - k0*log(Tr) - k3/(3*T^3) + k3/(3*Tr^3) + k2/(2*Tr^2) - k2/(2*T^2) + 2.0*k1*Tr^-0.5 - 2.0*k1*T^-0.5 +
     k4/Tr - k4/T + T*k5 - Tr*k5 + k6*T**2/2 - k6*Tr**2/2
-  intdVdT <- -VPrTr*(v3 + v4*(-2*Tr + 2*T)) + P*VPrTr*(v3 + v4*(-2*Tr + 2*T))
+  intdVdT <- -VPrTr*(v1 + v2*(-2*Tr + 2*T)) + P*VPrTr*(v1 + v2*(-2*Tr + 2*T))
   S <- SPrTr + intCpoverT - intdVdT
   # calculate Ga --> Berman-Brown convention (DG = DH - T*S, no S(element))
   Ga <- Ha - T * S
@@ -152,9 +152,11 @@ berman <- function(name, T = 298.15, P = 1, thisinfo=NULL, check.G=FALSE, calc.t
       d2*(Tds^-1 - Tmin^-1)/-1 + d3*(Tds^2 - Tmin^2)/2 + d4*(Tds^3 - Tmin^3)/3
     Sds[iTds] <- d0*(log(Tds) - log(Tmin)) + d1*(Tds^-0.5 - Tmin^-0.5)/-0.5 +
       d2*(Tds^-2 - Tmin^-2)/-2 + d3*(Tds - Tmin) + d4*(Tds^2 - Tmin^2)/2
-    # Eq. 18; we can't do this if d5 == 0 (dolomite and gehlenite)
     # "d5 is a constant computed in such as way as to scale the disordring enthalpy to the volume of disorder" (Berman, 1988)
-    if(d5 != 0) Vds <- Hds / d5
+    # 20180331: however, having a "d5" that isn't a coefficient in the same equation as d0, d1, d2, d3, d4 is confusing notation
+    # therefore, CHNOSZ now uses "Vad" for this variable, following the notation in the Theriak-Domino manual
+    # Eq. 18; we can't do this if Vad == 0 (dolomite and gehlenite)
+    if(Vad != 0) Vds <- Hds / Vad
     # Berman puts the Vds term directly into Eq. 19 (commented below), but that necessarily makes Gds != Hds - T * Sds
     #Gds <- Hds - T * Sds + Vds * (P - Pr)
     # instead, we include the Vds term with Hds

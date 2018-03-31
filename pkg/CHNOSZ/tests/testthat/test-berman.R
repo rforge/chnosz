@@ -83,7 +83,7 @@ test_that("high-T,P calculated properties are similar to precalculated ones", {
 test_that("nonexistent or incomplete user data file is handled properly", {
   thermo$opt$Berman <<- "XxXxXx.csv"
   expect_error(berman("calcite"), "the file named in thermo\\$opt\\$Berman \\(XxXxXx.csv\\) does not exist")
-  thermo$opt$Berman <<- system.file("extdata/Berman/testing/BA96.csv", package="CHNOSZ")
+  thermo$opt$Berman <<- system.file("extdata/Berman/testing/BA96_berman.csv", package="CHNOSZ")
   expect_error(berman("xxx"), "Data for xxx not available. Please add it to")
   thermo$opt$Berman <<- NA
   expect_error(berman("xxx"), "Data for xxx not available. Please add it to your_data_file.csv")

@@ -14,7 +14,7 @@ THERMODYNAMIC DATA
   Al-bearing minerals, as well as calcite, dolomite, hematite, and
   magnetite) are in the file extdata/OBIGT/SUPCRT92.csv, which can be
   loaded with add.obigt("SUPCRT92"). This is used in some examples for
-  comparing the datasets (see ?berman and demo(go-IU.R)), but should not
+  comparing the datasets (see ?berman and demo("go-IU")), but should not
   be needed by most users.
 
 - In thermo$obigt, the minerals using the Berman equations are
@@ -27,8 +27,8 @@ THERMODYNAMIC DATA
   winTWQ).
 
 - Multipliers on values in the Berman data files (extdata/Berman/*.csv)
-  have been removed, except for 10^5, 10^5, 10^5, and 10^8 on v1 to v4
-  (to be consistent with the winTWQ data format).
+  have been removed, except for 10^5, 10^5, 10^5, and 10^8 on v1 to v4,
+  to be consistent with the winTWQ data format.
 
 - berman() now reads data from a user-supplied file specified in
   thermo$opt$Berman.
@@ -61,7 +61,7 @@ OTHER CHANGES
 
 - TODO: fix overly long message for info("SiO2").
 
-- In equilibrate(), accept a length > 1 'normalize' argument in order
+- In equilibrate(), accept a length > 1 'normalize' argument to
   normalize the chemical formulas of only the selected species.
 
 - Export thermo.axis(), as it is useful for adding major and minor tick

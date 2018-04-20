@@ -67,8 +67,8 @@ if (!nzchar(Sys.which("pngquant"))) {
   # save space by using a lower resolution
   dpi <- 50
 } else {
-  pngquant <- "--speed=1 --quality=0-50"
-  dpi <- 72
+  pngquant <- "--speed=1 --quality=0-25"
+  dpi <- 50
 }
 
 ## http://stackoverflow.com/questions/23852753/knitr-with-gridsvg
@@ -1868,7 +1868,7 @@ This side effect (changing the activities of basis species) is why the text for 
 ```{r smoker_plot, eval=FALSE, echo=23:25}
 ```
 
-```{r smoker_plot, fig.fullwidth=TRUE, fig.width=9, fig.height=5, small.mar=TRUE, dpi=100, out.width="85%", echo=FALSE, message=FALSE, results="hide", cache=TRUE, fig.cap="Optimization of a thermodynamic model for relative abundances of amino acids in a 270 °C black smoker fluid using 1, 2, or 3 variables (left to right).", pngquant=pngquant, timeit=timeit}
+```{r smoker_plot, fig.fullwidth=TRUE, fig.width=9, fig.height=5, small.mar=TRUE, dpi=dpi, out.width="85%", echo=FALSE, message=FALSE, results="hide", cache=TRUE, fig.cap="Optimization of a thermodynamic model for relative abundances of amino acids in a 270 °C black smoker fluid using 1, 2, or 3 variables (left to right).", pngquant=pngquant, timeit=timeit}
 ```
 
 The calculation using <span style="color:red">`findit()`</span>, in which the added variable log*a*<sub>`r h2o`</sub> optimizes to ca. -2.4, shows that measured concentrations of 6 amino acids fall within 1--2 log units of the relative abundances in metastable equilibrium.

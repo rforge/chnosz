@@ -5,6 +5,7 @@ output:
     mathjax: null
     theme: default
     css: obigt.css
+    highlight: null
 vignette: >
   %\VignetteIndexEntry{Thermodynamic data in CHNOSZ}
   %\VignetteEngine{knitr::rmarkdown}

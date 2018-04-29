@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.3-21 (2018-03-31)
+CHANGES IN CHNOSZ 1.1.3-25 (2018-04-29)
 ---------------------------------------
 
 THERMODYNAMIC DATA
@@ -42,6 +42,8 @@ THERMODYNAMIC DATA
 - To reduce confusion that "d5" might be a coefficient in the same
   equation as d0 .. d4, rename "d5" (constant that scales disordering
   enthalpy to volume) to "Vad" (notation used in Theriak-Domino manual).
+
+- Change abbreviation of grossular to Grs.
 
 OTHER CHANGES
 

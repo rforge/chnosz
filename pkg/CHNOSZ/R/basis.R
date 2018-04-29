@@ -154,7 +154,7 @@ mod.basis <- function(species, state=NULL, logact=NULL) {
           bufmakeup <- makeup(ispecies)
           inbasis <- names(bufmakeup) %in% colnames(basis()) 
           if(FALSE %in% inbasis) {
-            stop(paste("the elements '",c2s(rownames(bufmakeup)[!inbasis]),
+            stop(paste("the elements '",c2s(names(bufmakeup)[!inbasis]),
               "' of species '",thermo$buffers$species[ibuff[k]],"' in buffer '",state[i],
               "' are not in the basis\n",sep=""))
           }

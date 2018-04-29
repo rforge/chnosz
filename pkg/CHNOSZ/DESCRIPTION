@@ -1,6 +1,6 @@
-Date: 2018-04-20
+Date: 2018-04-29
 Package: CHNOSZ
-Version: 1.1.3-24
+Version: 1.1.3-25
 Title: Thermodynamic Calculations and Diagrams for Geochemistry
 Authors@R: c(
     person("Jeffrey", "Dick", , "j3ffdick@gmail.com", role = c("aut", "cre"),
@@ -27,9 +27,10 @@ Description: An integrated set of tools for thermodynamic calculations in geoche
   (Sverjensky et al., 2014 <doi:10.1016/j.gca.2013.12.019>) and estimates of parameters in the
   extended Debye-Hückel equation (Manning et al., 2013 <doi:10.2138/rmg.2013.75.5>)
   to calculate standard-state properties and activity coefficients for given ionic strength at high
-  pressure (to 60 kb). Functions are provided to define a system using basis species, automatically
-  balance reactions, calculate the chemical affinities of formation reactions for selected species,
-  calculate equilibrium activities, and plot the results on chemical activity diagrams.
+  pressure (to 60 kb). Functions are provided to calculate standard-state properties of species and
+  reactions, define the basis species of a chemical system, automatically balance reactions, calculate
+  the chemical affinities of formation reactions for selected species, calculate the equilibrium
+  activities of those species, and plot the results on chemical activity diagrams.
 Encoding: UTF-8
 License: GPL (>= 2)
 BuildResaveData: no

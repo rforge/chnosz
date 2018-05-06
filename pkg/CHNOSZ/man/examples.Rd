@@ -17,7 +17,7 @@
     "density", "ORP", "revisit", "findit", "ionize", "buffer",
     "protbuff", "yeastgfp", "mosaic", "copper", "solubility",
     "wjd", "bugstab", "Shh", "activity_ratios", "adenine",
-    "DEW", "lambda", "TCA", "go-IU"),
+    "DEW", "lambda", "TCA", "go-IU", "bison"),
     save.png=FALSE)
 }
 
@@ -57,6 +57,7 @@ The demo(s) to run is/are specified by \code{which}; the default is to run them 
     \code{TCA} \tab * Standard Gibbs energies of the tricarboxylic (citric) acid cycle (Canovas and Shock, 2016) \cr
     \code{go-IU} \tab * Diagrams using thermodynamic data in the SUPCRTBL compilation (Zimmer et al., 2016) \cr
     \code{carboxylase} \tab * Rank abundance distribution for RuBisCO and acetyl-CoA carboxylase \cr
+    \code{bison} \tab Average oxidation state of carbon in proteins for phyla at Bison Pool (Dick and Shock, 2013) \cr
   }
 
 For either function, if \code{save.png} is TRUE, the plots are saved in \code{\link{png}} files whose names begin with the names of the help topics or demos.
@@ -93,6 +94,8 @@ Dayhoff, M. O. and Lippincott, E. R. and Eck, R. V. (1964) Thermodynamic Equilib
 Dick, J. M. (2009) Calculation of the relative metastabilities of proteins in subcellular compartments of \emph{Saccharomyces cerevisiae}. \emph{BMC Syst. Biol.} \bold{3}:75. \url{https://doi.org/10.1186/1752-0509-3-75}
 
 Dick, J. M. and Shock, E. L. (2011) Calculation of the relative chemical stabilities of proteins as a function of temperature and redox chemistry in a hot spring. \emph{PLoS ONE} \bold{6}, e22782. \url{https://doi.org/10.1371/journal.pone.0022782}
+
+Dick, J. M. and Shock, E. L. (2013) A metastable equilibrium model for the relative abundance of microbial phyla in a hot spring. \emph{PLoS ONE} \bold{8}, e72395. \url{https://doi.org/10.1371/journal.pone.0072395}
 
 Dick, J. M. (2015) Chemical integration of proteins in signaling and development. \emph{bioRxiv}. \url{https://doi.org/10.1101/015826}
 

@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.3-26 (2018-05-06)
+CHANGES IN CHNOSZ 1.1.3-27 (2018-05-14)
 ---------------------------------------
 
 THERMODYNAMIC DATA
@@ -83,6 +83,9 @@ OTHER CHANGES
 
 - Add demo/bison.R (average oxidation state of carbon of metagenome-
   derived proteins in different microbial phyla at Bison Pool)
+
+- Add thermo$opt$maxcores (default 2) to specify maximum number of
+  cores for parallel calculations with palply().
 
 CHANGES IN CHNOSZ 1.1.3 (2017-11-13)
 ------------------------------------

@@ -59,7 +59,8 @@ The structure of the \code{thermo} object is described below.
       \code{ideal.H} \tab logical \tab Should \code{\link{nonideal}} ignore the proton? [\code{TRUE}] \cr
       \code{ideal.e} \tab logical \tab Should \code{\link{nonideal}} ignore the electron? [\code{TRUE}] \cr
       \code{nonideal} \tab character \tab Method for \code{\link{nonideal}} [\code{Helgeson}] \cr
-      \code{Berman} \tab character \tab User data file for mineral parameters in the Berman equations [\code{NA}]
+      \code{Berman} \tab character \tab User data file for mineral parameters in the Berman equations [\code{NA}] \cr
+      \code{maxcores} \tab numeric \tab Maximum number of cores for parallel calculations with \code{\link{palply}} [\code{2}]
 }
 
     \item \code{thermo$element}

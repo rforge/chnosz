@@ -44,8 +44,10 @@ The basis species identified by these keywords are aqueous except for \H2O (liq)
     \code{CHNOS} \tab \CO2, \H2O, \NH3, \H2S, \O2 \cr
     \code{CHNOS+} \tab \CO2, \H2O, \NH3, \H2S, \O2, \Hplus \cr
     \code{CHNOSe} \tab \CO2, \H2O, \NH3, \H2S, \eminus, \Hplus \cr
-    \code{CHNOPS+} \tab \CO2, \H2O, \NH3, \H3PO4, \H2S, \eminus, \Hplus \cr
-    \code{MgCHNOPS+} \tab \Mgplus2, \CO2, \H2O, \NH3, \H3PO4, \H2S, \eminus, \Hplus \cr
+    \code{CHNOPS+} \tab \CO2, \H2O, \NH3, \H3PO4, \H2S, \O2, \Hplus \cr
+    \code{CHNOPSe} \tab \CO2, \H2O, \NH3, \H3PO4, \H2S, \eminus, \Hplus \cr
+    \code{MgCHNOPS+} \tab \Mgplus2, \CO2, \H2O, \NH3, \H3PO4, \H2S, \O2, \Hplus \cr
+    \code{MgCHNOPSe} \tab \Mgplus2, \CO2, \H2O, \NH3, \H3PO4, \H2S, \eminus, \Hplus \cr
     \code{FeCHNOS} \tab \Fe2O3, \CO2, \H2O, \NH3, \H2S, \O2 \cr
     \code{FeCHNOS+} \tab \Fe2O3, \CO2, \H2O, \NH3, \H2S, \O2, \Hplus \cr
     \code{QEC4} \tab cysteine, glutamic acid, glutamine, \H2O, \O2 \cr

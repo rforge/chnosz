@@ -153,6 +153,7 @@ count.aa <- function(seq, start=NULL, stop=NULL, type="protein") {
   # count amino acids or DNA bases in one or more sequences given as elements of the list seq
   if(type=="protein") letts <- aminoacids(1)
   else if(type=="DNA") letts <- c("A", "C", "G", "T")
+  else if(type=="RNA") letts <- c("A", "C", "G", "U")
   else stop(paste("unknown sequence type", type))
   # the numerical positions of the letters in alphabetical order (i.e. for amino acids, same order as in thermo$protein)
   ilett <- match(letts, LETTERS)

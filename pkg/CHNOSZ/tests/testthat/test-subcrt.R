@@ -169,6 +169,21 @@ test_that("duplicated species yield correct phase transitions", {
   expect_equal(as.numeric(a$values[[1]]), c(0, 0))
 })
 
+test_that("reaction coefficients for repeated species are handled correctly", {
+  # these were failing in version 1.1.3
+  s1 <- subcrt(c("quartz", "SiO2"), c(-1, 1))            
+  expect_equal(s1$reaction$coeff, c(-1, 1))
+  s2 <- subcrt(c("pyrrhotite", "pyrrhotite"), c(-1, 1))            
+  expect_equal(s2$reaction$coeff, c(-1, 1))
+  # these were failing in version 1.1.3-28
+  s3 <- subcrt(c("SiO2", "SiO2"), c(-1, 1))
+  expect_equal(s3$reaction$coeff, c(-1, 1))
+  s4 <- subcrt(c("H2O", "H2O", "H2O", "H2O", "H2O"), c(-2, 1, -3, 1, 3))
+  expect_equal(s4$reaction$coeff, c(-2, 1, -3, 1, 3))
+  # the reaction properties here should add up to zero
+  expect_equal(unique(s4$out$logK), 0)
+})
+
 # references
 
 # Amend, J. P. and Shock, E. L. (2001) 

@@ -443,9 +443,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
       out.new[[i]] <- cbind(out.new.entry,data.frame(polymorph=phasestate))
       reaction.new[i,] <- reaction[iphases[phasestate[1]],]
       # mark the minerals with multiple phases
-      rs <- as.character(reaction.new$state)
-      rs[i] <- 'cr*'
-      reaction.new$state <- rs
+      reaction.new$state[i] <- "cr*"
       isaq.new <- c(isaq.new,isaq[iphases[phasestate[1]]])
       iscgl.new <- c(iscgl.new,iscgl[iphases[phasestate[1]]])
       isH2O.new <- c(isH2O.new,isH2O[iphases[phasestate[1]]])
@@ -458,16 +456,19 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
       # multiple phases aren't involved ... things stay the same
       out.new[[i]] <- out[[iphases]]
       reaction.new[i, ] <- reaction[iphases, ]
-      rs <- as.character(reaction.new$state)
-      rs[i] <- as.character(reaction$state[iphases])
-      reaction.new$state <- rs
+      reaction.new$state[i] <- reaction$state[iphases]
       isaq.new <- c(isaq.new,isaq[iphases])
       iscgl.new <- c(iscgl.new,iscgl[iphases])
       isH2O.new <- c(isH2O.new,isH2O[iphases])
     }
   }
   out <- out.new
+  # remove the rows that were added to keep track of phase transitions
   reaction <- reaction.new[1:length(sinfo),]
+  # the manipulations above should get the correct species indices and state labels,
+  # but if species are (intentionally) repeated, include only the first
+  # (and possibly incorrect) reaction coefficients, so use the originals here 20180822
+  reaction$coeff <- coeff
   isaq <- isaq.new
   iscgl <- iscgl.new
   isH2O <- isH2O.new

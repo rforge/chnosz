@@ -1,6 +1,6 @@
 ---
 title: "An Introduction to [CHNOSZ](http://www.chnosz.net)"
-author: "Jeffrey M. Dick"
+author: "[Jeffrey M. Dick](http://chnosz.net/jeff)"
 date: "`r Sys.Date()`"
 output:
   tufte::tufte_html:

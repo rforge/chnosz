@@ -1,7 +1,7 @@
 ---
 title: "Regressing thermodynamic data"
 subtitle: "EOSregress in [CHNOSZ](http://www.chnosz.net)"
-author: "Jeffrey M. Dick"
+author: "[Jeffrey M. Dick](http://chnosz.net/jeff)"
 date: "`r Sys.Date()`"
 output:
   tufte::tufte_html:

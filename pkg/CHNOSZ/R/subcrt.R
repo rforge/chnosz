@@ -114,11 +114,10 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
     species <- as.character(thermo$obigt$name[ispecies])
     state <- as.character(thermo$obigt$state[ispecies])
     newstate <- as.character(thermo$obigt$state[ispecies])
-    sinfo <- ispecies
   } else {
     # from names, get species indices and states and possibly
     # keep track of phase species (cr,cr2 ...)
-    sinfo <- numeric()
+    ispecies <- numeric()
     newstate <- character()
     for(i in 1:length(species)) {
       # get the species index for a named species
@@ -134,53 +133,48 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
       if(!is.null(state[i])) is.cr <- state[i]=='cr' else is.cr <- FALSE
       if(thermo$obigt$state[si[1]]=='cr' & (is.null(state[i]) | is.cr)) {
         newstate <- c(newstate,'cr')
-        sinfo <- c(sinfo,si[1])
+        ispecies <- c(ispecies,si[1])
       } else {
         newstate <- c(newstate,as.character(thermo$obigt$state[si[1]]))
-        sinfo <- c(sinfo,si[1])
+        ispecies <- c(ispecies,si[1])
       }
     }
   }
 
-  # to make the following more readable and maybe save
-  # run time, keep some parts of thermo$obigt handy
-  ton <- thermo$obigt$name
-  tos <- thermo$obigt$state
-
   # stop if species not found
-  noname <- is.na(sinfo)
+  noname <- is.na(ispecies)
   if(TRUE %in% noname)
     stop(paste('species',species[noname],'not found.\n'))
 
   # take care of mineral phases
-  state <- as.character(tos[sinfo])
-  name <- as.character(ton[sinfo])
+  state <- as.character(thermo$obigt$state[ispecies])
+  name <- as.character(thermo$obigt$name[ispecies])
   # a counter of all species considered
-  # inpho is longer than sinfo if cr,cr2 ... phases are present
-  # sinph shows which of sinfo correspond to inpho
+  # iphases is longer than ispecies if cr,cr2 ... phases are present
+  # phasespecies shows which of ispecies correspond to iphases
   # pre-20091114: the success of this depends on there not being duplicated aqueous or other
   # non-mineral-phase species (i.e., two entries in obigt for Cu+ screw this up
   # when running the skarn example).
   # after 20091114: we can deal with duplicated species (aqueous at least)
-  inpho <- sinph <- coeff.new <- numeric()
-  for(i in 1:length(sinfo)) {
+  iphases <- phasespecies <- coeff.new <- numeric()
+  for(i in 1:length(ispecies)) {
      if(newstate[i]=='cr') {
        searchstates <- c('cr','cr2','cr3','cr4','cr5','cr6','cr7','cr8','cr9') 
-       tghs <- thermo$obigt[(ton %in% name[i]) & tos %in% searchstates,]
+       tghs <- thermo$obigt[(thermo$obigt$name %in% name[i]) & thermo$obigt$state %in% searchstates,]
        # we only take one if they are in fact duplicated species and not phase species
-       if(all(tghs$state==tghs$state[1])) tghs <- thermo$obigt[sinfo[i],]
-     } else tghs <- thermo$obigt[sinfo[i],]
-     inpho <- c(inpho,as.numeric(rownames(tghs))) 
-     sinph <- c(sinph,rep(sinfo[i],nrow(tghs)))
+       if(all(tghs$state==tghs$state[1])) tghs <- thermo$obigt[ispecies[i],]
+     } else tghs <- thermo$obigt[ispecies[i],]
+     iphases <- c(iphases,as.numeric(rownames(tghs))) 
+     phasespecies <- c(phasespecies,rep(ispecies[i],nrow(tghs)))
      coeff.new <- c(coeff.new,rep(coeff[i],nrow(tghs)))
   }
 
   # where we keep info about the species involved
-  reaction <- data.frame(coeff = coeff.new, name = ton[inpho],
-    formula = thermo$obigt$formula[inpho], state = tos[inpho],
-    ispecies = inpho, stringsAsFactors = FALSE)
+  reaction <- data.frame(coeff = coeff.new, name = thermo$obigt$name[iphases],
+    formula = thermo$obigt$formula[iphases], state = thermo$obigt$state[iphases],
+    ispecies = iphases, stringsAsFactors = FALSE)
   # make the rownames readable ... but they have to be unique
-  if(length(unique(inpho))==length(inpho)) rownames(reaction) <- as.character(inpho)
+  if(length(unique(iphases))==length(iphases)) rownames(reaction) <- as.character(iphases)
 
   # wetness etc.
   isH2O <- reaction$name=='water' & reaction$state=='liq'
@@ -206,7 +200,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
   # inform about unbalanced reaction
   if(do.reaction) {
     # the mass balance ... is zero for a balanced reaction
-    mss <- makeup(sinfo, coeff, sum=TRUE)
+    mss <- makeup(ispecies, coeff, sum=TRUE)
     # take out very small numbers
     mss[abs(mss) < 1e-7] <- 0
     # report and try to fix any non-zero mass balance
@@ -268,31 +262,29 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
   # if logK but not G was requested, we need to calculate G
   eosprop <- calcprop
   if('logK' %in% calcprop & ! 'G' %in% calcprop) eosprop <- c(eosprop, 'G')
-  # also get g if we are dealing with mineral phases
-  if(!'G' %in% eosprop & length(inpho) > length(sinfo)) eosprop <- c(eosprop, 'G')
+  # also get G if we are dealing with mineral phases
+  if(!'G' %in% eosprop & length(iphases) > length(ispecies)) eosprop <- c(eosprop, 'G')
   # don't request logK or rho from the eos ...
   eosprop <- eosprop[!eosprop %in% c('logK','rho')]
   # the reaction result will go here
   out <- list()
   # aqueous species and H2O properties
   if(TRUE %in% isaq) {
-    # 20110808 if inpho are the species indices let's avoid
-    # the overhead of info() and use new obigt2eos() instead
-    #si <- info(inpho[isaq],quiet=TRUE)
-    si <- obigt2eos(thermo$obigt[inpho[isaq],], "aq", fixGHS = TRUE)
+    # 20110808 get species parameters using obigt2eos() (faster than using info())
+    param <- obigt2eos(thermo$obigt[iphases[isaq],], "aq", fixGHS = TRUE)
     # always get density
     H2O.props <- "rho"
     # calculate A_DH and B_DH if we're using the B-dot (Helgeson) equation
     if(any(IS != 0) & grepl("Helgeson", thermo$opt$nonideal)) H2O.props <- c(H2O.props, "A_DH", "B_DH")
     # get other properties for H2O only if it's in the reaction
     if(any(isH2O)) H2O.props <- c(H2O.props, eosprop)
-    hkfstuff <- hkf(eosprop, parameters = si, T = T, P = P, H2O.props=H2O.props)
+    hkfstuff <- hkf(eosprop, parameters = param, T = T, P = P, H2O.props=H2O.props)
     p.aq <- hkfstuff$aq
     H2O.PT <- hkfstuff$H2O
     # calculate activity coefficients if ionic strength is not zero
     if(any(IS != 0)) {
-      if(grepl("Helgeson", thermo$opt$nonideal)) p.aq <- nonideal(inpho[isaq], p.aq, newIS, T, P, H2O.PT$A_DH, H2O.PT$B_DH)
-      else if(thermo$opt$nonideal=="Alberty") p.aq <- nonideal(inpho[isaq], p.aq, newIS, T)
+      if(grepl("Helgeson", thermo$opt$nonideal)) p.aq <- nonideal(iphases[isaq], p.aq, newIS, T, P, H2O.PT$A_DH, H2O.PT$B_DH)
+      else if(thermo$opt$nonideal=="Alberty") p.aq <- nonideal(iphases[isaq], p.aq, newIS, T)
     }
     out <- c(out, p.aq)
   } else if(any(isH2O)) {
@@ -305,8 +297,8 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
   iscgl <- reaction$state %in% cglstates & reaction$name != "water"
 
   if(TRUE %in% iscgl) {
-    si <- obigt2eos(thermo$obigt[inpho[iscgl],], "cgl", fixGHS = TRUE)
-    p.cgl <- cgl(eosprop, parameters = si, T = T, P = P)
+    param <- obigt2eos(thermo$obigt[iphases[iscgl],], "cgl", fixGHS = TRUE)
+    p.cgl <- cgl(eosprop, parameters = param, T = T, P = P)
     # replace Gibbs energies with NA where the
     # phases are beyond their temperature range
     if('G' %in% eosprop) {
@@ -314,7 +306,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
       # 20120219 cleaned up somewhat; using exceed.Ttr and NA instead of do.phases and 999999
       # the numbers of the cgl species (becomes 0 for any that aren't cgl)
       ncgl <- iscgl
-      ncgl[iscgl] <- 1:nrow(si)
+      ncgl[iscgl] <- 1:nrow(param)
       for(i in 1:length(iscgl)) {
         # not if we're not cgl
         if(!iscgl[i]) next
@@ -325,7 +317,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
 #        if(mystate=="cr_Berman") next
         # if this phase is cr2 or higher, check if we're below the transition temperature
         if(!(reaction$state[i] %in% c('liq','cr','gas'))) {
-          Ttr <- Ttr(inpho[i]-1,P=P,dPdT=dPdTtr(inpho[i]-1))
+          Ttr <- Ttr(iphases[i]-1,P=P,dPdT=dPdTtr(iphases[i]-1))
           if(all(is.na(Ttr))) next
           if(any(T < Ttr)) {
             status.Ttr <- "(extrapolating G)"
@@ -340,12 +332,12 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
         # check if we're above the temperature limit or transition temperature
         # T limit (or Ttr) from the database
         warn.above <- TRUE
-        Ttr <- thermo$obigt$z.T[inpho[i]]
+        Ttr <- thermo$obigt$z.T[iphases[i]]
         # calculate Ttr at higher P if a phase transition is present
         if(i < nrow(reaction)) {
           # if the next one is cr2, cr3, etc we have a transition
           if(reaction$state[i+1] %in% c("cr1", "cr2", "cr3", "cr4", "cr5", "cr6", "cr7", "cr8", "cr9"))
-            Ttr <- Ttr(inpho[i],P=P,dPdT=dPdTtr(inpho[i]))
+            Ttr <- Ttr(iphases[i],P=P,dPdT=dPdTtr(iphases[i]))
           # we don't warn here about the transition
           warn.above <- FALSE
         }
@@ -401,22 +393,22 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
   isaq.new <- logical()
   iscgl.new <- logical()
   isH2O.new <- logical()
-  for(i in 1:length(sinfo)) {
-    iphases <- which(sinfo[i]==sinph)
+  for(i in 1:length(ispecies)) {
+    arephases <- which(ispecies[i]==phasespecies)
     # deal with repeated species here
-    if(TRUE %in% duplicated(inpho[iphases])) {
+    if(TRUE %in% duplicated(iphases[arephases])) {
       # only take the first, not the duplicates
-      ndups <- length(which(sinfo==sinfo[i]))
-      nphases <- length(iphases) / ndups
-      iphases <- iphases[1:nphases]
+      ndups <- length(which(ispecies==ispecies[i]))
+      nphases <- length(arephases) / ndups
+      arephases <- arephases[1:nphases]
     }
-    if(length(iphases)>1) {
-      message(paste('subcrt:',length(iphases),'phases for',thermo$obigt$name[sinfo[i]],'... '), appendLF=FALSE)
+    if(length(arephases)>1) {
+      message(paste('subcrt:',length(arephases),'phases for',thermo$obigt$name[ispecies[i]],'... '), appendLF=FALSE)
       # assemble the Gibbs energies for each species
-      for(j in 1:length(iphases)) {
-        G.this <- out[[iphases[j]]]$G
+      for(j in 1:length(arephases)) {
+        G.this <- out[[arephases[j]]]$G
         if(length(which(is.na(G.this))) > 0 & exceed.Ttr) warning(paste('subcrt: NAs found for G of ',
-          reaction$name[iphases[j]],' ',reaction$state[iphases[j]],' at T-P point(s) ',
+          reaction$name[arephases[j]],' ',reaction$state[arephases[j]],' at T-P point(s) ',
           c2s(which(is.na(G.this)),sep=' '),sep=''),call.=FALSE)
         if(j==1) G <- as.data.frame(G.this)
         else G <- cbind(G,as.data.frame(G.this))
@@ -432,21 +424,21 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
           #ps <- 1
           # - above temperature limit for the highest-T phase (subcrt.Rd skarn example) --> use highest-T phase 20171110
           ps <- ncol(G)
-          if(exceed.Ttr) warning('subcrt: stable phase for ',reaction$name[iphases[ps]],' at T-P point ',j,
-          ' undetermined (using ',reaction$state[iphases[ps]],')',call.=FALSE)
+          if(exceed.Ttr) warning('subcrt: stable phase for ',reaction$name[arephases[ps]],' at T-P point ',j,
+          ' undetermined (using ',reaction$state[arephases[ps]],')',call.=FALSE)
         } 
         phasestate <- c(phasestate,ps)
-        out.new.entry[j,] <- out[[ iphases[ps] ]][j,]
+        out.new.entry[j,] <- out[[ arephases[ps] ]][j,]
       }
 
       # update our objects
       out.new[[i]] <- cbind(out.new.entry,data.frame(polymorph=phasestate))
-      reaction.new[i,] <- reaction[iphases[phasestate[1]],]
+      reaction.new[i,] <- reaction[arephases[phasestate[1]],]
       # mark the minerals with multiple phases
       reaction.new$state[i] <- "cr*"
-      isaq.new <- c(isaq.new,isaq[iphases[phasestate[1]]])
-      iscgl.new <- c(iscgl.new,iscgl[iphases[phasestate[1]]])
-      isH2O.new <- c(isH2O.new,isH2O[iphases[phasestate[1]]])
+      isaq.new <- c(isaq.new,isaq[arephases[phasestate[1]]])
+      iscgl.new <- c(iscgl.new,iscgl[arephases[phasestate[1]]])
+      isH2O.new <- c(isH2O.new,isH2O[arephases[phasestate[1]]])
       # info for the user
       up <- unique(phasestate)
       if(length(up)>1) { word <- 'are'; p.word <- 'phases' }
@@ -454,17 +446,17 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
       message(paste(p.word,c2s(unique(phasestate)),word,'stable'))
     } else {
       # multiple phases aren't involved ... things stay the same
-      out.new[[i]] <- out[[iphases]]
-      reaction.new[i, ] <- reaction[iphases, ]
-      reaction.new$state[i] <- reaction$state[iphases]
-      isaq.new <- c(isaq.new,isaq[iphases])
-      iscgl.new <- c(iscgl.new,iscgl[iphases])
-      isH2O.new <- c(isH2O.new,isH2O[iphases])
+      out.new[[i]] <- out[[arephases]]
+      reaction.new[i, ] <- reaction[arephases, ]
+      reaction.new$state[i] <- reaction$state[arephases]
+      isaq.new <- c(isaq.new,isaq[arephases])
+      iscgl.new <- c(iscgl.new,iscgl[arephases])
+      isH2O.new <- c(isH2O.new,isH2O[arephases])
     }
   }
   out <- out.new
   # remove the rows that were added to keep track of phase transitions
-  reaction <- reaction.new[1:length(sinfo),]
+  reaction <- reaction.new[1:length(ispecies),]
   # the manipulations above should get the correct species indices and state labels,
   # but if species are (intentionally) repeated, include only the first
   # (and possibly incorrect) reaction coefficients, so use the originals here 20180822

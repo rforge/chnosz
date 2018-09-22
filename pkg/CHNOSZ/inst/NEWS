@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.3-29 (2018-08-22)
+CHANGES IN CHNOSZ 1.1.3-33 (2018-09-22)
 ---------------------------------------
 
 THERMODYNAMIC DATA
@@ -84,6 +84,9 @@ OTHER CHANGES
 
 - Keywords in basis(): Change 'CHNOPS+' to use O2 instead of e-, and add
   'CHNOPSe' and 'MgCHNOPSe' for sets of basis species that have e-.
+
+- Change internal variable names in subcrt() for better readability
+  (sinfo -> ispecies, inpho -> iphases, sinph -> phasespecies).
 
 BUG FIXES
 

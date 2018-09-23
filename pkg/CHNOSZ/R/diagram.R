@@ -197,7 +197,7 @@ diagram <- function(
     }
   }
 
-  ## where we'll put extra output for predominance diagrams (lx, ly, is)
+  ## where we'll put extra output for predominance diagrams (namesx, namesy, inames)
   out2D <- list()
 
   ### now on to the plotting ###
@@ -474,28 +474,28 @@ diagram <- function(
       # calculate coordinates for field labels
       plot.names <- function(out, xs, ys, names) {
         ll <- ngroups
-        lx <- numeric(ll); ly <- numeric(ll); n <- numeric(ll)
+        namesx <- numeric(ll); namesy <- numeric(ll); n <- numeric(ll)
         for(j in nrow(out):1) {
           # 20091116 for speed, loop over ngroups instead of k (columns)
           for(i in 1:ll) {
             k <- which(out[j,]==i)
             if(length(k)==0) next
-            lx[i] <- lx[i] + sum(xs[k])
-            ly[i] <- ly[i] + length(k)*ys[nrow(out)+1-j]
+            namesx[i] <- namesx[i] + sum(xs[k])
+            namesy[i] <- namesy[i] + length(k)*ys[nrow(out)+1-j]
             n[i] <- n[i] + length(k)
           }
         }
-        lx <- lx[n!=0]
-        ly <- ly[n!=0]
-        is <- n!=0
+        namesx <- namesx[n!=0]
+        namesy <- namesy[n!=0]
+        inames <- n!=0
         n <- n[n!=0]
-        lx <- lx/n
-        ly <- ly/n
+        namesx <- namesx/n
+        namesy <- namesy/n
         # plot field labels
         # the cex argument in this function specifies the character 
         # expansion of the labels relative to the current
-        if(!is.null(names)) text(lx, ly, labels=names[is], cex=cex.names, col=col.names[is])
-        return(list(lx=lx, ly=ly, is=which(is)))
+        if(!is.null(names) & any(inames)) text(namesx, namesy, labels=names[inames], cex=cex.names, col=col.names[inames])
+        return(list(namesx=namesx, namesy=namesy, inames=which(inames)))
       }
 
       ### done with predominance diagram functions
@@ -551,23 +551,24 @@ diagram <- function(
         } else {
           # otherwise, make contours of properties using first species only
           if(length(plotvals) > 1) warning("showing only first species in 2-D property diagram")
-          print('hello')
-          print(length(plotvals))
           zs <- plotvals[[1]]
           contour(xs, ys, zs, add=TRUE, col=col, lty=lty, lwd=lwd, labcex=cex, method=contour.method)
         }
-        pn <- list(lx=NULL, ly=NULL, is=NULL)
+        pn <- list(namesx=NULL, namesy=NULL, inames=NULL)
       } else {
         # put predominance matrix in the right order for image() etc
         zs <- t(predominant[, ncol(predominant):1])
         if(!is.null(fill)) fill.color(xs, ys, zs, fill, ngroups)
         pn <- plot.names(zs, xs, ys, names)
-        if(!is.null(dotted)) plot.line(zs, xlim, ylim, dotted, col, lwd, xrange=xrange)
-        else contour.lines(predominant, xlim, ylim, lty=lty, col=col, lwd=lwd)
+        # only draw the lines if there is more than one field (avoid warnings from contour)
+        if(length(unique(as.vector(zs))) > 1) {
+          if(!is.null(dotted)) plot.line(zs, xlim, ylim, dotted, col, lwd, xrange=xrange)
+          else contour.lines(predominant, xlim, ylim, lty=lty, col=col, lwd=lwd)
+        }
         # re-draw the tick marks and axis lines in case the fill obscured them
         if(tplot & !identical(fill, "transparent")) thermo.axis()
       } # done with the 2D plot!
-      out2D <- list(lx=pn$lx, ly=pn$ly, is=pn$is)
+      out2D <- list(namesx=pn$namesx, namesy=pn$namesy, inames=pn$inames)
     } # end if(nd==2)
   } # end if(plot.it)
 

@@ -50,12 +50,12 @@ for(i in 1:length(names)) {
   if(names[i]=="HCu(Gly)+2") srt <- 90
   if(names[i]=="HCu(Gly)+2") dx <- -0.2
   if(names[i]=="Cu(Gly)+") srt <- 90
-  text(d$lx[i]+dx, d$ly[i]+dy, lab, srt=srt)
+  text(d$namesx[i]+dx, d$namesy[i]+dy, lab, srt=srt)
 }
 
 # add glycine ionization lines
 d <- diagram(m$A.bases, add=TRUE, col="darkblue", lty=3, names=NULL, limit.water=FALSE)
-text(d$lx, -0.5, Gly, col="darkblue")
+text(d$namesx, -0.5, Gly, col="darkblue")
 
 # add water lines and title
 water.lines(d)

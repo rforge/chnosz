@@ -68,7 +68,11 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
 
   # warn for too high temperatures for Psat 20171110
   warnings <- character()
-  if(identical(P, "Psat") & any(T > 647.067)) warnings <- c(warnings, "P = 'Psat' undefined for T > Tcritical")
+  if(identical(P, "Psat") & any(T > 647.067)) {
+    nover <- sum(T > 647.067)
+    if(nover==1) vtext <- "value" else vtext <- "values"
+    warnings <- c(warnings, paste0("P = 'Psat' undefined for T > Tcritical (", nover, " T ", vtext, ")"))
+  }
 
   # gridding?
   do.grid <- FALSE
@@ -282,13 +286,13 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
     hkfstuff <- hkf(eosprop, parameters = param, T = T, P = P, H2O.props=H2O.props)
     p.aq <- hkfstuff$aq
     H2O.PT <- hkfstuff$H2O
-    # set properties to NA for density below 0.35 g/cm3 (near-critical isochore; threshold used in SUPCRT92) 20180922
+    # set properties to NA for density below 0.35 g/cm3 (a little above the critical isochore, threshold used in SUPCRT92) 20180922
     ilowrho <- H2O.PT$rho < 350
     ilowrho[is.na(ilowrho)] <- FALSE
     if(any(ilowrho)) {
       for(i in 1:length(p.aq)) p.aq[[i]][ilowrho, ] <- NA
-      if(sum(ilowrho)==1) ctext <- "condition" else ctext <- "conditions"
-      warnings <- c(warnings, paste0("below density threshold for applicability of revised HKF equations (", sum(ilowrho), " T,P ", ctext, ")"))
+      if(sum(ilowrho)==1) ptext <- "pair" else ptext <- "pairs"
+      warnings <- c(warnings, paste0("below minimum density for applicability of revised HKF equations (", sum(ilowrho), " T,P ", ptext, ")"))
     }
     # calculate activity coefficients if ionic strength is not zero
     if(any(IS != 0)) {

@@ -272,7 +272,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
   # don't request logK or rho from the eos ...
   eosprop <- eosprop[!eosprop %in% c('logK','rho')]
   # the reaction result will go here
-  out <- list()
+  outprops <- list()
   # aqueous species and H2O properties
   if(TRUE %in% isaq) {
     # 20110808 get species parameters using obigt2eos() (faster than using info())
@@ -299,7 +299,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
       if(grepl("Helgeson", thermo$opt$nonideal)) p.aq <- nonideal(iphases[isaq], p.aq, newIS, T, P, H2O.PT$A_DH, H2O.PT$B_DH)
       else if(thermo$opt$nonideal=="Alberty") p.aq <- nonideal(iphases[isaq], p.aq, newIS, T)
     }
-    out <- c(out, p.aq)
+    outprops <- c(outprops, p.aq)
   } else if(any(isH2O)) {
     # we're not using the HKF, but still want water
     H2O.PT <- water(c("rho", eosprop), T = T, P = P)
@@ -365,41 +365,41 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
         }
       }
     }
-    out <- c(out,p.cgl)
+    outprops <- c(outprops,p.cgl)
   }
 
   # water
   if(any(isH2O)) {
     p.H2O <- H2O.PT[, match(eosprop, colnames(H2O.PT)), drop=FALSE]
     p.H2O <- list(p.H2O)
-    out <- c(out, rep(p.H2O, sum(isH2O == TRUE)))
+    outprops <- c(outprops, rep(p.H2O, sum(isH2O == TRUE)))
   }
 
   # use variable-pressure standard Gibbs energy for gases
   isgas <- reaction$state %in% "gas" 
   if(any(isgas) & "G" %in% eosprop & thermo$opt$varP) {
-    for(i in which(isgas)) out[[i]]$G <- out[[i]]$G - convert(log10(P), "G", T=T)
+    for(i in which(isgas)) outprops[[i]]$G <- outprops[[i]]$G - convert(log10(P), "G", T=T)
   }
 
   # logK
   if('logK' %in% calcprop) {
-    for(i in 1:length(out)) {
-      out[[i]] <- cbind(out[[i]],data.frame(logK=convert(out[[i]]$G,'logK',T=T)))
-      colnames(out[[i]][ncol(out[[i]])]) <- 'logK'
+    for(i in 1:length(outprops)) {
+      outprops[[i]] <- cbind(outprops[[i]],data.frame(logK=convert(outprops[[i]]$G,'logK',T=T)))
+      colnames(outprops[[i]][ncol(outprops[[i]])]) <- 'logK'
     }
   }
 
   # ordering the output
-  # the indices of the species in out thus far
+  # the indices of the species in outprops thus far
   ns <- 1:nrow(reaction)
   is <- c(ns[isaq],ns[iscgl],ns[isH2O])
   if(length(ns)!=length(is)) stop('subcrt: not all species are accounted for.')
   v <- list()
-  for(i in 1:length(is))  v[[i]] <- out[[match(ns[i],is)]]
-  out <- v
+  for(i in 1:length(is))  v[[i]] <- outprops[[match(ns[i],is)]]
+  outprops <- v
 
   # deal with phases (cr,cr2) here
-  # we have to eliminate rows from out, 
+  # we have to eliminate rows from outprops, 
   # reaction and values from isaq, iscgl, isH2O
   out.new <- list()
   reaction.new <- reaction
@@ -419,7 +419,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
       message(paste('subcrt:',length(arephases),'phases for',thermo$obigt$name[ispecies[i]],'... '), appendLF=FALSE)
       # assemble the Gibbs energies for each species
       for(j in 1:length(arephases)) {
-        G.this <- out[[arephases[j]]]$G
+        G.this <- outprops[[arephases[j]]]$G
         if(length(which(is.na(G.this))) > 0 & exceed.Ttr) warning(paste('subcrt: NAs found for G of ',
           reaction$name[arephases[j]],' ',reaction$state[arephases[j]],' at T-P point(s) ',
           c2s(which(is.na(G.this)),sep=' '),sep=''),call.=FALSE)
@@ -428,7 +428,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
       }
       # find the minimum-energy phase at each T-P point
       phasestate <- numeric()
-      out.new.entry <- out[[1]]
+      out.new.entry <- outprops[[1]]
       for(j in 1:nrow(G)) {
         ps <- which.min(as.numeric(G[j,]))
         if(length(ps)==0) {
@@ -441,7 +441,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
           ' undetermined (using ',reaction$state[arephases[ps]],')',call.=FALSE)
         } 
         phasestate <- c(phasestate,ps)
-        out.new.entry[j,] <- out[[ arephases[ps] ]][j,]
+        out.new.entry[j,] <- outprops[[ arephases[ps] ]][j,]
       }
 
       # update our objects
@@ -459,7 +459,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
       message(paste(p.word,c2s(unique(phasestate)),word,'stable'))
     } else {
       # multiple phases aren't involved ... things stay the same
-      out.new[[i]] <- out[[arephases]]
+      out.new[[i]] <- outprops[[arephases]]
       reaction.new[i, ] <- reaction[arephases, ]
       reaction.new$state[i] <- reaction$state[arephases]
       isaq.new <- c(isaq.new,isaq[arephases])
@@ -467,7 +467,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
       isH2O.new <- c(isH2O.new,isH2O[arephases])
     }
   }
-  out <- out.new
+  outprops <- out.new
   # remove the rows that were added to keep track of phase transitions
   reaction <- reaction.new[1:length(ispecies),]
   # the manipulations above should get the correct species indices and state labels,
@@ -479,13 +479,13 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
   isH2O <- isH2O.new
 
   # adjust the output order of the properties
-  for(i in 1:length(out)) {
+  for(i in 1:length(outprops)) {
     # the calculated properties are first
-    ipp <- match(calcprop, colnames(out[[i]]))
+    ipp <- match(calcprop, colnames(outprops[[i]]))
     # move polymorph/loggam columns to end
-    if('polymorph' %in% colnames(out[[i]])) ipp <- c(ipp,match('polymorph',colnames(out[[i]]))) 
-    if('loggam' %in% colnames(out[[i]])) ipp <- c(ipp,match('loggam',colnames(out[[i]]))) 
-    out[[i]] <- out[[i]][,ipp,drop=FALSE]
+    if('polymorph' %in% colnames(outprops[[i]])) ipp <- c(ipp,match('polymorph',colnames(outprops[[i]]))) 
+    if('loggam' %in% colnames(outprops[[i]])) ipp <- c(ipp,match('loggam',colnames(outprops[[i]]))) 
+    outprops[[i]] <- outprops[[i]][,ipp,drop=FALSE]
   }
 
   # add up reaction properties
@@ -496,7 +496,7 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
     if(!is.null(logact)) {
       logQ <- logK <- rep(0,length(T))
       for(i in 1:length(coeff)) {
-        logK <- logK + out[[i]]$logK * coeff[i]
+        logK <- logK + outprops[[i]]$logK * coeff[i]
         logQ <- logQ + logact[i] * coeff[i]
       }
       reaction <- cbind(reaction,logact)
@@ -508,15 +508,15 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
     # loop over reaction coefficients
     for(i in 1:length(coeff)) {
       # assemble polymorph columns separately
-      if('polymorph' %in% colnames(out[[i]])) {
-         sc <- as.data.frame(out[[i]]$polymorph)
-         out[[i]] <- out[[i]][,-match('polymorph',colnames(out[[i]]))]
+      if('polymorph' %in% colnames(outprops[[i]])) {
+         sc <- as.data.frame(outprops[[i]]$polymorph)
+         outprops[[i]] <- outprops[[i]][,-match('polymorph',colnames(outprops[[i]]))]
          colnames(sc) <- as.character(reaction$name[i])
          if(is.null(morphcols)) morphcols <- sc
          else morphcols <- cbind(morphcols,sc)
       }
       # include a zero loggam column if needed (for those species that are ideal)
-      o.i <- out[[i]]
+      o.i <- outprops[[i]]
       if('loggam' %in% colnames(o.i)) if(!'loggam' %in% colnames(o))
         o <- cbind(o,loggam=0)
       if('loggam' %in% colnames(o)) if(!'loggam' %in% colnames(o.i))
@@ -525,18 +525,18 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
       o <- o + o.i * coeff[i]
     }
     # output for reaction (stack on polymorph columns if exist)
-    if(!is.null(morphcols)) out <- list(reaction=reaction,out=o,polymorphs=morphcols)
-    else out <- list(reaction=reaction,out=o)
+    if(!is.null(morphcols)) OUT <- list(reaction=reaction,out=o,polymorphs=morphcols)
+    else OUT <- list(reaction=reaction,out=o)
   } else {
     # output for species: strip the coeff column from reaction
     reaction <- reaction[,-match('coeff',colnames(reaction))]
-    out <- c(list(species=reaction),out)
+    OUT <- c(list(species=reaction),outprops)
   }
   # append T,P,rho, A, logQ columns and convert units
-  for(i in 2:length(out)) {
+  for(i in 2:length(OUT)) {
     # affinity and logQ
     if(i==2) if(do.reaction & !is.null(logact)) {
-      out[[i]] <- cbind(out[[i]],data.frame(logQ=logQ,A=A))
+      OUT[[i]] <- cbind(OUT[[i]],data.frame(logQ=logQ,A=A))
     }
     # 20120114 only prepend T, P, rho columns if we have more than one T
     # 20171020 or if the 'property' argument is missing (it's nice to see everything using e.g. subcrt("H2O", T=150))
@@ -548,32 +548,32 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
       # try to stuff in a column of rho if we have aqueous species
       # watch out! supcrt-ish densities are in g/cc not kg/m3
       if('rho' %in% calcprop | ( (missing(property) | identical(property, c("logK", "G", "H", "S", "V", "Cp"))) &
-                                any(c(isaq,isH2O))) & (names(out)[i])!='polymorph') 
-        out[[i]] <- cbind(data.frame(T=T.out,P=P.out,rho=H2O.PT$rho/1000),out[[i]])
+                                any(c(isaq,isH2O))) & (names(OUT)[i])!='polymorph') 
+        OUT[[i]] <- cbind(data.frame(T=T.out,P=P.out,rho=H2O.PT$rho/1000),OUT[[i]])
       else
-        out[[i]] <- cbind(data.frame(T=T.out,P=P.out,out[[i]]))
+        OUT[[i]] <- cbind(data.frame(T=T.out,P=P.out,OUT[[i]]))
     }
     if(convert) {
-      for(j in 1:ncol(out[[i]])) {
-        if(colnames(out[[i]])[j] %in% c('G','H','S','Cp')) out[[i]][,j] <- outvert(out[[i]][,j],'cal')
+      for(j in 1:ncol(OUT[[i]])) {
+        if(colnames(OUT[[i]])[j] %in% c('G','H','S','Cp')) OUT[[i]][,j] <- outvert(OUT[[i]][,j],'cal')
       }
     }
   }
   # put ionic strength next to any loggam columns
-  for(i in 2:length(out)) {
-    if('loggam' %in% colnames(out[[i]])) out[[i]] <- cbind(out[[i]],IS=newIS)
+  for(i in 2:length(OUT)) {
+    if('loggam' %in% colnames(OUT[[i]])) OUT[[i]] <- cbind(OUT[[i]],IS=newIS)
   }
   # more fanagling for species
   if(!do.reaction) {
-    out <- list(species=out$species,out=out[2:length(out)])
+    OUT <- list(species=OUT$species, out=OUT[2:length(OUT)])
     # add names to the output
-    names(out$out) <- as.character(reaction$name)
+    names(OUT$out) <- as.character(reaction$name)
   }
   # add warnings to output 20180922
   if(length(warnings) > 0) {
-    out <- c(out, list(warnings=warnings))
+    OUT <- c(OUT, list(warnings=warnings))
     for(warn in warnings) warning(warn)
   }
-  return(out)
+  return(OUT)
 }
 

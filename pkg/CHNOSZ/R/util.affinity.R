@@ -137,13 +137,13 @@ energy <- function(what,vars,vals,lims,T=298.15,P="Psat",IS=0,sout=NULL,exceed.T
       if("P" %in% vars) P <- vals[[which(vars=="P")]]
       if("IS" %in% vars) IS <- vals[[which(vars=="IS")]]
       s.args <- list(species=species,property=property,T=T,P=P,IS=IS,grid=grid,convert=FALSE,exceed.Ttr=exceed.Ttr)
-      return(do.call("subcrt",s.args)$out)
+      return(do.call("subcrt",s.args))
     }
   }
 
   ### functions for logK/subcrt props
   # the logK contribution by any species or basis species
-  X.species <- function(ispecies,coeff,X) coeff * sout[[ispecies]][,names(sout[[ispecies]])==X]
+  X.species <- function(ispecies,coeff,X) coeff * sout$out[[ispecies]][,names(sout$out[[ispecies]])==X]
   # the logK contribution by all basis species in a reaction
   X.basis <- function(ispecies,X) Reduce("+", mapply(X.species,ibasis,-myspecies[ispecies,ibasis],X,SIMPLIFY=FALSE))
   # the logK of any reaction
@@ -198,7 +198,7 @@ energy <- function(what,vars,vals,lims,T=298.15,P="Psat",IS=0,sout=NULL,exceed.T
     # (used by energy.args() for calculating pe=f(Eh,T) )
     # TODO: document that sout here denotes the dimension
     # we're expanding into
-    return(dim.fun(what,ivars(sout)))
+    return(dim.fun(what,ivars(sout$out)))
   } else if(what %in% c('G','H','S','Cp','V','E','kT','logK')) {
     # get subcrt properties for reactions
     sout <- sout.fun(what)
@@ -345,7 +345,7 @@ energy.args <- function(args) {
     # what variable is Eh
     Eh.var <- which(args$vars=="Eh")
     Eh.args$what <- args$vals[[Eh.var]]
-    Eh.args$sout <- Eh.var
+    Eh.args$sout$out <- Eh.var
     Eh <- do.call("energy",Eh.args)
     # get temperature into our dimensions
     T.args <- args  
@@ -356,7 +356,7 @@ energy.args <- function(args) {
       T.var <- 1
       T.args$what <- T
     }
-    T.args$sout <- T.var
+    T.args$sout$out <- T.var
     T <- do.call("energy",T.args)
     # do the conversion on vectors
     mydim <- dim(Eh)

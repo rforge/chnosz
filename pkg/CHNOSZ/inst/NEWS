@@ -1,4 +1,4 @@
-CHANGES IN CHNOSZ 1.1.3-34 (2018-09-23)
+CHANGES IN CHNOSZ 1.1.3-36 (2018-09-23)
 ---------------------------------------
 
 THERMODYNAMIC DATA
@@ -89,6 +89,10 @@ OTHER CHANGES
 
 - Change internal variable names in subcrt() for better readability
   (sinfo -> ispecies, inpho -> iphases, sinph -> phasespecies).
+
+- To provide betters diagnostics for potential web apps, warning
+  messages produced by subcrt() are now available in the output of
+  affinity(), under 'sout$warnings'.
 
 BUG FIXES
 

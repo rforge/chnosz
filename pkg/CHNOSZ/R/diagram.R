@@ -166,10 +166,6 @@ diagram <- function(
     # some additional steps for affinity values, but not for equilibrated activities
     if(eout.is.aout) {
       for(i in 1:length(pv)) {
-        # change any NAs in the plotvals to -Inf, so that 
-        # they don't get on the plot, but permit others to
-        # (useful for making mineral stability diagrams beyond transition temperatures of one or more minerals)
-        pv[[i]][is.na(pv[[i]])] <- -Inf
         # TODO: see vignette for an explanation for how this is normalizing
         # the formulas in a predominance calculation
         if(normalize) pv[[i]] <- (pv[[i]] + eout$species$logact[i] / n.balance[i]) - log10(n.balance[i])

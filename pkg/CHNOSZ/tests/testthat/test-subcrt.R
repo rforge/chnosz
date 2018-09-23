@@ -184,6 +184,13 @@ test_that("reaction coefficients for repeated species are handled correctly", {
   expect_equal(unique(s4$out$logK), 0)
 })
 
+test_that("properties of HKF species below 0.35 g/cm3 are NA and give a warning", {
+  wtext <- "below density threshold for applicability of revised HKF equations \\(2 T,P conditions\\)"
+  expect_warning(s1 <- subcrt(c("Na+", "quartz"), T=450, P=c(400, 450, 500)), wtext)            
+  expect_equal(sum(is.na(s1$out$`Na+`$logK)), 2)
+  expect_equal(sum(is.na(s1$out$quartz$logK)), 0)
+})
+
 # references
 
 # Amend, J. P. and Shock, E. L. (2001) 

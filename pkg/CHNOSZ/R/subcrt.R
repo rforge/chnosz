@@ -67,7 +67,8 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
   }
 
   # warn for too high temperatures for Psat 20171110
-  if(identical(P, "Psat") & any(T > 647.067)) warning("attempting calculation at P = 'Psat' for some T > Tcritical; set P = 1 (or higher)")
+  warnings <- character()
+  if(identical(P, "Psat") & any(T > 647.067)) warnings <- c(warnings, "P = 'Psat' undefined for T > Tcritical")
 
   # gridding?
   do.grid <- FALSE
@@ -248,10 +249,10 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
           return(subcrt(species=newspecies, coeff=newcoeff, state=newstate,
             property=property, T=outvert(T, "K"), P=P, grid=grid, convert=convert, logact=logact, exceed.Ttr=FALSE))
         } else if(identical(action.unbalanced,'warn')) 
-            warning(paste('reaction was unbalanced, missing', as.chemical.formula(miss)),call.=FALSE)
+            warnings <- c(warnings, paste('reaction was unbalanced, missing', as.chemical.formula(miss)))
       } else {
         if(identical(action.unbalanced,'warn')) 
-          warning(paste('reaction was unbalanced, missing', as.chemical.formula(miss)),call.=FALSE)
+          warnings <- c(warnings, paste('reaction was unbalanced, missing', as.chemical.formula(miss)))
       }
     }
   }
@@ -281,6 +282,14 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
     hkfstuff <- hkf(eosprop, parameters = param, T = T, P = P, H2O.props=H2O.props)
     p.aq <- hkfstuff$aq
     H2O.PT <- hkfstuff$H2O
+    # set properties to NA for density below 0.35 g/cm3 (near-critical isochore; threshold used in SUPCRT92) 20180922
+    ilowrho <- H2O.PT$rho < 350
+    ilowrho[is.na(ilowrho)] <- FALSE
+    if(any(ilowrho)) {
+      for(i in 1:length(p.aq)) p.aq[[i]][ilowrho, ] <- NA
+      if(sum(ilowrho)==1) ctext <- "condition" else ctext <- "conditions"
+      warnings <- c(warnings, paste0("below density threshold for applicability of revised HKF equations (", sum(ilowrho), " T,P ", ctext, ")"))
+    }
     # calculate activity coefficients if ionic strength is not zero
     if(any(IS != 0)) {
       if(grepl("Helgeson", thermo$opt$nonideal)) p.aq <- nonideal(iphases[isaq], p.aq, newIS, T, P, H2O.PT$A_DH, H2O.PT$B_DH)
@@ -555,6 +564,11 @@ subcrt <- function(species, coeff = 1, state = NULL, property = c("logK", "G", "
     out <- list(species=out$species,out=out[2:length(out)])
     # add names to the output
     names(out$out) <- as.character(reaction$name)
+  }
+  # add warnings to output 20180922
+  if(length(warnings) > 0) {
+    out <- c(out, list(warnings=warnings))
+    for(warn in warnings) warning(warn)
   }
   return(out)
 }
